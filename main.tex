@@ -408,6 +408,37 @@ Now using the inequality from \ref{prop:lambda_convexity}, \ref{eq:integral_lamb
 follows directly. 
 \end{proof}
 %
+\begin{corollary}
+\label{cor:loser_bound}Assume the distributions are supported on
+$\mathcal{X}$ and the kernel is bounded, i.e: $\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert<\infty$.
+Then the following holds:
+
+\[
+MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t)K
+\]
+\end{corollary}
+%
+\begin{proof}
+Recall the expression of $\Lambda_{\mu}(\rho_{s},v_{s}):$
+
+\[
+\Lambda_{\mu}(\rho_{s},v_{s})=\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}\geq-\lambda MMD(\mu,\rho_{t})\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\]
+However, $MMD(\mu,\rho_{t})\leq4C$ where $C=\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert$
+. Moreover, if $\rho_{t}$ is a constant speed geodesic then $\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}=W_{2}^{2}(\rho_{0},\rho_{1})$,
+hence: 
+\[
+-\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\leq4\lambda CW_{2}^{2}(\rho_{0},\rho_{1})\leq2t(1-t)\lambda Cdiam(\mathcal{X})^{2}
+\]
+where $diam(\mathcal{X})$ is the diameter of $\mathcal{X}$. The
+rest of the proof follows by directly using \ref{cor:integral_lambda_convexity}
+and by setting $K=2\lambda Cdiam(\mathcal{X})$.
+\end{proof}
+%
+\ref{cor:loser_bound}, is a loser bound and doesn't account for local
+convexity of the MMD. However, it allows to state the following result,
+which is inspired from (\cite{Bottou:2017}, Theorem 6.3) but generalizes
+it to the case of 'almost convex' functionals.
 
 
 \subsubsection*{References}
