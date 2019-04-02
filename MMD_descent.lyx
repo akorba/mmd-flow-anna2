@@ -1,0 +1,792 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\begin_modules
+theorems-std
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Local Displacement convexity of the MMD
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ be two probability densities on 
+\begin_inset Formula $\mathbb{R}^{d}$
+\end_inset
+
+, we would like to show that 
+\begin_inset Formula $\nu\mapsto MMD^{2}(\mu,\nu)$
+\end_inset
+
+ is a convex functional for 
+\begin_inset Formula $\nu$
+\end_inset
+
+ that are close enough to 
+\begin_inset Formula $\mu$
+\end_inset
+
+ in the Wasserstein sense.
+ Here the notion of convexity should be understood in the following sense:
+\end_layout
+
+\begin_layout Definition
+(displacement convexity 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Villani:2004"
+literal "false"
+
+\end_inset
+
+ Definition 1 ).
+ Let 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ be two probabilities densities.
+ There exists a 
+\begin_inset Formula $\mu-a.e.$
+\end_inset
+
+ unique gradient of a convex function ,
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+, such that 
+\begin_inset Formula $\nu$
+\end_inset
+
+ is equal to 
+\begin_inset Formula $\nabla\phi_{\#}\mu$
+\end_inset
+
+ and one can define 
+\begin_inset Formula $\rho_{t}=((1-t)Id+t\nabla\phi)_{\#}\mu$
+\end_inset
+
+ for 
+\begin_inset Formula $0\leq t\leq1$
+\end_inset
+
+.
+ We say that a functional 
+\begin_inset Formula $\nu\mapsto\mathcal{F}(\nu)$
+\end_inset
+
+ is displacement convex if 
+\begin_inset Formula 
+\[
+t\mapsto\mathcal{F}(\rho_{t})
+\]
+
+\end_inset
+
+ is convex for any 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+.Moreover, we say that 
+\begin_inset Formula $\mathcal{F}$
+\end_inset
+
+ is convex in a neighborhood of 
+\begin_inset Formula $\mu$
+\end_inset
+
+ if there exists a radius 
+\begin_inset Formula $r>0$
+\end_inset
+
+ such that the above property holds for any 
+\begin_inset Formula $\nu$
+\end_inset
+
+ with 
+\begin_inset Formula $W_{2}(\mu,\nu)\leq r$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+(
+\begin_inset Formula $\Lambda$
+\end_inset
+
+-convexity 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Villani:2009"
+literal "false"
+
+\end_inset
+
+ Definition 16.4).
+ Let 
+\begin_inset Formula $(\mu,v)\mapsto\Lambda(\mu,v)$
+\end_inset
+
+ be a function that defines for each probability distribution 
+\begin_inset Formula $\mu$
+\end_inset
+
+ a quadratic form on the set of square integrable vectors valued functions
+ 
+\begin_inset Formula $v$
+\end_inset
+
+ , i.e: 
+\begin_inset Formula $v\in L_{2}(\mathbb{R}^{d},\mathbb{R}^{d},\mu)$
+\end_inset
+
+ .
+ We further assume that:
+\begin_inset Formula 
+\[
+\inf_{\mu,v}\frac{\Lambda(\mu,v)}{\Vert v\Vert_{L_{2}(\mu)}^{2}}>-\infty.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+We say that a functional 
+\begin_inset Formula $\mu\mapsto\mathcal{F}(\mu)$
+\end_inset
+
+ is 
+\begin_inset Formula $\Lambda$
+\end_inset
+
+-convex if for any 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ and a minimizing geodesic 
+\begin_inset Formula $\text{\ensuremath{\rho_{t}}}$
+\end_inset
+
+ between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ with velocity vector field 
+\begin_inset Formula $v_{t}$
+\end_inset
+
+, i.e: 
+\begin_inset Formula $\partial_{t}\rho_{t}+div(\rho_{t}v_{t})=0;\rho_{0}=\mu;\rho_{1}=\nu$
+\end_inset
+
+ the following holds:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{d^{2}\mathcal{F}(\rho_{t})}{dt^{2}}\geq\Lambda(\rho_{t},v_{t})\qquad\forall t\in[0,1].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "prop:lambda_convexity"
+
+\end_inset
+
+
+\begin_inset Formula $\nu\mapsto MMD^{2}(\mu,\nu)$
+\end_inset
+
+ is 
+\begin_inset Formula $\text{\ensuremath{\Lambda_{\mu}}}$
+\end_inset
+
+-convex with 
+\begin_inset Formula $\Lambda_{\mu}$
+\end_inset
+
+ given by:
+\begin_inset Formula 
+\begin{equation}
+\Lambda_{\mu}(\rho,v)=\langle v,(C_{\rho}-\lambda MMD(\mu,\rho)I)v\rangle_{L_{2}(\rho)}\label{eq:Lambda}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+where 
+\begin_inset Formula $C_{\rho}$
+\end_inset
+
+ is the operator defined by:
+\begin_inset Formula 
+\[
+(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+and 
+\begin_inset Formula $\lambda=\sup_{x,x'\in\mathbb{\mathbb{R}^{d}}}\Vert Hk(x,x')\Vert_{op}$
+\end_inset
+
+ where 
+\begin_inset Formula $Hk(x,x')$
+\end_inset
+
+ is an 
+\begin_inset Formula $\mathbb{R}^{d^{2}}\times\mathbb{R}^{d^{2}}$
+\end_inset
+
+ matrix whose entries are given by 
+\begin_inset Formula $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x'j}k(x,x')$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+To prove that 
+\begin_inset Formula $\nu\mapsto MMD^{2}(\mu,\nu)$
+\end_inset
+
+ 
+\begin_inset Formula $\Lambda_{\mu}$
+\end_inset
+
+-convex we need to compute the second derivative 
+\begin_inset Formula $\frac{d^{2}}{dt^{2}}MMD^{2}(\mu,\rho_{t})$
+\end_inset
+
+ where 
+\begin_inset Formula $\rho_{t}$
+\end_inset
+
+ is a minimizing geodesic between two probability distributions 
+\begin_inset Formula $\nu_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{1}$
+\end_inset
+
+.
+ When 
+\begin_inset Formula $\nu_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{1}$
+\end_inset
+
+ both have a density, there exists a convex function such that 
+\begin_inset Formula $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_{0}:=(\pi_{t})_{\#}\nu_{0}$
+\end_inset
+
+ .We start by computing the first derivative:
+\begin_inset Formula 
+\[
+\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $f_{t}=\rho_{t}(k(x,.))-\mu(k(x,.))$
+\end_inset
+
+.
+ Using the definition of 
+\begin_inset Formula $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\mu$
+\end_inset
+
+ it follows that:
+\begin_inset Formula 
+\[
+\frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
+\]
+
+\end_inset
+
+hence:
+\begin_inset Formula 
+\[
+\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\int(\nabla\phi(x)-x).\nabla f_{t}(\pi_{t}(x))\nu_{0}(x)dx
+\]
+
+\end_inset
+
+Now the second derivative is given by:
+\begin_inset Formula 
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \int(\nabla\phi(x)-x).Hf_{t}(\pi_{t}(x))(\nabla\phi(x)-x)\nu_{0}(x)dx\\
+ & +\int(\nabla\phi(x)-x).\nabla_{1}\nabla_{2}k(\pi_{t}(x),\pi_{t}(x'))(\nabla\phi(x')-x')\nu_{0}(x)\nu_{0}(x')dxdx'
+\end{align*}
+
+\end_inset
+
+Here 
+\begin_inset Formula $\nabla_{1}\nabla_{2}k(x,x')$
+\end_inset
+
+ is the matrix whose components are given by 
+\begin_inset Formula $\langle\partial_{i}k(x,.),\partial_{j}k(x,.)\rangle$
+\end_inset
+
+ for 
+\begin_inset Formula $1\leq i,j\leq d$
+\end_inset
+
+, and 
+\begin_inset Formula $Hf_{t}$
+\end_inset
+
+ is the hesssian of 
+\begin_inset Formula $f_{t}$
+\end_inset
+
+ and its components are also given by:
+\begin_inset Formula 
+\[
+(Hf_{t}(x))_{i,j}=\langle f_{t},\partial_{i}\partial_{j}k(x,.)\rangle.
+\]
+
+\end_inset
+
+Denoting by 
+\begin_inset Formula $h(x):=\nabla\phi(x)-x$
+\end_inset
+
+ it follows that:
+\begin_inset Formula 
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \langle f_{t},\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\rangle\\
+ & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}
+\end{align*}
+
+\end_inset
+
+Now we use Cauchy-Schwarz inequality for the first term to get:
+\begin_inset Formula 
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert_{\mathcal{H}}\\
+ & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}.
+\end{align*}
+
+\end_inset
+
+After aplying a change of variables 
+\begin_inset Formula $x=\pi_{t}(y)$
+\end_inset
+
+ one recovers the velocity vector 
+\begin_inset Formula $v_{t}$
+\end_inset
+
+ instead of 
+\begin_inset Formula $h$
+\end_inset
+
+: 
+\begin_inset Formula 
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\\
+ & +\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+One can further note that:
+\begin_inset Formula 
+\[
+\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\leq\lambda\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+and that 
+\begin_inset Formula 
+\begin{align*}
+\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2} & =\int v_{t}(x)^{T}\int\nabla_{1}\nabla_{2}k(x,x')v_{t}(x')\rho_{t}(x')dx'dx.\\
+ & =\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Hence we have shown that 
+\begin_inset Formula 
+\[
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}=\Lambda_{\mu}(\rho_{t},v_{t})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is worth noting that 
+\begin_inset Formula $\nu_{0}=\mu$
+\end_inset
+
+ and at time 
+\begin_inset Formula $t=0$
+\end_inset
+
+ we have that 
+\begin_inset Formula $MMD(\mu,\rho_{0})=0$
+\end_inset
+
+ and hence we get:
+\begin_inset Formula 
+\[
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\vert_{t=0}=\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}\geq0.
+\]
+
+\end_inset
+
+This shows that 
+\begin_inset Formula $\nu\mapsto MMD^{2}(\mu,\nu)$
+\end_inset
+
+ has a non-negative hessian at 
+\begin_inset Formula $\mu$
+\end_inset
+
+ which is not surprising since 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the global minimum of this functional.
+\end_layout
+
+\begin_layout Corollary
+For any geodesic 
+\begin_inset Formula $\rho_{t}$
+\end_inset
+
+ between two probability distributions 
+\begin_inset Formula $\rho_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\rho_{1}$
+\end_inset
+
+ the following holds:
+\begin_inset Formula 
+\begin{equation}
+MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})-\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Corollary
+where 
+\begin_inset Formula $\Lambda_{\mu}$
+\end_inset
+
+ is given by 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Lambda"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset Formula $G$
+\end_inset
+
+ is given by:
+\begin_inset Formula 
+\[
+G(s,t)=\begin{cases}
+s(1-t) & s\leq t\\
+t(1-s) & s\geq t
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+This is a direct consequence of the general identity (
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Villani:2009"
+literal "false"
+
+\end_inset
+
+, proposition 16.2).
+ Indeed, for any continuous function 
+\begin_inset Formula $\phi$
+\end_inset
+
+ on 
+\begin_inset Formula $[0,1]$
+\end_inset
+
+ with second derivative 
+\begin_inset Formula $\ddot{\phi}$
+\end_inset
+
+ that is bounded below in distribution sense the following identity holds:
+\begin_inset Formula 
+\[
+\phi(t)=(1-t)\phi(0)+t\phi(1)-\int_{0}^{1}\ddot{\phi}(s)G(s,t)ds
+\]
+
+\end_inset
+
+Hence, one can choose 
+\begin_inset Formula $\phi(t)=MMD^{2}(\mu,\rho_{t})$
+\end_inset
+
+ therefore, it follows that:
+\begin_inset Formula 
+\[
+MMD^{2}(\mu,\rho_{t})=(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})-\int_{0}^{1}\frac{d^{2}MMD^{2}(\mu,\rho_{s})}{ds^{2}}G(s,t)ds
+\]
+
+\end_inset
+
+Now using the inequality from 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:lambda_convexity"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:integral_lambda_convexity"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ follows directly.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Corollary
+Assume the kernel is bounded, i.e: 
+\begin_inset Formula $\sup_{x,y}\vert k(x,y)\vert<K<\infty$
+\end_inset
+
+.
+ Then the following holds:
+\begin_inset Formula 
+\[
+MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+2t(1-t)KW_{2}^{2}(\rho_{0},\rho_{1})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "refs"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
