@@ -185,13 +185,13 @@
 \end{abstract}
 
 \section{Notations}
-Consider $\pi$ target distribution. Let $k$ a kernel and $\kH$ its RKHS. The MMD between two distributions $p,q$ is defined as:
+Consider $\pi$ target distribution. Let $k$ a kernel and $\kH$ its RKHS. The MMD between two distributions $\rho,\pi$ is defined as:
 \begin{equation}
     MMD(\rho,\pi)=\sup_{f \in \kH,  \|f\|_{\kH}\le 1} \E_{X \sim \rho}[f(X)]-\E_{Y \sim \pi}[f(Y)]=\|\E_{\rho}[k(X,.)] + \E_{\pi}[k(Y,.)]\|_{\kH}
 \end{equation}
 We will consider a flow $(\rho_t)_{t>0}$ and denote $f_t= \E_{\rho_t}[k(X,.)]- \E_{\pi}[k(Y,.)]$. In this case:
 \begin{align}
-MMD^2(p,\rho_t)&=\|f_t\|^2_{\kH}\\
+MMD^2(\rho_t,\pi)&=\|f_t\|^2_{\kH}\\
 &= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
 \end{align} 
 
@@ -262,12 +262,12 @@ We can thus consider the Euler discretization of \eqref{eq:stochastic_process}:
 \begin{equation}\label{eq:discretization}
 X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
 \end{equation}
-here $\nabla f_k(X_k)= \E_{X \sim q_k}[\nabla_{X_k}k(X,X_k)] -  \E_{X \sim \pi}[\nabla_{X_k}k(X,X_k)]$.
+here $\nabla f_k(X_k)= \E_{X \sim \rho_k}[\nabla_{X_k}k(X,X_k)] -  \E_{X \sim \pi}[\nabla_{X_k}k(X,X_k)]$.
 In practice we estimate this gradient by:
 \begin{equation*}
 \widehat{\nabla f_k}(X_k)=\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) - \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k)
 \end{equation*}
-where $(x_1, \dots, x_n)\sim q_k$ and $(y_1, \dots, y_n)\sim \pi$.
+where $(x_1, \dots, x_n)\sim \rho_k$ and $(y_1, \dots, y_n)\sim \pi$.
 
 \section{Lambda displacement convexity of the MMD}
 
