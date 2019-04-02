@@ -374,6 +374,40 @@ that $MMD(\mu,\rho_{0})=0$ and hence we get:
 This shows that $\nu\mapsto MMD^{2}(\mu,\nu)$ has a non-negative
 hessian at $\mu$ which is not surprising since $\mu$ is the global
 minimum of this functional.
+\begin{corollary}
+For any geodesic $\rho_{t}$ between two probability distributions
+$\rho_{0}$ and $\rho_{1}$ the following holds:
+\begin{equation}
+MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})-\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
+\end{equation}
+
+where $\Lambda_{\mu}$ is given by \ref{eq:Lambda} and $G$ is given
+by:
+\[
+G(s,t)=\begin{cases}
+s(1-t) & s\leq t\\
+t(1-s) & s\geq t
+\end{cases}
+\]
+\end{corollary}
+%
+\begin{proof}
+This is a direct consequence of the general identity (\cite{Villani:2009},
+proposition 16.2). Indeed, for any continuous function $\phi$ on
+$[0,1]$ with second derivative $\ddot{\phi}$ that is bounded below
+in distribution sense the following identity holds:
+\[
+\phi(t)=(1-t)\phi(0)+t\phi(1)-\int_{0}^{1}\ddot{\phi}(s)G(s,t)ds
+\]
+Hence, one can choose $\phi(t)=MMD^{2}(\mu,\rho_{t})$ therefore,
+it follows that:
+\[
+MMD^{2}(\mu,\rho_{t})=(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})-\int_{0}^{1}\frac{d^{2}MMD^{2}(\mu,\rho_{s})}{ds^{2}}G(s,t)ds
+\]
+Now using the inequality from \ref{prop:lambda_convexity}, \ref{eq:integral_lambda_convexity}
+follows directly. 
+\end{proof}
+%
 
 
 \subsubsection*{References}
