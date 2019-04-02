@@ -222,25 +222,25 @@ And the dissipation of entropy is defined as %see  http://wwwf.imperial.ac.uk/~j
 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
 \begin{align}
-    V(X)&=-\int 2 k(X,x')p(x')\\
+    V(X)&=-\int 2 k(X,x')\pi(x')\\
     W(X,Y)&=k(X,Y)
 \end{align}
-We have $MMD^2(p,q)=C+ \int V(x) q(x)dx + \int W(x,x')q(x)q(x')$, where $C=\E_{p\otimes p}[k(Y,Y')]$. $MMD$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
+We have $MMD^2(\rho,\pi)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\pi\otimes \pi}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
 In the case where $\F=MMD^2$:
 \begin{align}
-        \nabla \frac{\partial \F}{\partial q}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial q_t}\\
-        &=2 \nabla \langle \frac{\partial f_t}{\partial q_t}, f_t \rangle_{\kH}\\
-        &=2 \nabla \langle \frac{\partial \E_{q_t}[k(X,.)]}{\partial q_t}, f_t \rangle_{\kH}\\
+        \nabla \frac{\partial \F}{\partial \rho}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial \rho_t}\\
+        &=2 \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}\\
+        &=2 \nabla \langle \frac{\partial \E_{q_t}[k(X,.)]}{\partial \rho_t}, f_t \rangle_{\kH}\\
         &=2 \nabla \langle k(X,.), f_t \rangle_{\kH}\\
         &= 2 \nabla f_t(x)
 \end{align}
-where $\nabla f_t(Y)= \E_{X \sim q_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim p}[\nabla_{Y}k(X,Y)]$. So the dissipation of MMD is given by:  
+where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$. So the dissipation of MMD is given by:  
 \begin{equation}
-    \frac{d MMD^2(q_t, p)}{dt}=-2 \E_{X \sim q_t}[\|\nabla f_t(X)\|^2]
+    \frac{d MMD^2(\rho_t, p)}{dt}=-2 \E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
 \end{equation}
 
 \begin{remark}
-For $\F=KL$, we would obtain $-\E_{X \sim q_t}[\|\nabla log(\frac{q_t}{p}(X))\|^2]$
+For $\F=KL$, we would obtain $-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]$
 \end{remark}
 
 
@@ -262,8 +262,12 @@ We can thus consider the Euler discretization of \eqref{eq:stochastic_process}:
 \begin{equation}\label{eq:discretization}
 X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
 \end{equation}
-
-
+here $\nabla f_k(X_k)= \E_{X \sim q_k}[\nabla_{X_k}k(X,X_k)] -  \E_{X \sim \pi}[\nabla_{X_k}k(X,X_k)]$.
+In practice we estimate this gradient by:
+\begin{equation*}
+\widehat{\nabla f_k}(X_k)=\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) - \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k)
+\end{equation*}
+where $(x_1, \dots, x_n)\sim q_k$ and $(y_1, \dots, y_n)\sim \pi$.
 
 \section{Lambda displacement convexity of the MMD}
 
