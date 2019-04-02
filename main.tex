@@ -240,6 +240,140 @@ For $\F=KL$, we would obtain $-\E_{X \sim q_t}[\|\nabla log(\frac{q_t}{p}(X))\|^
 
 
 
+\section{Lambda displacement convexity of the MMD}
+
+
+Let $\mu$ and $\nu$ be two probability densities on $\mathbb{R}^{d}$,
+we would like to show that $\nu\mapsto MMD^{2}(\mu,\nu)$ is a convex
+functional for $\nu$ that are close enough to $\mu$ in the Wasserstein
+sense. Here the notion of convexity should be understood in the following
+sense:
+\begin{definition}
+(displacement convexity \cite{Villani:2004} Definition 1 ). Let $\mu$
+and $\nu$ be two probabilities densities. There exists a $\mu-a.e.$
+unique gradient of a convex function ,$\nabla\phi$, such that $\nu$
+is equal to $\nabla\phi_{\#}\mu$ and one can define $\rho_{t}=((1-t)Id+t\nabla\phi)_{\#}\mu$
+for $0\leq t\leq1$. We say that a functional $\nu\mapsto\mathcal{F}(\nu)$
+is displacement convex if 
+\[
+t\mapsto\mathcal{F}(\rho_{t})
+\]
+ is convex for any $\mu$ and $\nu$.Moreover, we say that $\mathcal{F}$
+is convex in a neighborhood of $\mu$ if there exists a radius $r>0$
+such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$
+.
+\end{definition}
+%
+\begin{definition}
+($\Lambda$-convexity \cite{Villani:2009} Definition 16.4). Let $(\mu,v)\mapsto\Lambda(\mu,v)$
+be a function that defines for each probability distribution $\mu$
+a quadratic form on the set of square integrable vectors valued functions
+$v$ , i.e: $v\in L_{2}(\mathbb{R}^{d},\mathbb{R}^{d},\mu)$ . We
+further assume that:
+\[
+\inf_{\mu,v}\frac{\Lambda(\mu,v)}{\Vert v\Vert_{L_{2}(\mu)}^{2}}>-\infty.
+\]
+
+We say that a functional $\mu\mapsto\mathcal{F}(\mu)$ is $\Lambda$-convex
+if for any $\mu$ and $\nu$ and a minimizing geodesic $\text{\ensuremath{\rho_{t}}}$
+between $\mu$ and $\nu$ with velocity vector field $v_{t}$, i.e:
+$\partial_{t}\rho_{t}+div(\rho_{t}v_{t})=0;\rho_{0}=\mu;\rho_{1}=\nu$
+the following holds:
+\end{definition}
+\[
+\frac{d^{2}\mathcal{F}(\rho_{t})}{dt^{2}}\geq\Lambda(\rho_{t},v_{t})\qquad\forall t\in[0,1].
+\]
+
+\begin{proposition}
+\label{prop:lambda_convexity}$\nu\mapsto MMD^{2}(\mu,\nu)$ is $\text{\ensuremath{\Lambda_{\mu}}}$-convex
+with $\Lambda_{\mu}$ given by:
+\begin{equation}
+\Lambda_{\mu}(\rho,v)=\langle v,(C_{\rho}-\lambda MMD(\mu,\rho)I)v\rangle_{L_{2}(\rho)}\label{eq:Lambda}
+\end{equation}
+
+where $C_{\rho}$ is the operator defined by:
+\[
+(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')
+\]
+
+and $\lambda=\sup_{x,x'\in\mathbb{\mathbb{R}^{d}}}\Vert Hk(x,x')\Vert_{op}$
+where $Hk(x,x')$ is an $\mathbb{R}^{d^{2}}\times\mathbb{R}^{d^{2}}$
+matrix whose entries are given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x'j}k(x,x')$.
+\end{proposition}
+%
+\begin{proof}
+To prove that $\nu\mapsto MMD^{2}(\mu,\nu)$ $\Lambda_{\mu}$-convex
+we need to compute the second derivative $\frac{d^{2}}{dt^{2}}MMD^{2}(\mu,\rho_{t})$
+where $\rho_{t}$ is a minimizing geodesic between two probability
+distributions $\nu_{0}$ and $\nu_{1}$. When $\nu_{0}$ and $\nu_{1}$
+both have a density, there exists a convex function such that $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_{0}:=(\pi_{t})_{\#}\nu_{0}$
+.We start by computing the first derivative:
+\[
+\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
+\]
+where $f_{t}=\rho_{t}(k(x,.))-\mu(k(x,.))$. Using the definition
+of $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\mu$ it follows that:
+\[
+\frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
+\]
+hence:
+\[
+\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\int(\nabla\phi(x)-x).\nabla f_{t}(\pi_{t}(x))\nu_{0}(x)dx
+\]
+Now the second derivative is given by:
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \int(\nabla\phi(x)-x).Hf_{t}(\pi_{t}(x))(\nabla\phi(x)-x)\nu_{0}(x)dx\\
+ & +\int(\nabla\phi(x)-x).\nabla_{1}\nabla_{2}k(\pi_{t}(x),\pi_{t}(x'))(\nabla\phi(x')-x')\nu_{0}(x)\nu_{0}(x')dxdx'
+\end{align*}
+Here $\nabla_{1}\nabla_{2}k(x,x')$ is the matrix whose components
+are given by $\langle\partial_{i}k(x,.),\partial_{j}k(x,.)\rangle$
+for $1\leq i,j\leq d$, and $Hf_{t}$ is the hesssian of $f_{t}$
+and its components are also given by:
+\[
+(Hf_{t}(x))_{i,j}=\langle f_{t},\partial_{i}\partial_{j}k(x,.)\rangle.
+\]
+Denoting by $h(x):=\nabla\phi(x)-x$ it follows that:
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \langle f_{t},\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\rangle\\
+ & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}
+\end{align*}
+Now we use Cauchy-Schwarz inequality for the first term to get:
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert_{\mathcal{H}}\\
+ & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}.
+\end{align*}
+After aplying a change of variables $x=\pi_{t}(y)$ one recovers the
+velocity vector $v_{t}$ instead of $h$: 
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\\
+ & +\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2}.
+\end{align*}
+
+One can further note that:
+\[
+\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\leq\lambda\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\]
+
+and that 
+\begin{align*}
+\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2} & =\int v_{t}(x)^{T}\int\nabla_{1}\nabla_{2}k(x,x')v_{t}(x')\rho_{t}(x')dx'dx.\\
+ & =\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}
+\end{align*}
+
+Hence we have shown that 
+\[
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}=\Lambda_{\mu}(\rho_{t},v_{t})
+\]
+\end{proof}
+%
+It is worth noting that $\nu_{0}=\mu$ and at time $t=0$ we have
+that $MMD(\mu,\rho_{0})=0$ and hence we get:
+\[
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\vert_{t=0}=\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}\geq0.
+\]
+This shows that $\nu\mapsto MMD^{2}(\mu,\nu)$ has a non-negative
+hessian at $\mu$ which is not surprising since $\mu$ is the global
+minimum of this functional.
 
 
 \subsubsection*{References}
