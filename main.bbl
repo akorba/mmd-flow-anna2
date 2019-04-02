@@ -1,0 +1,26 @@
+\begin{thebibliography}{}
+
+\bibitem[Bottou et~al., 2017]{Bottou:2017}
+Bottou, L., Arjovsky, M., Lopez-Paz, D., and Oquab, M. (2017).
+\newblock Geometrical insights for implicit generative modeling.
+
+\bibitem[Villani, 2004a]{villani2004trend}
+Villani, C. (2004a).
+\newblock Trend to equilibrium for dissipative equations, functional
+  inequalities and mass transportation.
+\newblock {\em Contemporary Mathematics}, 353:95.
+
+\bibitem[Villani, 2004b]{Villani:2004}
+Villani, C. (2004b).
+\newblock Trend to equilibrium for dissipative equations, functional
+  inequalities and mass transportation.
+\newblock In Carvalho, M.~C. and Rodrigues, J.~F., editors, {\em Contemporary
+  {Mathematics}}, volume 353, pages 95--109. American Mathematical Society,
+  Providence, Rhode Island.
+
+\bibitem[Villani, 2009]{Villani:2009}
+Villani, C. (2009).
+\newblock Optimal transport: Old and new.
+\newblock Technical report.
+
+\end{thebibliography}

@@ -185,31 +185,37 @@
 \end{abstract}
 
 \section{Notations}
-$p$ target distribution. Let $k$ a kernel and $\kH$ its RKHS
+Consider $\pi$ target distribution. Let $k$ a kernel and $\kH$ its RKHS. The MMD between two distributions $p,q$ is defined as:
 \begin{equation}
-    MMD(p,q)=\sup_{f \in \kH,  \|f\|_{\kH}\le 1} \E_{X \sim p}[f(X)]-\E_{Y \sim q}[f(Y)]=\|\E_{p}[k(X,.)] + \E_{q}[k(Y,.)]\|_{\kH}
+    MMD(\rho,\pi)=\sup_{f \in \kH,  \|f\|_{\kH}\le 1} \E_{X \sim \rho}[f(X)]-\E_{Y \sim \pi}[f(Y)]=\|\E_{\rho}[k(X,.)] + \E_{\pi}[k(Y,.)]\|_{\kH}
 \end{equation}
-We will consider a flow $(q_t)_{t>0}$ and denote $f_t=\E_{p}[k(X,.)] + \E_{q_t}[k(Y,.)]$. In this case, $MMD^2(p,q_t)=\|f_t\|^2_{\kH}$.
+We will consider a flow $(\rho_t)_{t>0}$ and denote $f_t= \E_{\rho_t}[k(X,.)]- \E_{\pi}[k(Y,.)]$. In this case:
+\begin{align}
+MMD^2(p,\rho_t)&=\|f_t\|^2_{\kH}\\
+&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
+\end{align} 
 
+\section{Introduction}
+Endow the space of probability measures $\mathcal{P}(\Omega)$ on a domain $\Omega \subset \R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space.
 
 \section{Background}
 
 \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$  \citep{villani2004trend}:
 \begin{equation}
-    \F(q)=\int U(q(x)) q(x)dx + \int V(x)q(x)dx + \int W(x,y)q(x)q(y)dxdy
+    \F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
 \end{equation}
-where 
-The formal gradient flow equation associated to this functional can be written:
+where  $U$ is the internal energy, $V$ the potential energy and $W$ the
+interaction energy. The formal gradient flow equation associated to this functional can be written:
 \begin{equation}
-    \frac{\partial q}{\partial t}= div( q \nabla \frac{\partial \F}{\partial q}) \quad x \in \R^d , t>0
+    \frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho}) \quad x \in \R^d , t>0
 \end{equation}
 And the dissipation of entropy is defined as %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
 \begin{align}
-    &        \frac{d \F(q)}{dt} =-D(q) \quad \text{ with } D(q)= \int |\xi|^2 q(x)dx\\
-    &\text{ and } \xi= \nabla (U'(q) + V + W * q)= \nabla \frac{\partial \F}{\partial q}
+    &        \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(q)= \int |\xi|^2 \rho(x)dx\\
+    &\text{ and } \xi= \nabla (U'(\rho) + V + W * \rho)= \nabla \frac{\partial \F}{\partial \rho}
 \end{align}
 
-\begin{remark} When $\F$ is the KL divergence $KL(q,p)=\int log(\frac{q(x)}{p(x)}q(x)dx$, $\F(q)=\int U(q(x))q(x)dx + \int V(x) q(x)dx$ with $U(q(x))=q(x)log(q(x))$ and $V(x)=-log(p(x))$. In this case, $\nabla \frac{\partial \F}{\partial q}= \nabla log(\frac{q}{p})$.
+\begin{remark} When $\F$ is the KL divergence $KL(\rho,\pi)=\int log(\frac{\rho(x)}{p(x)})\rho(x)dx$, $\F(\rho)=\int U(\rho(x))\rho(x)dx + \int V(x) \rho(x)dx$ with $U(\rho(x))=\rho(x)log(\rho(x))$ and $V(x)=-log(\pi(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla log(\frac{\rho}{\pi})$.
 \end{remark}
 
 \section{MMD flow}
@@ -219,7 +225,7 @@ We define the potential energy (also called confinement energy) $V$ and interact
     V(X)&=-\int 2 k(X,x')p(x')\\
     W(X,Y)&=k(X,Y)
 \end{align}
-We have $MMD^2(p,q)=C+ \int V(x) q(x)dx + \int W(x,x')q(x)q(x')$. $MMD$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
+We have $MMD^2(p,q)=C+ \int V(x) q(x)dx + \int W(x,x')q(x)q(x')$, where $C=\E_{p\otimes p}[k(Y,Y')]$. $MMD$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
 In the case where $\F=MMD^2$:
 \begin{align}
         \nabla \frac{\partial \F}{\partial q}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial q_t}\\
@@ -239,10 +245,30 @@ For $\F=KL$, we would obtain $-\E_{X \sim q_t}[\|\nabla log(\frac{q_t}{p}(X))\|^
 
 
 
+\section{Algorithm}
+
+The gradient flow of MMD can be written:
+\begin{equation*}
+\frac{\partial \rho}{\partial t}= 2 div(\rho  \nabla f_t)
+\end{equation*}
+which is the density of the stochastic process:
+\begin{equation}\label{eq:stochastic_process}
+dX_t=-2\nabla f_t(X_t) 
+\end{equation}
+It represents the position $X_t$ of a particle at time $t > 0$.
+
+
+We can thus consider the Euler discretization of \eqref{eq:stochastic_process}:
+\begin{equation}\label{eq:discretization}
+X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
+\end{equation}
+
+
+
 \section{Lambda displacement convexity of the MMD}
 
 
-Let $\mu$ and $\nu$ be two probability densities on $\mathbb{R}^{d}$,
+In this section, we investigate the theoretical properties of the MMD flow. Let $\mu$ and $\nu$ be two probability densities on $\mathbb{R}^{d}$,
 we would like to show that $\nu\mapsto MMD^{2}(\mu,\nu)$ is a convex
 functional for $\nu$ that are close enough to $\mu$ in the Wasserstein
 sense. Here the notion of convexity should be understood in the following
@@ -311,7 +337,7 @@ both have a density, there exists a convex function such that $\rho_{t}=(1-t)Id+
 \frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
 \]
 where $f_{t}=\rho_{t}(k(x,.))-\mu(k(x,.))$. Using the definition
-of $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\mu$ it follows that:
+of $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_0$ it follows that:
 \[
 \frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
 \]
@@ -448,7 +474,7 @@ holds:
 \begin{enumerate}
 \item The level set $L(\mathcal{P},M)=\{\rho\in\mathcal{P}:MMD^{2}(\mu,\rho)\leq M\}$
 is connected
-\item For all $\rho_{0}\in\mathcal{P}$ such that $MMD^{2}(\mu,\rho)>M$
+\item For all $\rho_{0}\in\mathcal{P}$ such that $MMD^{2}(\mu,\rho_0)>M$
 and all $\epsilon>0$, there exists $\rho\in\mathcal{P}$ such that
 $W_{2}(\rho,\rho_{0})=\mathcal{O}(\epsilon)$ and
 \[
@@ -508,5 +534,28 @@ Here we simply used the fact that $\rho_{1}\in L(\mathcal{P},M-K)$.
 \renewcommand\refname{\vskip -1cm}
 \bibliographystyle{apalike}
 \bibliography{biblio}
+
+\newpage
+\section{Appendix}
+
+\subsection{SDE and stochastic processes}
+
+Consider the Itô process, i.e. the stochastic process:
+\begin{equation}
+dX_t=g(X_t)dt
+\end{equation}
+Let $f \in \mathcal{C}^2(\Omega)$, Itô's formula can be written:
+\begin{equation*}
+df(X_t)=\nabla f(X_t).g(X_t)dt
+\end{equation*}
+Let $\rho_t$ be the distribution of the process $X_t$. We have:
+\begin{align*}
+\E[\frac{df}{dt}(X_t)]&= \E[\nabla f(X_t).g(X_t)]\\
+\Longleftrightarrow \int f(X) \frac{d \rho_t}{dt}(X)&=-\int f(X)div(g(X)\rho_t(X))
+\end{align*}
+where the second line is obtained by integrating by parts on both sides of the equality. Finally, the distribution $\rho_t$ verifies: 
+\begin{equation*}
+\frac{d\rho_t}{dt}=div(g\rho_t)
+\end{equation*}
 
 \end{document}

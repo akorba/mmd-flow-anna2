@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: apalike.bst
+Database file #1: biblio.bib
+Warning--empty institution in Villani:2009
+You've used 4 entries,
+            1935 wiz_defined-function locations,
+            497 strings with 4254 characters,
+and the built_in function-call counts, 1437 in all, are:
+= -- 140
+> -- 52
+< -- 5
++ -- 17
+- -- 16
+* -- 107
+:= -- 262
+add.period$ -- 12
+call.type$ -- 4
+change.case$ -- 28
+chr.to.int$ -- 3
+cite$ -- 5
+duplicate$ -- 60
+empty$ -- 101
+format.name$ -- 20
+if$ -- 282
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 2
+newline$ -- 22
+num.names$ -- 14
+pop$ -- 22
+preamble$ -- 1
+purify$ -- 27
+quote$ -- 0
+skip$ -- 49
+stack$ -- 0
+substring$ -- 81
+swap$ -- 10
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 24
+warning$ -- 1
+while$ -- 13
+width$ -- 0
+write$ -- 53
+(There was 1 warning)
