@@ -173,7 +173,6 @@
 \newtheorem{condition}{Condition}
 \newtheorem{assumption}{Assumption}
 \newtheorem{example}{Example}
-\newtheorem{remark}[theorem]{Remark}
 
 \title{MMD Flow}
 
@@ -439,6 +438,70 @@ and by setting $K=2\lambda Cdiam(\mathcal{X})$.
 convexity of the MMD. However, it allows to state the following result,
 which is inspired from (\cite{Bottou:2017}, Theorem 6.3) but generalizes
 it to the case of 'almost convex' functionals.
+\begin{proposition}
+
+(Almost convex optimization). Let $\mathcal{P}$ be a closed subset
+of $\mathcal{P}(\mathcal{X})$ which is displacement convex. Then
+for all $M>\inf_{\rho\in\mathcal{P}}MMD^{2}(\mu,\rho)+K$, the following
+holds:
+\end{proposition}
+\begin{enumerate}
+\item The level set $L(\mathcal{P},M)=\{\rho\in\mathcal{P}:MMD^{2}(\mu,\rho)\leq M\}$
+is connected
+\item For all $\rho_{0}\in\mathcal{P}$ such that $MMD^{2}(\mu,\rho)>M$
+and all $\epsilon>0$, there exists $\rho\in\mathcal{P}$ such that
+$W_{2}(\rho,\rho_{0})=\mathcal{O}(\epsilon)$ and
+\[
+MMD^{2}(\mu,\rho)\leq MMD^{2}(\mu,\rho_{0})-\epsilon(MMD^{2}(\mu,\rho_{0})-M).
+\]
+\end{enumerate}
+%
+\begin{remark}
+This results means it is possible to optimize the cost function $\rho\mapsto MMD^{2}(\mu,\rho)$
+on $\mathcal{P}$ as long as the barrier $\inf_{\rho\in\mathcal{P}}MMD^{2}(\mu,\rho)+K$
+is not reached. We provide now a simple proof of this result:
+\end{remark}
+%
+\begin{proof}
+The proof is very similar to (\cite{Bottou:2017}, Theorem 6.3 and
+Theorem 6.9): 
+\end{proof}
+\begin{enumerate}
+\item First choose $\rho_{1}\in\mathcal{P}$ such that $MMD^{2}(\mu,\rho_{1})<M-K$.
+For any $\rho_{0},\rho_{0}'\in L(\mathcal{P},M)$ there exist a displacement
+geodesic joining $\rho_{1}$ and $\rho_{0}$ without leaving $\mathcal{P}$,
+since $\mathcal{P}$ is by assumption discplacement convex. By \ref{cor:loser_bound}
+we have:
+\begin{align*}
+MMD^{2}(\mu,\rho_{t}) & \leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t)K\\
+ & \leq(1-t)M+t(M-K)+t(1-t)K\leq M-t^{2}K\leq M
+\end{align*}
+Hence $\rho_{t}\in L(\mathcal{P},M)$. The same can be done for a
+path joining $\rho_{0}'$ and $\rho_{1}$. Hence we can find a path
+in $L(\mathcal{P},M)$ joining $\rho_{0}$ and $\rho_{0}'$ , which
+means that the level set $L(\mathcal{P},M)$ is connected.
+\item Consider now $\rho_{1}\in L(\mathcal{P},M-K)$, note that such an
+element exists since $M>\inf_{\rho\in\mathcal{P}}MMD^{2}(\mu,\rho)+K$.
+By convexity of $\mathcal{P}$ there exists a constant speed geodesic
+$\rho_{t}$ connecting $\rho_{0}$ and $\rho_{1}$. Since it is a
+constant speed curve then one has:
+\[
+W_{2}(\rho_{0},\rho_{t})\leq tW_{2}(\rho_{0},\rho_{1}).
+\]
+But we also have by \ref{cor:loser_bound}:
+\begin{align*}
+MMD^{2}(\mu,\rho_{t}) & \leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t)K\\
+ & \leq MMD^{2}(\mu,\rho_{0})-t(MMD^{2}(\mu,\rho_{0})-M+tK)\\
+ & \leq MMD^{2}(\mu,\rho_{0})-t(MMD^{2}(\mu,\rho_{0})-M)
+\end{align*}
+Here we simply used the fact that $\rho_{1}\in L(\mathcal{P},M-K)$. 
+\end{enumerate}
+%
+
+\begin{remark}
+	A possible direction would be to directly leverage the tighter inequality in \ref{eq:integral_lambda_convexity} to get a better description of the loss landscape.
+\end{remark}
+
 
 
 \subsubsection*{References}
