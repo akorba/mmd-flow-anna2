@@ -3,6 +3,24 @@
 
 \subsection{Background}
 
+\subsubsection{RKHS/MMD}
+
+
+Let $\kH$ a Reproducing Kernel Hilbert Space (RKHS) and $k$ its reproducing kernel. This means that for all $f \in \kH$, $x \in \X$, $f(x)=\psh{f, k(x,.)}$. The kernel Maximum Mean Discrepancy between two distributions $\rho,\pi$ is defined as:
+\begin{equation}
+MMD(\rho,\pi)=\sup_{f \in \kH,  \|f\|_{\kH}\le 1} (\E_{X \sim \rho}[f(X)]-\E_{Y \sim \pi}[f(Y)])
+\end{equation}
+Under some appropriate assumptions on the kernel (see \cite{gretton2012kernel}):
+\begin{align}
+MMD^2(\rho,\pi)&=\|\E_{\rho}[k(X,.)] - \E_{\pi}[k(Y,.)]\|^2_{\kH}\\
+&=\E_{\rho \otimes \rho}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho \otimes \pi}[k(X,Y)]
+\end{align}
+
+
+
+\subsubsection{Gradient flows on the space of probability measures}
+Endow the space of probability measures $\mathcal{P}(\Omega)$ on a domain $\Omega \subset \R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space.
+
 \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$  \citep{villani2004trend}:
 \begin{equation}
 \F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
@@ -22,6 +40,12 @@ And the dissipation of entropy is defined as %see  http://wwwf.imperial.ac.uk/~j
 \end{remark}
 
 \subsection{MMD flow}
+
+We will consider a flow $(\rho_t)_{t>0}$ and denote $f_t= \E_{\rho_t}[k(X,.)]- \E_{\pi}[k(Y,.)]$. In this case:
+\begin{align}
+MMD^2(\rho_t,\pi)&=\|f_t\|^2_{\kH}\\
+&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
+\end{align} 
 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
 \begin{align}

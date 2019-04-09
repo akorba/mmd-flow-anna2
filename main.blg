@@ -4,45 +4,45 @@ The top-level auxiliary file: main.aux
 The style file: apalike.bst
 Database file #1: biblio.bib
 Warning--empty institution in Villani:2009
-You've used 4 entries,
+You've used 8 entries,
             1935 wiz_defined-function locations,
-            497 strings with 4254 characters,
-and the built_in function-call counts, 1437 in all, are:
-= -- 140
-> -- 52
-< -- 5
-+ -- 17
-- -- 16
-* -- 107
-:= -- 262
-add.period$ -- 12
-call.type$ -- 4
-change.case$ -- 28
-chr.to.int$ -- 3
-cite$ -- 5
-duplicate$ -- 60
-empty$ -- 101
-format.name$ -- 20
-if$ -- 282
+            522 strings with 4917 characters,
+and the built_in function-call counts, 2944 in all, are:
+= -- 284
+> -- 123
+< -- 6
++ -- 45
+- -- 40
+* -- 238
+:= -- 535
+add.period$ -- 24
+call.type$ -- 8
+change.case$ -- 60
+chr.to.int$ -- 7
+cite$ -- 9
+duplicate$ -- 114
+empty$ -- 198
+format.name$ -- 48
+if$ -- 563
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 2
-newline$ -- 22
-num.names$ -- 14
-pop$ -- 22
+missing$ -- 6
+newline$ -- 42
+num.names$ -- 26
+pop$ -- 49
 preamble$ -- 1
-purify$ -- 27
+purify$ -- 59
 quote$ -- 0
-skip$ -- 49
+skip$ -- 90
 stack$ -- 0
-substring$ -- 81
-swap$ -- 10
+substring$ -- 174
+swap$ -- 14
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 24
+type$ -- 48
 warning$ -- 1
-while$ -- 13
+while$ -- 25
 width$ -- 0
-write$ -- 53
+write$ -- 103
 (There was 1 warning)

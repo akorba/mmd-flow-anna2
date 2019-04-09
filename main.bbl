@@ -1,8 +1,29 @@
 \begin{thebibliography}{}
 
+\bibitem[Bernton, 2018]{bernton2018langevin}
+Bernton, E. (2018).
+\newblock Langevin monte carlo and jko splitting.
+\newblock {\em arXiv preprint arXiv:1802.08671}.
+
 \bibitem[Bottou et~al., 2017]{Bottou:2017}
 Bottou, L., Arjovsky, M., Lopez-Paz, D., and Oquab, M. (2017).
 \newblock Geometrical insights for implicit generative modeling.
+
+\bibitem[Durmus et~al., 2018]{durmus2018analysis}
+Durmus, A., Majewski, S., and Miasojedow, B. (2018).
+\newblock Analysis of langevin monte carlo via convex optimization.
+\newblock {\em arXiv preprint arXiv:1802.09188}.
+
+\bibitem[Gretton et~al., 2012]{gretton2012kernel}
+Gretton, A., Borgwardt, K.~M., Rasch, M.~J., Sch{\"o}lkopf, B., and Smola, A.
+  (2012).
+\newblock A kernel two-sample test.
+\newblock {\em Journal of Machine Learning Research}, 13(Mar):723--773.
+
+\bibitem[Jordan et~al., 1998]{jordan1998variational}
+Jordan, R., Kinderlehrer, D., and Otto, F. (1998).
+\newblock The variational formulation of the fokker--planck equation.
+\newblock {\em SIAM journal on mathematical analysis}, 29(1):1--17.
 
 \bibitem[Villani, 2004a]{villani2004trend}
 Villani, C. (2004a).
