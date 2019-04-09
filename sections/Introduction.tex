@@ -1,0 +1,14 @@
+
+\section{Introduction}
+Endow the space of probability measures $\mathcal{P}(\Omega)$ on a domain $\Omega \subset \R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space.
+
+\section{Notations}
+Consider $\pi$ target distribution. Let $k$ a kernel and $\kH$ its RKHS. The MMD between two distributions $\rho,\pi$ is defined as:
+\begin{equation}
+MMD(\rho,\pi)=\sup_{f \in \kH,  \|f\|_{\kH}\le 1} \E_{X \sim \rho}[f(X)]-\E_{Y \sim \pi}[f(Y)]=\|\E_{\rho}[k(X,.)] + \E_{\pi}[k(Y,.)]\|_{\kH}
+\end{equation}
+We will consider a flow $(\rho_t)_{t>0}$ and denote $f_t= \E_{\rho_t}[k(X,.)]- \E_{\pi}[k(Y,.)]$. In this case:
+\begin{align}
+MMD^2(\rho_t,\pi)&=\|f_t\|^2_{\kH}\\
+&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
+\end{align} 

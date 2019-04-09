@@ -1,0 +1,74 @@
+\section{MMD flow}
+
+
+\subsection{Background}
+
+\textit{Lyapunov functional} (or "free energy" or "entropy") $\F$  \citep{villani2004trend}:
+\begin{equation}
+\F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
+\end{equation}
+where  $U$ is the internal energy, $V$ the potential energy and $W$ the
+interaction energy. The formal gradient flow equation associated to this functional can be written:
+\begin{equation}
+\frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho}) \quad x \in \R^d , t>0
+\end{equation}
+And the dissipation of entropy is defined as %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
+\begin{align}
+&        \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(q)= \int |\xi|^2 \rho(x)dx\\
+&\text{ and } \xi= \nabla (U'(\rho) + V + W * \rho)= \nabla \frac{\partial \F}{\partial \rho}
+\end{align}
+
+\begin{remark} When $\F$ is the KL divergence $KL(\rho,\pi)=\int log(\frac{\rho(x)}{p(x)})\rho(x)dx$, $\F(\rho)=\int U(\rho(x))\rho(x)dx + \int V(x) \rho(x)dx$ with $U(\rho(x))=\rho(x)log(\rho(x))$ and $V(x)=-log(\pi(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla log(\frac{\rho}{\pi})$.
+\end{remark}
+
+\subsection{MMD flow}
+
+We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
+\begin{align}
+V(X)&=-\int 2 k(X,x')\pi(x')\\
+W(X,Y)&=k(X,Y)
+\end{align}
+We have $MMD^2(\rho,\pi)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\pi\otimes \pi}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
+In the case where $\F=MMD^2$:
+\begin{align}
+\nabla \frac{\partial \F}{\partial \rho}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial \rho_t}\\
+&=2 \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}\\
+&=2 \nabla \langle \frac{\partial \E_{q_t}[k(X,.)]}{\partial \rho_t}, f_t \rangle_{\kH}\\
+&=2 \nabla \langle k(X,.), f_t \rangle_{\kH}\\
+&= 2 \nabla f_t(x)
+\end{align}
+where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$. So the dissipation of MMD is given by:  
+\begin{equation}
+\frac{d MMD^2(\rho_t, p)}{dt}=-2 \E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
+\end{equation}
+
+\begin{remark}
+	For $\F=KL$, we would obtain $-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]$
+\end{remark}
+
+
+
+
+\subsection{Algorithm}
+
+The gradient flow of MMD can be written:
+\begin{equation*}
+\frac{\partial \rho}{\partial t}= 2 div(\rho  \nabla f_t)
+\end{equation*}
+which is the density of the stochastic process:
+\begin{equation}\label{eq:stochastic_process}
+dX_t=-2\nabla f_t(X_t) 
+\end{equation}
+It represents the position $X_t$ of a particle at time $t > 0$.
+
+
+We can thus consider the Euler discretization of \eqref{eq:stochastic_process}:
+\begin{equation}\label{eq:discretization}
+X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
+\end{equation}
+here $\nabla f_k(X_k)= \E_{X \sim \rho_k}[\nabla_{X_k}k(X,X_k)] -  \E_{X \sim \pi}[\nabla_{X_k}k(X,X_k)]$.
+In practice we estimate this gradient by:
+\begin{equation*}
+\widehat{\nabla f_k}(X_k)=\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) - \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k)
+\end{equation*}
+where $(x_1, \dots, x_n)\sim \rho_k$ and $(y_1, \dots, y_n)\sim \pi$.

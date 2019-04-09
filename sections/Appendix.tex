@@ -1,0 +1,22 @@
+
+\section{Appendix}
+
+\subsection{SDE and stochastic processes}
+
+Consider the Itô process, i.e. the stochastic process:
+\begin{equation}
+dX_t=g(X_t)dt
+\end{equation}
+Let $f \in \mathcal{C}^2(\Omega)$, Itô's formula can be written:
+\begin{equation*}
+df(X_t)=\nabla f(X_t).g(X_t)dt
+\end{equation*}
+Let $\rho_t$ be the distribution of the process $X_t$. We have:
+\begin{align*}
+\E[\frac{df}{dt}(X_t)]&= \E[\nabla f(X_t).g(X_t)]\\
+\Longleftrightarrow \int f(X) \frac{d \rho_t}{dt}(X)&=-\int f(X)div(g(X)\rho_t(X))
+\end{align*}
+where the second line is obtained by integrating by parts on both sides of the equality. Finally, the distribution $\rho_t$ verifies: 
+\begin{equation*}
+\frac{d\rho_t}{dt}=div(g\rho_t)
+\end{equation*}
