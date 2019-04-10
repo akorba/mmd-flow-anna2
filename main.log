@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.12)  10 APR 2019 14:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.12)  10 APR 2019 15:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1025,7 +1025,7 @@ LaTeX Info: Redefining \addtolength on input line 81.
 \c@condition=\count150
 \c@assumption=\count151
 \c@example=\count152
- (./main.aux)
+ (./main.aux (./stochastic.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 180.
@@ -1043,7 +1043,8 @@ LaTeX Font Info:    ... okay on input line 180.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 180.
 LaTeX Font Info:    ... okay on input line 180.
 LaTeX Font Info:    Try loading font information for T1+ptm on input line 180.
- (/usr/local/texlive/2016basic/texmf-dist/tex/latex/psnfss/t1ptm.fd
+
+(/usr/local/texlive/2016basic/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 *geometry* driver: auto-detecting
@@ -1217,21 +1218,30 @@ m/it/10 dx$\T1/ptm/m/n/10 , $\OMS/cmsy/m/n/10 F\OT1/cmr/m/n/10 (\OML/cmm/m/it/1
 0 ^^Z\OT1/cmr/m/n/10 ) =
  []
 
-[2]) (./sections/Convexity_mmd.tex [3]
+[2] [3]
+\openout2 = `stochastic.aux'.
+
+
+No file stochastic.tex.
+) (./sections/Convexity_mmd.tex
 Missing character: There is no d in font msbm5!
- [4] [5]
+ [4
+
+
+] [5]
 
 LaTeX Warning: Reference `cor:integral_lambda_convexity' on page 6 undefined on
  input line 195.
 
-) (./main.bbl [6]) [7] (./sections/Appendix.tex) [8]
+[6]) (./main.bbl) [7] (./sections/Appendix.tex) [8]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 205.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 205.
- (./main.aux)
+ (./main.aux
+(./stochastic.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 205.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 205.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: A842DAB453ED0956C5E87DA0801886AB;720.
+(rerunfilecheck)             Checksum: 601478CFAA0DAE7AA3757F2182073CF2;785.
 
 
 LaTeX Warning: There were undefined references.
@@ -1239,13 +1249,13 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 205.
  ) 
 Here is how much of TeX's memory you used:
- 19083 strings out of 494424
- 344250 string characters out of 6166468
- 423067 words of memory out of 5000000
- 21975 multiletter control sequences out of 15000+600000
+ 19091 strings out of 494424
+ 344363 string characters out of 6166468
+ 423573 words of memory out of 5000000
+ 21977 multiletter control sequences out of 15000+600000
  35823 words of font info for 49 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 62i,12n,56p,511b,457s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,12n,56p,511b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016basic/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/lo
 cal/texlive/2016basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
 r/local/texlive/2016basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
@@ -1266,10 +1276,10 @@ ts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016basic/texmf-dist/fonts/ty
 pe1/urw/times/utmr8a.pfb></usr/local/texlive/2016basic/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb></usr/local/texlive/2016basic/texmf-dist/fonts/type1/publi
 c/yhmath/yhcmex.pfb>
-Output written on main.pdf (8 pages, 204955 bytes).
+Output written on main.pdf (8 pages, 205412 bytes).
 PDF statistics:
- 259 PDF objects out of 1000 (max. 8388607)
- 228 compressed objects within 3 object streams
- 67 named destinations out of 1000 (max. 500000)
- 101 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 263 PDF objects out of 1000 (max. 8388607)
+ 232 compressed objects within 3 object streams
+ 68 named destinations out of 1000 (max. 500000)
+ 109 words of extra memory for PDF output out of 10000 (max. 10000000)
 
