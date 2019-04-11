@@ -20,3 +20,75 @@ where the second line is obtained by integrating by parts on both sides of the e
 \begin{equation*}
 \frac{d\rho_t}{dt}=div(g\rho_t)
 \end{equation*}
+
+
+
+
+\subsection{Displacement convexity}
+
+
+
+\begin{proof} \ref{prop:lambda_convexity}
+To prove that $\nu\mapsto MMD^{2}(\mu,\nu)$ $\Lambda_{\mu}$-convex
+we need to compute the second derivative $\frac{d^{2}}{dt^{2}}MMD^{2}(\mu,\rho_{t})$
+where $\rho_{t}$ is a minimizing geodesic between two probability
+distributions $\nu_{0}$ and $\nu_{1}$. When $\nu_{0}$ and $\nu_{1}$
+both have a density, there exists a convex function such that $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_{0}:=(\pi_{t})_{\#}\nu_{0}$
+.We start by computing the first derivative:
+\[
+\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
+\]
+where $f_{t}=\rho_{t}(k(x,.))-\mu(k(x,.))$. Using the definition
+of $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_0$ it follows that:
+\[
+\frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
+\]
+hence:
+\[
+\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\int(\nabla\phi(x)-x).\nabla f_{t}(\pi_{t}(x))\nu_{0}(x)dx
+\]
+Now the second derivative is given by:
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \int(\nabla\phi(x)-x).Hf_{t}(\pi_{t}(x))(\nabla\phi(x)-x)\nu_{0}(x)dx\\
+ & +\int(\nabla\phi(x)-x).\nabla_{1}\nabla_{2}k(\pi_{t}(x),\pi_{t}(x'))(\nabla\phi(x')-x')\nu_{0}(x)\nu_{0}(x')dxdx'
+\end{align*}
+Here $\nabla_{1}\nabla_{2}k(x,x')$ is the matrix whose components
+are given by $\langle\partial_{i}k(x,.),\partial_{j}k(x,.)\rangle$
+for $1\leq i,j\leq d$, and $Hf_{t}$ is the hesssian of $f_{t}$
+and its components are also given by:
+\[
+(Hf_{t}(x))_{i,j}=\langle f_{t},\partial_{i}\partial_{j}k(x,.)\rangle.
+\]
+Denoting by $h(x):=\nabla\phi(x)-x$ it follows that:
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \langle f_{t},\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\rangle\\
+ & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}
+\end{align*}
+Now we use Cauchy-Schwarz inequality for the first term to get:
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert_{\mathcal{H}}\\
+ & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}.
+\end{align*}
+After aplying a change of variables $x=\pi_{t}(y)$ one recovers the
+velocity vector $v_{t}$ instead of $h$: 
+\begin{align*}
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\\
+ & +\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2}.
+\end{align*}
+
+One can further note that:
+\[
+\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\leq\lambda\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\]
+
+and that 
+\begin{align*}
+\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2} & =\int v_{t}(x)^{T}\int\nabla_{1}\nabla_{2}k(x,x')v_{t}(x')\rho_{t}(x')dx'dx.\\
+ & =\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}
+\end{align*}
+
+Hence we have shown that 
+\[
+\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}=\Lambda_{\mu}(\rho_{t},v_{t})
+\]
+\end{proof}

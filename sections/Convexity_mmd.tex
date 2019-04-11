@@ -2,13 +2,20 @@
 
 
 \section{Lambda displacement convexity of the MMD}
+In all what follows we consider a fixed target distribution $\mu$ and define the following functional 
+\begin{align}\label{eq:MMD_functional}
+	\nu \mapsto \F(\nu):=MMD^2(\mu,\nu)
+\end{align}. 
 
-
-In this section, we investigate the theoretical properties of the MMD flow. Let $\mu$ and $\nu$ be two probability densities on $\mathbb{R}^{d}$,
-we would like to show that $\nu\mapsto MMD^{2}(\mu,\nu)$ is a convex
-functional for $\nu$ that are close enough to $\mu$ in the Wasserstein
-sense. Here the notion of convexity should be understood in the following
-sense:
+We investigate some theoretical properties of the MMD flow. In particular, we are interested in characterizing the convergence of the time discretized flow:
+	\begin{align}\label{eq:discretized_flow}
+		\nu_{n+1} = (I -\gamma \phi_n)_{\#}\nu_n
+	\end{align}
+where $\gamma$ is some fixed step-size, $X \mapsto \phi_n(X):=\nabla f_{n}(X)$ is the gradient of the witness function between $\mu$ and $\nu_n$. It is easy to see that the particle version of \ref{eq:discretized_flow_particles} is given by:
+\begin{align}
+	X_{n+1} = X_n - \gamma \phi_n(X_n) \forall n\in \mathbb{N}.
+\end{align}. 
+One important criterion to characterize the convergence of the gradient flow of a functional $\F$ is the notion of displacement convexity of such functional. Displacement convexity states that the functional evaluated at any distribution in a geodesic path between two distributions $\nu$ and $\nu'$ will be upper-bounded by a convex mixture of $\F(\nu)$ and $\F(\nu')$:
 \begin{definition}
 (displacement convexity \cite{Villani:2004} Definition 1 ). Let $\mu$
 and $\nu$ be two probabilities densities. There exists a $\mu-a.e.$
@@ -24,6 +31,14 @@ is convex in a neighborhood of $\mu$ if there exists a radius $r>0$
 such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$
 .
 \end{definition}
+
+
+This notion of convexity is to be related to the more widely used notion of convexity called mixture convexity:
+\begin{align}
+	\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu') \qquad t\in [0,1]
+\end{align}
+Unlike, mixture convexity, displacement convexity is compatible with the $W_2$ metric and is therefore the natural notion to use for characterizing convergence of gradient flows in the $W_2$ metric.
+Although mixture convexity holds for $\F$ (\ref{lem:mixture_convexity}), this property is less critical for characterizing convergence of gradient flows in the $W_2$ metric. On the other hand, displacement convexity is compatible with the $W_2$ metric \cite{Bottou:2017} and is therefore the natural notion to use in our setting. Unfortunately, $\F$ fails to be displacement convex in general. Instead we will show that $\F$ satisfies some weaker notion of convexity called $\Lambda$-displacement convexity:
 %
 \begin{definition}
 ($\Lambda$-convexity \cite{Villani:2009} Definition 16.4). Let $(\mu,v)\mapsto\Lambda(\mu,v)$
@@ -45,11 +60,13 @@ the following holds:
 \frac{d^{2}\mathcal{F}(\rho_{t})}{dt^{2}}\geq\Lambda(\rho_{t},v_{t})\qquad\forall t\in[0,1].
 \]
 
+The next proposition states that the functional defined in \ref{eq:MMD_functional} is $\Lambda$-displacement convex and provide and explicit expression for the functional $\Lambda$:
+
 \begin{proposition}
-\label{prop:lambda_convexity}$\nu\mapsto MMD^{2}(\mu,\nu)$ is $\text{\ensuremath{\Lambda_{\mu}}}$-convex
-with $\Lambda_{\mu}$ given by:
+\label{prop:lambda_convexity}$\nu\mapsto \F(\nu)$ is $\text{\ensuremath{\Lambda}}$-convex
+with $\Lambda$ given by:
 \begin{equation}
-\Lambda_{\mu}(\rho,v)=\langle v,(C_{\rho}-\lambda MMD(\mu,\rho)I)v\rangle_{L_{2}(\rho)}\label{eq:Lambda}
+\Lambda(\rho,v)=\langle v,(C_{\rho}-\lambda \F(\rho)^{\frac{1}{2}}I)v\rangle_{L_{2}(\rho)}\label{eq:Lambda}
 \end{equation}
 
 where $C_{\rho}$ is the operator defined by:
@@ -62,84 +79,20 @@ where $Hk(x,x')$ is an $\mathbb{R}^{d^{2}}\times\mathbb{R}^{d^{2}}$
 matrix whose entries are given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x'j}k(x,x')$.
 \end{proposition}
 %
-\begin{proof}
-To prove that $\nu\mapsto MMD^{2}(\mu,\nu)$ $\Lambda_{\mu}$-convex
-we need to compute the second derivative $\frac{d^{2}}{dt^{2}}MMD^{2}(\mu,\rho_{t})$
-where $\rho_{t}$ is a minimizing geodesic between two probability
-distributions $\nu_{0}$ and $\nu_{1}$. When $\nu_{0}$ and $\nu_{1}$
-both have a density, there exists a convex function such that $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_{0}:=(\pi_{t})_{\#}\nu_{0}$
-.We start by computing the first derivative:
-\[
-\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
-\]
-where $f_{t}=\rho_{t}(k(x,.))-\mu(k(x,.))$. Using the definition
-of $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_0$ it follows that:
-\[
-\frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
-\]
-hence:
-\[
-\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\int(\nabla\phi(x)-x).\nabla f_{t}(\pi_{t}(x))\nu_{0}(x)dx
-\]
-Now the second derivative is given by:
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \int(\nabla\phi(x)-x).Hf_{t}(\pi_{t}(x))(\nabla\phi(x)-x)\nu_{0}(x)dx\\
- & +\int(\nabla\phi(x)-x).\nabla_{1}\nabla_{2}k(\pi_{t}(x),\pi_{t}(x'))(\nabla\phi(x')-x')\nu_{0}(x)\nu_{0}(x')dxdx'
-\end{align*}
-Here $\nabla_{1}\nabla_{2}k(x,x')$ is the matrix whose components
-are given by $\langle\partial_{i}k(x,.),\partial_{j}k(x,.)\rangle$
-for $1\leq i,j\leq d$, and $Hf_{t}$ is the hesssian of $f_{t}$
-and its components are also given by:
-\[
-(Hf_{t}(x))_{i,j}=\langle f_{t},\partial_{i}\partial_{j}k(x,.)\rangle.
-\]
-Denoting by $h(x):=\nabla\phi(x)-x$ it follows that:
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \langle f_{t},\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\rangle\\
- & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}
-\end{align*}
-Now we use Cauchy-Schwarz inequality for the first term to get:
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert_{\mathcal{H}}\\
- & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}.
-\end{align*}
-After aplying a change of variables $x=\pi_{t}(y)$ one recovers the
-velocity vector $v_{t}$ instead of $h$: 
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\\
- & +\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2}.
-\end{align*}
-
-One can further note that:
-\[
-\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\leq\lambda\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
-\]
-
-and that 
-\begin{align*}
-\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2} & =\int v_{t}(x)^{T}\int\nabla_{1}\nabla_{2}k(x,x')v_{t}(x')\rho_{t}(x')dx'dx.\\
- & =\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}
-\end{align*}
-
-Hence we have shown that 
-\[
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}=\Lambda_{\mu}(\rho_{t},v_{t})
-\]
-\end{proof}
 %
 It is worth noting that $\nu_{0}=\mu$ and at time $t=0$ we have
-that $MMD(\mu,\rho_{0})=0$ and hence we get:
+that $\F(\rho_{0})=0$ and hence we get:
 \[
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\vert_{t=0}=\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}\geq0.
+\frac{d^{2}\F(\rho_{t})}{dt^{2}}\vert_{t=0}=\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}\geq0.
 \]
-This shows that $\nu\mapsto MMD^{2}(\mu,\nu)$ has a non-negative
+This shows that $\nu\mapsto \F(\nu)$ has a non-negative
 hessian at $\mu$ which is not surprising since $\mu$ is the global
 minimum of this functional.
-\begin{corollary}
+\begin{corollary}\label{cor:integral_lambda_convexity}
 For any geodesic $\rho_{t}$ between two probability distributions
 $\rho_{0}$ and $\rho_{1}$ the following holds:
 \begin{equation}
-MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})-\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
+\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
 \end{equation}
 
 where $\Lambda_{\mu}$ is given by \ref{eq:Lambda} and $G$ is given
@@ -160,10 +113,10 @@ in distribution sense the following identity holds:
 \[
 \phi(t)=(1-t)\phi(0)+t\phi(1)-\int_{0}^{1}\ddot{\phi}(s)G(s,t)ds
 \]
-Hence, one can choose $\phi(t)=MMD^{2}(\mu,\rho_{t})$ therefore,
+Hence, one can choose $\phi(t)=\F(\rho_{t})$ therefore,
 it follows that:
 \[
-MMD^{2}(\mu,\rho_{t})=(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})-\int_{0}^{1}\frac{d^{2}MMD^{2}(\mu,\rho_{s})}{ds^{2}}G(s,t)ds
+\F(\rho_{t})=(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\frac{d^{2}\F(\rho_{s})}{ds^{2}}G(s,t)ds
 \]
 Now using the inequality from \ref{prop:lambda_convexity}, \ref{eq:integral_lambda_convexity}
 follows directly. 
@@ -175,7 +128,7 @@ $\mathcal{X}$ and the kernel is bounded, i.e: $\sup_{x,y\in\mathcal{X}}\vert k(x
 Then the following holds:
 
 \[
-MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t)K
+\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})+t(1-t)K
 \]
 \end{corollary}
 %
@@ -183,16 +136,15 @@ MMD^{2}(\mu,\rho_{t})\leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t
 Recall the expression of $\Lambda_{\mu}(\rho_{s},v_{s}):$
 
 \[
-\Lambda_{\mu}(\rho_{s},v_{s})=\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}\geq-\lambda MMD(\mu,\rho_{t})\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\Lambda_{\mu}(\rho_{s},v_{s})=\langle v_{t},(C_{\rho_{t}}-\lambda \F(\rho_{t})^\frac{1}{2} I)v_{t}\rangle_{L_{2}(\rho_{t})}\geq-\lambda \F(\rho_{t})^\frac{1}{2}\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
 \]
-However, $MMD(\mu,\rho_{t})\leq4C$ where $C=\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert$
+However, $\F(\rho_{t})^\frac{1}{2}\leq4C$ where $C=\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert$
 . Moreover, if $\rho_{t}$ is a constant speed geodesic then $\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}=W_{2}^{2}(\rho_{0},\rho_{1})$,
 hence: 
 \[
 -\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\leq4\lambda CW_{2}^{2}(\rho_{0},\rho_{1})\leq2t(1-t)\lambda Cdiam(\mathcal{X})^{2}
 \]
-where $diam(\mathcal{X})$ is the diameter of $\mathcal{X}$. The
-rest of the proof follows by directly using \ref{cor:integral_lambda_convexity}
+where $diam(\mathcal{X})$ is the diameter of $\mathcal{X}$. The rest of the proof follows by directly using \ref{cor:integral_lambda_convexity}
 and by setting $K=2\lambda Cdiam(\mathcal{X})$.
 \end{proof}
 %
@@ -201,26 +153,26 @@ convexity of the MMD. However, it allows to state the following result,
 which is inspired from (\cite{Bottou:2017}, Theorem 6.3) but generalizes
 it to the case of 'almost convex' functionals.
 \begin{proposition}
-
+\label{prop:almost_convex_optimization}
 (Almost convex optimization). Let $\mathcal{P}$ be a closed subset
 of $\mathcal{P}(\mathcal{X})$ which is displacement convex. Then
-for all $M>\inf_{\rho\in\mathcal{P}}MMD^{2}(\mu,\rho)+K$, the following
+for all $M>\inf_{\rho\in\mathcal{P}}\F(\rho)+K$, the following
 holds:
 \end{proposition}
 \begin{enumerate}
-\item The level set $L(\mathcal{P},M)=\{\rho\in\mathcal{P}:MMD^{2}(\mu,\rho)\leq M\}$
+\item The level set $L(\mathcal{P},M)=\{\rho\in\mathcal{P}:\F(\rho)\leq M\}$
 is connected
-\item For all $\rho_{0}\in\mathcal{P}$ such that $MMD^{2}(\mu,\rho_0)>M$
+\item For all $\rho_{0}\in\mathcal{P}$ such that $\F(\rho_0)>M$
 and all $\epsilon>0$, there exists $\rho\in\mathcal{P}$ such that
 $W_{2}(\rho,\rho_{0})=\mathcal{O}(\epsilon)$ and
 \[
-MMD^{2}(\mu,\rho)\leq MMD^{2}(\mu,\rho_{0})-\epsilon(MMD^{2}(\mu,\rho_{0})-M).
+\F(\rho)\leq \F(\rho_{0})-\epsilon(\F(\rho_{0})-M).
 \]
 \end{enumerate}
 %
 \begin{remark}
-This results means it is possible to optimize the cost function $\rho\mapsto MMD^{2}(\mu,\rho)$
-on $\mathcal{P}$ as long as the barrier $\inf_{\rho\in\mathcal{P}}MMD^{2}(\mu,\rho)+K$
+The result in \ref{prop:almost_convex_optimization} means that it is possible to optimize the cost function $\rho\mapsto \F(\rho)$
+on $\mathcal{P}$ as long as the barrier $\inf_{\rho\in\mathcal{P}}\F(\rho)+K$
 is not reached. We provide now a simple proof of this result:
 \end{remark}
 %
@@ -229,13 +181,13 @@ The proof is very similar to (\cite{Bottou:2017}, Theorem 6.3 and
 Theorem 6.9): 
 \end{proof}
 \begin{enumerate}
-\item First choose $\rho_{1}\in\mathcal{P}$ such that $MMD^{2}(\mu,\rho_{1})<M-K$.
+\item First choose $\rho_{1}\in\mathcal{P}$ such that $\F(\rho_{1})<M-K$.
 For any $\rho_{0},\rho_{0}'\in L(\mathcal{P},M)$ there exist a displacement
 geodesic joining $\rho_{1}$ and $\rho_{0}$ without leaving $\mathcal{P}$,
 since $\mathcal{P}$ is by assumption discplacement convex. By \ref{cor:loser_bound}
 we have:
 \begin{align*}
-MMD^{2}(\mu,\rho_{t}) & \leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t)K\\
+\F(\rho_{t}) & \leq(1-t)\F(\rho_{0})+t\F(\rho_{1})+t(1-t)K\\
  & \leq(1-t)M+t(M-K)+t(1-t)K\leq M-t^{2}K\leq M
 \end{align*}
 Hence $\rho_{t}\in L(\mathcal{P},M)$. The same can be done for a
@@ -243,7 +195,7 @@ path joining $\rho_{0}'$ and $\rho_{1}$. Hence we can find a path
 in $L(\mathcal{P},M)$ joining $\rho_{0}$ and $\rho_{0}'$ , which
 means that the level set $L(\mathcal{P},M)$ is connected.
 \item Consider now $\rho_{1}\in L(\mathcal{P},M-K)$, note that such an
-element exists since $M>\inf_{\rho\in\mathcal{P}}MMD^{2}(\mu,\rho)+K$.
+element exists since $M>\inf_{\rho\in\mathcal{P}}\F(\rho)+K$.
 By convexity of $\mathcal{P}$ there exists a constant speed geodesic
 $\rho_{t}$ connecting $\rho_{0}$ and $\rho_{1}$. Since it is a
 constant speed curve then one has:
@@ -252,9 +204,9 @@ W_{2}(\rho_{0},\rho_{t})\leq tW_{2}(\rho_{0},\rho_{1}).
 \]
 But we also have by \ref{cor:loser_bound}:
 \begin{align*}
-MMD^{2}(\mu,\rho_{t}) & \leq(1-t)MMD^{2}(\mu,\rho_{0})+tMMD^{2}(\mu,\rho_{1})+t(1-t)K\\
- & \leq MMD^{2}(\mu,\rho_{0})-t(MMD^{2}(\mu,\rho_{0})-M+tK)\\
- & \leq MMD^{2}(\mu,\rho_{0})-t(MMD^{2}(\mu,\rho_{0})-M)
+\F(\rho_{t}) & \leq(1-t)\F(\rho_{0})+t\F(\rho_{1})+t(1-t)K\\
+ & \leq \F(\rho_{0})-t(\F(\rho_{0})-M+tK)\\
+ & \leq \F(\rho_{0})-t(\F(\rho_{0})-M)
 \end{align*}
 Here we simply used the fact that $\rho_{1}\in L(\mathcal{P},M-K)$. 
 \end{enumerate}
@@ -264,72 +216,72 @@ Here we simply used the fact that $\rho_{1}\in L(\mathcal{P},M-K)$.
 	A possible direction would be to directly leverage the tighter inequality in \ref{eq:integral_lambda_convexity} to get a better description of the loss landscape.
 \end{remark}
 
+\ref{prop:almost_convex_optimization} guarantees the existence of a direction of descent that minimizes the $\F$ provided that the starting point $\rho_1$ has a potential greater than the barrier $K$, i.e:
+\begin{align}\label{eq:barrier_condition}
+	\F(\rho_1)> \inf_{\rho\in \mathcal{P}} \F(\rho) + K
+\end{align}
+One natural question to ask is whether the  discretized gradient flow algorithm provides such way to reach the barrier $K$ and at what speed this happens. The next result answers that question:   
+
 \begin{theorem}
-	some theorem
+	Consider the sequence of distributions $\nu_n$ obtained from \ref{eq:discretized_flow}. Then the following holds:
+	\begin{align}
+		\F(\bar{\nu})\leq \frac{1}{2\gamma N}W_2^2(\nu_0,\mu) +K
+	\end{align}
+	where $\bar{\nu}=\frac{1}{N}\sum_{n=1}^N \nu_n$.
 \end{theorem}
 \begin{proof}
-we consider the following discrete time equation:
+Let $\Pi^n$ be the optimal coupling between $\nu_n$ and $\mu$, then the optimal transport between $\nu_n$ and $\mu$ is given by:
 
-\begin{align*}
-	X_{n+1} = X_n - \gamma \nabla f_n(X_n).
-\end{align*}	
-where $X\mapsto \nabla f_n(X)$ is the gradient flow of the mmd. For simplicity, it will be denoted by: $\phi_n$. We will also introduce the push-forward mapping 
 \begin{align}
-	T_n(X)=X- \gamma \phi_n(X)
-\end{align}
-Let $\Pi^n$ be the optimal coupling between $Q_n$ and $P$, then the optimal transport between $Q_n$ and $P$ is given by:
-\begin{align}
-	W_2^2(P,Q_n)=\int \Vert X-Y \Vert^2 dPi^n(Q_n,/P)
+	W_2^2(\mu,\nu_n)=\int \Vert X-Y \Vert^2 d\Pi^n(\nu_n,\mu)
 \end{align}
 
-Moreover, by setting $Z=T_n(X)$ where $(X,Y)$ are samples from $\Pi^n$, it is easy to see that $(Z,Y)$ is a coupling between $Q_{n+1}$ and $P$, therefore, by definition of the optimal transport map between $Q_{n+1}$ and $P$ it follows that:
-\begin{align*}
-	W_2^2(Q_{n+1},P)\leq \int \Vert X-\gamma\phi_n_n(X)-Y\Vert^2 \Pi^n(\Q_n,P)
-\label{eq:optimal_upper-bound}
-\end{align*}
+Moreover, consider $Z=X-\gamma \phi_n(X)$ where $(X,Y)$ are samples from $\Pi^n$. It is easy to see that $(Z,Y)$ is a coupling between $\nu_{n+1}$ and $\mu$, therefore, by definition of the optimal transport map between $\nu_{n+1}$ and $\mu$ it follows that:
+\begin{align}\label{eq:optimal_upper-bound}
+	W_2^2(\nu_{n+1},\mu)\leq \int \Vert X-\gamma \phi_{n}(X)-Y\Vert^2 \Pi^n(\nu_n,\mu)
+\end{align}
 By expanding the r.h.s in \ref{eq:optimal_upper-bound}, the following inequality holds:
-\begin{align}
-	W_2^2(Q_{n+1},P)\leq W_2^2(Q_{n},P) -2\gamma \int \langle \phi_n(X), X-Y \rangle d\Pi^n(Q_n,P)+ \gamma^2D(Q_n)
-	\label{eq:main_inequality}
+\begin{align}\label{eq:main_inequality}
+	W_2^2(\nu_{n+1},\mu)\leq W_2^2(\nu_{n},\mu) -2\gamma \int \langle \phi_n(X), X-Y \rangle d\Pi^n(\nu_n,\mu)+ \gamma^2D(\nu_n)
 \end{align}
-where $D(Q_n) = \int \Vert \Phi_n(X)\vert^2 dQ_n $ represents the negative time derivative at time $0$ of the functional $F$ along its gradient flow starting from $Q_n$.
-An upper-bound on $-2\gamma \int \langle \phi_n(X), X-Y \rangle d\Pi^n(Q_n,P) $ in terms of the loss functional can be obtained using the $\Lambda$ displacement convexity of $Q\mapsto F(Q)$. Indeed, by \ref{lem:grad_flow_lambda_version} it holds that:
-\begin{align}
-	-2\gamma \int \langle \phi(X),X-Y \rangle d\Pi(Q,P)
+where $D(\nu_n) = \int \Vert \Phi_n(X)\vert^2 d\nu_n $.
+An upper-bound on $-2\gamma \int \langle \phi_n(X), X-Y \rangle d\Pi^n(\nu_n,\mu) $ in terms of the loss functional can be obtained using the $\Lambda$ displacement convexity of $\nu\mapsto \F(\nu)$. Indeed, by \ref{lem:grad_flow_lambda_version} it holds that:
+\begin{align}\label{eq:flow_upper-bound}
+	-2\gamma \int \langle \phi(X),X-Y \rangle d\Pi(\nu,\mu)
 	\leq
-	-2\gamma\left(F(Q)- F(P) +L(\rho^n)\right)
-	\label{eq:flow_upper-bound}
+	-2\gamma\left(\F(\nu)- \F(\mu) +K(\rho^n)\right)
 \end{align}
-where $(rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $Q_n$ to $P$ and $L(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho^n}_s)(1-s)ds$. Note that when $L(\rho^n)\leq 0$ it falls back to the convex setting.
+where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho^n}_s)(1-s)ds$. Note that when $K(\rho^n)\leq 0$ it falls back to the convex setting.
 Therefore, the following inequality holds:
 \begin{align}
-	W-2^2(Q_{n+1},P)\leq W_2^2(Q_{n},P) - 2\gamma\left(F(Q_n)- F(P) +L(\rho^n)\right) +\gamma^2 D(Q_n)
+	W_2^2(\nu_{n+1},\mu)\leq W_2^2(\nu_{n},\mu) - 2\gamma\left(\F(\nu_n)- \F(\mu) +K(\rho^n)\right) +\gamma^2 D(\nu_n)
 \end{align}
-Now let's introduce a term involving $F(Q_{n+1})$. The above inequality becomes:
+Now let's introduce a term involving $\F(\nu_{n+1})$. The above inequality becomes:
 \begin{align}
-	W-2^2(Q_{n+1},P)\leq W_2^2(Q_{n},P) - 2\gamma\left(F(Q_{n+1})- F(P) +L(\rho^n)\right) +\gamma^D(Q_n) -2\gamma (F(Q_n)-F(Q_{n+1})
+	W_2^2(\nu_{n+1},\mu)\leq & W_2^2(\nu_{n},\mu) - 2\gamma\left(\F(\nu_{n+1})- \F(\mu) +K(\rho^n)\right) \\
+		&+\gamma^2 D(\nu_n) -2\gamma (\F(\nu_n)-\F(\nu_{n+1}))
 	\label{eq:main_ineq_2}
 \end{align}
  
-It is possible to upper-bound the last two terms by a negative quantity when the step-size is small enough. This is mainly a consequence of the smoothness of the functional $F$ and the fact that $Q_{n+1}$ is obtained by following the steepest direction if $F$ starting from $Q_n$. \ref{lem:decreasing_functional} makes this statement more precise and allows to get the following inequality:
+It is possible to upper-bound the last two terms by a negative quantity when the step-size is small enough. This is mainly a consequence of the smoothness of the functional $\F$ and the fact that $\nu_{n+1}$ is obtained by following the steepest direction of $\F$ starting from $\nu_n$. \ref{lem:decreasing_functional} makes this statement more precise and allows to get the following inequality:
 \begin{align}
-	\gamma^2 D(Q_n) -2\gamma (F(Q_n)-F(Q_{n+1})\leq -\gamma (1-\gamma K)D(Q_n).
+	\gamma^2 D(\nu_n) -2\gamma (\F(\nu_n)-\F(\nu_{n+1})\leq -\gamma (1-\gamma L)D(\nu_n).
 	\label{eq:decreasing_functional}
 \end{align}
-Here $K$ is a constant that depends only on the choice of the kernel $k$ in $F$. Combining \ref{eq:decreasing_functional,eq:main_ineq_2} it follows that:
+Here $L$ is a constant that depends only on the choice of the kernel $k$ in $\F$. Combining \ref{eq:decreasing_functional} and \ref{eq:main_ineq_2} it follows that:
 \begin{align}
-F(Q_{n+1})-F(Q)+\frac{\gamma}{2}(1-\gamma K)D(Q_n)
+\F(\nu_{n+1})-\F(\nu)+\frac{\gamma}{2}(1-\gamma L)D(\nu_n)
 \leq 
-\frac{1}{2\gamma} (W_2^2(Q_n,P)-W_2^2(Q_{n+1},P)-L(\rho^n)
+\frac{1}{2\gamma} (W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-K(\rho^n)
 \label{eq:main_final}
 \end{align}
-Averaging \ref{eq:main_final} for $1\leq n\leqN$ it follows that:
+Averaging \ref{eq:main_final} for $1\leq n\leq N$ it follows that:
 \begin{align}
-	\bar{F}-F(P)+\frac{\gamma}{2}(1-\gamma K)\bar{D} \leq \frac{W_2^2(Q_0,P)}{2\gamma N} -\bar{K}
+	\bar{\F}-\F(\mu)+\frac{\gamma}{2}(1-\gamma L)\bar{D} \leq \frac{W_2^2(\nu_0,\mu)}{2 \gamma N} -\bar{K}
 \end{align}
-Finally, by \ref{lem:mixture_convexity} it follows that:
+where $\bar{\F}$,$\bar{D}$ and $\bar{K}$ denotes the averaged values of $(\F(\nu_n))_{1\leq n \leq N}$, $(D(\nu_n))_{1\leq n \leq N}$  and $(K(\rho^n))_{1\leq n \leq N}$ over iterations from $1$ to $N$. Finally, by \ref{lem:mixture_convexity} it follows that:
 \begin{align}
-F(\bar{Q})-F(P)\leq 
+\F(\bar{\nu})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma N} -\bar{K}
 \end{align}
 
 \end{proof}
@@ -337,11 +289,11 @@ F(\bar{Q})-F(P)\leq
 
 
 \begin{lemma}	\label{lem:grad_flow_lambda_version}
-Consider a $\Lambda$-displacement convex functional with a gradient flow given by  $X\mapsto phi(X)$. for any constant speed geodesic $\rho_t$ between two probability distributions $Q$ and $P$ the following holds:
+Consider a $\Lambda$-displacement convex functional with a gradient flow given by  $X\mapsto phi(X)$. for any constant speed geodesic $\rho_t$ between two probability distributions $\nu$ and $\mu$ the following holds:
 \begin{align*}
-	-\int \langle \phi(X),X-Y \rangle d\Pi(Q,P)
+	-\int \langle \phi(X),X-Y \rangle d\Pi(\nu,P)
 	\leq
-	F(P)- F(Q) -\int_0^1 \Lambda(\rho_s,\dot{\rho}_s)(1-s)ds
+	\F(P)- \F(\nu) -\int_0^1 \Lambda(\rho_s,\dot{\rho}_s)(1-s)ds
 \end{align*}
 
 \end{lemma}
@@ -350,14 +302,14 @@ Consider a $\Lambda$-displacement convex functional with a gradient flow given b
 \begin{lemma}\label{lem:decreasing_functional}
 	The following inequality holds:
 	\begin{align}
-		F(Q_{n+1})-F(Q_n)\leq -\gamma (1-\frac{\gamma}{2}K )\int \Vert \phi_n(X)\Vert^2 dQ_n
+		\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{\gamma}{2}K )\int \Vert \phi_n(X)\Vert^2 d\nu_n
 	\end{align}
 \end{lemma}
 
 
 \begin{lemma}\label{lem:mixture_convexity}
-The Functional $F$ is mixture convex: for any probability distributions $Q_1$ and $Q_2$ and scalar $1\leq \lambda\les 1$:
+The Functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
 \begin{align}
-	F(\lambda Q_1+(1-\lambda)Q_2)\leq \lambda F(Q_1)+ (1-\lambda)F(Q_2)
+	\F(\lambda \nu_1+(1-\lambda)\nu_2)\leq \lambda \F(\nu_1)+ (1-\lambda)\F(\nu_2)
 \end{align}
 \end{lemma}
