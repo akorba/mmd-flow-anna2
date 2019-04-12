@@ -1,1 +1,31 @@
-diff with stochastic gradient/langevin
+In this subsection we assume that $MMD^2$ is $\lambda$-geodesically-convex. Conditions under which this holds will be provided in the next section.
+
+\subsection{Analysis of the theoretical algorithm}
+
+Equation~\eqref{eq:discretization} provides a theoretical algorithm to minimize $MMD^2(\cdot,\pi)$. The algorithm is only theoretical because it requires to compute $\nabla f_k(X_k)$.
+
+This algorithm is the discretization of the Gradient flow associated to $MMD^2$. Since $MMD^2$ is $\lambda$-convex, using Theorem 11.1.4 of~\cite{ambrosio}, the gradient flow $(\rho_t)$ satisfies
+\begin{equation}
+    \label{eq:evi}
+    \frac12 \frac{d}{dt} W^2(\rho_t,\nu) + \frac{\lambda}{2}W^2(\rho_t,\nu) \leq MMD^2(\nu,\pi) - MMD^2(\rho_t,\pi)
+\end{equation}
+Unfortunately, $\lambda \leq 0$ (otherwise it would mean that $MMD^2$ is strongly-geodesically-convex and hence geodesically convex).
+
+For the theoretical algorithm~\eqref{eq:discretization} we can expect a discretized version of~\eqref{eq:evi} to hold : \asnote{This should hold, I haven't proved it yet but I will do it later}
+\begin{equation}
+    \label{eq:evi-discrete}
+    W^2(\rho_{k+1},\pi) \leq  W^2(\rho_{k},\pi) -2\gamma_{k+1}\left( \frac{\lambda}{2}W^2(\rho_{k},\pi) + MMD^2(\rho_{k+1},\pi) - MMD^2(\pi,\pi)\right)
+\end{equation}
+Since $\lambda \leq 0$ we cannot have a rate from this inequality (I think).
+However, if $\sum \gamma_k < \infty$, using Robbins Siegmund lemma, we know that $W^2(\rho_{k},\pi)$ converges to some $\ell \geq 0$. \asnote{From this it might be possible to prove that $W^2(\overline{\rho_{k}},\pi)$ converges to zero, but it would be a lot of work. It looks like Pakes Hasminskii criterion}
+
+\subsection{Another Lyapunov function}
+
+In this section we try to use $MMD^2(\cdot,\pi)$ as a Lyapunov function (instead of $W^2(\cdot,\pi)$), like in Theorem 3.3 of Liu 2017.
+
+Taylor : 
+
+
+\subsection{Stochastic setting}
+
+Difference with Langevin
