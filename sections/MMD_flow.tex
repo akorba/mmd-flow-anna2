@@ -3,10 +3,61 @@
 
 \subsection{Background}
 
-Endow the space of probability measures $\mathcal{P}(\Omega)$ on a domain $\Omega \subset \R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space.
+Endow the space of probability measures $\mathcal{P}(\X)$ on a domain $\X \subset \R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space.
 
 
-\subsubsection{RKHS/MMD}
+
+\subsubsection{Optimal transport tools}
+
+Let $T: \X \rightarrow \X$ be a measurable map, and $\mu$ a distribution on $\X$. The measure $T_{\#}\mu$
+is characterized by:
+\begin{align*}
+	&T_{\#}\mu(A) = \mu(T^{-1}(A)) \text{ for every measurable set A,}\\
+\text{or}& \int_{y \in \X} \phi(y) d(T_{\#}\mu)(y) =\int_{x \in \X}\phi(T(x)) d\mu(x) \text{ for every measurable function $\phi$.}
+\end{align*}
+
+Let $\mathcal{M}^{+}$ and $\mathcal{M}_2^{+}$ be the set of probability distributions, and the set of probability distributions with finite second moment respectively.
+\begin{definition}\label{def:mk}
+	The quadratic \textit{Monge-Kantorovitch distance} of $\rho_0, \rho_1 \in \mathcal{M}_2^{+}$ is:
+	\begin{equation}
+		W^2(\rho_0, \rho_1)= \min_{\gamma \in \Gamma[\rho_0, \rho_1]} \int_{\X \times \X} |x-y|^2 d\gamma(x,y)
+	\end{equation}
+where $\Gamma(\rho_0,\rho_1)$ is the set of transport plans of $\rho_0, \rho_1$ consists of probability measures $\gamma \in \mathcal{M}^{+}(\X \times \X)$ with marginals $\rho_0, \rho_1$ : for every measurable set $A \subset \bR^d$, $\gamma(A \times \bR^d) = \rho_0(A)$ and $\gamma(\bR^d \times A) = \rho_1(A)$. 
+	The minimizer is unique and is called an \textit{optimal plan}. 
+\end{definition}
+
+Add minimizing geodesic.
+
+Given a functional $\F : \mathcal{M}^+ \rightarrow \R$ we call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{M}^+$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$.
+
+\subsubsection{Gradient flows on the space of probability measures}
+
+\textit{Lyapunov functional} (or "free energy" or "entropy") $\F$  \citep{villani2004trend}:
+\begin{equation}\label{eq:lyapunov}
+\F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
+\end{equation}
+where  $U$ is the internal energy, $V$ the potential energy and $W$ the
+interaction energy. The formal gradient flow equation associated to this functional can be written:
+\begin{equation}\label{eq:continuity_equation}
+\frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho}) \quad x \in \R^d , t>0
+\end{equation}
+And the dissipation of entropy is defined as %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
+\begin{align}
+&        \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(q)= \int |\xi|^2 \rho(x)dx\\
+&\text{ and } \xi= \nabla (U'(\rho) + V + W * \rho)= \nabla \frac{\partial \F}{\partial \rho}
+\end{align}
+Standard considerations from fluid mechanics tell us that the continuity equation \eqref{eq:continuity_equation} may be interpreted as the equation ruling the evolution of the density $\rho_t$ of a family of particles initially distributed according to some $\rho_0$ and each of which follows the velocity/vector field $v_t=\nabla \frac{\partial{\F}}{\partial{\rho_t}}$.
+
+\begin{remark} 
+	A famous example of a functional \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\rho, \pi \in \mathcal{M}^+$ by
+	$KL(\rho,\pi)=\int log(\frac{\rho(x)}{\pi(x)})\rho(x)dx$. Indeed, $KL(\rho, \pi)=\int U(\rho(x))\rho(x)dx + \int V(x) \rho(x)dx$ with $U(\rho(x))=\rho(x)log(\rho(x))$ and $V(x)=-log(\pi(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla \log(\rho) + \nabla V=  \nabla \log(\frac{\rho}{\pi})$ and equation \eqref{eq:continuity_equation} becomes the classical Fokker-Planck equation:
+	\begin{equation}\label{eq:Fokker-Planck}
+	\frac{\partial{\rho}}{\partial t}= div(\rho \nabla V )+ \Delta \rho
+	\end{equation}
+\end{remark}
+
+\subsection{MMD flow}
+
 
 
 Let $\kH$ a Reproducing Kernel Hilbert Space (RKHS) and $k$ its reproducing kernel. This means that for all $f \in \kH$, $x \in \X$, we can write the \textit{reproducing property} $f(x)=\psh{f, k(x,.)}$. The kernel Maximum Mean Discrepancy between two distributions $\rho,\pi$ is defined as:
@@ -19,51 +70,17 @@ MMD^2(\rho,\pi)&=\|\E_{\rho}[k(X,.)] - \E_{\pi}[k(Y,.)]\|^2_{\kH}\\
 &=\E_{\rho \otimes \rho}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho \otimes \pi}[k(X,Y)]
 \end{align}
 
-
-\subsubsection{Optimal transport tools}
-
-Let $T: \Omega \rightarrow \Omega$ be a measurable map, and $\mu$ a distribution on $\Omega$. The measure $T_{\#}\mu$
-is characterized by:
-%\begin{align*}
-%& T_{\#}\mu(A) &= \mu(T^{-1}(A)) \text{ for every measurable set A}\\
-%\text{or} &\int_{y \in \Omega} \phi(y) d(T_{\#}\mu)(y) &=\int_{x \in \Omega}\phi(T(x)) d\mu(x) \text{ for every measurable function \phi}
-%\end{align*}
-
-
-
-\subsubsection{Gradient flows on the space of probability measures}
-
-\textit{Lyapunov functional} (or "free energy" or "entropy") $\F$  \citep{villani2004trend}:
-\begin{equation}
-\F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
-\end{equation}
-where  $U$ is the internal energy, $V$ the potential energy and $W$ the
-interaction energy. The formal gradient flow equation associated to this functional can be written:
-\begin{equation}
-\frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho}) \quad x \in \R^d , t>0
-\end{equation}
-And the dissipation of entropy is defined as %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
-\begin{align}
-&        \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(q)= \int |\xi|^2 \rho(x)dx\\
-&\text{ and } \xi= \nabla (U'(\rho) + V + W * \rho)= \nabla \frac{\partial \F}{\partial \rho}
-\end{align}
-
-\begin{remark} When $\F$ is the KL divergence $KL(\rho,\pi)=\int log(\frac{\rho(x)}{p(x)})\rho(x)dx$, $\F(\rho)=\int U(\rho(x))\rho(x)dx + \int V(x) \rho(x)dx$ with $U(\rho(x))=\rho(x)log(\rho(x))$ and $V(x)=-log(\pi(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla log(\frac{\rho}{\pi})$.
-\end{remark}
-
-\subsection{MMD flow}
-
-We will consider a flow $(\rho_t)_{t>0}$ and denote $f_t= \E_{\rho_t}[k(X,.)]- \E_{\pi}[k(Y,.)]$. In this case:
+We will consider a flow $(\rho_t)_{t>0}$ as described in the previous subsection and denote $f_t= \E_{\rho_t}[k(X,.)]- \E_{\pi}[k(Y,.)]$. In this case:
 \begin{equation}
 MMD^2(\rho_t,\pi)=\|f_t\|^2_{\kH}
 %&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
 \end{equation} 
 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
-\begin{align}
-V(X)&=-\int 2 k(X,x')\pi(x')\\
-W(X,Y)&=k(X,Y)
-\end{align}
+\begin{equation}
+V(X)=-\int 2 k(X,x')\pi(x') \quad \text{,} \quad
+W(X,Y)=k(X,Y)
+\end{equation}
 We have $MMD^2(\rho,\pi)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\pi\otimes \pi}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
 In the case where $\F=MMD^2$:
 \begin{align}
@@ -73,13 +90,17 @@ In the case where $\F=MMD^2$:
 &=2 \nabla \langle k(X,.), f_t \rangle_{\kH}\\
 &= 2 \nabla f_t(x)
 \end{align}
-where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$. So the dissipation of MMD is given by:  
-\begin{equation}
-\frac{d MMD^2(\rho_t, p)}{dt}=-2 \E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
-\end{equation}
+where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$. 
+
+\begin{proposition}
+ The dissipation of MMD is given by:  
+	\begin{equation}
+	\frac{d MMD^2(\rho_t, p)}{dt}=-2 \E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
+	\end{equation}
+\end{proposition}
 
 \begin{remark}
-	For $\F=KL$, we would obtain $-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]$
+	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \eqref{eq:Fokker-Planck}, we would obtain (see \cite{wibisono2018sampling}) $\frac{d KL(\rho_t, \pi)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]$.
 \end{remark}
 
 
@@ -109,6 +130,5 @@ In practice we estimate this gradient by:
 \end{equation*}
 where $(x_1, \dots, x_n)\sim \rho_k$ and $(y_1, \dots, y_n)\sim \pi$.
 
-\subsection{Adil's comments}
 
-\include{stochastic}
+\include{sections/stochastic}
