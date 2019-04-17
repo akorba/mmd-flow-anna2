@@ -4,7 +4,7 @@
 \section{Lambda displacement convexity of the MMD}
 In all what follows we consider a fixed target distribution $\mu$ and define the following functional 
 \begin{align}\label{eq:MMD_functional}
-	\nu \mapsto \F(\nu):=\frac{1}{2} MMD^2(\mu,\nu)
+	\nu \mapsto \F(\nu):=\frac{1}{2} MMD^2(\mu,\nu)\textbf{}
 \end{align}. 
 
 We investigate some theoretical properties of the MMD flow. In particular, we are interested in characterizing the convergence of the time discretized flow:
@@ -14,7 +14,7 @@ We investigate some theoretical properties of the MMD flow. In particular, we ar
 where $\gamma$ is some fixed step-size, $X \mapsto \phi_n(X):=\nabla f_{n}(X)$ is the gradient of the witness function between $\mu$ and $\nu_n$. It is easy to see that the particle version of \cref{eq:discretized_flow_particles} is given by:
 \begin{align}
 	X_{n+1} = X_n - \gamma \phi_n(X_n) \forall n\in \mathbb{N}.
-\end{align}. 
+\end{align} 
 One important criterion to characterize the convergence of the gradient flow of a functional $\F$ is the notion of displacement convexity of such functional. Displacement convexity states that the functional evaluated at any distribution in a geodesic path between two distributions $\nu$ and $\nu'$ will be upper-bounded by a convex mixture of $\F(\nu)$ and $\F(\nu')$:
 \begin{definition}
 (displacement convexity \cite{Villani:2004} Definition 1 ). Let $\mu$
@@ -64,8 +64,8 @@ To show the $\Lambda$-convexity of the functional defined in \cref{eq:MMD_functi
 \begin{assumplist} 
 \item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
 \item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$.
-\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \gamma  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x'j}k(x,x')$.
-\end{assumplist}
+\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x'j}k(x,x')$.
+\end{assumplist}\aknote{do we have an order of magnitude for lambda?}
 The next proposition states that the functional defined in \cref{eq:MMD_functional} is $\Lambda$-displacement convex and provide and explicit expression for the functional $\Lambda$:
 
 \begin{proposition}
@@ -75,7 +75,7 @@ with $\Lambda$ given by:
 \Lambda(\rho,v)=\langle v,(C_{\rho}-\lambda \F(\rho)^{\frac{1}{2}}I)v\rangle_{L_{2}(\rho)}\label{eq:Lambda}
 \end{equation}
 
-where $C_{\rho}$ is the operator defined by:
+where $C_{\rho}$ is the operator defined by:\aknote{sign matters?}
 \[
 (C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')
 \] and $\lambda$ is defined in \cref{assump:bounded_fourth_oder}.
@@ -115,7 +115,7 @@ in distribution sense the following identity holds:
 \[
 \phi(t)=(1-t)\phi(0)+t\phi(1)-\int_{0}^{1}\ddot{\phi}(s)G(s,t)ds
 \]
-Hence, one can choose $\phi(t)=\F(\rho_{t})$ therefore,
+Hence, one can choose $\phi(t)=\F(\rho_{t})$ therefore, \aknote{do we have second derivative bounded below for mmd?}
 it follows that:
 \[
 \F(\rho_{t})=(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\frac{d^{2}\F(\rho_{s})}{ds^{2}}G(s,t)ds
@@ -141,11 +141,11 @@ Recall the expression of $\Lambda_{\mu}(\rho_{s},v_{s}):$
 \Lambda_{\mu}(\rho_{s},v_{s})=\langle v_{t},(C_{\rho_{t}}-\lambda \F(\rho_{t})^\frac{1}{2} I)v_{t}\rangle_{L_{2}(\rho_{t})}\geq-\lambda \F(\rho_{t})^\frac{1}{2}\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
 \]
 However, $\F(\rho_{t})^\frac{1}{2}\leq4C$ where $C=\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert$
-. Moreover, if $\rho_{t}$ is a constant speed geodesic then $\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}=W_{2}^{2}(\rho_{0},\rho_{1})$,
+. Moreover, if $\rho_{t}$ is a constant speed geodesic\aknote{give the def at some point} then $\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}=W_{2}^{2}(\rho_{0},\rho_{1})$,
 hence: 
 \[
 -\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\leq4\lambda CW_{2}^{2}(\rho_{0},\rho_{1})\leq2t(1-t)\lambda Cdiam(\mathcal{X})^{2}
-\]
+\]\aknote{check}
 where $diam(\mathcal{X})$ is the diameter of $\mathcal{X}$. The rest of the proof follows by directly using \cref{cor:integral_lambda_convexity}
 and by setting $K=2\lambda Cdiam(\mathcal{X})$.
 \end{proof}
@@ -157,7 +157,7 @@ it to the case of 'almost convex' functionals.
 \begin{proposition}
 \label{prop:almost_convex_optimization}
 (Almost convex optimization). Let $\mathcal{P}$ be a closed subset
-of $\mathcal{P}(\mathcal{X})$ which is displacement convex. Then
+of $\mathcal{P}(\mathcal{X})$ which is displacement convex\aknote{weird for a set to be displacement convex? it was for functionals}. Then
 for all $M>\inf_{\rho\in\mathcal{P}}\F(\rho)+K$, the following
 holds:
 \end{proposition}
@@ -181,7 +181,7 @@ is not reached. We provide now a simple proof of this result:
 \begin{proof}
 The proof is very similar to (\cite{Bottou:2017}, Theorem 6.3 and
 Theorem 6.9): 
-\end{proof}
+\end{proof}\aknote{$\rho_1$ already taken}
 \begin{enumerate}
 \item First choose $\rho_{1}\in\mathcal{P}$ such that $\F(\rho_{1})<M-K$.
 For any $\rho_{0},\rho_{0}'\in L(\mathcal{P},M)$ there exist a displacement
