@@ -4,7 +4,7 @@ In this subsection we assume that $MMD^2$ is $\lambda$-geodesically-convex. Cond
 
 Equation~\eqref{eq:discretization} provides a theoretical algorithm to minimize $MMD^2(\cdot,\pi)$. The algorithm is only theoretical because it requires to compute $\nabla f_k(X_k)$.
 
-This algorithm is the discretization of the Gradient flow associated to $MMD^2$. Since $MMD^2$ is $\lambda$-convex, using Theorem 11.1.4 of~\cite{ambrosio}, the gradient flow $(\rho_t)$ satisfies
+This algorithm is the discretization of the Gradient flow associated to $MMD^2$. Since $MMD^2$ is $\lambda$-convex, using Theorem 11.1.4 of~\cite{ambrosio2008gradients}, the gradient flow $(\rho_t)$ satisfies
 \begin{equation}
     \label{eq:evi}
     \frac12 \frac{d}{dt} W^2(\rho_t,\nu) + \frac{\lambda}{2}W^2(\rho_t,\nu) \leq MMD^2(\nu,\pi) - MMD^2(\rho_t,\pi)

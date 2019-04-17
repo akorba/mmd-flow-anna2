@@ -1,6 +1,18 @@
 
 \section{Appendix}
 
+\subsection{Proof of Proposition~\ref{prop:mmd_flow}}
+
+In the case where $\F=MMD^2$:
+\begin{align}
+\nabla \frac{\partial \F}{\partial \rho}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial \rho_t}\\
+&=2 \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}\\
+&=2 \nabla \langle \frac{\partial \E_{q_t}[k(Y,.)]}{\partial \rho_t}, f_t \rangle_{\kH}\\
+&=2 \nabla \langle k(Y,.), f_t \rangle_{\kH}\\
+&= 2 \nabla f_t(Y)
+\end{align}
+where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$.
+
 \subsection{SDE and stochastic processes}
 
 Consider the Itô process, i.e. the stochastic process:

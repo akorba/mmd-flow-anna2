@@ -9,14 +9,15 @@ Endow the space of probability measures $\mathcal{P}(\X)$ on a domain $\X \subse
 
 \subsubsection{Optimal transport tools}
 
-Let $T: \X \rightarrow \X$ be a measurable map, and $\mu$ a distribution on $\X$. The measure $T_{\#}\mu$
+Let $\X \subset \R^d$. Let $\mathcal{M}^{+}$ and $\mathcal{M}_2^{+}$ be the set of probability distributions on $\X$, and the set of probability distributions on $\X$ with finite second moment respectively.
+Let $T: \X \rightarrow \X$ be a measurable map, and $\mu \in \mathcal{M}^+$. The measure $T_{\#}\mu$
 is characterized by:
 \begin{align*}
-	&T_{\#}\mu(A) = \mu(T^{-1}(A)) \text{ for every measurable set A,}\\
+	&\quad T_{\#}\mu(A) = \mu(T^{-1}(A)) \text{ for every measurable set A,}\\
 \text{or}& \int_{y \in \X} \phi(y) d(T_{\#}\mu)(y) =\int_{x \in \X}\phi(T(x)) d\mu(x) \text{ for every measurable function $\phi$.}
 \end{align*}
 
-Let $\mathcal{M}^{+}$ and $\mathcal{M}_2^{+}$ be the set of probability distributions, and the set of probability distributions with finite second moment respectively.
+
 \begin{definition}\label{def:mk}
 	The quadratic \textit{Monge-Kantorovitch distance} of $\rho_0, \rho_1 \in \mathcal{M}_2^{+}$ is:
 	\begin{equation}
@@ -32,7 +33,7 @@ Given a functional $\F : \mathcal{M}^+ \rightarrow \R$ we call $\frac{\partial{\
 
 \subsubsection{Gradient flows on the space of probability measures}
 
-\textit{Lyapunov functional} (or "free energy" or "entropy") $\F$  \citep{villani2004trend}:
+Consider a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$ (see \citep{Villani:2004}), i.e. a functional of the form:
 \begin{equation}\label{eq:lyapunov}
 \F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
 \end{equation}
@@ -54,6 +55,7 @@ Standard considerations from fluid mechanics tell us that the continuity equatio
 	\begin{equation}\label{eq:Fokker-Planck}
 	\frac{\partial{\rho}}{\partial t}= div(\rho \nabla V )+ \Delta \rho
 	\end{equation}
+	It can be shown that the distribution $\rho_t$ of the Langevin diffusion~\eqref{eq:langevin_diffusion} is a solution of \eqref{eq:Fokker-Planck}.
 \end{remark}
 
 \subsection{MMD flow}
@@ -82,25 +84,21 @@ V(X)=-\int 2 k(X,x')\pi(x') \quad \text{,} \quad
 W(X,Y)=k(X,Y)
 \end{equation}
 We have $MMD^2(\rho,\pi)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\pi\otimes \pi}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$.
-In the case where $\F=MMD^2$:
-\begin{align}
-\nabla \frac{\partial \F}{\partial \rho}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial \rho_t}\\
-&=2 \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}\\
-&=2 \nabla \langle \frac{\partial \E_{q_t}[k(X,.)]}{\partial \rho_t}, f_t \rangle_{\kH}\\
-&=2 \nabla \langle k(X,.), f_t \rangle_{\kH}\\
-&= 2 \nabla f_t(x)
-\end{align}
-where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$. 
 
-\begin{proposition}
- The dissipation of MMD is given by:  
+
+\begin{proposition}\label{prop:mmd_flow}
+ The velocity $\nabla \frac{\partial{\F}}{\partial{\rho_t}}=2 \nabla f_t$ and the dissipation of MMD is given by:  
 	\begin{equation}
 	\frac{d MMD^2(\rho_t, p)}{dt}=-2 \E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
 	\end{equation}
+	where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$.
 \end{proposition}
 
 \begin{remark}
-	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \eqref{eq:Fokker-Planck}, we would obtain (see \cite{wibisono2018sampling}) $\frac{d KL(\rho_t, \pi)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]$.
+	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \eqref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
+	\begin{equation}
+	\frac{d KL(\rho_t, \pi)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]
+	\end{equation}.
 \end{remark}
 
 
@@ -123,8 +121,8 @@ We can thus consider the Euler discretization of \eqref{eq:stochastic_process}:
 \begin{equation}\label{eq:discretization}
 X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
 \end{equation}
-here $\nabla f_k(X_k)= \E_{X \sim \rho_k}[\nabla_{X_k}k(X,X_k)] -  \E_{X \sim \pi}[\nabla_{X_k}k(X,X_k)]$.
-In practice we estimate this gradient by:
+where $\nabla f_k(X_k)= \E_{X \sim \rho_k}[\nabla_{X_k}k(X,X_k)] -  \E_{X \sim \pi}[\nabla_{X_k}k(X,X_k)]$.
+In practice, since we don't have access to the target distribution $\pi$, we estimate this gradient by:
 \begin{equation*}
 \widehat{\nabla f_k}(X_k)=\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) - \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k)
 \end{equation*}
