@@ -40,7 +40,7 @@ This notion of convexity is to be related to the more widely used notion of conv
 Unlike, mixture convexity, displacement convexity is compatible with the $W_2$ metric and is therefore the natural notion to use for characterizing convergence of gradient flows in the $W_2$ metric.
 Although mixture convexity holds for $\F$ (\cref{lem:mixture_convexity}), this property is less critical for characterizing convergence of gradient flows in the $W_2$ metric. On the other hand, displacement convexity is compatible with the $W_2$ metric \cite{Bottou:2017} and is therefore the natural notion to use in our setting. Unfortunately, $\F$ fails to be displacement convex in general. Instead we will show that $\F$ satisfies some weaker notion of convexity called $\Lambda$-displacement convexity:
 %
-\begin{definition}
+\begin{definition}\label{def:lambda-convexity}
 ($\Lambda$-convexity \cite{Villani:2009} Definition 16.4). Let $(\mu,v)\mapsto\Lambda(\mu,v)$
 be a function that defines for each probability distribution $\mu$
 a quadratic form on the set of square integrable vectors valued functions
@@ -76,9 +76,10 @@ with $\Lambda$ given by:
 \end{equation}
 
 where $C_{\rho}$ is the operator defined by:\aknote{sign matters?}
-\[
-(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')
-\] and $\lambda$ is defined in \cref{assump:bounded_fourth_oder}.
+\begin{align}\label{eq:positive_operator_C}
+	(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')
+\end{align}
+and $\lambda$ is defined in \cref{assump:bounded_fourth_oder}.
 \end{proposition}
 %
 %
@@ -94,10 +95,10 @@ minimum of this functional.
 For any geodesic $\rho_{t}$ between two probability distributions
 $\rho_{0}$ and $\rho_{1}$ the following holds:
 \begin{equation}
-\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
+\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
 \end{equation}
 
-where $\Lambda_{\mu}$ is given by \cref{eq:Lambda} and $G$ is given
+where $\Lambda$ is given by \cref{eq:Lambda} and $G$ is given
 by:
 \[
 G(s,t)=\begin{cases}
@@ -135,16 +136,16 @@ Then the following holds:
 \end{corollary}
 %
 \begin{proof}
-Recall the expression of $\Lambda_{\mu}(\rho_{s},v_{s}):$
+Recall the expression of $\Lambda(\rho_{s},v_{s}):$
 
 \[
-\Lambda_{\mu}(\rho_{s},v_{s})=\langle v_{t},(C_{\rho_{t}}-\lambda \F(\rho_{t})^\frac{1}{2} I)v_{t}\rangle_{L_{2}(\rho_{t})}\geq-\lambda \F(\rho_{t})^\frac{1}{2}\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\Lambda(\rho_{s},v_{s})=\langle v_{t},(C_{\rho_{t}}-\lambda \F(\rho_{t})^\frac{1}{2} I)v_{t}\rangle_{L_{2}(\rho_{t})}\geq-\lambda \F(\rho_{t})^\frac{1}{2}\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
 \]
 However, $\F(\rho_{t})^\frac{1}{2}\leq4C$ where $C=\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert$
 . Moreover, if $\rho_{t}$ is a constant speed geodesic\aknote{give the def at some point} then $\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}=W_{2}^{2}(\rho_{0},\rho_{1})$,
 hence: 
 \[
--\int_{0}^{1}\Lambda_{\mu}(\rho_{s},v_{s})G(s,t)ds\leq4\lambda CW_{2}^{2}(\rho_{0},\rho_{1})\leq2t(1-t)\lambda Cdiam(\mathcal{X})^{2}
+-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds\leq4\lambda CW_{2}^{2}(\rho_{0},\rho_{1})\leq2t(1-t)\lambda Cdiam(\mathcal{X})^{2}
 \]\aknote{check}
 where $diam(\mathcal{X})$ is the diameter of $\mathcal{X}$. The rest of the proof follows by directly using \cref{cor:integral_lambda_convexity}
 and by setting $K=2\lambda Cdiam(\mathcal{X})$.

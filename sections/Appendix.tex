@@ -1,6 +1,86 @@
 
 \section{Appendix}
 
+\subsection{Notation and background}
+In all what follows, $\X$ is a convex subset of $\R^d$ and $\mathcal{P}_2(\X)$ denotes the set of all probability distributions supported on $\X$ with finite second moment.
+For a given distributions $\nu\in\mathcal{P}_2(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
+
+\subsubsection{Maximum Mean Discrepancy}\label{subsec:MMD}
+For a given characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding Reproducing Kernel Hilbert Space \manote{some reference here needed}. $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$. The unit ball in $\kH$ which will be denoted as $\mathcal{B}$ is simply the set of functions $f$ in $\kH$ such that $\Vert f\Vert_{\kH}\leq 1 $:
+\begin{align}\label{eq:unit_ball_RKHS}
+	\mathcal{B} = \{ f\in \kH : \quad \Vert f\Vert_{\kH}\leq 1 \}
+\end{align}
+Under mild conditions \manote{write conditions} on the kernel $k$, it is possible to define a distance on $\mathcal{P}_2(\X)$ by finding a function $f$ in $\mathcal{B}$ that maximizes the mean difference between two given distributions $\mu$ and $\nu$. Such distance is called the Maximum Mean Discrepancy  (MMD) \cite{Gretton:2012}:
+\begin{align}\label{eq:MMD}
+	MMD(\mu,\nu) = \sup_{g\in \mathcal{B}} \int g\diff\mu - \int g \diff\nu
+\end{align}
+The maximization problem in \cref{eq:MMD} is achieved for an optimal $g^*$ in $\mathcal{B}$ that is proportional to the  witness function between $\nu$ and $\mu$:
+\begin{align}\label{eq:witness_function}
+	f_{\nu,\mu}(z) = \int k(.,z)\diff \mu - \int k(.,z)\diff \nu  \qquad z\in \X
+\end{align}
+This allows to express the $MMD$ as the norm of \cref{eq:witness_function} $f_{\nu,\mu}$:
+\begin{align}\label{eq:mmd_norm_witness}
+	MMD(\mu,\nu) = \Vert f_{\nu,\mu} \Vert_{\mathcal{H}} 
+\end{align}
+Furthermore, a closed form expression in terms of expectations of the kernel under $\mu$ and $\nu$ can be obtained \cite{gretton2012kernel}:
+\begin{align}\label{eq:closed_form_MMD}
+	MMD^2(\mu,\nu) = \int k\diff\mu \diff\mu + \int k\diff\nu \diff \nu - 2\int k\diff\mu \diff \nu
+\end{align}
+When samples from both $\mu$ and $\nu$ are available \cref{eq:closed_form_MMD} can be estimated using those samples. For a fixed target distributions $\mu$ we will consider the loss functional defined as:
+\begin{align}\label{eq:loss_functional}
+	\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
+\end{align}
+We are interested in describing the dynamics of the gradient flow of \cref{eq:loss_functional} under the $2$-Wasserstein metric as defined in \cref{subsec:wasserstein_flow}.
+%The MMD was successfully used for training generative models (\cite{mmd-gan,Binkowski:2018,Arbel:2018}) where it is used in a loss functional to learn the parameters of the generator network. This motivate the  
+\subsubsection{$2$-Wasserstein geometry}\label{subsec:wasserstein_flow}
+For two given probability distributions $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$ we denote by $\Pi(\nu,\mu)$ the set of possible couplings between $\nu$ and $\mu$. In other words $\Pi(\nu,\mu)$ contains all possible distributions $\pi$ on $\X\times \X$ such that if $(X,Y) \sim \pi $ then $X \sim \nu $ and $Y\sim \mu$. The $2$-Wasserstein distance on $\mathcal{P}_2(\X)$ is defined by means of optimal coupling between $\nu$ and $\mu$ in the following way:
+\begin{align}\label{eq:wasserstein_2}
+	W_2^2(\nu,\mu) := \inf_{\pi\in\Pi(\nu,\mu)} \int \Vert x - y\Vert^2 d\pi(x,y) \qquad \forall \nu, \mu\in \mathcal{P}_2(\X)
+\end{align}
+It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
+\begin{align}\label{eq:convex_combination}
+	s_t = (1-t)x+ty \qquad \forall x,y\in \X, \forall t\in [0,1].
+\end{align}
+The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of $\pi^{*}$ by $s_t$:    
+  \begin{align}\label{eq:displacement_geodesic}
+	\rho_t = (s_t)_{\#}\pi^{*}
+\end{align}
+It is easy to see that \cref{eq:displacement_geodesic} satisfies the following boundary conditions:
+\begin{align}\label{eq:boundary_conditions}
+	\rho_0 = \nu \qquad \rho_1 = \mu.
+\end{align}
+Paths of the form of \cref{eq:displacement_geodesic} are called displacement geodesics. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a vector field $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho$ satisfies the continuity equation \manote{reference} :
+\begin{align}\label{eq:continuity_equation}
+	\partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
+\end{align}
+\cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho)$ of the curve $\rho$ would be given by:
+\begin{align}
+	l(\rho)^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t
+\end{align}
+where \[
+\Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
+\]
+This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{Santambrogio:2015} 5.28 ):
+\begin{align}\label{eq:benamou-brenier-formula}
+	W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
+\end{align}
+where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}.
+
+\begin{remark}
+Such paths should not be confused with another kind of paths called mixture geodesics. The mixture geodesic $(\mu_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
+\begin{align}\label{eq:mixture_geodesic}
+m_t = (1-t)\nu + t\mu \qquad \forall t \in [0,1].
+\end{align}
+Paths of the form \cref{eq:mixture_geodesic} can be thought as the shortest paths between two distributions when distances on $\mathcal{P}_2(\X)$ are measured using the $MMD$ (\cite{Bottou:2017} Theorem 5.3). We refer to \cite{Bottou:2017} for an overview of the notion of shortest paths in probability spaces and for the differences between mixture geodesics and displacement geodesics.
+Although, we will be interested in the $MMD$ as a loss function, we will not consider the geodesics that are naturally associated to it and we will rather consider the displacement geodesics defined in \cref{eq:displacement_geodesic} for reason that will become clear in \cref{subsec:wasserstein_flow}.
+\end{remark}
+
+
+
+
+
+
+
 \subsection{Proof of Proposition~\ref{prop:mmd_flow}}
 
 In the case where $\F=MMD^2$:
@@ -19,7 +99,7 @@ Consider the Itô process, i.e. the stochastic process:
 \begin{equation}
 dX_t=g(X_t)dt
 \end{equation}
-Let $f \in \mathcal{C}^2(\Omega)$, Itô's formula can be written:
+Let $f \in \mathcal{C}^2(\X)$, Itô's formula can be written:
 \begin{equation*}
 df(X_t)=\nabla f(X_t).g(X_t)dt
 \end{equation*}
@@ -40,105 +120,155 @@ where the second line is obtained by integrating by parts on both sides of the e
 
 
 \begin{proof} \ref{prop:lambda_convexity}
-To prove that $\nu\mapsto MMD^{2}(\mu,\nu)$ $\Lambda_{\mu}$-convex
-we need to compute the second derivative $\frac{d^{2}}{dt^{2}}MMD^{2}(\mu,\rho_{t})$
-where $\rho_{t}$ is a minimizing geodesic between two probability
-distributions $\nu_{0}$ and $\nu_{1}$. When $\nu_{0}$ and $\nu_{1}$
-both have a density, there exists a convex function such that $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_{0}:=(\pi_{t})_{\#}\nu_{0}$
-.We start by computing the first derivative:
+To prove that $\nu\mapsto \F(\nu)$ is $\Lambda$-convex
+we need to compute the second derivative $\ddot{\F}(\rho_{t})$
+where $\rho_{t}$ is a displacement geodesic between two probability
+distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall from \cref{eq:mmd_norm_witness} that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By \cref{lem:derivatives_witness},\cref{eq:derivatives_witness}, we know that $\dot{f}_t$ and $\ddot{f}_t $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
 \[
-\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
-\]
-where $f_{t}=\rho_{t}(k(x,.))-\mu(k(x,.))$. Using the definition
-of $\rho_{t}=(1-t)Id+t\nabla\phi)_{\#}\nu_0$ it follows that:
+ \dot{\F}(\rho_t) = \langle f_t, \dot{f_t}\rangle_{\kH};\qquad \ddot{\F}(\rho_t) = \Vert \dot{f_t}\Vert^2_{\kH} + \langle f_t, \ddot{f_t}\rangle_{\kH}.
+ \]
+While $\Vert \dot{f_t}\Vert^2_{\kH}$ is non-negative, $\langle f_t, \ddot{f_t}\rangle_{\kH}$ can in general be negative. We are only interested in quantifying how negative it can get, for this purpose we use Cauchy-Schwartz inequality which directly gives:
 \[
-\frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
-\]
-hence:
-\[
-\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\int(\nabla\phi(x)-x).\nabla f_{t}(\pi_{t}(x))\nu_{0}(x)dx
-\]
-Now the second derivative is given by:
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \int(\nabla\phi(x)-x).Hf_{t}(\pi_{t}(x))(\nabla\phi(x)-x)\nu_{0}(x)dx\\
- & +\int(\nabla\phi(x)-x).\nabla_{1}\nabla_{2}k(\pi_{t}(x),\pi_{t}(x'))(\nabla\phi(x')-x')\nu_{0}(x)\nu_{0}(x')dxdx'
-\end{align*}
-Here $\nabla_{1}\nabla_{2}k(x,x')$ is the matrix whose components
-are given by $\langle\partial_{i}k(x,.),\partial_{j}k(x,.)\rangle$
-for $1\leq i,j\leq d$, and $Hf_{t}$ is the hesssian of $f_{t}$
-and its components are also given by:
-\[
-(Hf_{t}(x))_{i,j}=\langle f_{t},\partial_{i}\partial_{j}k(x,.)\rangle.
-\]
-Denoting by $h(x):=\nabla\phi(x)-x$ it follows that:
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \langle f_{t},\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\rangle\\
- & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}
-\end{align*}
-Now we use Cauchy-Schwartz inequality for the first term to get:
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert_{\mathcal{H}}\\
- & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}.
-\end{align*}
-After applying a change of variables $x=\pi_{t}(y)$ one recovers the
-velocity vector $v_{t}$ instead of $h$: 
-\begin{align*}
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\mathcal{H}}\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\\
- & +\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2}.
-\end{align*}
-
-One can further note that:
-\[
-\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\mathcal{H}}\leq\lambda\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+\ddot{\F}(\rho_t)\geq  \Vert \dot{f}_t \Vert^2_{\kH} - \Vert f_t \Vert_{\kH}\Vert \ddot{f}_t\Vert_{\kH} 
 \]
 
-and that 
-\begin{align*}
-\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2} & =\int v_{t}(x)^{T}\int\nabla_{1}\nabla_{2}k(x,x')v_{t}(x')\rho_{t}(x')dx'dx.\\
- & =\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}
-\end{align*}
-
-Hence we have shown that 
+Finally by \cref{lem:derivatives_witness}, \cref{eq:norm_derivative_witness}, we can conclude that:
 \[
-\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}=\Lambda_{\mu}(\rho_{t},v_{t})
+	\ddot{\F}(\rho_t)\geq  \langle v_t,(C_{\rho_t} - \lambda \F(\rho_t)^{\frac{1}{2}}) v_t \rangle_{L_2(\rho_t)} 
 \]
+with $C_{\rho_t}$ given by \cref{eq:positive_operator_C} and $I$ is the identity operator in $L_2(\rho_t)$. Now we can introduce the function:
+\begin{align}
+	\Lambda(\nu,v) = \langle v ,( C_{\nu} -\lambda \F(\nu)^{\frac{1}{2}} I) v \rangle_{L_2(\nu)} 
+\end{align}
+which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\nu)$. It is clear that $\Lambda(\nu,.)$  is a quadratic form on $L_2(\nu)$. Therefore, form the definition of $\Lambda$ convexity, we conclude that $\F$ is $\Lambda$-convex.
 \end{proof}
 
+%
+%
+%
+%By \cref{lem:derivatives_witness}, we have that $\dot{f_t}\in \kH$ and 
+%
+% it follows from \manote{some assumption to exchange orders}
+%\[
+%\frac{df_{t}}{dt}=\int(\nabla\phi(x)-x).\nabla k(\pi_{t}(x),.)\nu_{0}(x)dx
+%\]
+%hence:
+%\[
+%\frac{dMMD^{2}(\mu,\rho_{t})}{dt}=2\int(\nabla\phi(x)-x).\nabla f_{t}(\pi_{t}(x))\nu_{0}(x)dx
+%\]
+%Now the second derivative is given by:
+%\begin{align*}
+%\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \int(\nabla\phi(x)-x).Hf_{t}(\pi_{t}(x))(\nabla\phi(x)-x)\nu_{0}(x)dx\\
+% & +\int(\nabla\phi(x)-x).\nabla_{1}\nabla_{2}k(\pi_{t}(x),\pi_{t}(x'))(\nabla\phi(x')-x')\nu_{0}(x)\nu_{0}(x')dxdx'
+%\end{align*}
+%Here $\nabla_{1}\nabla_{2}k(x,x')$ is the matrix whose components
+%are given by $\langle\partial_{i}k(x,.),\partial_{j}k(x,.)\rangle$
+%for $1\leq i,j\leq d$, and $Hf_{t}$ is the hesssian of $f_{t}$
+%and its components are also given by:
+%\[
+%(Hf_{t}(x))_{i,j}=\langle f_{t},\partial_{i}\partial_{j}k(x,.)\rangle.
+%\]
+%Denoting by $h(x):=\nabla\phi(x)-x$ it follows that:
+%\begin{align*}
+%\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}= & \langle f_{t},\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\rangle\\
+% & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}
+%\end{align*}
+%Now we use Cauchy-Schwartz inequality for the first term to get:
+%\begin{align*}
+%\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\kH}\Vert\int\sum_{i,j}h_{i}(x)h_{j}(x)\partial_{i}\partial_{j}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert_{\kH}\\
+% & +\Vert\int\sum_{i}h_{i}(x)\partial_{i}k(\pi_{t}(x),.)\nu_{0}(x)dx\Vert^{2}.
+%\end{align*}
+%After applying a change of variables $x=\pi_{t}(y)$ one recovers the
+%velocity vector $v_{t}$ instead of $h$: 
+%\begin{align*}
+%\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq & -\Vert f_{t}\Vert_{\kH}\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\kH}\\
+% & +\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2}.
+%\end{align*}
+%
+%One can further note that:
+%\[
+%\Vert\int\sum_{i,j}v_{t}^{i}(x)v_{t}^{j}(x)\partial_{i}\partial_{j}k(x,.)\rho_{t}(x)dx\Vert_{\kH}\leq\lambda\Vert v_{t}\Vert_{L_{2}(\rho_{t})}^{2}
+%\]
+%
+%and that 
+%\begin{align*}
+%\Vert\int\sum_{i}v_{t}^{i}(x)\partial_{i}k(x,.)\rho_{t}(x)dx\Vert^{2} & =\int v_{t}(x)^{T}\int\nabla_{1}\nabla_{2}k(x,x')v_{t}(x')\rho_{t}(x')dx'dx.\\
+% & =\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}
+%\end{align*}
+%
+%Hence we have shown that 
+%\[
+%\frac{d^{2}MMD^{2}(\mu,\rho_{t})}{dt^{2}}\geq\langle v_{t},(C_{\rho_{t}}-\lambda MMD(\mu,\rho_{t})I)v_{t}\rangle_{L_{2}(\rho_{t})}=\Lambda(\rho_{t},v_{t})
+%\]
 
 
-\begin{lemma}	\label{lem:grad_flow_lambda_version}
-Consider a $\Lambda$-displacement convex functional with a gradient flow given by  $X\mapsto \phi(X)$. for any constant speed geodesic $\rho_t$ between two probability distributions $\nu$ and $\mu$ the following holds:
-\begin{align*}
-	-\int \langle \phi(X),X-Y \rangle d\Pi(\nu,\mu)
-	\leq
-	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\rho_s,\dot{\rho}_s)(1-s)ds
-\end{align*}
-where $\Pi$ is an optimal coupling between $\mu$ and $\nu$.
+\begin{lemma}\label{lem:derivatives_witness}
+Let  $\mu$ ,$\nu_0$ and $\nu_1$ be three distributions in $\mathcal{P}_2(\X)$ and consider a displacement geodesic $(\rho_t)_{t\in[0,1]}$ between $\nu_0$ and $\nu_1$  defined by \cref{eq:displacement_geodesic} 
+and its corresponding velocity vector $(v_t)_{t\in [0,1]}$ as defined in \cref{eq:continuity_equation}. The following $3$ statements hold:
+\begin{enumerate}
+	\item The first and second time derivatives of the witness function $f_{\mu,\rho_t}$ between $\mu$ and $\rho_t$ are well defined elements in $ \kH$ and are given by:
+  \begin{align}\label{eq:derivatives_witness}
+ 	\dot{f}_{\mu,\rho_t} = \int \nabla_1 k(x,.).v_t(x) \diff \rho_t(x); \qquad
+ 	 \ddot{f}_{\mu,\rho_t} = \int v_t(x)^T\nabla_1^2 k(x,.).v_t(x) \diff \rho_t(x)
+ \end{align}
+ where $ x \mapsto \nabla_1 k(x,z)$ and $x\mapsto \nabla_1^2 k(x,z)$ denote the gradient of and hessian of $x\mapsto k(x,z)$ for a fixed $z$ in $\X$.
+ \item For all $g\in \kH$:
+ \begin{align}\label{eq:inner_prod_deriative_witness}
+ 	\langle g,\dot{f}_{\mu,\rho_t}\rangle_{\kH} = \int \nabla_1 g.v_t \diff \rho_t; \qquad
+ 	\langle g,  \ddot{f}_{\mu,\rho_t}\rangle_{\kH} = \int v_t^T\nabla_1^2 g.v_t \diff \rho_t
+ \end{align}
+	\item The RKHS norms of $\dot{f}_{\mu,\rho_t}$ and $\ddot{f}_{\mu,\rho_t}$ satisfy:
+	\begin{align}\label{eq:norm_derivative_witness}
+ 	\Vert \dot{f}_{\mu,\rho_t}\Vert_{\kH}^2 = \langle v_t,C_{\rho_t} v_t \rangle_{L_2(\rho_t)}; \qquad  \Vert \ddot{f}_{\mu,\rho_t} \Vert\leq \lambda \Vert v_t \Vert^2_{L_2(\rho_t)}  
+ \end{align}
+ with $\lambda$ given by \cref{assump:bounded_fourth_oder} and $C_{\nu}$ defined in \cref{prop:lambda_convexity}. 
+\end{enumerate} 
 \end{lemma}
 \begin{proof}
-Let  $\Pi(\nu,\mu)$ be an optimal coupling between $\nu$ and $\mu$ and consider the path $\rho_{\epsilon}$ from $\nu$ to $\mu$ defined as:
-\begin{align}
-	\rho_{\epsilon} = (\pi_{\epsilon})_{\#}\Pi(\nu,\mu) 
-\end{align}
-where $\pi_{\epsilon}(X,Y)=(1-\epsilon)X+\epsilon Y$. It is easy to see that $\rho_0=\nu$ and $\rho_1=\mu$, Moreover, it can be shown that $\rho_{\epsilon}$ defines a geodesic path between $\nu$ and $\mu$. Therefore, by $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
-	\begin{align*}
-		\mathcal{F}(\rho_{\epsilon})\leq (1-\epsilon)\mathcal{F}(\nu)+\epsilon \mathcal{F}(\mu) - \int_0^1 \Lambda(\rho_s,\dot{\rho}_s)G(s,t)ds
-	\end{align*}
-	Hence by bringing $\mathcal{F}(\nu)$ to the l.h.s and dividing by $\epsilon$ and then taking its limit at $0$ it follows that:
-	\begin{align*}
-	\frac{d\mathcal{F}(\rho_{\epsilon})}{d\epsilon}\vert_{\epsilon=0}\leq \mathcal	{F}(\mu)-\mathcal{F}(\nu)-\int_0^1 \Lambda(\rho_s,\dot{\rho}_s)(1-s)ds.	
-	\end{align*}
-	It remains to show that: $\frac{d\mathcal{F}(\rho_{\epsilon})}{d\epsilon}\vert_{\epsilon=0} = - \int \phi(X).(X-Y))d\Pi^n(X,Y)$. This follows from \cref{lem:time_derivative} which implies in particular that:
-	\begin{align*}
-		\frac{d\mathcal{F}(\rho_{\epsilon})}{d\epsilon}\vert_{\epsilon=0} = \int \nabla f_0(X).(Y-X))d\Pi^n(X,Y)
-	\end{align*}
-	where $f_t$ is the witness function at time $t$.
-	 Recalling that $\phi=\nabla f_0$ by definition, we get the desired result.
+By definition of $\rho_{t}$:
+\[
+f_t(z)= \int k(x,z)\diff \mu(x) - \int k(s_t(x,y),z)\diff \pi(x,y)
+\]
+	\manote{proof}
 \end{proof}
 
+\begin{lemma}	\label{lem:grad_flow_lambda_version}
+Let $\nu$ be a distributions in $\mathcal{P}_2(\X)$ and $\mu$ be the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal transport from $\nu$ and $\mu$ and $\rho_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $v_t$ as defined in \cref{eq:continuity_equation}. The following inequality holds: \manote{This should be a standard result, just need to cite it}
+\begin{align*}
+	\int \langle \phi(x),y-x \rangle d\pi(x,y)
+	\leq
+	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds
+\end{align*}
 
-
-
+\end{lemma}
+\begin{proof}
+Recall that $rho_t$ is given by $\rho_t = (s_t)_{\#}\pi$. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
+	\begin{align*}
+		\mathcal{F}(\rho_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\rho_s,v_s)G(s,t)ds
+	\end{align*}
+	Hence by bringing $\mathcal{F}(\nu)$ to the l.h.s and dividing by $t$ and then taking its limit at $0$ it follows that:
+	\begin{align*}
+	\dot{\F}(\rho_t)\vert_{t=0}\leq \mathcal	{F}(\mu)-\mathcal{F}(\nu)-\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds.	
+	\end{align*}
+	Moreover, by \cref{lem:derivatives_witness}, the time derivative of the witness function between $\nu$ and $\mu$ is well defined, so that $\dot{\F}(\rho_t)$ can be written as:
+	\[
+	\dot{\F}(\rho_t) = \langle f_{\mu,\rho_t},\dot{f}_{\mu,\rho_t} \rangle_{\kH}
+	\]
+	Now by \cref{lem:derivatives_witness},\cref{eq:inner_prod_deriative_witness} it follows that:
+\[
+\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(x).v_t(x)\diff \rho_t(x)
+\]
+By definition of $\rho_t$,  one can further write:
+\[
+\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(s_t(x,y)).(y-x)\diff \pi_(x,y)
+\]
+We used the fact that $v_t(s_t(x,y))=(y-x)$.\manote{cite something}
+ Hence at $t=0$ we get:
+\[
+\dot{\F}(\rho_t)\vert_{t=0} = \int \nabla f_{\mu,\nu}(x).(y-x)\diff \pi(x,y)
+\]
+which shows the desired result.
+\end{proof}
 
 \begin{lemma}\label{lem:decreasing_functional}
 	Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
@@ -172,7 +302,7 @@ The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one c
 
 
 \begin{lemma}\label{lem:mixture_convexity}
-The Functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
+The functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
 \begin{align*}
 	\F(\lambda \nu_1+(1-\lambda)\nu_2)\leq \lambda \F(\nu_1)+ (1-\lambda)\F(\nu_2)
 \end{align*}
@@ -182,7 +312,7 @@ The Functional $\F$ is mixture convex: for any probability distributions $\nu_1$
 	We need to show that \[\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu')\leq 0\]
 	This follows from a simple computation which shows that:
 	\begin{align*}
-		\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
+		\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
 	\end{align*}
 \end{proof}
 
@@ -190,32 +320,31 @@ The Functional $\F$ is mixture convex: for any probability distributions $\nu_1$
 
 
 
-	Let $\phi$ be a vector field in $\mathbb{R}^d$, and let $\nu$  be a probability distribution on $\mathbb{R}^d$. Consider the path $\rho_t$ between $\nu$ and $(I+\phi)_{\#}\nu$ given by:
-	\begin{align*}
-		\rho_t=  (\pi_t)_{\#}\nu \qquad \forall t\in [0,1]
-	\end{align*}
-	where $\pi_t = (I+t\phi)$. We make the assumption that 
-
 
 
 \begin{lemma}\label{lem:derivative_mmd}
- The time derivative of $\mathcal{F}(\rho_t)$ is given by:
+	Let $\phi$ be a vector field on $\X$ and $\nu$ in $\mathcal{P}_2(\X)$. Consider the path $\delta_t$ between $\nu$ and $(I+\phi)_{\#}\nu$ given by:
 	\begin{align*}
-		\frac{d \mathcal{F}(\rho_t)}{dt}&=\int \nabla f_t(\pi_t(X)) \phi(X)d\nu(X)\\
+		\delta_t=  (I+t\phi)_{\#}\nu \qquad \forall t\in [0,1]
 	\end{align*}
-where $f_t$ is the witness function given by $f_t(x)=  \rho_t( k(X,x) )-\mu( k(X,x) )$.	
+The time derivative of $\mathcal{F}(\delta_t)$ is given by:
+	\begin{align*}
+		\dot{\F}(\delta_t)&=\int \nabla f_{\mu,\delta_t}(x+t\phi(x)) \phi(x)d\nu(x)\\
+	\end{align*}
+where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as defined in \cref{eq:witness_function}.	
 	Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
 	
 	\begin{align*}
-		\vert \frac{d^2 \mathcal{F}(\rho_t)}{dt^2} \vert \leq 3L \int \Vert \phi(X) \Vert^2 d\nu(X)
+		\ddot{\F}(\delta_t) \vert \leq 3L \int \Vert \phi(x) \Vert^2 d\nu(x)
 	\end{align*}
 	where $L$ is a positive constant defined in \cref{assump:bounded_trace,assump:bounded_hessian}.
 	
 \end{lemma}
 \begin{proof}
-We start by computing the first derivative. Recalling that $\mathcal{F}(\rho_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\mathcal{H}} $, it follows that:
+For simplicity, we write $f_t$ instead of $f_{\mu,\delta_t}$.
+We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
 \[
-\frac{d\mathcal{F}\rho_{t})}{dt}=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\mathcal{H}}
+\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}
 \]. Using the definition
 of $\rho_{t}=(I+t\phi)_{\#}\nu_0$ it follows that:
 \[
@@ -227,7 +356,7 @@ hence:
 \]
 Now the second derivative is obtained by direct derivation of the above expression:
 	\begin{align*}
-		\frac{d^2 \mathcal{F}(\rho_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
+		\frac{d^2 \mathcal{F}(\delta_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
 		&+\int \phi(X)^T\nabla_x\nabla_y k(\pi_t(X),\pi_t(X')) ) \phi(X')d\nu(X)d\nu(X') 
 	\end{align*}
 where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \ref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
@@ -240,27 +369,27 @@ The last term can also be upper-bounded by $2L$ by \ref{assump:bounded_trace}.
  d
 Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ and $\nu'$. We consider the path $\rho_t$ defined as $\rho_t=(\pi_t)_{\#}\Pi$ where $\pi_t(X,Y)=(1-t)X+tY$. It is possible to provide an expression for the time derivative of $\mathcal{F}{\rho_t}$. This is given by 
 
-\begin{lemma}\label{lem:time_derivative}
-The time derivative of $\mathcal{F}(\rho_t)$ is given by:
-	\begin{align*}
-		\frac{d \mathcal{F}(\rho_t)}{dt}&=\int \nabla f_t(\pi_t(X)).(Y-X)d\Pi(X,Y)\\
-	\end{align*}
-	where $f_t$ is the witness function at time $t$ and is given by:
-	\begin{align}
-	f_t(x)=\rho_t(k(X,x))-\mu(k(X,x)) \qquad \forall t\in [0,1]
-	\end{align}	
-\end{lemma}
-\begin{proof}
-	The proof is very similar to the one in \cref{lem:derivative_mmd}. Indeed we still have
-	\begin{align*}
-		\frac{d \mathcal{F}(\rho_t)}{dt} = \langle f_t , \frac{df_t}{dt} \rangle
-	\end{align*}
-	And the time derivative of $f_t$ at each point $x\in\mathbb{R}^d$ is obtained by direct computation:
-	\begin{align*}
-		 \frac{df_t}{dt}= \int \nabla k(\pi_t(X,Y),.).(Y-X)d\Pi(X,Y)
-	\end{align*}
-	The result follows using the reproducing property in $\mathcal{H}$.
- \end{proof}
+%\begin{lemma}\label{lem:time_derivative}
+%The time derivative of $\mathcal{F}(\rho_t)$ is given by:
+%	\begin{align*}
+%		\frac{d \mathcal{F}(\rho_t)}{dt}&=\int \nabla f_t(\pi_t(X)).(Y-X)d\Pi(X,Y)\\
+%	\end{align*}
+%	where $f_t$ is the witness function at time $t$ and is given by:
+%	\begin{align}
+%	f_t(x)=\rho_t(k(X,x))-\mu(k(X,x)) \qquad \forall t\in [0,1]
+%	\end{align}	
+%\end{lemma}
+%\begin{proof}
+%	The proof is very similar to the one in \cref{lem:derivative_mmd}. Indeed we still have
+%	\begin{align*}
+%		\frac{d \mathcal{F}(\rho_t)}{dt} = \langle f_t , \frac{df_t}{dt} \rangle
+%	\end{align*}
+%	And the time derivative of $f_t$ at each point $x\in\mathbb{R}^d$ is obtained by direct computation:
+%	\begin{align*}
+%		 \frac{df_t}{dt}= \int \nabla k(\pi_t(X,Y),.).(Y-X)d\Pi(X,Y)
+%	\end{align*}
+%	The result follows using the reproducing property in $\kH$.
+% \end{proof}
 
 
 
