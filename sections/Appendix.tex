@@ -38,25 +38,25 @@ For two given probability distributions $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$ w
 	W_2^2(\nu,\mu) := \inf_{\pi\in\Pi(\nu,\mu)} \int \Vert x - y\Vert^2 d\pi(x,y) \qquad \forall \nu, \mu\in \mathcal{P}_2(\X)
 \end{align}
 It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
-\begin{align}\label{eq:convex_combination}
-	s_t = (1-t)x+ty \qquad \forall x,y\in \X, \forall t\in [0,1].
-\end{align}
-The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of $\pi^{*}$ by $s_t$:    
-  \begin{align}\label{eq:displacement_geodesic}
+\begin{equation}\label{eq:convex_combination}
+	s_t(x,y) = (1-t)x+ty \qquad \forall x,y\in \X, \; \forall t\in [0,1].
+\end{equation}
+The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of the optimal coupling $\pi^{*}$ by $s_t$:    \aknote{weird. st not operator}
+  \begin{equation}\label{eq:displacement_geodesic}
 	\rho_t = (s_t)_{\#}\pi^{*}
-\end{align}
+\end{equation}
 It is easy to see that \cref{eq:displacement_geodesic} satisfies the following boundary conditions:
 \begin{align}\label{eq:boundary_conditions}
 	\rho_0 = \nu \qquad \rho_1 = \mu.
 \end{align}
-Paths of the form of \cref{eq:displacement_geodesic} are called displacement geodesics. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a vector field $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho$ satisfies the continuity equation \manote{reference} :
-\begin{align}\label{eq:continuity_equation}
+Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a vector field $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho$ satisfies the continuity equation \manote{reference} :
+\begin{equation}\label{eq:continuity_equation}
 	\partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
-\end{align}
-\cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho)$ of the curve $\rho$ would be given by:
-\begin{align}
+\end{equation}
+Equation \cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho)$ of the curve $\rho$ would be given by:
+\begin{equation}
 	l(\rho)^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t
-\end{align}
+\end{equation}
 where \[
 \Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
 \]
@@ -67,7 +67,7 @@ This perspective allows to provide a dynamical interpretation of the $W_2$ as th
 where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}.
 
 \begin{remark}
-Such paths should not be confused with another kind of paths called mixture geodesics. The mixture geodesic $(\mu_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
+Such paths should not be confused with another kind of paths called \textit{mixture geodesics}. The mixture geodesic $(\mu_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
 \begin{align}\label{eq:mixture_geodesic}
 m_t = (1-t)\nu + t\mu \qquad \forall t \in [0,1].
 \end{align}
@@ -77,53 +77,82 @@ Although, we will be interested in the $MMD$ as a loss function, we will not con
 
 
 
-
-
-
-
-\subsection{Proof of Proposition~\ref{prop:mmd_flow}}
-
-In the case where $\F=MMD^2$:
-\begin{align}
-\nabla \frac{\partial \F}{\partial \rho}&= \nabla \frac{\partial \|f_t\|^2_{\kH}}{\partial \rho_t}\\
-&=2 \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}\\
-&=2 \nabla \langle \frac{\partial \E_{q_t}[k(Y,.)]}{\partial \rho_t}, f_t \rangle_{\kH}\\
-&=2 \nabla \langle k(Y,.), f_t \rangle_{\kH}\\
-&= 2 \nabla f_t(Y)
-\end{align}
-where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$.
-
-\subsection{SDE and stochastic processes}
+\subsubsection{Stochastic processes}
 
 Consider the Itô process, i.e. the stochastic process:
 \begin{equation}
-dX_t=g(X_t)dt
+dX_t=g(X_t)dt.
 \end{equation}
-Let $f \in \mathcal{C}^2(\X)$, Itô's formula can be written:
-\begin{equation*}
+Let $f$ be a twice-differentiable scalar function, Itô's formula (see \cite{ito1951stochastic}) can be written:
+\begin{equation}
 df(X_t)=\nabla f(X_t).g(X_t)dt
-\end{equation*}
+\end{equation}
 Let $\rho_t$ be the distribution of the process $X_t$. We have:
-\begin{align*}
+\begin{align}
 \E[\frac{df}{dt}(X_t)]&= \E[\nabla f(X_t).g(X_t)]\\
 \Longleftrightarrow \int f(X) \frac{d \rho_t}{dt}(X)&=-\int f(X)div(g(X)\rho_t(X))
-\end{align*}
-where the second line is obtained by integrating by parts on both sides of the equality. Finally, the distribution $\rho_t$ verifies: 
-\begin{equation*}
+\end{align}
+where the second line is obtained by integrating by parts on both sides of the equality. Finally, the distribution $\rho_t$ verifies the continuity equation: 
+\begin{equation}
 \frac{d\rho_t}{dt}=div(g\rho_t)
-\end{equation*}
+\end{equation}
 
 
+\subsection{Proofs}
+
+\subsubsection{Proof of Proposition~\ref{prop:mmd_flow}}
+
+In the case where $\F= \frac{1}{2} \|f_t\|^2_{\kH}$, by simple derivations we obtain:
+\begin{equation}
+ \nabla \frac{\partial\frac{1}{2} \|f_t\|^2_{\kH}}{\partial \rho_t}= \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle \frac{\partial \E_{\rho_t}[k(Y,.)]}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle k(Y,.), f_t \rangle_{\kH}
+\end{equation}
+Then, by applying the reproducing property we have that:
+\begin{equation}
+\nabla \langle k(Y,.), f_t \rangle_{\kH}
+= \nabla f_t(Y)
+\end{equation}
+where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$.
+
+\subsubsection{Proof of \cref{prop:lambda_convexity} (Displacement convexity)}
+
+We will firstly need the following lemma.
+
+\begin{lemma}\label{lem:derivatives_witness}
+	Let  $\mu$, $\nu_0$ and $\nu_1$ be three distributions in $\mathcal{P}_2(\X)$ and consider a displacement geodesic $(\rho_t)_{t\in[0,1]}$ between $\nu_0$ and $\nu_1$  defined by \cref{eq:displacement_geodesic} 
+	and its corresponding velocity vector $(v_t)_{t\in [0,1]}$ as defined in \cref{eq:continuity_equation}. The following statements hold:
+	\begin{enumerate}
+		\item The first and second time derivatives of the witness function $f_{\mu,\rho_t}$ between $\mu$ and $\rho_t$ are well defined elements in $ \kH$ and are given by:
+		\begin{align}\label{eq:derivatives_witness}
+		\dot{f}_{\mu,\rho_t} = \int \nabla_1 k(x,.).v_t(x) \diff \rho_t(x); \qquad
+		\ddot{f}_{\mu,\rho_t} = \int v_t(x)^T\nabla_1^2 k(x,.).v_t(x) \diff \rho_t(x)
+		\end{align}
+		where $ x \mapsto \nabla_1 k(x,z)$ and $x\mapsto \nabla_1^2 k(x,z)$ respectively denote the gradient and hessian of $x\mapsto k(x,z)$ for a fixed $z$ in $\X$.
+		\item For all $g\in \kH$:
+		\begin{align}\label{eq:inner_prod_deriative_witness}
+		\langle g,\dot{f}_{\mu,\rho_t}\rangle_{\kH} = \int \nabla_1 g.v_t \diff \rho_t; \qquad
+		\langle g,  \ddot{f}_{\mu,\rho_t}\rangle_{\kH} = \int v_t^T\nabla_1^2 g.v_t \diff \rho_t
+		\end{align}
+		\item The RKHS norms of $\dot{f}_{\mu,\rho_t}$ and $\ddot{f}_{\mu,\rho_t}$ satisfy:
+		\begin{align}\label{eq:norm_derivative_witness}
+		\Vert \dot{f}_{\mu,\rho_t}\Vert_{\kH}^2 = \langle v_t,C_{\rho_t} v_t \rangle_{L_2(\rho_t)}; \qquad  \Vert \ddot{f}_{\mu,\rho_t} \Vert\leq \lambda \Vert v_t \Vert^2_{L_2(\rho_t)}  
+		\end{align}
+		with $\lambda$ given by \cref{assump:bounded_fourth_oder} and $C_{\nu}$ defined in \cref{prop:lambda_convexity}. 
+	\end{enumerate} 
+\end{lemma}
+\begin{proof}
+	By definition of $\rho_{t}$:
+	\[
+	f_t(z)= \int k(x,z)\diff \mu(x) - \int k(s_t(x,y),z)\diff \pi(x,y)
+	\]
+	\manote{proof}
+\end{proof}
 
 
-\subsection{Displacement convexity}
-
-
-\begin{proof} \ref{prop:lambda_convexity}
+\begin{proof}
 To prove that $\nu\mapsto \F(\nu)$ is $\Lambda$-convex
 we need to compute the second derivative $\ddot{\F}(\rho_{t})$
 where $\rho_{t}$ is a displacement geodesic between two probability
-distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall from \cref{eq:mmd_norm_witness} that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By \cref{lem:derivatives_witness},\cref{eq:derivatives_witness}, we know that $\dot{f}_t$ and $\ddot{f}_t $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
+distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such a minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall from \cref{eq:mmd_norm_witness} that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By  \cref{lem:derivatives_witness},\cref{eq:derivatives_witness}, we know that $\dot{f}_t$ and $\ddot{f}_t $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
 \[
  \dot{\F}(\rho_t) = \langle f_t, \dot{f_t}\rangle_{\kH};\qquad \ddot{\F}(\rho_t) = \Vert \dot{f_t}\Vert^2_{\kH} + \langle f_t, \ddot{f_t}\rangle_{\kH}.
  \]
@@ -140,7 +169,7 @@ with $C_{\rho_t}$ given by \cref{eq:positive_operator_C} and $I$ is the identity
 \begin{align}
 	\Lambda(\nu,v) = \langle v ,( C_{\nu} -\lambda \F(\nu)^{\frac{1}{2}} I) v \rangle_{L_2(\nu)} 
 \end{align}
-which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\nu)$. It is clear that $\Lambda(\nu,.)$  is a quadratic form on $L_2(\nu)$. Therefore, form the definition of $\Lambda$ convexity, we conclude that $\F$ is $\Lambda$-convex.
+which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\nu)$. It is clear that $\Lambda(\nu,.)$  is a quadratic form on $L_2(\nu)$. Therefore, from \cref{def:lambda-convexity} of $\Lambda$ convexity, we conclude that $\F$ is $\Lambda$-convex.
 \end{proof}
 
 %
@@ -202,47 +231,19 @@ which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$
 %\]
 
 
-\begin{lemma}\label{lem:derivatives_witness}
-Let  $\mu$ ,$\nu_0$ and $\nu_1$ be three distributions in $\mathcal{P}_2(\X)$ and consider a displacement geodesic $(\rho_t)_{t\in[0,1]}$ between $\nu_0$ and $\nu_1$  defined by \cref{eq:displacement_geodesic} 
-and its corresponding velocity vector $(v_t)_{t\in [0,1]}$ as defined in \cref{eq:continuity_equation}. The following $3$ statements hold:
-\begin{enumerate}
-	\item The first and second time derivatives of the witness function $f_{\mu,\rho_t}$ between $\mu$ and $\rho_t$ are well defined elements in $ \kH$ and are given by:
-  \begin{align}\label{eq:derivatives_witness}
- 	\dot{f}_{\mu,\rho_t} = \int \nabla_1 k(x,.).v_t(x) \diff \rho_t(x); \qquad
- 	 \ddot{f}_{\mu,\rho_t} = \int v_t(x)^T\nabla_1^2 k(x,.).v_t(x) \diff \rho_t(x)
- \end{align}
- where $ x \mapsto \nabla_1 k(x,z)$ and $x\mapsto \nabla_1^2 k(x,z)$ denote the gradient of and hessian of $x\mapsto k(x,z)$ for a fixed $z$ in $\X$.
- \item For all $g\in \kH$:
- \begin{align}\label{eq:inner_prod_deriative_witness}
- 	\langle g,\dot{f}_{\mu,\rho_t}\rangle_{\kH} = \int \nabla_1 g.v_t \diff \rho_t; \qquad
- 	\langle g,  \ddot{f}_{\mu,\rho_t}\rangle_{\kH} = \int v_t^T\nabla_1^2 g.v_t \diff \rho_t
- \end{align}
-	\item The RKHS norms of $\dot{f}_{\mu,\rho_t}$ and $\ddot{f}_{\mu,\rho_t}$ satisfy:
-	\begin{align}\label{eq:norm_derivative_witness}
- 	\Vert \dot{f}_{\mu,\rho_t}\Vert_{\kH}^2 = \langle v_t,C_{\rho_t} v_t \rangle_{L_2(\rho_t)}; \qquad  \Vert \ddot{f}_{\mu,\rho_t} \Vert\leq \lambda \Vert v_t \Vert^2_{L_2(\rho_t)}  
- \end{align}
- with $\lambda$ given by \cref{assump:bounded_fourth_oder} and $C_{\nu}$ defined in \cref{prop:lambda_convexity}. 
-\end{enumerate} 
-\end{lemma}
-\begin{proof}
-By definition of $\rho_{t}$:
-\[
-f_t(z)= \int k(x,z)\diff \mu(x) - \int k(s_t(x,y),z)\diff \pi(x,y)
-\]
-	\manote{proof}
-\end{proof}
+\subsubsection{Proof of \cref{th:rates_mmd}}
 
 \begin{lemma}	\label{lem:grad_flow_lambda_version}
-Let $\nu$ be a distributions in $\mathcal{P}_2(\X)$ and $\mu$ be the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal transport from $\nu$ and $\mu$ and $\rho_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $v_t$ as defined in \cref{eq:continuity_equation}. The following inequality holds: \manote{This should be a standard result, just need to cite it}
+Let $\nu$ be a distribution in $\mathcal{P}_2(\X)$ and $\mu$ the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal coupling between $\nu$ and $\mu$, and $\rho_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $v_t$ as defined in \cref{eq:continuity_equation}. Finally let $\phi(X)=\nabla f_{\nu,\mu}(X)$ the gradient of the witness function between $\mu$ and $\nu$. The following inequality holds: \manote{This should be a standard result, just need to cite it}
 \begin{align*}
-	\int \langle \phi(x),y-x \rangle d\pi(x,y)
+	\int \phi(x).(y-x) d\pi(x,y)
 	\leq
 	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds
 \end{align*}
 
 \end{lemma}
 \begin{proof}
-Recall that $rho_t$ is given by $\rho_t = (s_t)_{\#}\pi$. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
+Recall that $\rho_t$ is given by $\rho_t = (s_t)_{\#}\pi$. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
 	\begin{align*}
 		\mathcal{F}(\rho_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\rho_s,v_s)G(s,t)ds
 	\end{align*}
@@ -260,63 +261,14 @@ Recall that $rho_t$ is given by $\rho_t = (s_t)_{\#}\pi$. By $\Lambda$-convexity
 \]
 By definition of $\rho_t$,  one can further write:
 \[
-\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(s_t(x,y)).(y-x)\diff \pi_(x,y)
+\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(s_t(x,y)).(y-x)\diff \pi(x,y)
 \]
-We used the fact that $v_t(s_t(x,y))=(y-x)$.\manote{cite something}
- Hence at $t=0$ we get:
+where we used the fact that $v_t(s_t(x,y))=(y-x)$\manote{cite something}. Hence at $t=0$ we get:
 \[
 \dot{\F}(\rho_t)\vert_{t=0} = \int \nabla f_{\mu,\nu}(x).(y-x)\diff \pi(x,y)
 \]
 which shows the desired result.
 \end{proof}
-
-\begin{lemma}\label{lem:decreasing_functional}
-	Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
-	\begin{align*}
-		\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n
-	\end{align*}
-\end{lemma}
-
-\begin{proof}
-	
-Here we consider a path between $\nu_n$ and $\nu_{n+1}$ of the form:
-	\begin{align*}
-		\rho_t	=(I-\gamma t\phi_n)_{\#}\nu_n
-\end{align*}
-
-The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
-\begin{align}\label{eq:taylor_expansion}
-	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
-\end{align} 
-	By \cref{lem:derivative_mmd} we have that:
-	\begin{align*}
-		\frac{d \mathcal{F}(\rho_t) }{dt} = -\gamma \int \nabla f_n(X).\phi_n(X)d\nu_n(X)=-\gamma \int \Vert \phi_n(X) \Vert^2 d\nu_n(X)
-	\end{align*}
-	
-	Moreover, by \cref{assump:bounded_trace,assump:bounded_hessian} it follows from \cref{lem:derivative_mmd} that:
-	\begin{align}\label{eq:upper_bound_1}
-		\vert \frac{d^2 \mathcal{F}(\rho_t) }{dt^2}   \vert\leq L\int \Vert \phi_n(X) \Vert^2 d\nu_n(X)
-	\end{align}
-	Using \cref{eq:taylor_expansion,eq:upper_bound_1} the result follows.
-\end{proof}
-
-
-\begin{lemma}\label{lem:mixture_convexity}
-The functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
-\begin{align*}
-	\F(\lambda \nu_1+(1-\lambda)\nu_2)\leq \lambda \F(\nu_1)+ (1-\lambda)\F(\nu_2)
-\end{align*}
-\end{lemma}
-\begin{proof}
-	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$.
-	We need to show that \[\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu')\leq 0\]
-	This follows from a simple computation which shows that:
-	\begin{align*}
-		\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
-	\end{align*}
-\end{proof}
-
-
 
 
 
@@ -333,7 +285,6 @@ The time derivative of $\mathcal{F}(\delta_t)$ is given by:
 	\end{align*}
 where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as defined in \cref{eq:witness_function}.	
 	Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
-	
 	\begin{align*}
 		\ddot{\F}(\delta_t) \vert \leq 3L \int \Vert \phi(x) \Vert^2 d\nu(x)
 	\end{align*}
@@ -344,15 +295,16 @@ where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as
 For simplicity, we write $f_t$ instead of $f_{\mu,\delta_t}$.
 We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
 \[
-\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}
-\]. Using the definition
-of $\rho_{t}=(I+t\phi)_{\#}\nu_0$ it follows that:
+\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}.
+\]
+Using the definition
+of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$?ca doit correspondre au petit paragraphe en dessous avec le début d'explication}
 \[
-\frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X)
+\frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X),
 \]
 hence:
 \[
-\frac{d\mathcal{F}\rho_{t})}{dt}=2\int\phi(X).\nabla f_{t}(\pi_{t}(X))d\nu(X)
+\frac{d\mathcal{F}(\delta_{t})}{dt}=2\int\phi(X).\nabla f_{t}(\pi_{t}(X))d\nu(X)
 \]
 Now the second derivative is obtained by direct derivation of the above expression:
 	\begin{align*}
@@ -364,10 +316,9 @@ where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is 
 	4L \int \Vert \phi(X)\Vert^2d\nu(X)  
 \end{align*}
 The last term can also be upper-bounded by $2L$ by \ref{assump:bounded_trace}.
-
 \end{proof}
- d
-Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ and $\nu'$. We consider the path $\rho_t$ defined as $\rho_t=(\pi_t)_{\#}\Pi$ where $\pi_t(X,Y)=(1-t)X+tY$. It is possible to provide an expression for the time derivative of $\mathcal{F}{\rho_t}$. This is given by 
+
+Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ and $\nu'$. We consider the path $\rho_t$ defined as $\rho_t=(\pi_t)_{\#}\Pi$ where $\pi_t(X,Y)=(1-t)X+tY$. It is possible to provide an expression for the time derivative of $\mathcal{F}{\rho_t}$. This is given by ?\\
 
 %\begin{lemma}\label{lem:time_derivative}
 %The time derivative of $\mathcal{F}(\rho_t)$ is given by:
@@ -396,6 +347,52 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 
 
 
+\begin{proposition}\label{prop:decreasing_functional}
+	Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
+	\begin{align*}
+	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n
+	\end{align*}
+\end{proposition}
+
+\begin{proof}
+	
+	Here we consider a path between $\nu_n$ and $\nu_{n+1}$ of the form:
+	\begin{align*}
+	\rho_t	=(I-\gamma t\phi_n)_{\#}\nu_n
+	\end{align*}
+	
+	The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:\aknote{$\rho_1,\rho_0$?}
+	\begin{align}\label{eq:taylor_expansion}
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
+	\end{align} 
+	By taking $\phi=-\gamma \phi_n$ in \cref{lem:derivative_mmd} we have that:
+	\begin{align*}
+	\frac{d \mathcal{F}(\rho_t) }{dt} = -\gamma \int \nabla f_n(X).\phi_n(X)d\nu_n(X)=-\gamma \int \Vert \phi_n(X) \Vert^2 d\nu_n(X)
+	\end{align*}
+	since $\nabla f_n=\phi_n$.
+	Moreover, by \cref{assump:bounded_trace,assump:bounded_hessian} it follows from \cref{lem:derivative_mmd} that:
+	\begin{align}\label{eq:upper_bound_1}
+	\vert \frac{d^2 \mathcal{F}(\rho_t) }{dt^2}   \vert\leq L\int \Vert \phi_n(X) \Vert^2 d\nu_n(X)
+	\end{align}
+	Using \cref{eq:taylor_expansion,eq:upper_bound_1} the result follows.
+\end{proof}
+
+
+
+\begin{lemma}\label{lem:mixture_convexity}
+	The functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
+	\begin{align*}
+	\F(\lambda \nu_1+(1-\lambda)\nu_2)\leq \lambda \F(\nu_1)+ (1-\lambda)\F(\nu_2)
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$.
+	We need to show that \[\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu')\leq 0\]
+	This follows from a simple computation which shows that:\aknote{y'a pas une erreur là? ou c'est moi, j'ai pas la même chose}
+	\begin{align*}
+	\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
+	\end{align*}
+\end{proof}
 
 
 

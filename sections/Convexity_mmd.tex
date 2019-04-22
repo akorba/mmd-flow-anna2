@@ -16,7 +16,7 @@ where $\gamma$ is some fixed step-size, $X \mapsto \phi_n(X):=\nabla f_{n}(X)$ i
 	X_{n+1} = X_n - \gamma \phi_n(X_n) \forall n\in \mathbb{N}.
 \end{align} 
 One important criterion to characterize the convergence of the gradient flow of a functional $\F$ is the notion of displacement convexity of such functional. Displacement convexity states that the functional evaluated at any distribution in a geodesic path between two distributions $\nu$ and $\nu'$ will be upper-bounded by a convex mixture of $\F(\nu)$ and $\F(\nu')$:
-\begin{definition}
+\begin{definition}\label{def:displacement_convexity}
 (displacement convexity \cite{Villani:2004} Definition 1 ). Let $\mu$
 and $\nu$ be two probabilities densities. There exists a $\mu-a.e.$
 unique gradient of a convex function ,$\nabla\phi$, such that $\nu$
@@ -56,9 +56,9 @@ between $\mu$ and $\nu$ with velocity vector field $v_{t}$, i.e:
 $\partial_{t}\rho_{t}+div(\rho_{t}v_{t})=0;\rho_{0}=\mu;\rho_{1}=\nu$
 the following holds:
 \end{definition}
-\[
+\begin{equation*}
 \frac{d^{2}\mathcal{F}(\rho_{t})}{dt^{2}}\geq\Lambda(\rho_{t},v_{t})\qquad\forall t\in[0,1].
-\]
+\end{equation*}
 
 To show the $\Lambda$-convexity of the functional defined in \cref{eq:MMD_functional} we first make the following assumptions on the kernel:
 \begin{assumplist} 
@@ -225,7 +225,7 @@ Here we simply used the fact that $\rho_{1}\in L(\mathcal{P},M-K)$.
 \end{align}
 One natural question to ask is whether the  discretized gradient flow algorithm provides such way to reach the barrier $K$ and at what speed this happens. The next result answers that question:   
 
-\begin{theorem}
+\begin{theorem}\label{th:rates_mmd}
 	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:discretized_flow}. Then the following holds:
 	\begin{align}
 		\F(\bar{\nu})\leq \frac{1}{2\gamma N}W_2^2(\nu_0,\mu) +K
