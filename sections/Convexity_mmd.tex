@@ -1,5 +1,4 @@
-
-\section{Theoretical properties of the MMD flow}
+\section{Theoretical properties of the MMD flow}\label{sec:theory}
 
 
 In all what follows we consider a fixed target distribution $\mu$ and define the following functional 
@@ -130,6 +129,7 @@ Then the following holds:
 \begin{equation}
 \F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})+t(1-t)K
 \end{equation}
+where $K$ is a constant depending on $\X$ and the kernel $k$ in $\F$.
 \end{corollary}
 %
 \begin{proof}
@@ -148,7 +148,7 @@ where $diam(\mathcal{X})$ is the diameter of $\mathcal{X}$. The rest of the proo
 and by setting $K=2\lambda Cdiam(\mathcal{X})$.
 \end{proof}
 %
-\cref{cor:loser_bound}, is a loser bound and doesn't account for local
+\cref{cor:loser_bound}, is a loser bound and does not account for the local
 convexity of the MMD. However, it allows to state the following result,
 which is inspired from (\cite{Bottou:2017}, Theorem 6.3) but generalizes
 it to the case of 'almost convex' functionals.

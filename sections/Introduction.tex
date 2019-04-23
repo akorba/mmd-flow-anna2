@@ -1,19 +1,22 @@
 
 \section{Introduction}
 
-This paper deals with the problem of sampling from a probability measure $\pi$ on $(\R^d,\mathcal{B}(\R^d))$ which admits a density, still denoted by $\pi$, with respect to the Lebesgue measure.
+This paper deals with the problem of sampling from a probability measure $\mu$ on $(\R^d,\mathcal{B}(\R^d))$ which admits a density, still denoted by $\mu$, with respect to the Lebesgue measure.
 This problem appears in machine learning, Bayesian inference, computational physics... Classical methods to tackle this issue are Markov Chain Monte Carlo methods, for instance Metropolis-Hastings algorithm, Gibbs sampling. The main drawback of these methods is that one needs to choose an appropriate proposal distribution, which is not trivial. Consequently, other algorithms based on continuous dynamics have been proposed, such as the over-damped Langevin diffusion:
 \begin{equation}\label{eq:langevin_diffusion}
-dX_t= -\nabla \log \pi (X_t)dt+\sqrt{2}dB_t
+dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
 \end{equation}
 where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion. The Langevin Monte-Carlo (LMC) algorithm, or Unadjusted Langevin algorithm (ULA) considers the Markov chain $(X_k)_{k\ge1 }$ given by the Euler-Maruyama discretization of the diffusion \eqref{eq:langevin_diffusion}:
 \begin{equation}
-X_{k+1} = X_k - \gamma_{k+1}\nabla \log \pi(X_k) + \sqrt{2\gamma_{k+1}G_{k+1}}
+X_{k+1} = X_k - \gamma_{k+1}\nabla \log \mu(X_k) + \sqrt{2\gamma_{k+1}G_{k+1}}
 \end{equation}
 where $(\gamma_k)_{k\ge1}$ is a sequence of step sizes (constant or convergent to zero), and
-$(G_k)_{k \ge 1}$ is a sequence of i.i.d. standard $d$-dimensional Gaussian random variables. This algorithm has attracted a lot of attention... But....
+$(G_k)_{k \ge 1}$ is a sequence of i.i.d. standard $d$-dimensional Gaussian random variables. This algorithm has attracted a lot of attention... But....\aknote{say something about the requirement of the knowledge of gradient of log target and how it is difficult to estimate?}
 
 Interestingly, it has been shown in \cite{jordan1998variational} that the family of distributions $(\rho_t)_{t\ge 0}$ where $\rho_t$ is the distribution of the process \eqref{eq:langevin_diffusion} is the solution of a gradient
 flow equation in the Wasserstein space of order 2 associated with a particular functional, the KL-divergence. Langevin Monte-Carlo can thus be formulated as a first order optimization algorithm of the KL-divergence defined on the Wasserstein space of order 2 (see also \cite{durmus2018analysis,bernton2018langevin}). Inspired by this interpretation, we propose a new method to sample from a distribution, discretizing a gradient
-flow equation in the Wasserstein space of order 2 associated with another well-chosen functional, the Maximum Mean Discrepancy, introduced in \cite{gretton2012kernel}.
+flow equation in the Wasserstein space of order 2 associated with another well-chosen functional, the Maximum Mean Discrepancy, introduced in \cite{gretton2012kernel}. To the best of our knowledge, this work is the first one which investigates the flow of a discrepancy between distributions different from the Kullback-Leibler divergence. \aknote{true? (also, reformulate this sentence)}
 
+
+This paper is organized as follows. In \cref{sec:preliminaries}, definitions and mathematical background needed in the paper are introduced, and \cref{sec:mmd_flow} is devoted to deriving the MMD flow and the associated sampling algorithm.
+\cref{sec:theory} investigates at length the theoretical properties of this flow. 

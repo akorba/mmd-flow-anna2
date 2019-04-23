@@ -1,83 +1,12 @@
+\section{Appendix}\label{sec:appendix}
 
-\section{Appendix}
-
-\subsection{Notation and background}
-In all what follows, $\X$ is a convex subset of $\R^d$ and $\mathcal{P}_2(\X)$ denotes the set of all probability distributions supported on $\X$ with finite second moment.
-For a given distributions $\nu\in\mathcal{P}_2(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
-
-\subsubsection{Maximum Mean Discrepancy}\label{subsec:MMD}
-For a given characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding Reproducing Kernel Hilbert Space \manote{some reference here needed}. $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$. The unit ball in $\kH$ which will be denoted as $\mathcal{B}$ is simply the set of functions $f$ in $\kH$ such that $\Vert f\Vert_{\kH}\leq 1 $:
-\begin{align}\label{eq:unit_ball_RKHS}
-	\mathcal{B} = \{ f\in \kH : \quad \Vert f\Vert_{\kH}\leq 1 \}
-\end{align}
-Under mild conditions \manote{write conditions} on the kernel $k$, it is possible to define a distance on $\mathcal{P}_2(\X)$ by finding a function $f$ in $\mathcal{B}$ that maximizes the mean difference between two given distributions $\mu$ and $\nu$. Such distance is called the Maximum Mean Discrepancy  (MMD) \cite{Gretton:2012}:
-\begin{align}\label{eq:MMD}
-	MMD(\mu,\nu) = \sup_{g\in \mathcal{B}} \int g\diff\mu - \int g \diff\nu
-\end{align}
-The maximization problem in \cref{eq:MMD} is achieved for an optimal $g^*$ in $\mathcal{B}$ that is proportional to the  witness function between $\nu$ and $\mu$:
-\begin{align}\label{eq:witness_function}
-	f_{\nu,\mu}(z) = \int k(.,z)\diff \mu - \int k(.,z)\diff \nu  \qquad z\in \X
-\end{align}
-This allows to express the $MMD$ as the norm of \cref{eq:witness_function} $f_{\nu,\mu}$:
-\begin{align}\label{eq:mmd_norm_witness}
-	MMD(\mu,\nu) = \Vert f_{\nu,\mu} \Vert_{\mathcal{H}} 
-\end{align}
-Furthermore, a closed form expression in terms of expectations of the kernel under $\mu$ and $\nu$ can be obtained \cite{gretton2012kernel}:
-\begin{align}\label{eq:closed_form_MMD}
-	MMD^2(\mu,\nu) = \int k\diff\mu \diff\mu + \int k\diff\nu \diff \nu - 2\int k\diff\mu \diff \nu
-\end{align}
-When samples from both $\mu$ and $\nu$ are available \cref{eq:closed_form_MMD} can be estimated using those samples. For a fixed target distributions $\mu$ we will consider the loss functional defined as:
-\begin{align}\label{eq:loss_functional}
-	\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
-\end{align}
-We are interested in describing the dynamics of the gradient flow of \cref{eq:loss_functional} under the $2$-Wasserstein metric as defined in \cref{subsec:wasserstein_flow}.
-%The MMD was successfully used for training generative models (\cite{mmd-gan,Binkowski:2018,Arbel:2018}) where it is used in a loss functional to learn the parameters of the generator network. This motivate the  
-\subsubsection{$2$-Wasserstein geometry}\label{subsec:wasserstein_flow}
-For two given probability distributions $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$ we denote by $\Pi(\nu,\mu)$ the set of possible couplings between $\nu$ and $\mu$. In other words $\Pi(\nu,\mu)$ contains all possible distributions $\pi$ on $\X\times \X$ such that if $(X,Y) \sim \pi $ then $X \sim \nu $ and $Y\sim \mu$. The $2$-Wasserstein distance on $\mathcal{P}_2(\X)$ is defined by means of optimal coupling between $\nu$ and $\mu$ in the following way:
-\begin{align}\label{eq:wasserstein_2}
-	W_2^2(\nu,\mu) := \inf_{\pi\in\Pi(\nu,\mu)} \int \Vert x - y\Vert^2 d\pi(x,y) \qquad \forall \nu, \mu\in \mathcal{P}_2(\X)
-\end{align}
-It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
-\begin{equation}\label{eq:convex_combination}
-	s_t(x,y) = (1-t)x+ty \qquad \forall x,y\in \X, \; \forall t\in [0,1].
-\end{equation}
-The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of the optimal coupling $\pi^{*}$ by $s_t$:    \aknote{weird. st not operator}
-  \begin{equation}\label{eq:displacement_geodesic}
-	\rho_t = (s_t)_{\#}\pi^{*}
-\end{equation}
-It is easy to see that \cref{eq:displacement_geodesic} satisfies the following boundary conditions:
-\begin{align}\label{eq:boundary_conditions}
-	\rho_0 = \nu \qquad \rho_1 = \mu.
-\end{align}
-Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a vector field $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho$ satisfies the continuity equation \manote{reference} :
-\begin{equation}\label{eq:continuity_equation}
-	\partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
-\end{equation}
-Equation \cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho)$ of the curve $\rho$ would be given by:
-\begin{equation}
-	l(\rho)^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t
-\end{equation}
-where \[
-\Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
-\]\aknote{add constant speed geodesics}
-This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{Santambrogio:2015} 5.28 ):
-\begin{align}\label{eq:benamou-brenier-formula}
-	W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
-\end{align}
-where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}.
-
-\begin{remark}
-Such paths should not be confused with another kind of paths called \textit{mixture geodesics}. The mixture geodesic $(\mu_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
-\begin{align}\label{eq:mixture_geodesic}
-m_t = (1-t)\nu + t\mu \qquad \forall t \in [0,1].
-\end{align}
-Paths of the form \cref{eq:mixture_geodesic} can be thought as the shortest paths between two distributions when distances on $\mathcal{P}_2(\X)$ are measured using the $MMD$ (\cite{Bottou:2017} Theorem 5.3). We refer to \cite{Bottou:2017} for an overview of the notion of shortest paths in probability spaces and for the differences between mixture geodesics and displacement geodesics.
-Although, we will be interested in the $MMD$ as a loss function, we will not consider the geodesics that are naturally associated to it and we will rather consider the displacement geodesics defined in \cref{eq:displacement_geodesic} for reason that will become clear in \cref{subsec:wasserstein_flow}.
-\end{remark}
+\subsection{Additional mathematical background}
+%In all what follows, $\X$ is a convex subset of $\R^d$ and $\mathcal{P}_2(\X)$ denotes the set of all probability distributions supported on $\X$ with finite second moment.
+%For a given distributions $\nu\in\mathcal{P}_2(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
 
 
 
-\subsubsection{Stochastic processes}
+\subsubsection{Stochastic processes}\label{sec:ito_stochastic}
 
 Consider the Itô process, i.e. the stochastic process:
 \begin{equation}
