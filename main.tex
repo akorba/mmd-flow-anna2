@@ -1,17 +1,9 @@
 
 \documentclass{article}
-\usepackage{nips_2018,graphicx}
+\usepackage{neurips_2019,graphicx}
 
- \usepackage[english]{babel}   % "babel.sty" + "french.sty"
-% \usepackage[english,francais]{babel} % "babel.sty"
-% \usepackage{french}                  % "french.sty"
-  \usepackage{times}			% ajout times le 30 mai 2003
- 
-%% --------------------------------------------------------------
-%% CODAGE DE POLICES ?
-%% Si votre moteur Latex est francise, il est conseille
-%% d'utiliser le codage de police T1 pour faciliter la césure,
-%% si vous disposez de ces polices (DC/EC)
+ \usepackage[english]{babel} 
+  \usepackage{times}	
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc} 
 \DeclareUnicodeCharacter{00A0}{~}
@@ -166,29 +158,26 @@
 \newcommand{\myn}{{{\nabla ^{\gamma_{n+1}} g}}}
 \def\macom#1{{\textcolor{red}{[MA: #1]}}}
 %% ==============================================================
+\usepackage{amsthm}
+\usepackage[noabbrev,capitalize]{cleveref}
 
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
-
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
 \newtheorem{condition}{Condition}
-%\newtheorem{assumption}{Assumption}
+\newtheorem{assumption}{Assumption}
 \newtheorem{example}{Example}
 
-
-
-\usepackage[noabbrev,capitalize]{cleveref}
 %% make \cref{whatever} render like \eqref{whatever}
 \crefformat{equation}{(#2#1#3)}
 \crefrangeformat{equation}{(#3#1#4) to~(#5#2#6)}
 \crefmultiformat{equation}{(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{ and~(#2#1#3)}
 %% https://tex.stackexchange.com/a/121055/9019
-\crefname{appsec}{Appendix}{Appendices}
-\crefname{lemma}{Lemma}{Lemmas}
+
 
 \newlist{assumplist}{enumerate}{1}
 \setlist[assumplist]{label=(\textbf{\Alph*})}

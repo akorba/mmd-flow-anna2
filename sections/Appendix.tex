@@ -59,7 +59,7 @@ Equation \cref{eq:continuity_equation} is well defined in distribution sense eve
 \end{equation}
 where \[
 \Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
-\]
+\]\aknote{add constant speed geodesics}
 This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{Santambrogio:2015} 5.28 ):
 \begin{align}\label{eq:benamou-brenier-formula}
 	W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
@@ -100,7 +100,7 @@ where the second line is obtained by integrating by parts on both sides of the e
 
 \subsection{Proofs}
 
-\subsubsection{Proof of Proposition~\ref{prop:mmd_flow}}
+\subsubsection{Proof of \cref{prop:mmd_flow}}
 
 In the case where $\F= \frac{1}{2} \|f_t\|^2_{\kH}$, by simple derivations we obtain:
 \begin{equation}
@@ -298,7 +298,7 @@ We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t
 \dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}.
 \]
 Using the definition
-of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$?ca doit correspondre au petit paragraphe en dessous avec le début d'explication}
+of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below}
 \[
 \frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X),
 \]
@@ -360,8 +360,7 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 	\begin{align*}
 	\rho_t	=(I-\gamma t\phi_n)_{\#}\nu_n
 	\end{align*}
-	
-	The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:\aknote{$\rho_1,\rho_0$?}
+	The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
 	\begin{align}\label{eq:taylor_expansion}
 	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
 	\end{align} 
@@ -377,7 +376,7 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 	Using \cref{eq:taylor_expansion,eq:upper_bound_1} the result follows.
 \end{proof}
 
-
+\vspace*{1cm}
 
 \begin{lemma}\label{lem:mixture_convexity}
 	The functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
@@ -388,7 +387,7 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 \begin{proof}
 	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$.
 	We need to show that \[\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu')\leq 0\]
-	This follows from a simple computation which shows that:\aknote{y'a pas une erreur là? ou c'est moi, j'ai pas la même chose}
+	This follows from a simple computation which shows that:\aknote{I'm not getting the same result}
 	\begin{align*}
 	\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
 	\end{align*}
