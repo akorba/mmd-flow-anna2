@@ -19,10 +19,10 @@ We will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flow
 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
 \begin{equation}
-V(X)=-\int 2 k(X,x')\pi(x')\text{,} \quad
+V(X)=-\int 2 k(X,x')\mu(x')\text{,} \quad
 W(X,Y)=k(X,Y)
 \end{equation}
-We have $MMD^2(\rho,\pi)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\pi\otimes \pi}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$. \aknote{add that interestingly, both KL and MMD have the V potential term, but the diffusion of the particle derive from U for KL and from W for MMD?}
+We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\mu\otimes \mu}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$. \aknote{add that interestingly, both KL and MMD have the V potential term, but the diffusion of the particle derive from U for KL and from W for MMD?}
 
 
 \begin{proposition}\label{prop:mmd_flow}
@@ -36,7 +36,7 @@ We have $MMD^2(\rho,\pi)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, 
 \begin{remark}
 	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \eqref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
 	\begin{equation}
-	\frac{d KL(\rho_t, \pi)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\pi}(X))\|^2]
+	\frac{d KL(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\mu}(X))\|^2]
 	\end{equation}
 \end{remark}
 
