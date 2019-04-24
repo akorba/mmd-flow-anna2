@@ -26,6 +26,30 @@ In this section we try to use $MMD^2(\cdot,\pi)$ as a Lyapunov function (instead
 Taylor : 
 
 
-%\subsection{Stochastic setting}
+\subsection{Sample-based setting}
 
-%Difference with Langevin
+Two settings are usually encountered in the sampling literature:
+\begin{itemize}
+	\item Density-based: $\mu$ is known up to a constant
+	\item Sample-based: we only have access to a set of samples $X \sim \mu$.
+\end{itemize}
+
+\aknote{to investigate much further} 
+The Unadjusted Langevin Algorithm (ULA) seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$ while our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt ULA by replacing $\nabla \log \mu$ in \eqref{eq:langevin_algorithm} by an estimator based on samples. Indeed, it has been the subject of a lot of work (see \cite{li2017gradient})\aknote{check reference}. In contrast, the gradient of $f_t$ can be 'easily' estimated by:
+\begin{equation}
+\widehat{\nabla f_k}(X_k)=\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) - \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k)
+\end{equation}
+where $(x_1, \dots, x_n)\sim \rho_k$ and $(y_1, \dots, y_n)\sim \mu$. 
+It is thus natural to consider the stochastic process:
+\begin{equation}\label{eq:sample_based_stochastic_process}
+X_{k+1}=X_k-\gamma_{k+1}\widehat{\nabla f_k}(X_k) 
+\end{equation}
+Let $\widetilde{\nu}_k$ be the distribution of~\eqref{eq:sample_based_stochastic_process}. Can we say something about $MMD^2(\widetilde{\nu_k}, \nu_k)$? If yes, we have rates as well.
+
+\begin{remark}
+	We point out here that algorithm~\eqref{eq:sample_based_stochastic_process} is different from the descent proposed by \cite{mroueh2018regularized}. 
+\end{remark}
+
+\begin{remark}
+	Birth-Death Dynamics to improve convergence (see \cite{rotskoff2019global}).
+\end{remark}

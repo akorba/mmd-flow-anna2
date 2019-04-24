@@ -1,15 +1,6 @@
-\section{MMD flow}\label{sec:mmd_flow}
+\section{MMD flow - Algorithms and experiments}\label{sec:mmd_flow}
 
-
-%Let $\kH$ a Reproducing Kernel Hilbert Space (RKHS) and $k$ its reproducing kernel. This means that for all $f \in \kH$, $x \in \X$, we can write the \textit{reproducing property} $f(x)=\psh{f, k(x,.)}$. The kernel Maximum Mean Discrepancy between two distributions $\rho,\pi$ is defined as:
-%\begin{equation}
-%MMD(\rho,\pi)=\sup_{f \in \kH,  \|f\|_{\kH}\le 1} (\E_{X \sim \rho}[f(X)]-\E_{Y \sim \pi}[f(Y)])
-%\end{equation}
-%Under some appropriate assumptions on the kernel (see \cite{gretton2012kernel}):
-%\begin{align}
-%MMD^2(\rho,\pi)&=\|\E_{\rho}[k(X,.)] - \E_{\pi}[k(Y,.)]\|^2_{\kH}\\
-%&=\E_{\rho \otimes \rho}[k(X,X')]+\E_{\pi \otimes %\pi}[k(Y,Y')] - 2\E_{\rho \otimes \pi}[k(X,Y)]
-%\end{align}
+\subsection{MMD Descent - Theoretical algorithm}
 
 We will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flows_functionals} and denote $f_t= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$. In this case:
 \begin{equation}
@@ -28,7 +19,7 @@ We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, 
 \begin{proposition}\label{prop:mmd_flow}
  The velocity in \eqref{eq:continuity_equation1} is given by $\nabla \frac{\partial{\F}}{\partial{\rho_t}}=2 \nabla f_t$ and the dissipation of MMD can be written:  
 	\begin{equation}
-	\frac{d MMD^2(\rho_t, \mu)}{dt}=-2 \E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
+	\frac{d MMD^2(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
 	\end{equation}
 	where $\nabla f_t(Y)= \int \nabla_{Y}k(.,Y) d\mu -  \int \nabla_{Y}k(.,Y) d\rho_t$.
 \end{proposition}
@@ -41,17 +32,13 @@ We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, 
 \end{remark}
 
 
-
-
-\subsection{Algorithm}
-
 As explained in \cref{sec:gradient_flows_functionals} and according to \cref{prop:mmd_flow}, the gradient flow of the MMD can be written:
 \begin{equation*}
-\frac{\partial \rho}{\partial t}= 2 div(\rho  \nabla f_t)
+\frac{\partial \rho_t}{\partial t}= div(\rho_t  \nabla f_t)
 \end{equation*}
 which is the density of the stochastic process (see \cref{sec:ito_stochastic}):
 \begin{equation}\label{eq:stochastic_process}
-dX_t=-2\nabla f_t(X_t) 
+dX_t=-\nabla f_t(X_t) 
 \end{equation}
 \eqref{eq:stochastic_process} represents the position $X_t$ of a particle at time $t > 0$.
 We naturally consider the Euler discretization of \eqref{eq:stochastic_process}, which gives:
@@ -61,12 +48,6 @@ X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
 where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
 
 
-\begin{remark}[Stochastic setting]\aknote{to investigate much further} The ULA algorithm requires the knowledge of $\nabla \log \mu$, while our algorithm requires the one of $\nabla f_t$ and thus to integrate under $\mu$. However, in many situations, we only have access to samples of the target distribution $\mu$. Whereas $\nabla \log \mu$ may be difficult to estimate (see \cite{li2017gradient}), in contrast, the gradient of $f_t$ can be 'easily' estimated by:
-\begin{equation}
-\widehat{\nabla f_k}(X_k)=\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) - \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k)
-\end{equation}
-where $(x_1, \dots, x_n)\sim \rho_k$ and $(y_1, \dots, y_n)\sim \pi$. 
-\end{remark}
 
 
 \input{sections/stochastic}

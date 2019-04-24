@@ -7,7 +7,7 @@ This problem appears in machine learning, Bayesian inference, computational phys
 dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
 \end{equation}
 where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion. The Langevin Monte-Carlo (LMC) algorithm, or Unadjusted Langevin algorithm (ULA) considers the Markov chain $(X_k)_{k\ge1 }$ given by the Euler-Maruyama discretization of the diffusion \eqref{eq:langevin_diffusion}:
-\begin{equation}
+\begin{equation}\label{eq:langevin_algorithm}
 X_{k+1} = X_k - \gamma_{k+1}\nabla \log \mu(X_k) + \sqrt{2\gamma_{k+1}G_{k+1}}
 \end{equation}
 where $(\gamma_k)_{k\ge1}$ is a sequence of step sizes (constant or convergent to zero), and
