@@ -1,4 +1,4 @@
-\section{MMD flow - Algorithms and experiments}\label{sec:mmd_flow}
+\section{MMD Gradient flow - Algorithms, experiments}\label{sec:mmd_flow}
 
 \subsection{MMD Descent - Theoretical algorithm}
 
@@ -45,7 +45,7 @@ We naturally consider the Euler discretization of \eqref{eq:stochastic_process},
 \begin{equation}\label{eq:discretization}
 X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
 \end{equation}
-where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
+where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ with $\rho_k$ the distribution of the process \eqref{eq:discretization} and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
 
 
 
