@@ -14,7 +14,7 @@ import time
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-ngpu = 1
+ngpu = 0
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 use_cuda = True
 # Number of workers for dataloader
