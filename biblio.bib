@@ -7,7 +7,6 @@
 %% Saved with string encoding Unicode (UTF-8) 
 
 
-
 @article{Rotskoff:2019,
 	Abstract = {Neural networks with a large number of parameters admit a mean-field description, which has recently served as a theoretical explanation for the favorable training properties of "overparameterized" models. In this regime, gradient descent obeys a deterministic partial differential equation (PDE) that converges to a globally optimal solution for networks with a single hidden layer under appropriate assumptions. In this work, we propose a non-local mass transport dynamics that leads to a modified PDE with the same minimizer. We implement this non-local dynamics as a stochastic neuronal birth-death process and we prove that it accelerates the rate of convergence in the mean-field limit. We subsequently realize this PDE with two classes of numerical schemes that converge to the mean-field equation, each of which can easily be implemented for neural networks with finite numbers of parameters. We illustrate our algorithms with two models to provide intuition for the mechanism through which convergence is accelerated.},
 	Author = {Rotskoff, Grant and Jelassi, Samy and Bruna, Joan and Vanden-Eijnden, Eric},
@@ -23,6 +22,24 @@
 	Year = {2019},
 	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QSy4uLy4uLy4uLy4uL0RvY3VtZW50cy9HYXRzYnkvUmVzZWFyY2gvbGl0dGVyYXR1cmUvUm90c2tvZmYoMjAxOWEpR2xvYmFsLnBkZtIXCxgZV05TLmRhdGFPEQIAAAAAAAIAAAIAAAxNYWNpbnRvc2ggSEQAAAAAAAAAAAAAAAAAAADMMSECSCsAAAVWW7QZUm90c2tvZmYoMjAxOWEpR2xvYmFsLnBkZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACDsSvdieMx4AAAAAAAAAAP////8AAAkgAAAAAAAAAAAAAAAAAAAAC2xpdHRlcmF0dXJlAAAQAAgAAMwxEvIAAAARAAgAANieMx4AAAABABgFVlu0BVZbfgVWWxwDOlmAAzpZfwACDfkAAgBlTWFjaW50b3NoIEhEOlVzZXJzOgBNaWNoYWVsQXJiZWw6AERvY3VtZW50czoAR2F0c2J5OgBSZXNlYXJjaDoAbGl0dGVyYXR1cmU6AFJvdHNrb2ZmKDIwMTlhKUdsb2JhbC5wZGYAAA4ANAAZAFIAbwB0AHMAawBvAGYAZgAoADIAMAAxADkAYQApAEcAbABvAGIAYQBsAC4AcABkAGYADwAaAAwATQBhAGMAaQBuAHQAbwBzAGgAIABIAEQAEgBSVXNlcnMvTWljaGFlbEFyYmVsL0RvY3VtZW50cy9HYXRzYnkvUmVzZWFyY2gvbGl0dGVyYXR1cmUvUm90c2tvZmYoMjAxOWEpR2xvYmFsLnBkZgATAAEvAAAVAAIAE///AACABtIbHB0eWiRjbGFzc25hbWVYJGNsYXNzZXNdTlNNdXRhYmxlRGF0YaMdHyBWTlNEYXRhWE5TT2JqZWN00hscIiNcTlNEaWN0aW9uYXJ5oiIgXxAPTlNLZXllZEFyY2hpdmVy0SYnVHJvb3SAAQAIABEAGgAjAC0AMgA3AEAARgBNAFUAYABnAGoAbABuAHEAcwB1AHcAhACOANwA4QDpAu0C7wL0Av8DCAMWAxoDIQMqAy8DPAM/A1EDVANZAAAAAAAAAgEAAAAAAAAAKAAAAAAAAAAAAAAAAAAAA1s=},
 	Bdsk-File-2 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QSy4uLy4uLy4uLy4uL0RvY3VtZW50cy9HYXRzYnkvUmVzZWFyY2gvbGl0dGVyYXR1cmUvUm90c2tvZmYoMjAxOWIpR2xvYmFsLnBkZtIXCxgZV05TLmRhdGFPEQIAAAAAAAIAAAIAAAxNYWNpbnRvc2ggSEQAAAAAAAAAAAAAAAAAAADMMSECSCsAAAVWW7QZUm90c2tvZmYoMjAxOWIpR2xvYmFsLnBkZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG8nMtjrrT4AAAAAAAAAAP////8AAAkgAAAAAAAAAAAAAAAAAAAAC2xpdHRlcmF0dXJlAAAQAAgAAMwxEvIAAAARAAgAANjrny4AAAABABgFVlu0BVZbfgVWWxwDOlmAAzpZfwACDfkAAgBlTWFjaW50b3NoIEhEOlVzZXJzOgBNaWNoYWVsQXJiZWw6AERvY3VtZW50czoAR2F0c2J5OgBSZXNlYXJjaDoAbGl0dGVyYXR1cmU6AFJvdHNrb2ZmKDIwMTliKUdsb2JhbC5wZGYAAA4ANAAZAFIAbwB0AHMAawBvAGYAZgAoADIAMAAxADkAYgApAEcAbABvAGIAYQBsAC4AcABkAGYADwAaAAwATQBhAGMAaQBuAHQAbwBzAGgAIABIAEQAEgBSVXNlcnMvTWljaGFlbEFyYmVsL0RvY3VtZW50cy9HYXRzYnkvUmVzZWFyY2gvbGl0dGVyYXR1cmUvUm90c2tvZmYoMjAxOWIpR2xvYmFsLnBkZgATAAEvAAAVAAIAE///AACABtIbHB0eWiRjbGFzc25hbWVYJGNsYXNzZXNdTlNNdXRhYmxlRGF0YaMdHyBWTlNEYXRhWE5TT2JqZWN00hscIiNcTlNEaWN0aW9uYXJ5oiIgXxAPTlNLZXllZEFyY2hpdmVy0SYnVHJvb3SAAQAIABEAGgAjAC0AMgA3AEAARgBNAFUAYABnAGoAbABuAHEAcwB1AHcAhACOANwA4QDpAu0C7wL0Av8DCAMWAxoDIQMqAy8DPAM/A1EDVANZAAAAAAAAAgEAAAAAAAAAKAAAAAAAAAAAAAAAAAAAA1s=}}
+
+@article{jourdain2007nonlinear,
+	title={Nonlinear SDEs driven by L$\backslash$'evy processes and related PDEs},
+	author={Jourdain, Benjamin and M{\'e}l{\'e}ard, Sylvie and Woyczynski, Wojbor},
+	journal={arXiv preprint arXiv:0707.2723},
+	year={2007}
+}
+
+@article{sriperumbudur2010hilbert,
+	title={Hilbert space embeddings and metrics on probability measures},
+	author={Sriperumbudur, Bharath K and Gretton, Arthur and Fukumizu, Kenji and Sch{\"o}lkopf, Bernhard and Lanckriet, Gert RG},
+	journal={Journal of Machine Learning Research},
+	volume={11},
+	number={Apr},
+	pages={1517--1561},
+	year={2010}
+}
+
 
 @article{rotskoff2019global,
 	Author = {Rotskoff, Grant and Jelassi, Samy and Bruna, Joan and Vanden-Eijnden, Eric},
