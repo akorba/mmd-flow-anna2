@@ -323,6 +323,71 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 \end{proof}
 
 
+\subsection{Lojasiewicz type inequality}
+
+Here we would like to derive an inequality between the time derivative of the Lyapounov functional $\mathcal{F}$ along its gradient flow $t\mapsto \nu_t$. For this purpose we first introduce the weighted negative Sobolev distance \manote{cite villani and peyre and Mroueh}:
+
+\begin{align}\label{eq:neg_sobolev}
+	\Vert \nu - \mu \Vert_{\dot{H}^{-1}(\nu)} = \sup_{\substack{ f\in W_0^{1,2}(\nu) \\ \nu(\Vert \nabla f \Vert^2) \leq 1 }} \vert \nu(f)-\mu(f)\vert 
+\end{align}
+Where $W_0^{1,2}(\nu)$ is the space $1$ order Sobolev functions with functions vanishing at the boundary of the domain.
+The distance defined in \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport as it linearizes the $W_2$ distance when $\mu$ is arbitrarily close to $\nu$. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $\mu$. However, this quantity might be infinite \manote{say exactly when it is finite} and one of the key problems would be to control its value during the evolution of the flow. More precisely we will rely on the following statement:
+\begin{align}\label{eq:bounded_neg_sobolev}
+	\Vert \nu_t  - \mu \Vert_{\dot{H}^{-1}(\nu_t)} \leq C \qquad \forall t\geq 0.
+\end{align} 
+where $\nu_t$ is defined by the gradient flow and $\mu$ is the target distribution. When \cref{eq:bounded_neg_sobolev}  holds, we have the following proposition:
+\begin{proposition}\label{prop:PL_type_inequality}
+	When \cref{eq:bounded_neg_sobolev} holds, the following inequality is then satisfied at all times:
+	\begin{align}\label{eq:PL_type_inequality}
+		\Vert \nabla f_t \Vert_{L_2(\nu_t)} \geq \frac{1}{C} \Vert f_t \Vert^2_{\mathcal{H}} \qquad \forall t\geq 0.
+	\end{align}
+\end{proposition}
+\begin{proof}
+	Indeed, this follows simply from the definition of the negative Sobolev distance: Consider $g = \Vert f_t\Vert^{-1}_{L_2(\nu_t)} f_t$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
+	\begin{align}
+		\Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)}\geq \vert \nu_t(g) - \mu(g)  \vert.
+	\end{align}
+Now, recall the definition of $g$, which implies that
+\[
+\vert \nu_t(g) - \mu(g)  \vert = \Vert f_t\Vert^{-1}_{L_2(\nu_t)} \vert \nu_t(f_t)-\mu(f_t)\vert.
+\]
+But since $f_t$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\nu_t(f_t)-\mu(f_t) = \Vert f_t\Vert^2_{H}$.
+Using \cref{eq:bounded_neg_sobolev}, we get the desired inequality.
+\end{proof}
+
+Now we will use the inequality in \cref{prop:PL_type_inequality} to prove a convergence result towards the global optimum $\mu$. This is provided in \cref{prop:convergence}.
+\begin{proposition}\label{prop:convergence}
+	If \cref{eq:bounded_neg_sobolev} is satisfied for all times then $t\mapsto \mathcal{F}(\nu_t)$ converges to $0$ with a rate of convergence given by:
+	\begin{align}
+		\mathcal{F}(\nu_t)\leq \frac{1}{\mathcal{F}(\nu_0)^{-1} + \frac{4t}{C}}
+	\end{align}
+\end{proposition}
+\begin{proof}
+	The proof is a simple consequence of \cref{prop:mmd_flow,eq:bounded_neg_sobolev}. Indeed, by \cref{prop:mmd_flow} we have that 
+	\begin{align}
+		\dot{\F}(\nu_t) = - \Vert \nabla f_t \Vert^2_{L_2(\nu_t)} 	
+	\end{align}
+	Using \cref{eq:PL_type_inequality}, we directly get that:
+	\begin{align}
+		\dot{\F}(\nu_t) \leq  -\frac{4}{C}\F(\nu_t)^2
+	\end{align}
+It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
+\end{proof}
+
+All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. It is also possible to have a time depended constant $C_t$ as long as its growth is such that:
+\begin{align}
+	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty
+\end{align}
+For instance $C_t$ could have up to a linear growth in time. In this case the decay of $\F(\nu_t)$ will no longer be in $\frac{1}{t}$ but only in $\frac{1}{\log(t)}$ \manote{This seems unlikely if we end up having convergence of $\nu_t$, but who nows.}.
+One possible promising condition for \cref{eq:bounded_neg_sobolev} to hold would be if $\mu \ll \nu_0$ and if this property is preserved during the dynamics.
 
 
  
+
+
+
+
+
+
+
+
