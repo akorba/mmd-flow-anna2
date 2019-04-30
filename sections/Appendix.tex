@@ -1,3 +1,4 @@
+
 \section{Appendix}\label{sec:appendix}
 
 \subsection{Additional mathematical background}
@@ -343,15 +344,15 @@ where $\nu_t$ is defined by the gradient flow and $\mu$ is the target distributi
 	\end{align}
 \end{proposition}
 \begin{proof}
-	Indeed, this follows simply from the definition of the negative Sobolev distance: Consider $g = \Vert f_t\Vert^{-1}_{L_2(\nu_t)} f_t$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
+	Indeed, this follows simply from the definition of the negative Sobolev distance: Consider $g = \Vert \nabla f_t\Vert^{-1}_{L_2(\nu_t)} f_t$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
 	\begin{align}
 		\Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)}\geq \vert \nu_t(g) - \mu(g)  \vert.
 	\end{align}
 Now, recall the definition of $g$, which implies that
 \[
-\vert \nu_t(g) - \mu(g)  \vert = \Vert f_t\Vert^{-1}_{L_2(\nu_t)} \vert \nu_t(f_t)-\mu(f_t)\vert.
+\vert \nu_t(g) - \mu(g)  \vert = \Vert \nabla f_t\Vert^{-1}_{L_2(\nu_t)} \vert \nu_t(f_t)-\mu(f_t)\vert.
 \]
-But since $f_t$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\nu_t(f_t)-\mu(f_t) = \Vert f_t\Vert^2_{H}$.
+But since $f_t$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\nu_t(f_t)-\mu(f_t) = \Vert f_t\Vert^2_{\kH}$.
 Using \cref{eq:bounded_neg_sobolev}, we get the desired inequality.
 \end{proof}
 

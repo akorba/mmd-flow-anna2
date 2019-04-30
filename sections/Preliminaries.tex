@@ -1,3 +1,4 @@
+
 \section{Preliminaries}\label{sec:preliminaries}
 
 In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a convex  subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}_2(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
@@ -67,6 +68,8 @@ interaction energy. The formal gradient flow equation associated to this functio
 \begin{equation}\label{eq:continuity_equation1}
 \frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho}) \quad x \in \R^d , t>0
 \end{equation}
+where $\nabla \frac{\partial \F}{\partial \rho}$ is the strong subdifferential of $\F(\rho_t)$ associated with the 2-Wasserstein
+metric (see \cite{ambrosio2008gradient}, Lemma 10.4.1). Indeed, for some generalized notion of gradient $\nabla_{W_2}$, and for sufficiently regular $\rho$ and $\F$, the r.h.s. of \eqref{eq:continuity_equation1} corresponds to $-\nabla_{W_2}\F(\rho)$.
 And the dissipation of entropy is defined as: %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
 \begin{align}
 &        \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(\rho)= \int |\xi|^2 \rho(x)dx\\
