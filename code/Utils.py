@@ -3,6 +3,7 @@ import numpy as np
 from torch.autograd import Variable
 
 import torch.nn as nn
+from PIL import Image
 
 FDTYPE = tr.float32
 DEVICE = 'cuda'
@@ -87,6 +88,17 @@ def make_grid_points(D,ngrid,lim):
     epsilon = 1.5
     eval_points = get_grid(eval_grid, idx_i, idx_j, cond_values)
     return eval_points, eval_grid
+
+
+def load(fn='', size=200, max_samples=None):
+    # returns x,y of black pixels
+    pic = np.array(Image.open(fn).resize((size,size)).convert('L'))
+    y_inv,x = np.nonzero(pic)
+    y = size-y_inv-1
+    if max_samples and x.size > max_samples:
+        ixsel = np.random.choice(x.size, max_samples, replace=False)
+        x, y = x[ixsel], y[ixsel]
+    return x,y
 
 
 

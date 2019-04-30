@@ -46,6 +46,22 @@ class ParticleGenerator(nn.Module):
 		idx = tr.randperm(self.particles.shape[0])		
 		return self.particles[idx[:num_samples]].detach()
 
+
+class ShapeGenerator(nn.Module):
+
+	def __init__(self,filename,num_particles,size = 200, dtype= tr.float32, device = 'cpu'):
+		super(ShapeGenerator,self).__init__()
+		xP,yP=load(filename, size, num_particles)
+		samples = tr.tensor(np.stack((xP,yP),1), dtype = dtype, device = device).float() / size * 2 - 1
+		self.particles  = nn.Parameter(samples)
+		self.D = self.particles.shape[1]
+	def forward(self,sample):
+		return self.particles + 0.*tr.mean(sample)
+	def sample(self,num_samples):
+		idx = tr.randperm(self.particles.shape[0])		
+		return self.particles[idx[:num_samples]].detach()	
+
+
 class TwoLayerCritic(nn.Module):
 	def __init__(self,d_int, H, d_out):
 		super(TwoLayerCritic,self).__init__()

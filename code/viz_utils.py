@@ -9,20 +9,23 @@ def make_grid_points(D,ngrid,lim):
     epsilon = 1.5
     eval_points = get_grid(eval_grid, idx_i, idx_j, cond_values)
     return eval_points, eval_grid
-def plot_pdf(fig,ax,witness_val,t_data, f_data, eval_grid,v_min=None,v_max=None,plot_data=True): 
+def plot_pdf(fig,ax,witness_val,t_data, f_data, eval_grid,v_min=None,v_max=None,plot_data=True,plot_witness=False): 
     idx_i, idx_j = 0,1
     epsilon = 1.5
     ngrid = eval_grid.shape[0]
-    if (v_min is not None) and  (v_max is  not None):
-        c= ax.pcolor(eval_grid, eval_grid, witness_val.reshape(ngrid, ngrid),vmin=v_min, vmax=v_max)
-    else:
-        c= ax.pcolor(eval_grid, eval_grid, witness_val.reshape(ngrid, ngrid))
+    if plot_witness:
+        if (v_min is not None) and  (v_max is  not None):
+            c= ax.pcolor(eval_grid, eval_grid, witness_val.reshape(ngrid, ngrid),vmin=v_min, vmax=v_max)
+        else:
+            c= ax.pcolor(eval_grid, eval_grid, witness_val.reshape(ngrid, ngrid))
+        fig.colorbar(c, ax=ax)
+        ax.set_xlim(eval_grid.min(),eval_grid.max())
+        ax.set_ylim(eval_grid.min(),eval_grid.max())
     if plot_data:
         ax.scatter(t_data[:1000,idx_i], t_data[:1000,idx_j], 5, color="k", alpha=0.8, vmin=1, marker="x")
         ax.scatter(f_data[:1000,idx_i], f_data[:1000,idx_j], 5, color="r", alpha=0.8, vmin=1, marker="x")
-    ax.set_xlim(eval_grid.min(),eval_grid.max())
-    ax.set_ylim(eval_grid.min(),eval_grid.max())
-    fig.colorbar(c, ax=ax)
+
+    
 def plot_pdf_1d(fig,ax,witness_val,t_data, f_data, eval_grid,v_min=None,v_max=None,plot_data=True, plot_witness=False): 
     idx_i, idx_j = 0,1
     epsilon = 1.5
@@ -40,14 +43,14 @@ def plot_pdf_1d(fig,ax,witness_val,t_data, f_data, eval_grid,v_min=None,v_max=No
     #ax.set_xlim(eval_grid.min(),eval_grid.max())
     #ax.set_ylim(eval_grid.min(),eval_grid.max())
     #fig.colorbar(c, ax=ax)
-def plot_witness_loss(losses,init_data, final_data, net="G", method = "", num_final_it = 100):
+def plot_witness_loss(losses,init_data, final_data, net="G", method = "", num_final_it = 100,plot_witness=False):
     fig, ax = plt.subplots(1,4, figsize=(24,5))
     witness_val_init,norm_grad_witness_init,t_data_init, f_data_init, eval_grid_init = init_data
     witness_val,norm_grad_witness,t_data, f_data, eval_grid = final_data
     ax[0].plot(losses )
-    plot_pdf(fig,ax[1],witness_val_init,t_data_init, f_data_init, eval_grid_init)
-    plot_pdf(fig,ax[2],witness_val,t_data, f_data, eval_grid)
-    plot_pdf(fig,ax[3],norm_grad_witness,t_data, f_data, eval_grid,plot_data=False)
+    plot_pdf(fig,ax[1],witness_val_init,t_data_init, f_data_init, eval_grid_init,plot_witness=plot_witness)
+    plot_pdf(fig,ax[2],witness_val,t_data, f_data, eval_grid,plot_witness=plot_witness)
+    plot_pdf(fig,ax[3],norm_grad_witness,t_data, f_data, eval_grid,plot_data=False,plot_witness=plot_witness)
     ax[0].set_xlabel(net + " iterations")
     ax[0].set_title( method+"loss per " + net + " iteration")
     ax[1].set_title("witness function: initial generator")
