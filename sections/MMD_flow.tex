@@ -42,10 +42,10 @@ dX_t=-\nabla f_t(X_t)
 \end{equation}
 \eqref{eq:stochastic_process} represents the position $X_t$ of a particle at time $t > 0$.
 We naturally consider the Euler discretization of \eqref{eq:stochastic_process}, which gives:
-\begin{equation}\label{eq:discretization}
+\begin{equation}\label{eq:discretized_process}
 X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
 \end{equation}
-where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ with $\rho_k$ the distribution of the process \eqref{eq:discretization} and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
+where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ with $\rho_k$ the distribution of the process \eqref{eq:discretized_process} and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
 
 
 

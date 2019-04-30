@@ -28,6 +28,20 @@ where the second line is obtained by integrating by parts on both sides of the e
 \end{equation}
 
 
+\begin{lemma}\label{lem:mmd_w2}
+	Under mild conditions on the kernel, there exists a constant $L_k$ such that for all $\mu, \nu$ in $\mathcal{P}(\X)$:
+	\begin{equation}
+	MMD^2(\mu,\nu)\le L_k W_2^2(\mu,nu)
+	\end{equation}
+\end{lemma}
+\begin{proof}
+Let $\mu, \nu$ in $\mathcal{P}(\X)$. Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}^2\le L_k \|x-y\|^2$. By Proposition 20 in \cite{sriperumbudur2010hilbert} we have:
+\begin{align}
+	MMD^2(\mu, \nu)	 &\le \inf_{\pi \in \Pi(\mu, \nu)} \int \| k(x,.)-k(y,.) \|_{\kH}^2 d\pi(\mu, \nu)\\
+	&\le  \inf_{\pi \in \Pi(\mu, \nu)} \int L_k \| x-y \|^2 d\pi(\mu, \nu)= L_k W_2^2(\mu, \nu)
+\end{align}
+\end{proof}
+
 \subsection{Proofs}
 
 \subsubsection{Proof of \cref{prop:mmd_flow}}

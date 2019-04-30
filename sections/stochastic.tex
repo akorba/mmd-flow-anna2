@@ -37,48 +37,54 @@ Two settings are usually encountered in the sampling literature:
 \aknote{to investigate much further} 
 The Unadjusted Langevin Algorithm (ULA) seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$ while our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt ULA by replacing $\nabla \log \mu$ in \eqref{eq:langevin_algorithm} by an estimator based on samples. Indeed, it has been the subject of a lot of work (see \cite{li2017gradient})\aknote{check reference}. In contrast, the gradient of $f_t$ can be 'easily' estimated by:
 \begin{equation}
-\widehat{\nabla f_k}(X_k)= \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(y_i,X_k) -\frac{1}{n}\sum_{i=1,\dots,n}\nabla_{X_k}k(x_i,X_k) 
+\widehat{\nabla f_k}(z)= \frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(u_i,z) -\frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(v_i,z) 
 \end{equation}
-where $(x_1, \dots, x_n)\sim \rho_k$ and $(y_1, \dots, y_n)\sim \mu$. 
+where $(u_1, \dots, u_n)\sim \mu$ and $(v_1, \dots, v_n)\sim \rho_k$. 
 It is thus natural to consider the stochastic process:
-\begin{equation}\label{eq:sample_based_stochastic_process}
+\begin{equation}\label{eq:sample_based_process}
 Y_{k+1}=Y_k-\gamma_{k+1}\widehat{\nabla f_k}(Y_k) 
 \end{equation}
 
 
-\begin{proposition} Let $\widehat{\rho}_k$ be the distribution of~\eqref{eq:sample_based_stochastic_process}.\aknote{not sure, proof not complete}
+\begin{proposition} Let $\widehat{\rho}_k$ be the distribution of~\eqref{eq:sample_based_process}.\aknote{not sure, proof not complete}
 	\begin{equation}
-	MMD^2(\rho_k,\widehat{\rho_k})\le \frac{C}{n}
+	MMD^2(\rho_k,\widehat{\rho_k})\le ?
 	\end{equation}
 \end{proposition}
 \begin{proof}
-	Let $\mu, \nu$ in $\mathcal{P}(\X)$. Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}^2\le L_k \|x-y\|^2$. By Proposition 20 in \cite{sriperumbudur2010hilbert} we firstly get the following inequality between $MMD$ and $W_2$:
-	\begin{align}
-	MMD^2(\mu, \nu)	 &\le \inf_{\pi \in \Pi(\mu, \nu)} \int \| k(x,.)-k(y,.) \|_{\kH}^2 d\pi(\mu, \nu)\\
-	&\le  \inf_{\pi \in \Pi(\mu, \nu)} \int L_k \| x-y \|^2 d\pi(\mu, \nu)= L_k W_2^2(\mu, \nu)
-	\end{align}
-	We now introduce the process:
+	We introduce the process:
 	\begin{equation}\label{eq:intermediary_process}
 	Z_{k+1}=Z_k-\gamma_{k+1}\widetilde{\nabla f_k}(Z_k) 
 	\end{equation}
-	where $\widetilde{\nabla f_k}(Z_k)=\int \nabla_{Z_k}k(X,Z_k)\diff \mu- \frac{1}{n}\sum_{i=1,\dots,n}\nabla_{Z_k}k(x_i,Z_k)$. Let $\widetilde{\rho}_k$ be the distribution of \eqref{eq:intermediary_process}.
+	where $\widetilde{\nabla f_k}(Z_k)=\int \nabla_{Z_k}k(X,Z_k)\diff \mu- \frac{1}{n}\sum_{i=1}^{n}\nabla_{Z_k}k(v_i,Z_k)$. Let $\widetilde{\rho}_k$ be the distribution of \eqref{eq:intermediary_process}. We firstly have:
 	\begin{align}\label{eq:decompose_process}
 	MMD^2(\widehat{\rho_k}, \rho_k) \le MMD^2(\widehat{\rho_k}, \widetilde{\rho_k})+ MMD^2(\widetilde{\rho_k}, \rho_k)
 	\end{align}
-	 Then, concerning the first term on r.h.s. of \eqref{eq:decompose_process}:
+	 We will firstly bound the first term on the r.h.s. of \eqref{eq:decompose_process}. By \cref{lem:mmd_w2}, we have that:
+	 \begin{equation}
+	 MMD^2(\widehat{\rho_k}, \widetilde{\rho_k})\le L_k W_2^2(\widehat{\rho_k}, \widetilde{\rho_k})
+	 \end{equation}
+	 Then:
 	 \begin{align}
-	 W_2^2(\widehat{\rho_k}, \widetilde{\rho_k}) \le \inf_{\pi \in \Pi(\widehat{\rho_k}, \widetilde{\rho_k})} \int \| y-z \|^2 d\pi(\widehat{\rho_k}, \widetilde{\rho_k}) \le \int \|y-z\|^2 d\widehat{\rho_k}(y)d\widetilde{\rho_k}(z)\le \frac{C_1}{n}
+	 W_2^2(\widehat{\rho_k}, \widetilde{\rho_k}) = \inf_{\pi \in \Pi(\widehat{\rho_k}, \widetilde{\rho_k})} \int \| y-z \|^2 d\pi(\widehat{\rho_k}, \widetilde{\rho_k}) \le \int \|y-z\|^2 d\widehat{\rho_k}(y)d\widetilde{\rho_k}(z)
 	 \end{align}
-	 where the last inequality results from Theorem 3 in \cite{jourdain2007nonlinear}. \aknote{we need Lipschitz continuity of the coefficient in the process... check}
-	 Then, we try a similar proof than Theorem 3 in \cite{jourdain2007nonlinear} for the first r.h.s. in \eqref{eq:decompose_process}:
+	 By Theorem 3 in \cite{jourdain2007nonlinear}, $\forall k\ge 0$, for $Y_k$ in \eqref{eq:sample_based_process} and $Z_k$ in \eqref{eq:intermediary_process} in we have:	 \aknote{TO CHECK!! we need Lipschitz continuity of the coefficient in the process} 
+	 \begin{equation}
+	 \sup_{k}\| Y_k - Z_k\|^2\le \frac{C_1}{n}
+	 \end{equation}
+	 Hence:
+	 \begin{equation}
+	 MMD^2(\widehat{\rho_k}, \widetilde{\rho_k})\le L_k \frac{C_1}{n}
+	 \end{equation}
+	We now turn to the second term at the r.h.s. of \eqref{eq:decompose_process}. We can derive a similar proof than Theorem 3 in \cite{jourdain2007nonlinear}:\aknote{same, we need Lipschitz continuity of the process in terms of the third variable}
 	 \begin{align}
 	 \sup_{k}\|X_k-Y_k\|^2 \le C W_2^2(\widehat{\mu},\mu)
 	 \end{align}
-	where $\widehat{\mu}=\frac{1}{n}\sum_{i=1, \dots,n}\delta_{y_i}$ and $y_i \sim \mu$. For the first inequality we also need Lipschitz continuity of the coefficient in the process.
+	where $\widehat{\mu}=\frac{1}{n}\sum_{i=1, \dots,n}\delta_{u_i}$ and $u_i \sim \mu$. \aknote{Do we have non parametric estimation rates in terms of W2 in the literature?}
 \end{proof}
 
 \begin{remark}
-	We point out here that algorithm~\eqref{eq:sample_based_stochastic_process} is different from the descent proposed by \cite{mroueh2018regularized}. 
+	We point out here that algorithm~\eqref{eq:sample_based_process} is different from the descent proposed by \cite{mroueh2018regularized}. 
 \end{remark}
 
 \begin{remark}
