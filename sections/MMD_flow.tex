@@ -10,10 +10,15 @@ We will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flow
 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
 \begin{equation}
-V(X)=-\int 2 k(X,x')\mu(x')\text{,} \quad
-W(X,Y)=k(X,Y)
+V(x)=-\int 2 k(x,x')\mu(x')\text{,} \quad
+W(x,x')=k(x,x')
 \end{equation}
-We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\mu\otimes \mu}[k(Y,Y')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$. \aknote{add that interestingly, both KL and MMD have the V potential term, but the diffusion of the particle derive from U for KL and from W for MMD?}
+We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\mu\otimes \mu}[k(x,x')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$. 
+
+\begin{remark}
+	Consider a family of particles such that its density satisfy Equation\eqref{eq:continuity_equation}. Both KL and MMD have a non-zero potential energy $V$ which drive these particles to the target distribution $\mu$. While he entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for MMD.
+\end{remark}
+
 
 
 \begin{proposition}\label{prop:mmd_flow}
@@ -21,7 +26,7 @@ We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, 
 	\begin{equation}
 	\frac{d MMD^2(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
 	\end{equation}
-	where $\nabla f_t(Y)= \int \nabla_{Y}k(.,Y) d\mu -  \int \nabla_{Y}k(.,Y) d\rho_t$.
+	where $\nabla f_t(z)= \int \nabla_{z}k(.,z) d\mu -  \int \nabla_{z}k(.,z) d\rho_t$.
 \end{proposition}
 
 \begin{remark}
@@ -41,11 +46,11 @@ which is the density of the stochastic process (see \cref{sec:ito_stochastic}):
 dX_t=-\nabla f_t(X_t) 
 \end{equation}
 \eqref{eq:stochastic_process} represents the position $X_t$ of a particle at time $t > 0$.
-We naturally consider the Euler discretization of \eqref{eq:stochastic_process}, which gives:
-\begin{equation}\label{eq:discretized_process}
-X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
-\end{equation}
-where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ with $\rho_k$ the distribution of the process \eqref{eq:discretized_process} and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
+%We naturally consider the Euler discretization of \eqref{eq:stochastic_process}, which gives:
+%\begin{equation}\label{eq:discretized_process}
+%X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
+%\end{equation}
+%where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ with $\rho_k$ the distribution of the process \eqref{eq:discretized_process} and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
 
 
 
