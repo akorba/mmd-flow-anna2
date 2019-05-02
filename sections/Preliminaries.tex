@@ -83,7 +83,11 @@ Standard considerations from fluid mechanics tell us that the continuity equatio
 	\begin{equation}\label{eq:Fokker-Planck}
 	\frac{\partial{\rho}}{\partial t}= div(\rho \nabla V )+ \Delta \rho
 	\end{equation}
-	It can be shown that the distribution $\rho_t$ of the Langevin diffusion~\eqref{eq:langevin_diffusion} is a solution of \eqref{eq:Fokker-Planck}.\aknote{reference?}
+	It can be shown \aknote{ref? I think it's Jordan} that the distribution of the Langevin diffusion:
+	\begin{equation}\label{eq:langevin_diffusion}
+	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
+	\end{equation}
+	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}.
 \end{remark}
 
 

@@ -38,14 +38,14 @@ We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, 
 
 
 As explained in \cref{sec:gradient_flows_functionals} and according to \cref{prop:mmd_flow}, the gradient flow of the MMD can be written:
-\begin{equation*}
+\begin{equation}\label{eq:continuity_equation_mmd}
 \frac{\partial \rho_t}{\partial t}= div(\rho_t  \nabla f_t)
-\end{equation*}
-which is the density of the stochastic process (see \cref{sec:ito_stochastic}):
-\begin{equation}\label{eq:stochastic_process}
-dX_t=-\nabla f_t(X_t) 
 \end{equation}
-\eqref{eq:stochastic_process} represents the position $X_t$ of a particle at time $t > 0$.
+The stochastic process whose distribution satisfies \eqref{eq:continuity_equation_mmd} can thus be written (see \cref{sec:ito_stochastic}):
+\begin{equation}\label{eq:stochastic_process}
+dX_t=-\nabla f_t(X_t) = - (\nabla V (X_t) + \nabla W * \rho_t(X_t))
+\end{equation}
+Equation \eqref{eq:stochastic_process} can be interpreted as the position $X_t$ of a particle at time $t > 0$.
 %We naturally consider the Euler discretization of \eqref{eq:stochastic_process}, which gives:
 %\begin{equation}\label{eq:discretized_process}
 %X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)

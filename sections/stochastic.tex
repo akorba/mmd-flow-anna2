@@ -28,18 +28,13 @@
 
 \subsection{Space discretization - Sample-based setting}
 
-Two settings are usually encountered in the sampling literature:
-\begin{itemize}
-	\item Density-based: $\mu$ is known up to a constant
-	\item Sample-based: we only have access to a set of samples $X \sim \mu$.
-\end{itemize}
-
-\aknote{to investigate much further} 
-The Unadjusted Langevin Algorithm (ULA) seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$ while our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt ULA by replacing $\nabla \log \mu$ in \eqref{eq:langevin_algorithm} by an estimator based on samples. Indeed, it has been the subject of a lot of work (see \cite{li2017gradient})\aknote{check reference}. In contrast, the gradient of $f_t$ can be 'easily' estimated by:
+Two settings are usually encountered in the sampling literature: one is called \textit{density-based}, i.e. $\mu$ is known up to a constant, and the other is called \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
+The Unadjusted Langevin Algorithm (ULA) seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in $\eqref{eq:langevin_algorithm}$. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions\aknote{be more precise}. In contrast, the gradient of $f_t$ can be 'easily'\aknote{complete by a rate on MMD} estimated by:
 \begin{equation}
 \widehat{\nabla f_t}(z)= \frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(u_i,z) -\frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(v_i,z) 
 \end{equation}
-where $(u_1, \dots, u_n)\sim \mu$ and $(v_1, \dots, v_n)\sim \rho_t$. We denote by $\widehat{ \mu}=\sum_{j=1}^{n}\delta_{u_i}$.
+where $(u_1, \dots, u_n)\sim \mu$ and $(v_1, \dots, v_n)\sim \rho_t$. We denote by $\widehat{ \mu}=\sum_{j=1}^{n}\delta_{u_i}$. Since we do not have access to $(v_1, \dots, v_n)\sim \rho_t$, we will propose a particle system.
+
 
 \vspace{0.5cm}
 The following is based on the formalism and some results of \cite{jourdain2007nonlinear}. Firstly, we recall that \eqref{eq:stochastic_process} can be written as a Mac-Kean Vlasov model, a particular kind of SDE driven by a Levy process:
@@ -65,7 +60,7 @@ In the sample-based setting, i.e. given $\widehat{\mu}$, it is thus natural to c
 
 \begin{proposition}\aknote{proof not complete} Let $\rho_t$, $\widehat{\rho}_t$, the distributions of the processes \eqref{eq:theoretical_process} and \eqref{eq:sample_based_process} respectively. Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then:
 	\begin{equation}
-	MMD^2(\rho_t,\widehat{\rho_t})\le L_k^2( \frac{C_1}{n}+ \frac{C_2}{n^{\frac{1}{d}}})
+	MMD^2(\rho_t,\widehat{\rho_t})\le ?%L_k^2( \frac{C_1}{n}+ \frac{C_2}{n^{\frac{1}{d}}})
 	\end{equation}
 \end{proposition}
 \begin{proof}  \aknote{true?}
@@ -85,7 +80,7 @@ In the sample-based setting, i.e. given $\widehat{\mu}$, it is thus natural to c
 	\end{equation}
 	
 		
-	\vspace{2cm}
+	\vspace{2cm}\aknote{the following is a wrong proof. but some elements can be useful later}
 	Let $\widetilde{\rho_t}$ be the distribution of \eqref{eq:intermediary_process}. We firstly have the following decomposition:
 	\begin{align}\label{eq:decompose_process}
 	MMD^2(\widehat{\rho_t}, \rho_t) \le MMD^2(\widehat{\rho_t}, \widetilde{\rho_t})+ MMD^2(\widetilde{\rho_t}, \rho_t)
