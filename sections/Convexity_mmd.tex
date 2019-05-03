@@ -223,13 +223,16 @@ Here we simply used the fact that $\rho_{1}\in L(\mathcal{P},M-K)$.
 \end{align}
 One natural question to ask is whether the  discretized gradient flow algorithm provides such way to reach the barrier $K$ and at what speed this happens. The next result answers that question:   
 
-\begin{theorem}\label{th:rates_mmd}
-	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:discretized_flow}. Then the following holds:
+\begin{proposition}\label{prop:evi}
+	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:discretized_flow}. If $\gamma \leq 1/L$, then
 	\begin{align}
-		\F(\bar{\nu})\leq \frac{1}{2\gamma N}W_2^2(\nu_0,\mu) +K
-	\end{align}
-	where $\bar{\nu}=\frac{1}{N}\sum_{n=1}^N \nu_n$.
-\end{theorem}
+2\gamma(\F(\nu_{n+1})-\F(\mu))
+\leq 
+W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
+\label{eq:evi}
+\end{align}
+\end{proposition}
+
 \begin{proof}
 Let $\Pi^n$ be the optimal coupling between $\nu_n$ and $\mu$, then the optimal transport between $\nu_n$ and $\mu$ is given by:
 \begin{align}
@@ -268,20 +271,45 @@ It is possible to upper-bound the last two terms by a negative quantity when the
 \end{align}
 where $L$ is a constant that depends only on the choice of the kernel $k$ in $\F$. Combining  \cref{eq:main_ineq_2} and \cref{eq:decreasing_functional} it follows that:
 \begin{align}
-\F(\nu_{n+1})-\F(\nu)+\frac{\gamma}{2}(1-\gamma L)D(\nu_n)
+2\gamma(\F(\nu_{n+1})-\F(\mu))+\gamma^2(1-\gamma L)D(\nu_n)
 \leq 
-\frac{1}{2\gamma} (W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-K(\rho^n)
+W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
 \label{eq:main_final}
 \end{align}
-Averaging \cref{eq:main_final} for $1\leq n\leq N$ we get:
-\begin{align}
-	\bar{\F}-\F(\mu)+\frac{\gamma}{2}(1-\gamma L)\bar{D} \leq \frac{W_2^2(\nu_0,\mu)}{2 \gamma N} -\bar{K}
-\end{align}
-where $\bar{\F}$, $\bar{D}$ and $\bar{K}$ denotes the averaged values of $(\F(\nu_n))_{1\leq n \leq N}$, $(D(\nu_n))_{1\leq n \leq N}$  and $(K(\rho^n))_{1\leq n \leq N}$ over iterations from $1$ to $N$. Finally, by \cref{lem:mixture_convexity} it follows that:
-\begin{align}
-\F(\bar{\nu})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma N} -\bar{K}
-\end{align}
 \end{proof}
+\begin{theorem}\label{th:rates_mmd}
+	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:discretized_flow}. If $\gamma \leq 1/L$, then
+	\begin{align}
+\F(\bar{\nu}_{n})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}
+\end{align}
+where $\bar{\nu}=\frac{1}{N}\sum_{n=1}^N \nu_n$. Moreover, 
+\begin{align}
+\F(\nu_n)-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
+\end{align}
+\end{theorem}
+\begin{proof}
+Iterating in \cref{eq:evi} we get:
+\begin{align}
+	2\gamma \sum_{j=1}^{n+1} (\F(\nu_{j}) - \F(\mu)) \leq W_2^2(\nu_0,\mu) - 2\gamma \sum_{j=0}^n K(\rho^j)
+\end{align}
+Let us denote $\bar{K}$ the average value\asnote{$K(\rho^j)$ is bounded in $j$?} of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. Using \cref{lem:mixture_convexity} we have:
+\begin{align}
+\F(\bar{\nu}_{n+1})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma (n+1)} -\bar{K}
+\end{align}
+Now, consider the Lyapunov function $L_n = n \gamma (\F(\nu_n) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)$. Then,
+\begin{align*}
+    L_{n+1} &= n\gamma(\F(\nu_{n+1}) - \F(\mu)) + \gamma(\F(\nu_{n+1}) - \F(\mu)) + \frac12 W_2^2(\nu_{n+1},\mu)\\
+    &\leq n\gamma(\F(\nu_{n+1}) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)-\gamma K(\rho^n)\\
+    &\leq n\gamma(\F(\nu_{n}) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)-\gamma K(\rho^n) -n\gamma^2 (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n \\
+    &\leq  L_n - \gamma K(\rho^n).
+\end{align*}
+where we used Proposition~\cref{prop:decreasing_functional} in the penultimate inequality\asnote{Les deux derniers termes pourraient-ils se manger par miracle?}.
+Finally, 
+\begin{equation}
+    n\gamma (\F(\nu_{n}) - \F(\mu)) \leq L_n \leq L_0 -\gamma \sum_{j = 0}^{n-1} K(\rho^j)
+\end{equation}
+\end{proof}
+
 
 
 
