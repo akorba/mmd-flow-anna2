@@ -1,13 +1,13 @@
 
 \section{Preliminaries}\label{sec:preliminaries}
 
-In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a convex  subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}_2(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
+In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a convex  subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
 
 \subsection{Background on optimal transport}
 
 \subsubsection{$2$-Wasserstein geometry}\label{subsec:wasserstein_flow}
 
-Let $\X \subset \R^d$. Let $\mathcal{P}_2(\X)$ the set of probability distributions on $\X$ with finite second moment.
+Let $\mathcal{P}_2(\X)$ the set of probability distributions on $\X$ with finite second moment.
 Let $T: \X \rightarrow \X$ be a measurable map, and $\rho \in \mathcal{P}(\X)$. The push-forward measure $T_{\#}\rho$
 is characterized by:
 \begin{align*}
@@ -59,27 +59,27 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 \subsubsection{Gradient flows on the space of probability measures}\label{sec:gradient_flows_functionals}
 
 
-Let $\F : \mathcal{P}(\X) \rightarrow \R \cup \infty$, $\rho \mapsto \F(\rho)$ a functional. We call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{P}(\X)$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$. Consider a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$ (see \citep{Villani:2004}), i.e. a functional of the form:
+Let $\F : \mathcal{P}(\X) \rightarrow \R \cup \infty$, $\rho \mapsto \F(\rho)$ a functional. We call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{P}(\X)$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$. Consider a \textit{Lyapunov functional} (or "free energy") $\F$ (see \citep{Villani:2004}), i.e. a functional of the form:
 \begin{equation}\label{eq:lyapunov}
 \F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
 \end{equation}
-where  $U$ is the internal energy, $V$ the potential energy and $W$ the
+where  $U$ is the internal energy, $V$ the potential (or confinement) energy and $W$ the
 interaction energy. The formal gradient flow equation associated to this functional can be written:
 \begin{equation}\label{eq:continuity_equation1}
-\frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho})=div(\rho\nabla (U'(\rho)+V+W*\rho))
+\frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho})
 \end{equation}
 where $\nabla \frac{\partial \F}{\partial \rho}$ is the strong subdifferential of $\F(\rho_t)$ associated with the 2-Wasserstein
 metric (see \cite{ambrosio2008gradient}, Lemma 10.4.1). Indeed, for some generalized notion of gradient $\nabla_{W_2}$, and for sufficiently regular $\rho$ and $\F$, the r.h.s. of \eqref{eq:continuity_equation1} corresponds to $-\nabla_{W_2}\F(\rho)$.
-And the dissipation of entropy is defined as: %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
+The dissipation of entropy is defined as: %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
 \begin{align}
 &        \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(\rho)= \int |\xi|^2 \rho(x)dx\\
-&\text{ and } \xi= \nabla (U'(\rho) + V + W * \rho)= \nabla \frac{\partial \F}{\partial \rho}
+&\text{ and } \xi= \nabla \frac{\partial \F}{\partial \rho} = \nabla (U'(\rho) + V + W * \rho)
 \end{align}
 Standard considerations from fluid mechanics tell us that the continuity equation \eqref{eq:continuity_equation1} may be interpreted as the equation ruling the evolution of the density $\rho_t$ of a family of particles initially distributed according to some $\rho_0$ and each of which follows the velocity/vector field $v_t=\nabla \frac{\partial{\F}}{\partial{\rho_t}}$.
 
 \begin{remark} \label{rem:KL_Lyapunov}
 	A famous example of a functional \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\rho, \mu \in \mathcal{M}^+$ by
-	$KL(\rho,\mu)=\int log(\frac{\rho(x)}{\mu(x)})\rho(x)dx$. Indeed, $KL(\rho, \mu)=\int U(\rho(x))\rho(x)dx + \int V(x) \rho(x)dx$ with $U(\rho(x))=\rho(x)log(\rho(x))$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla \log(\rho) + \nabla V=  \nabla \log(\frac{\rho}{\mu})$ and equation \eqref{eq:continuity_equation} becomes the classical Fokker-Planck equation:
+	$KL(\rho,\mu)=\int log(\frac{\rho(x)}{\mu(x)})\rho(x)dx$. Indeed, $KL(\rho, \mu)=\int U(\rho(x))dx + \int V(x) \rho(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla \log(\rho) + \nabla V=  \nabla \log(\frac{\rho}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
 	\begin{equation}\label{eq:Fokker-Planck}
 	\frac{\partial{\rho}}{\partial t}= div(\rho \nabla V )+ \Delta \rho
 	\end{equation}
