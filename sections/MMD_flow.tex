@@ -10,15 +10,15 @@ We will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flow
 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
 \begin{equation}
-V(x)=-\int 2 k(x,x')\mu(x')\text{,} \quad
-W(x,x')=k(x,x')
+V(x)=-\int  k(x,x')\mu(x')\text{,} \quad
+W(x,x')=\frac{1}{2}k(x,x')
 \end{equation}
-We have $MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=\E_{\mu\otimes \mu}[k(x,x')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$ as in \eqref{eq:lyapunov}.
+We have $1/2MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=1/2\E_{\mu\otimes \mu}[k(x,x')]$. $MMD^2$ can thus be written as a \textit{Lyapunov functional} (or "free energy" or "entropy") $\F$ as in \eqref{eq:lyapunov}.
 
 
 
 \begin{proposition}\label{prop:mmd_flow}
- The velocity in \eqref{eq:continuity_equation1} is given by $\nabla \frac{\partial{\F}}{\partial{\rho_t}}=2 \nabla f_t$ and the dissipation of MMD can be written:  
+ The velocity in \eqref{eq:continuity_equation1} is given by $\nabla \frac{\partial{\F}}{\partial{\rho_t}}=\nabla f_t$ and the dissipation of MMD can be written:  
 	\begin{equation}
 	\frac{d MMD^2(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]
 	\end{equation}
@@ -47,7 +47,7 @@ dX_t=-\nabla f_t(X_t) = - (\nabla V (X_t) + \nabla W * \rho_t(X_t))
 &X_t=X_{0}+\int_{0}^t \sigma(X_s, \rho_s, \mu)ds \quad \text{for t in [0,T]}\\
 &\forall s \in [0,T]\;,\quad \rho_s \text{ denotes the probability distribution of } X_s
 \end{align}
-with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_t -  \int \nabla_{X_s}k(.,X_s) d\mu$. Notice that $\sigma$ is Lipschitz continuous in its second and third variable and bounded.\aknote{investigate conditions on the kernel for convergence, uniqueness. e.g. linear growth of the coefficient sigma? or does it relate to lambda convexity as santambrogio says?}
+with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_t -  \int \nabla_{X_s}k(.,X_s) d\mu$. Notice that $\sigma$ is bounded \aknote{true?} and Lipschitz continuous in its second and third variable and bounded.\aknote{investigate conditions on the kernel for convergence, uniqueness. e.g. linear growth of the coefficient sigma? or does it relate to lambda convexity as santambrogio says?}
 
 \begin{remark}
 	Consider a family of particles such that its density satisfy Equation\eqref{eq:continuity_equation}. Both KL and MMD have a non-zero potential energy $V$ which drive these particles to the target distribution $\mu$. While he entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for MMD. Indeed, when $W$ is convex, this gives raise to a general
