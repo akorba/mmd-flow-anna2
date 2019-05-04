@@ -1,3 +1,4 @@
+
 %In this subsection we assume that $MMD^2$ is $\lambda$-geodesically-convex. Conditions under which this holds will be provided in the next section.
 
 %\subsection{Analysis of the theoretical algorithm}
@@ -26,7 +27,7 @@
 %Taylor : 
 
 
-\subsection{Space discretization - Sample-based setting}
+\subsection{Convergence of the space discretized flow - Sample-based setting}
 
 Two settings are usually encountered in the sampling literature: one is called \textit{density-based}, i.e. $\mu$ is known up to a constant, and the other is called \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
 The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of \eqref{eq:langevin_diffusion}, seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions\aknote{be more precise}. In contrast, the gradient of $f_t$ can be 'easily'\aknote{complete by a rate on MMD} estimated by:
@@ -48,55 +49,34 @@ More precisely, we need a uniform propagation of chaos (i.e bounded uniformly in
 %\end{equation}
 
 
-\begin{proposition}\aknote{proof not complete} Let $\rho_t$, $\widehat{\rho}_t$, the distributions of the processes \eqref{eq:theoretical_process} and \eqref{eq:sample_based_process} respectively. Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then:
+\begin{proposition}\aknote{proof not complete} Let $\widehat{\rho}_t^N$, be the distributions of the process \eqref{eq:sample_based_process}. %Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then:
 	\begin{equation}
-	MMD^2(\rho_t,\widehat{\rho_t})\le ?%L_k^2( \frac{C_1}{n}+ \frac{C_2}{n^{\frac{1}{d}}})
+	MMD^2(\rho_t,\widehat{\rho}_t^N)\le ?%L_k^2( \frac{C_1}{n}+ \frac{C_2}{n^{\frac{1}{d}}})
 	\end{equation}
 \end{proposition}
 \begin{proof} 
-	%We now introduce the process:
-	%\begin{equation}\label{eq:intermediary_process}
-	%dZ_{t}=\widetilde{\nabla f_t}(Z_t) 
-	%\end{equation}
-	%where $\widetilde{\nabla f_t}(z)=\int \nabla_{z}k(X,z)\diff \mu- \frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(v_i,z)$ and $(v_1, \dots, v_n)\sim \rho_t$.  Let $\widetilde{\rho}_t$ be the distribution of \eqref{eq:intermediary_process}. 
-	Introduce the system of $n$ interacting particles:
+	Introduce the process:
 	\begin{align}\label{eq:intermediary_process}
-	&X_t^{j,n}=X_{0}+\int_{0}^t \sigma(X_s^{j,n}, \rho_s^n, \mu)ds \quad \text{for t in [0,T]}\\
-	&\forall s \in [0,T]\;,\quad \rho_s^n=\sum_{j=1}^{n} \delta_{X_s^{j,n}} \text{ denotes the empirical measure } 
+	&\widetilde{X}_t=X_{0}+\int_{0}^t \sigma(\widetilde{X}_s, \widetilde{\rho}_s, \widehat{\mu})ds \quad \text{for t in [0,T]}\\
+	&\forall s \in [0,T]\;,\quad \widetilde{\rho}_s \text{ denotes the probability distribution of } X_s
 	\end{align}
-	By Theorem 3 in \cite{jourdain2007nonlinear}, since $\sigma$ is Lipschitz continuous in its second variable, we have:	
-	\begin{equation}\label{eq:upp_bound1}
-	\sup_{j \le n}\E[\sup_{t\le T}\| X_t - X_t^{j,n}\|^2]\le \frac{C_1}{n}
+	\begin{lemma}
+		By \cite{durmus2018elementary}, we have a uniform in time propagation of chaos:
+		\begin{equation}
+		W_1(\widetilde{\rho}_t,\widehat{\rho}_t^N)\le \frac{A}{N}
+		\end{equation}
+	\end{lemma}
+	Indeed, we verify the three assumptions. 
+	Now, it is a bit trickier to control $X_t-\widetilde{X_t}$. Maybe we can do:
+	\begin{equation}\label{eq:decomposition}
+	W_1(\mu, \widetilde{\rho}_t)\le W_1(\mu, \widehat{\mu})+W_1(\widehat{\mu}, \widetilde{\rho_t})
 	\end{equation}
-	
-		
-	\vspace{2cm}\aknote{the following is a wrong proof. but some elements can be useful later}
-	Let $\widetilde{\rho_t}$ be the distribution of \eqref{eq:intermediary_process}. We firstly have the following decomposition:
-	\begin{align}\label{eq:decompose_process}
-	MMD^2(\widehat{\rho_t}, \rho_t) \le MMD^2(\widehat{\rho_t}, \widetilde{\rho_t})+ MMD^2(\widetilde{\rho_t}, \rho_t)
-	\end{align}
-	 We will firstly bound the first term on the r.h.s. of \eqref{eq:decompose_process}. By \cref{lem:mmd_w2}, we have that:
-	 \begin{equation}
-	 MMD^2(\widehat{\rho_t}, \widetilde{\rho_t})\le L_k^2 W_2^2(\widehat{\rho_t}, \widetilde{\rho_t})
-	 \end{equation}
-	 Then:
-	 \begin{align}
-	 W_2^2(\rho_t, \widetilde{\rho_t}) = \inf_{\pi \in \Pi(\rho_t, \widetilde{\rho_t})} \int \| x-z \|^2 d\pi(\rho_t, \widetilde{\rho_t}) \le \int \|x-z\|^2 d\rho_t(x)d\widetilde{\rho_t}(z)
-	 \end{align}
-	 Hence by \eqref{eq:upp_bound1}:
-	 \begin{equation}
-	 MMD^2(\rho_t, \widetilde{\rho_t})\le L_k^2 \frac{C_1}{n}
-	 \end{equation}
-	We now turn to the second term at the r.h.s. of \eqref{eq:decompose_process}. We can derive a similar proof than Theorem 3 in \cite{jourdain2007nonlinear}:\aknote{same, we need Lipschitz continuity of the process in terms of the third variable}
-	 \begin{align}
-	 \E[\sup_{t\le T}\|Z_t-Y_t\|] \le   C \int_{O}^T |\sigma() -\sigma()| ds \le \E[W_1^2(\widehat{\mu},\mu)]
-	 \end{align}
-	where $\widehat{\mu}=\frac{1}{n}\sum_{i=1, \dots,n}\delta_{u_i}$ and $u_i \sim \mu$. It was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:
+	Indeed, firstly we control the first r.h.s. term in \eqref{eq:decomposition} since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:
 	\begin{equation}
-		\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C_2}{n^{\frac{1}{d}}}
+	\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C_2}{n^{\frac{1}{d}}}
 	\end{equation}
 	\begin{remark}
-	Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
+		Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
 	\end{remark}
+	Then, for the second term in \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$.\aknote{if $\widehat{ \mu}$ satisfy the assumptions we may need to apply these rates}
 \end{proof}
-

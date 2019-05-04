@@ -1,6 +1,6 @@
-\section{MMD Gradient flow - Algorithms, experiments}\label{sec:mmd_flow}
+\section{Theoretical properties of the MMD gradient flow}\label{sec:mmd_flow}
 
-\subsection{MMD Descent - Theoretical algorithm}
+\subsection{MMD gradient flow}
 
 We will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flows_functionals} and denote $f_t= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$. In this case:
 \begin{equation}
@@ -54,14 +54,9 @@ with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_
 	aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 \end{remark}
 
-%We naturally consider the Euler discretization of \eqref{eq:stochastic_process}, which gives:
-%\begin{equation}\label{eq:discretized_process}
-%X_{k+1}=X_k - \gamma_{k+1} \nabla f_k(X_k)
-%\end{equation}
-%where $\nabla f_k(X_k)= \int \nabla_{X_k}k(X,X_k)\diff \mu - \int \nabla_{X_k}k(X,X_k) \diff \rho_k$ with $\rho_k$ the distribution of the process \eqref{eq:discretized_process} and $(\gamma_k)_{k\ge1}$ is a sequence of step sizes.
+\input{sections/lambda_convexity}
 
-
-\input{sections/stochastic}
+\input{sections/lojasiewicz}
 
 \subsection{MMD flows in the literature}
 
