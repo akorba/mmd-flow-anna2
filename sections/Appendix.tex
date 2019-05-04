@@ -378,16 +378,6 @@ Using \cref{eq:bounded_neg_sobolev}, we get the desired inequality.
 \end{proof}
 
 Now we will use the inequality in \cref{prop:PL_type_inequality} to prove a convergence result towards the global optimum $\mu$. This is provided in \cref{prop:convergence}.
-\begin{proposition}
-$$
-\cF(\nu_t) \leq \sqrt{\frac{C\cF(\nu_0)}{t}} 
-$$
-\end{proposition}
-\begin{proof}
-Consider the Lyapunov function $L(t) = t \cF(\nu_t)^2 + C \cF(\nu_t)$. Using Proposition~\ref{prop:mmd-flow} we know that $$C \frac{d}{dt} \cF(\nu_t) \leq - \cF(\nu_t)^2.$$
-Hence, $t \mapsto \cF(\nu_t)$ is non increasing. Moreover it is non negative, hence $\frac{d}{dt}\cF(\nu_t)^2 \leq 0$. Then $$\frac{d}{dt}L(t) \leq \cF(\nu_t)^2 + C \frac{d}{dt}\cF(\nu_t) \leq 0.$$ 
-Finally, $$t \cF(\nu_t)^2 \leq L(t) \leq L(0) = C \cF(\nu_0)$$
-\end{proof}
 
 \begin{proposition}\label{prop:convergence}
 	If \cref{eq:bounded_neg_sobolev} is satisfied for all times then $t\mapsto \mathcal{F}(\nu_t)$ converges to $0$ with a rate of convergence given by:
@@ -404,7 +394,7 @@ Finally, $$t \cF(\nu_t)^2 \leq L(t) \leq L(0) = C \cF(\nu_0)$$
 	\begin{align}
 		\dot{\F}(\nu_t) \leq  -\frac{4}{C}\F(\nu_t)^2
 	\end{align}
-It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
+It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
 
 All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. It is also possible to have a time depended constant $C_t$ as long as its growth is such that:
