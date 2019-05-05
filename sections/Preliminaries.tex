@@ -1,7 +1,7 @@
 
 \section{Preliminaries}\label{sec:preliminaries}
 
-In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
+In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. %The gradient and divergence operators are denoted as $\nabla$ and $div$ respectively. With multiple variables, $$ denotes the gradient with respect to the variable z. Therefore, the divergence of the vector field U is ∇ · U(x) = Pdn=1 ∇xn Un(x)
 
 \subsection{Background on optimal transport}
 
@@ -94,7 +94,7 @@ Standard considerations from fluid mechanics tell us that the continuity equatio
 
 \subsection{Maximum Mean Discrepancy}\label{subsec:MMD}
 
-We now turn to the functional of interest in this paper. The reader may refer to \cref{sec:rkhs} for additional details on Reproducing Kernels Hilbert Spaces (RKHS) and the Maximum Mean Discrepancy (MMD). For a given characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding RKHS (see \cite{smola1998learning}). The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$. The unit ball in $\kH$ which will be denoted as $\mathcal{B}$ is simply the set of functions $f$ in $\kH$ such that $\Vert f\Vert_{\kH}\leq 1 $:
+We now turn to the functional of interest in this paper. The reader may refer to \cref{sec:rkhs} for additional details on Reproducing Kernels Hilbert Spaces (RKHS) and the Maximum Mean Discrepancy (MMD). For a given characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding RKHS. The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$. The unit ball in $\kH$ which will be denoted as $\mathcal{B}$ is simply the set of functions $f$ in $\kH$ such that $\Vert f\Vert_{\kH}\leq 1 $:
 \begin{align}\label{eq:unit_ball_RKHS}
 \mathcal{B} = \{ f\in \kH : \quad \Vert f\Vert_{\kH}\leq 1 \}
 \end{align}
