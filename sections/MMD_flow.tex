@@ -26,7 +26,7 @@ We have $1/2MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')
 \end{proposition}
 
 \begin{remark}
-	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \eqref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
+	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of Equation\eqref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
 	\begin{equation}
 	\frac{d KL(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\mu}(X))\|^2]
 	\end{equation}
@@ -41,29 +41,30 @@ The stochastic process whose distribution satisfies \eqref{eq:continuity_equatio
 \begin{equation}\label{eq:stochastic_process}
 dX_t=-\nabla f_t(X_t) = - (\nabla V (X_t) + \nabla W * \rho_t(X_t))
 \end{equation}
-%Equation \eqref{eq:stochastic_process} can be interpreted as the position $X_t$ of a particle at time $t > 0$.
-\aknote{The following is based on the formalism and some results of \cite{jourdain2007nonlinear}} Equation \eqref{eq:stochastic_process}, which can be interpreted as the position $X_t$ of a particle at time $t > 0$, can be written as a Mac-Kean Vlasov model\aknote{reference}, a particular kind of SDE driven by a Levy process:
+Equation \eqref{eq:stochastic_process}, which can be interpreted as the position $X_t$ of a particle at time $t > 0$, can be written as a Mac-Kean Vlasov model (see \cite{kac1956foundations}, \cite{mckean1966class}), a particular kind of SDE driven by a Levy process:
 \begin{align}\label{eq:theoretical_process}
 &X_t=X_{0}+\int_{0}^t \sigma(X_s, \rho_s, \mu)ds \quad \text{for t in [0,T]}\\
 &\forall s \in [0,T]\;,\quad \rho_s \text{ denotes the probability distribution of } X_s
 \end{align}
-with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_t -  \int \nabla_{X_s}k(.,X_s) d\mu$. Notice that $\sigma$ is bounded \aknote{true?} and Lipschitz continuous in its second and third variable and bounded.\aknote{investigate conditions on the kernel for convergence, uniqueness. e.g. linear growth of the coefficient sigma? or does it relate to lambda convexity as santambrogio says?}
+with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_t -  \int \nabla_{X_s}k(.,X_s) d\mu$. Suppose that $k$ is bounded\aknote{as well as $\nabla_k$?} and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Hence, $\sigma$ is bounded and Lipschitz continuous in its first variable (if the kernel is itself Lipschitz), and linear in its second and third variable. 
+\aknote{investigate conditions on the kernel for convergence, uniqueness. e.g. linear growth of the coefficient sigma? or does it relate to lambda convexity as santambrogio says? or Following Chizat Bach [CB18b] solutions exist for all t > 0 for appropriate initial $\mu_0$ that are compactly
+	supported in $\X$?}
+
 
 \begin{remark}
 	Consider a family of particles such that its density satisfy Equation\eqref{eq:continuity_equation}. Both KL and MMD have a non-zero potential energy $V$ which drive these particles to the target distribution $\mu$. While he entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for MMD. Indeed, when $W$ is convex, this gives raise to a general
 	aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 \end{remark}
 
-\input{sections/lambda_convexity}
-
-\input{sections/lojasiewicz}
-
-\subsection{MMD flows in the literature}
-
 \begin{remark}
 	We point out here that algorithm~\eqref{eq:sample_based_process} is different from the descent proposed by \cite{mroueh2018regularized}. 
 \end{remark}
 
-\begin{remark}
-	Birth-Death Dynamics to improve convergence (see \cite{rotskoff2019global}).
-\end{remark}
+
+\input{sections/lambda_convexity}
+
+\input{sections/lojasiewicz}
+
+%\subsection{MMD flows in the literature}
+
+

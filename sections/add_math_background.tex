@@ -1,5 +1,20 @@
 
+
 \subsection{Additional mathematical background}
+
+\subsubsection{MMD in Reproducing Kernel Hilbert Spaces (RKHS)}\label{sec:rkhs}
+
+We recall here fundamental definitions and properties of reproducing kernel Hilbert spaces (RKHS) (see \cite{smola1998learning}) and Maximum Mean Discrepancies (MMD). The key aspect of a RKHS is
+the reproducing property: for all $f \in \kH, f(x) = \langle f, k(x, .)\rangle_{\kH}$. 
+Suppose that $k(.,.))$ is measurable and that $\E_x[k(x,x)]<\infty$.
+Given $\mathcal{P}(\X)$ the set of probability measures defined on $\X$, $k$
+is said to be characteristic if:
+\begin{equation}
+\mu \mapsto \int k(.,x) d\mu(x)
+\end{equation}
+is injective, i.e. $\mu$ is mapped to a unique element in $\kH$ called its mean embedding.  Suppose additionally that $k(.,.)$ is continuous, $\X$ is compact, and that $\kH$ is dense in $C(\X)$ the space of continuous bounded functions on $\X$. Under these conditions, the MMD is a metric (\cite{gretton2012kernel}, Theorem 5).
+
+
 
 \subsubsection{Stochastic processes}\label{sec:ito_stochastic}
 
