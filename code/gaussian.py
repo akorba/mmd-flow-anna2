@@ -14,7 +14,7 @@ class Gaussian(BaseKernel):
 	# def exp_params(self,sigma):
 	# 	return pow_10(sigma)
 	def get_exp_params(self):
-		return pow_10(self.params)
+		return pow_10(self.params,dtype=self.dtype,device=self.device)
 	def update_params(self,log_sigma):
 		self.params = log_sigma
 	# def set_params(self,params):
@@ -68,7 +68,7 @@ class Gaussian(BaseKernel):
 
 	def _kernel(self,log_sigma,X,Y):
 
-		sigma = pow_10(log_sigma)
+		sigma = pow_10(log_sigma,dtype=self.dtype,device=self.device)
 		tmp = self._square_dist( X, Y)
 		dist = tr.max(tmp,tr.zeros_like(tmp))
 		return  tr.exp(-0.5*dist/sigma)
@@ -84,7 +84,7 @@ class Gaussian(BaseKernel):
 		# gram =  [M,N]
 		N,d = X.shape
 		assert d==1 
-		sigma = pow_10(log_sigma)
+		sigma = pow_10(log_sigma,dtype=self.dtype,device=self.device)
 		gram = self._kernel(log_sigma,X, Y)
 
 		D = (X.unsqueeze(1) - Y.unsqueeze(0))/sigma

@@ -32,9 +32,9 @@ DEVICE = 'cuda'
 # dnl  = lambda x: tf.where(x<0, tf.zeros_like(x), x)
 # d2nl = lambda x: tf.where(x<0, tf.zeros_like(x), tf.ones_like(x))
 
-def pow_10(x): 
+def pow_10(x,dtype=FDTYPE,device=DEVICE): 
 
-	return tr.pow(tr.tensor(10., dtype=FDTYPE, device = DEVICE),x)
+	return tr.pow(tr.tensor(10., dtype=dtype, device =device),x)
 
 # @tf.custom_gradient
 # def fix_point_id(var):
@@ -99,7 +99,6 @@ def load(fn='', size=200, max_samples=None):
         ixsel = np.random.choice(x.size, max_samples, replace=False)
         x, y = x[ixsel], y[ixsel]
     return x,y
-
 
 
 

@@ -14,9 +14,11 @@ import time
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-ngpu = 0
+ngpu = 1
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 use_cuda = True
+if device =='cpu':
+	use_cuda = False
 # Number of workers for dataloader
 workers = 2
 
@@ -57,7 +59,6 @@ d_out = 1
 
 # Create the generator
 center  = 3.
-affine_transform = np.random.rand(2,2)
 
 netG = EllipseGenerator(target,center,D).to(device)
 torch.manual_seed(999)
@@ -125,28 +126,44 @@ if (device.type == 'cuda') and (ngpu > 1):
 
 
 torch.manual_seed(999)
-num_particles = 1000
+num_particles = 100
 # Target
-target_name = 'data/shapes/rabbit.png'
-base_name = 'data/shapes/octopus.png'
-target = ShapeGenerator(target_name,num_particles, dtype = dtype, device = device)
+D = 2
+center_target = 0.
+sigma_target = 1.
+target = torch.distributions.multivariate_normal.MultivariateNormal(torch.zeros(D ,dtype=torch.float32,device=device), torch.eye(D,dtype=torch.float32,device=device))
+target = target_wrapper(target, dtype = torch.float32, device = device)
+#target = GaussianGenerator(target,center_target,sigma_target,D).to(device)
+#target = ParticleGenerator(target,num_particles)
+
 
 # Initializing particles
+center = 10.
+sigma = .5
 
-particles = ShapeGenerator(base_name,num_particles, dtype = dtype, device = device)
+base = torch.distributions.multivariate_normal.MultivariateNormal(torch.zeros(D ,dtype=torch.float32,device=device), torch.eye(D,dtype=torch.float32,device=device))
+base = target_wrapper(base, dtype = torch.float32, device = device)
+base = GaussianGenerator(base,center,sigma,D).to(device)
+particles = ParticleGenerator(base,num_particles)
 
 # Building loss
 bandwidth = 2.
-d_out = 2
-Loss = PlainMMD(bandwidth, d_out,use_cuda).to(device)
+d_out = D
+
+sigma_noise = 0.1
+noise_sampler = torch.distributions.multivariate_normal.MultivariateNormal(torch.zeros(D ,dtype=torch.float32,device=device), sigma_noise*torch.eye(D,dtype=torch.float32,device=device))
+noise_sampler = target_wrapper(noise_sampler, dtype = torch.float32, device = device)
+
+Loss = PlainMMD_smoothed(bandwidth, noise_sampler,d_out,use_cuda).to(device)
 torch.manual_seed(999)
 
-lr = 1.*num_particles
+lr = 1.
 optimizerD = None
 optimizerG = optim.SGD(particles.parameters(), lr=lr)
 init_data = witness_wrapper(Loss,target,particles)
 out = train(Loss,optimizerG, optimizerD,particles, target, base_distribution = None , device=device,generator_steps = 1000,learn_critic= False,b_size = 100,save_particles=True)
 final_data = witness_wrapper(Loss,target,particles)
+
 
 
 
