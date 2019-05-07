@@ -88,6 +88,53 @@ where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is 
 The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
 \end{proof}
 
+
+
+\begin{lemma}\label{lem:derivative_mmd_augmented}\manote{Notations still needs to be adjusted in this lemma}
+	Let $\phi$ be a map from  $\X times\mathcal{U} $ to $\X$  and $\nu$ in $\mathcal{P}_2(\X \times \mathcal{U})$. Denote by  $P_x$ as the projection map from $\X times\mathcal{U}$ to $\X$ and consider the path $\delta_t$ between $(P_x)_{\#}\nu$ and $(P_x+\phi)_{\#}\nu$ given by:
+	\begin{align*}
+		\delta_t=  (P_x+t\phi)_{\#}\nu \qquad \forall t\in [0,1]
+	\end{align*}
+The time derivative of $\mathcal{F}(\delta_t)$ is given by:
+	\begin{align*}
+		\dot{\F}(\delta_t)&=\int \nabla f_{\mu,\delta_t}(x+t\phi(x,u)) \phi(x,u)d\nu(x,u)\\
+	\end{align*}
+where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as defined in \cref{eq:witness_function}.	
+	Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
+	\begin{align*}
+		\ddot{\F}(\delta_t) \vert \leq 3L \int \Vert \phi(x,u) \Vert^2 d\nu(x,u)
+	\end{align*}
+	where $L$ is a positive constant defined in \cref{assump:bounded_trace,assump:bounded_hessian}.
+	
+\end{lemma}
+\begin{proof}
+For simplicity, we write $f_t$ instead of $f_{\mu,\delta_t}$.
+We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
+\[
+\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}.
+\]
+Using the definition
+of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below}
+\[
+\frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X),
+\]
+hence:
+\[
+\frac{d\mathcal{F}(\delta_{t})}{dt}=2\int\phi(X).\nabla f_{t}(\pi_{t}(X))d\nu(X)
+\]
+Now the second derivative is obtained by direct derivation of the above expression:
+	\begin{align*}
+		\frac{d^2 \mathcal{F}(\delta_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
+		&+\int \phi(X)^T\nabla_x\nabla_y k(\pi_t(X),\pi_t(X')) ) \phi(X')d\nu(X)d\nu(X') 
+	\end{align*}
+where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \cref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
+\begin{align*}
+	4L \int \Vert \phi(X)\Vert^2d\nu(X)  
+\end{align*}
+The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
+\end{proof}
+
+
 Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ and $\nu'$. We consider the path $\rho_t$ defined as $\rho_t=(\pi_t)_{\#}\Pi$ where $\pi_t(X,Y)=(1-t)X+tY$. It is possible to provide an expression for the time derivative of $\mathcal{F}{\rho_t}$. This is given by ?\\\aknote{beware, not finished!}
 
 %\begin{lemma}\label{lem:time_derivative}
@@ -182,5 +229,45 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 	\label{eq:main_final}
 	\end{align}
 \end{proof}
+
+
+Here we provide a proof for \cref{prop:decreasing_loss_iterations}
+\begin{proof}
+
+	Recall that a sample $X_{n+1}$ from $\nu_{n+1}$ is obtained using
+	\begin{align}
+		X_{n+1} = X_n + U_n - \gamma \nabla f_{\mu,\nu_n}(X_n+U_n)
+	\end{align}
+	where $X_n$ is a sample from $\nu_n$ and $U_n \sim g $ and is independent from $X_n$. If one defines the map $(x,u)\mapsto T_t(x)= x - \gamma t\nabla f_{\mu,\nu_n}(x)$ for $1\leq t\leq 1$, then $\nu_{n+1}$ is obtained as a push-forward of $\nu_k\star g$ with $T_1$
+	\begin{align}
+		\nu_{n+1} = (T_1)_{\#}(\nu_n\star g)
+	\end{align}
+	We can then consider a path between $\nu_n \star g $ and $\nu_{n+1}$ of the form:
+	\begin{align*}
+	\rho_t	=(T_t)_{\#}(\nu_n\otimes g)
+	\end{align*}
+	The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
+	\begin{align}\label{eq:taylor_expansion}
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n}\star g )=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
+	\end{align} 
+	By taking $\phi = - \gamma \nabla f_{\mu,\nu_n}$ and $ \nu = \nu_n\star g $  and using \cref{lem:derivative_mmd_augmented} we have that:
+	\begin{align*}
+	\frac{d \mathcal{F}(\rho_t) }{dt} =\int \nabla f_{\mu,\nu_n}(T_t(x)).\phi(x)\diff (\nu_n\star g)(x)
+	\end{align*}
+	Evaluating at $t=0$ we get
+	\begin{align}
+		\dot{\F}(\rho_t)\vert_{t=0} = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x)\Vert^2 \diff (\nu_n \star g)(x)
+	\end{align}
+	Moreover, by \cref{assump:bounded_trace,assump:bounded_hessian} it follows directly from \cref{lem:derivative_mmd} that:
+	\begin{align}\label{eq:upper_bound_1}
+	\vert \frac{d^2 \mathcal{F}(\rho_t) }{dt^2}   \vert\leq L\int \Vert \nabla f_{\mu,\nu_n} n(x) \Vert^2 \diff(\nu_n\star g)(x) 
+	\end{align}
+	Using \cref{eq:taylor_expansion,eq:upper_bound_1} the result follows.
+\end{proof}
+
+
+
+
+
 
 \subsubsection{Proof of \cref{th:rates_mmd}}

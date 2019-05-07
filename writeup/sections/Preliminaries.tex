@@ -30,18 +30,22 @@ When the problem is miss-specified, the same formulation can be obtained provide
 \begin{align}\label{eq:particle_dynamics}
 	\dot{\theta}_i(t)= -\nabla \mathcal{L}(\theta_1(t),...,\theta_m(t))
 \end{align}  
-As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$, this leads to the so called continuity equation:
-\begin{align}
-	\partial_t \nu_t = \nabla.(\nu_t \nabla f_{\nu_t})
+As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:mmd_minimization}, this leads to a continuity equation:
+\begin{align}\label{eq:mmd_flow}
+	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
 \end{align}
-
-where $f_{\mu,\nu}$ 
-
-Here $F$ is the functional given by the MMD: $\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu)$ while
-$\frac{\delta \F(\nu)}{\delta \nu }$ is the first variation of $\F$ with respect to $\nu$. In this case it is exactly given by the witness function between $\mu$ and $\nu$:
+for an initial choice of distribution $\nu_0$. In \cref{eq:mmd_flow}, $f_{\mu,\nu_t}$ is the witness function between $\mu$ and $\nu_t$ defined and is given by:
 \[
-\frac{\delta \F((\theta)}{\delta \nu } =  \int k(\theta,\theta')(\diff \nu(\theta')-\diff\mu(\theta') ) 
+f_{\mu,\nu_t}(\theta) =  \int k(\theta,\theta')(\diff \nu(\theta')-\diff\mu(\theta') ) 
 \]
+\cref{eq:mmd_flow} can be shown to have a unique solution and has a particle version which is described by:
+\begin{align}\label{eq:particle_equation}
+	\dot{X}_t = -\nabla f_{\mu,\nu_t}(X_t) \qquad X_0\sim \nu_0
+\end{align}
+In \manote{section} we describe the properties of this flow and explain why in general it might not reach the global optimum.
+
+
+
 
 %
 %In this section we consider the setting of learning a neural network to solve a regression problem in a similar context as in \cite{Rotskoff:2019} and show how this problem is related minimizing an MMD between an unknown target distribution and the current one. The neural network can be written as 

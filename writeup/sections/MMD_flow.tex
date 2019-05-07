@@ -1,4 +1,6 @@
-\section{Theoretical properties of the MMD gradient flow}\label{sec:mmd_flow}
+
+
+\section{MMD gradient flows}\label{sec:mmd_flow}
 
 \subsection{MMD gradient flow}
 
@@ -25,9 +27,9 @@ We have $1/2MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')
 
 \begin{remark}
 	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \cref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
-	\begin{equation}
+	\begin{align}\label{eq:decreasing_mmd}
 	\frac{d KL(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\mu}(X))\|^2]
-	\end{equation}
+	\end{align}
 \end{remark}
 
 
@@ -51,6 +53,55 @@ with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_
 	Consider a family of particles such that its density satisfy Equation\cref{eq:continuity_equation}. Both KL and MMD have a non-zero potential energy $V$ which drive these particles to the target distribution $\mu$. While he entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for MMD. Indeed, when $W$ is convex, this gives raise to a general
 	aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 \end{remark}
+
+
+\subsection{Noisy MMD flow}
+
+Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima. One way to see how this could happen, at least formally, is by looking at \cref{eq:decreasing_mmd} at equilibrium. Indeed $\F(n_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, this implies that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$ one can show that under simple regularity conditions that the equilibrium condition
+\begin{align}\label{eq:equilibrium_condition}
+	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
+\end{align} 
+must hold. If $\nu^*$ had a positive density then this would imply that $f_{\mu,\nu^{*}}(x)$ is constant everywhere. If the set of functions spanned by the RKHS associated to the MMD do not include constant functions, then it must hold that $f_{\mu,\nu^{*}}=0$ which in turn means that $MMD(\mu,\nu^{*})=0$, hence $\nu^*$ would be a global solution. However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. In that case, the optimality condition \cref{eq:equilibrium_condition} is of little use. Moreover, it suggests that the gradient flow could converge to some suboptimal configuration as the gradient is only evaluated near the support of $\nu^*$.
+Since \cref{eq:equilibrium_condition} seems to be the main obstruction to reach global optimality, we propose to construct, at least formally, a modified gradient flow for which the optimality condition would guarantee reaching the global optimum.
+Ideally, we would like to obtain an optimality condition of the form
+\begin{align}\label{eq:soothed_equilibrium_condition}
+	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff (\nu^{*}\star g)(x) =0  
+\end{align}
+where $\nu^{*}\star g$ means the convolution of $\nu^*$ with a gaussian distribution $g$. The smoothing effect of convolution directly implies that $\nu^{*}\star g$ has a positive density, which falls back in the scenario where the $\nu^*$ must a global optimum.
+We consider, at least formally, the following modified equation for $\nu_t$:
+\begin{align}\label{eq:smoothed_continuity_equation_mmd}
+	\partial_t \nu_t = div((\nu_t \star g) \nabla f_{\mu,\nu_t} )
+\end{align}
+This suggests a particle equation which would be given by:
+\begin{align}\label{eq:noisy_particles}
+	\dot{X}_t = -\nabla f_{\mu,\nu_t}( X_t + W_t  )
+\end{align}
+where $(W_t)$ is a brownian motion. Furthermore, $\F(\nu_t)$ satisfies
+\begin{align}\label{eq:smoothed_decreasing_mmd}
+	\dot{\F}(\nu_t) = -\int \Vert \nabla f_{\mu,\nu_t}(x)\Vert^2 \diff (\nu_t\star g)(x)
+\end{align}
+The existence and uniqueness of a solution to \cref{eq:smoothed_continuity_equation_mmd} for a general $g$ remains an open question to our knowledge. However, we find it useful here to state \cref{eq:smoothed_continuity_equation_mmd,eq:noisy_particles,eq:smoothed_decreasing_mmd} which are the modified analogs of \manote{ref to the analogs}.
+
+We provide now the time discretized version of such flow which is well defined at every iteration and for which we prove the convergence towards the global optimum \manote{ref to section}.
+\manote{so all of this is not consistent with the rest anymore!}
+For a time discretization step $\gamma>0$ we consider the following algorithm:
+\begin{align}\label{eq:discretized_noisy_flow}
+	X_{k+1} = X_{k} + U_k -\gamma \nabla f_{\mu,\nu_k}(X_k+U_k) \qquad k\geq 0
+\end{align}
+
+Here $U_k$ is a sample from the gaussian $g$ noise while $X_k$ is a sample at iteration $k$. Unlike the original flow where the gradient is evaluated at the current sample, here the sample is blurred first before evaluating the gradient. We would like to emphasize that this algorithm is different from adding noise to the samples themselves which would correspond to adding a diffusion term in \cref{eq:noisy_particles}. We show that \cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration in the following proposition:
+\begin{proposition}\label{prop:decreasing_loss_iterations}
+	Let $(\nu_k)_{k\geq 0}$ be sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$, then the following inequality holds:
+	\begin{align}\label{eq:decreasing_loss_iterations}
+		\F(\nu_{k+1}) - \F(\nu_k \star g ) \leq -\gamma(1-\gamma L)\int \Vert \nabla f_{\mu,\nu_k}(x) \Vert^2 \diff (\nu_k\star g)(x)
+	\end{align}
+\end{proposition}
+
+
+
+
+ 
+
 
 \input{sections/lambda_convexity}
 
