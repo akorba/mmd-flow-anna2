@@ -81,11 +81,11 @@ Now the second derivative is obtained by direct derivation of the above expressi
 		\frac{d^2 \mathcal{F}(\delta_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
 		&+\int \phi(X)^T\nabla_x\nabla_y k(\pi_t(X),\pi_t(X')) ) \phi(X')d\nu(X)d\nu(X') 
 	\end{align*}
-where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \ref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
+where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \cref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
 \begin{align*}
 	4L \int \Vert \phi(X)\Vert^2d\nu(X)  
 \end{align*}
-The last term can also be upper-bounded by $2L$ by \ref{assump:bounded_trace}.
+The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
 \end{proof}
 
 Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ and $\nu'$. We consider the path $\rho_t$ defined as $\rho_t=(\pi_t)_{\#}\Pi$ where $\pi_t(X,Y)=(1-t)X+tY$. It is possible to provide an expression for the time derivative of $\mathcal{F}{\rho_t}$. This is given by ?\\\aknote{beware, not finished!}
