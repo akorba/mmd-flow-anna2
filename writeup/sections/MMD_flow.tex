@@ -4,12 +4,12 @@
 
 \subsection{MMD gradient flow}
 
-We will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flows_functionals} and denote $f_t= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$. In this case:
+For a fixed target distributions $\mu$, we will consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flows_functionals} and the loss functional defined as:
 \begin{equation}
-\F(\rho_t)=\frac{1}{2}\|f_t\|^2_{\kH}
+\F(\rho_t)=\frac{1}{2}MMD^2(\rho_t, \mu):\frac{1}{2}\|f_t\|^2_{\kH}
 %&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
 \end{equation} 
-
+where $f_t= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$. 
 We define the potential energy (also called confinement energy) $V$ and interaction energy $W$ as follows:
 \begin{align*}
 	V(x)=-\int  k(x,x')\mu(x')\text{,} \quad
@@ -41,98 +41,33 @@ The stochastic process whose distribution satisfies \cref{eq:continuity_equation
 \begin{equation}\label{eq:stochastic_process}
 dX_t=-\nabla f_t(X_t) = - (\nabla V (X_t) + \nabla W * \rho_t(X_t))
 \end{equation}
-%Equation \cref{eq:stochastic_process} can be interpreted as the position $X_t$ of a particle at time $t > 0$.
-\aknote{The following is based on the formalism and some results of \cite{jourdain2007nonlinear}} Equation \cref{eq:stochastic_process}, which can be interpreted as the position $X_t$ of a particle at time $t > 0$, can be written as a Mac-Kean Vlasov model\aknote{reference}, a particular kind of SDE driven by a Levy process:
+Equation \eqref{eq:stochastic_process}, which can be interpreted as the position $X_t$ of a particle at time $t > 0$, can be written as a Mac-Kean Vlasov model (see \cite{kac1956foundations}, \cite{mckean1966class}), a particular kind of SDE driven by a Levy process:
 \begin{align}\label{eq:theoretical_process}
 &X_t=X_{0}+\int_{0}^t \sigma(X_s, \rho_s, \mu)ds \quad \text{for t in [0,T]}\\
 &\forall s \in [0,T]\;,\quad \rho_s \text{ denotes the probability distribution of } X_s
 \end{align}
-with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_t -  \int \nabla_{X_s}k(.,X_s) d\mu$. Notice that $\sigma$ is bounded \aknote{true?} and Lipschitz continuous in its second and third variable and bounded.\aknote{investigate conditions on the kernel for convergence, uniqueness. e.g. linear growth of the coefficient sigma? or does it relate to lambda convexity as santambrogio says?}
-
+with $\sigma(X_s, \rho_s, \mu)=-\nabla f_t(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_t -  \int \nabla_{X_s}k(.,X_s) d\mu$. Suppose that $k$ is bounded\aknote{as well as $\nabla_k$?} and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Hence, $\sigma$ is bounded and Lipschitz continuous in its first variable (if the kernel is itself Lipschitz), and linear in its second and third variable. 
+\aknote{investigate conditions on the kernel for convergence, uniqueness. e.g. linear growth of the coefficient sigma? or does it relate to lambda convexity as santambrogio says? or Following Chizat Bach [CB18b] solutions exist for all t > 0 for appropriate initial $\mu_0$ that are compactly
+	supported in $\X$?}
 \begin{remark}
 	Consider a family of particles such that its density satisfy Equation\cref{eq:continuity_equation}. Both KL and MMD have a non-zero potential energy $V$ which drive these particles to the target distribution $\mu$. While he entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for MMD. Indeed, when $W$ is convex, this gives raise to a general
 	aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 \end{remark}
 
-
-\subsection{Noisy MMD flow}
-
-Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima. One way to see how this could happen, at least formally, is by looking at \cref{eq:decreasing_mmd} at equilibrium. Indeed $\F(n_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, this implies that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$ one can show that under simple regularity conditions that the equilibrium condition
-\begin{align}\label{eq:equilibrium_condition}
-	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
-\end{align} 
-must hold. If $\nu^*$ had a positive density then this would imply that $f_{\mu,\nu^{*}}(x)$ is constant everywhere. If the set of functions spanned by the RKHS associated to the MMD do not include constant functions, then it must hold that $f_{\mu,\nu^{*}}=0$ which in turn means that $MMD(\mu,\nu^{*})=0$, hence $\nu^*$ would be a global solution. However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. In that case, the optimality condition \cref{eq:equilibrium_condition} is of little use. Moreover, it suggests that the gradient flow could converge to some suboptimal configuration as the gradient is only evaluated near the support of $\nu^*$.
-Since \cref{eq:equilibrium_condition} seems to be the main obstruction to reach global optimality, we propose to construct, at least formally, a modified gradient flow for which the optimality condition would guarantee reaching the global optimum.
-Ideally, we would like to obtain an optimality condition of the form
-\begin{align}\label{eq:soothed_equilibrium_condition}
-	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff (\nu^{*}\star g)(x) =0  
-\end{align}
-where $\nu^{*}\star g$ means the convolution of $\nu^*$ with a gaussian distribution $g$. The smoothing effect of convolution directly implies that $\nu^{*}\star g$ has a positive density, which falls back in the scenario where the $\nu^*$ must a global optimum.
-We consider, at least formally, the following modified equation for $\nu_t$:
-\begin{align}\label{eq:smoothed_continuity_equation_mmd}
-	\partial_t \nu_t = div((\nu_t \star g) \nabla f_{\mu,\nu_t} )
-\end{align}
-This suggests a particle equation which would be given by:
-\begin{align}\label{eq:noisy_particles}
-	\dot{X}_t = -\nabla f_{\mu,\nu_t}( X_t + W_t  )
-\end{align}
-where $(W_t)$ is a brownian motion. Furthermore, $\F(\nu_t)$ satisfies
-\begin{align}\label{eq:smoothed_decreasing_mmd}
-	\dot{\F}(\nu_t) = -\int \Vert \nabla f_{\mu,\nu_t}(x)\Vert^2 \diff (\nu_t\star g)(x)
-\end{align}
-The existence and uniqueness of a solution to \cref{eq:smoothed_continuity_equation_mmd} for a general $g$ remains an open question to our knowledge. However, we find it useful here to state \cref{eq:smoothed_continuity_equation_mmd,eq:noisy_particles,eq:smoothed_decreasing_mmd} which are the modified analogs of \manote{ref to the analogs}.
-
-The above analysis suggests a noise injections algorithm which has a similar flavor to \manote{cite relevant litterature}:
-\begin{align}\label{eq:discretized_noisy_flow}
-	X_{k+1} = X_{k} -\gamma \nabla f_{\mu,\nu_k}(X_k+ \beta_k U_k) \qquad k\geq 0
-\end{align}
-
-Here $U_k$ is a sample from a normal gaussian while $X_k$ is a sample at iteration $k$. Unlike the original flow where the gradient is evaluated at the current sample, here the sample is blurred first before evaluating the gradient. We would like to emphasize that this algorithm is different from adding noise to the samples themselves which would correspond to adding a diffusion term in \cref{eq:noisy_particles}. We show that \cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controled:
-\begin{proposition}\label{prop:decreasing_loss_iterations}
-	Let $(\nu_k)_{k\geq 0}$ be the sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$. Under \cref{assump:bounded_hessian}, and for a choice of $\beta_k$ such that:
-	\begin{align}\label{eq:control_level_noise}
-		8L^2\beta_k^2 \F(\nu_k) \leq \int \Vert \nabla f_{\mu,\nu_k}(x+\beta_k u) \Vert^2 g(u) \diff \nu_k(x)\diff u   
-	\end{align}
-	 the following inequality holds:
-	\begin{align}\label{eq:decreasing_loss_iterations}
-		\F(\nu_{k+1}) - \F(\nu_k  ) \leq -\frac{\gamma}{2}(1-\gamma L)\int \Vert \nabla f_{\mu,\nu_k}(x+\beta_k u) \Vert^2 g(u) \diff\nu_k(x) \diff u
-	\end{align}
-	Here $L$ is given in \cref{assump:bounded_hessian} and depends only on the choice of the kernel.
-\end{proposition}
-A proof of \cref{prop:decreasing_loss_iterations} is provided in \cref{eq:proof_decreasing_noisy_loss}.
-\begin{remark}
-
-\begin{itemize}
-	\item \cref{eq:control_level_noise} is always satisfied for $\beta_k = 0$ where we recover, the noise-free discretized flow. However, the interesting cases are when $\beta_k>0$. This allows the algorithm to use non-local information on the loss landscape by probing the gradient in regions outside of the support of $\nu_k$. Thus this algorithm could potentially escape local optima. 
-	\item At each iteration, the level of the noise needs to be adjusted such that the gradient is not too much blurred. This ensures that each step would decrease the loss functional.
-	\item The second crucial point, is the dependence of the level of the noise on the value of the loss functional itself in \cref{eq:control_level_noise}. This allows some tolerance for high levels of noise when the loss functional is already small. In fact this precise condition provides a Lojasiewicz type inequality for free, which will then be used in  to provide convergence rates in  \cref{sec:Lojasiewicz_inequality}.
-	\item $\beta_k$ doesn't need to decrease at each iteration, it could increase adaptively whenever needed, i.e. when  the sequence gets closer to a local optimum, it is helpful to increase the level of the noise to probe the gradient in regions where its value is not flat.
-\end{itemize}
- \end{remark}
  
- Define $\beta_k^{*}$ the greatest $\beta_k$ such that \cref{eq:control_level_noise} holds. To get convergence towards the global solution, it is crucial to make sure that $\beta_k^{*}$ doesn't decay too quickly. This shouldn't be an issue in the vicinity of the global optimum $\mu$. That is because the functional value itself would be small hence allowing for moderate values of $\beta_k$. At critical points, one needs to quantify the effect of $\beta_k$ on the spectrum of the infinitesimal covariance operator.   
- 
- 
- \begin{theorem}\label{thm:convergence}
- Assume that $\sum_{\beta_k^{*}} = \infty$ then $\F(\nu_k)\rightarrow 0$ when the noise level is set to $\beta_k^{*}$ for all $k\geq0$. \manote{This is not really a theorem :D }
- \end{theorem}
- 
-
-
-
- 
-
 
 \input{sections/lambda_convexity}
 
 \input{sections/lojasiewicz}
 
-\subsection{MMD flows in the literature}
+\input{sections/noisy_mmd_flow}
 
-\begin{remark}
-	We point out here that algorithm~\cref{eq:sample_based_process} is different from the descent proposed by \cite{mroueh2018regularized}. 
-\end{remark}
+%\subsection{MMD flows in the literature}
 
-\begin{remark}
-	Birth-Death Dynamics to improve convergence (see \cite{rotskoff2019global}).
-\end{remark}
+%\begin{remark}
+%	We point out here that algorithm~\cref{eq:sample_based_process} is different from the descent proposed by \cite{mroueh2018regularized}. 
+%\end{remark}
+
+%\begin{remark}
+%	Birth-Death Dynamics to improve convergence (see \cite{rotskoff2019global}).
+%\end{remark}
