@@ -162,10 +162,11 @@ class mmd2(tr.autograd.Function):
 			mmd2 = (1./(N_x*(N_x-1)))*(tr.sum(gram_XX)-tr.trace(gram_XX)) \
 				+ (1./(N_y*(N_y-1)))*(tr.sum(gram_YY)-tr.trace(gram_YY)) \
 				- 2.* tr.mean(gram_XY)
-			mmd2_for_grad = 0.5*N_y*mmd2
+			mmd2_for_grad = 0.5*N_y*mmd2.clamp(min=0)
+
 		ctx.save_for_backward(mmd2_for_grad,fake_data)
 
-		return 0.5*mmd2
+		return 0.5*mmd2.clamp(min=0)
 
 	@staticmethod
 	def backward(ctx, grad_output):
@@ -253,14 +254,22 @@ class MMD_smoothed(nn.Module):
 		self.with_base = False
 		self.with_mmd  = False
 		self.mmd2 =  mmd2_smoothed.apply
+		self.mmd2_plain = mmd2.apply
+
+
 	def forward(self, t_data, f_data,with_mmd=False, rescale=True):
-		true_data = self.critic(t_data)
-		fake_data = self.critic(f_data).clone().detach()
-		noise  = self.noise_level*self.noise_sampler.sample(f_data.shape[0])
-		noisy_data = self.critic(f_data + noise)
+		if self.noise_level>0.:
+			true_data = self.critic(t_data)
+			fake_data = self.critic(f_data).clone().detach()
+			noise  = self.noise_level*self.noise_sampler.sample(f_data.shape[0])
+			noisy_data = self.critic(f_data + noise)
 		#noisy_data = self.critic(f_data)
 
-		mmd2_val = self.mmd2(self.kernel,true_data,fake_data,noisy_data)
+			mmd2_val = self.mmd2(self.kernel,true_data,fake_data,noisy_data)
+		else:
+			true_data = self.critic(t_data)
+			fake_data = self.critic(f_data)
+			mmd2_val = self.mmd2_plain(self.kernel,true_data,fake_data)
 		return mmd2_val
 
 	def witness(self, t_data,f_data,g_data):
@@ -468,7 +477,7 @@ def GradientFlow(Loss, optimizer , target,  device="cuda",b_size=1000, generator
 
 
 
-def train(Loss,optimizerG, optimizerD,netG, target, base_distribution=None, device="cuda",b_size=1000,b_size_critic=100, critic_steps=100,generator_steps=1,num_epochs=1, learn_critic= True,save_particles = True, writer = None):
+def train(Loss,optimizerG, optimizerD,netG, target, base_distribution=None, device="cuda",b_size=1000,b_size_critic=100, critic_steps=100,generator_steps=1,num_epochs=1, learn_critic= True,save_particles = True, writer = None, scheduler = None):
 
 	# Training Loop
 	# Lists to keep track of progress
@@ -544,15 +553,15 @@ def train(Loss,optimizerG, optimizerD,netG, target, base_distribution=None, devi
 			optimizerG.step()
 
 			out = save(writer,out,loss,netG,j,'G_step')
-			#if np.mod(j+1,5000)==0:
-			#	Loss.noise_level = 0.
+			if np.mod(j+1,5000)==0:
+				Loss.noise_level = -1
 				# Save Losses for plotting later
 			# Loss.zero_grad()
 			# real_data = target.sample([b_size])
 			# noise = target.sample([b_size])
 			# fake_data = netG(noise)
-
-
+		if scheduler is not None and np.mod(j+1,1000)==0:
+			scheduler.step(loss.item())
 		print('Epoch: '+ str(epoch) + ' | loss: '+ str(loss))
 			#print(str(j))
 
