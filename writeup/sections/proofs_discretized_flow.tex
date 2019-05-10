@@ -232,37 +232,73 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 
 
 Here we provide a proof for \cref{prop:decreasing_loss_iterations}
-\begin{proof}
 
-	Recall that a sample $X_{n+1}$ from $\nu_{n+1}$ is obtained using
+
+\subsection{proof of \cref{prop:decreasing_loss_iterations}}\label{eq:proof_decreasing_noisy_loss}
+\begin{proof}
+To simplify notations, we write $V = \nabla f_{\mu,\nu_n}$ and 
+	\[
+	\mathcal{D}_{\beta_n}(\nu_n)  = \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff \nu_n \diff u  
+	\]
+	Recall that a sample $X_{n+1}$ from $\nu_{n+1}$ is obtained using 
 	\begin{align}
-		X_{n+1} = X_n + U_n - \gamma \nabla f_{\mu,\nu_n}(X_n+U_n)
+		X_{n+1} = X_n - \gamma V(X_n+ \beta_n U_n)
 	\end{align}
-	where $X_n$ is a sample from $\nu_n$ and $U_n \sim g $ and is independent from $X_n$. If one defines the map $(x,u)\mapsto T_t(x)= x - \gamma t\nabla f_{\mu,\nu_n}(x)$ for $1\leq t\leq 1$, then $\nu_{n+1}$ is obtained as a push-forward of $\nu_k\star g$ with $T_1$
-	\begin{align}
-		\nu_{n+1} = (T_1)_{\#}(\nu_n\star g)
+	where $X_n$ is a sample from $\nu_n$ and $U_n$ is a sample from a standard gaussian distribution that is independent from $X_n$. Moreover, $\beta_n$ is a non-negative scalar satisfying:
+	\begin{align}\label{eq:control_noise_level_bis}
+		8L^2\beta_n^2 \F(\nu_n) \leq \mathcal{D}_{\beta_n}(\nu_n)  
 	\end{align}
-	We can then consider a path between $\nu_n \star g $ and $\nu_{n+1}$ of the form:
-	\begin{align*}
-	\rho_t	=(T_t)_{\#}(\nu_n\otimes g)
-	\end{align*}
-	The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
+	 Consider now the map $(x,u)\mapsto T_t(x)= x - \gamma tV(x+\beta_n u)$ for $0\leq t\leq 1$, then $\nu_{n+1}$ is obtained as a push-forward of $\nu_n\otimes g$ by $T_1$: $\nu_{n+1} = (T_1)_{\#}(\nu_n\otimes g)$. Moreover, the curve $\rho_t = (T_t)_{\#}(\nu_n\otimes g)$ is a path from $\nu_n$ to $\nu_{n+1}$. 
+	 We will evaluate now the difference between $\mathcal{F}(\nu_{n+1})$ and $\mathcal{F}(\nu_{n})$ using  Taylor expansion with integral remainder since $t\mapsto \F(\rho_t)$ is continuously twice differentiable:
 	\begin{align}\label{eq:taylor_expansion}
-	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n}\star g )=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})= \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
 	\end{align} 
-	By taking $\phi = - \gamma \nabla f_{\mu,\nu_n}$ and $ \nu = \nu_n\star g $  and using \cref{lem:derivative_mmd_augmented} we have that:
+	By taking $\phi(x,u) = - \gamma V(x+\beta_n u)$ and $ \nu = \nu_n\otimes g $  and applying \cref{lem:derivative_mmd_augmented} it follows:
 	\begin{align*}
-	\frac{d \mathcal{F}(\rho_t) }{dt} =\int \nabla f_{\mu,\nu_n}(T_t(x)).\phi(x)\diff (\nu_n\star g)(x)
+	\frac{d \mathcal{F}(\rho_t) }{dt} =\int V(T_t(x,u)).\phi(x,u) g(u)\diff\nu_n(x)\diff u
 	\end{align*}
-	Evaluating at $t=0$ we get
+	Evaluating at $t=0$ one gets:
 	\begin{align}
-		\dot{\F}(\rho_t)\vert_{t=0} = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x)\Vert^2 \diff (\nu_n \star g)(x)
+		\dot{\F}(\rho_t)\vert_{t=0} = -\gamma \int  V(x).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u
 	\end{align}
-	Moreover, by \cref{assump:bounded_trace,assump:bounded_hessian} it follows directly from \cref{lem:derivative_mmd} that:
+	Moreover, by \cref{assump:bounded_trace,assump:bounded_hessian} it follows again from \cref{lem:derivative_mmd_augmented} that for all $0\leq t\leq 1$:
 	\begin{align}\label{eq:upper_bound_1}
-	\vert \frac{d^2 \mathcal{F}(\rho_t) }{dt^2}   \vert\leq L\int \Vert \nabla f_{\mu,\nu_n} n(x) \Vert^2 \diff(\nu_n\star g)(x) 
+	\vert  \ddot{\mathcal{F}}(\rho_t)   \vert\leq \gamma^2 L \mathcal{D}_{\beta_n}(\nu_n) 
 	\end{align}
-	Using \cref{eq:taylor_expansion,eq:upper_bound_1} the result follows.
+	Where $L$ is a constant that only depends on the kernel $k$. We have shown so far that:
+	\[
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})\leq   -\gamma \int  V(x).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u +  \frac{\gamma^2L}{2}\mathcal{D}_{\beta_n}(\nu_n) 
+	\]
+	Adding and substracting  $\gamma \mathcal{D}_{\beta_n}(\nu_n)$ in the equation above, it follows directly that:
+\begin{align}\label{eq:penultimate}
+\begin{split}
+			\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n} )\leq &   -\gamma (1-\frac{\gamma L}{2} )\mathcal{D}_{\beta_n}(\nu_n)
+ \\
+ &+ \gamma\int  (V(x+\beta_n u) -V(x)).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u	
+\end{split}
+\end{align}
+We shall control now the last term in \cref{eq:penultimate}. Recalling that   $ V_i(x) = \partial_i f_{\mu,\nu_n}(x) = \langle f_{\mu,\nu_n} , \partial_i k(x,.)\rangle $,  we have by Cauchy-Schwartz in the RKHS space that
+\[
+\Vert V(x+\beta_n u) -V(x)\Vert^2\leq \Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2  \Vert k(x+\beta_n u,.) -k(x,.)\Vert_{\mathcal{H}}^2\qquad \forall x,u \in \X
+\]
+Now using \cref{assump:bounded_hessian} it follows that $\Vert k(x+\beta_n u,.) -k(x,.)\Vert_{\mathcal{H}}\leq L \beta_n \Vert u \Vert  $, hence:
+\[
+\Vert V(x+\beta_n u) -V(x)\Vert^2 \leq L^2\beta^2_n \Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 \Vert u \Vert^2
+\]
+Now integrating both sides w.r.t. $\nu_n$ and $g$ and recalling that $g$ is a standard gaussian, we have:
+\begin{align}
+	 \int  \Vert V(x+\beta_n u) -V(x)\Vert^2 g(u)\diff\nu_n(x)\diff u
+\leq 
+	L^2\beta^2_n\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2
+\end{align}
+Getting back to \cref{eq:penultimate} and applying Cauchy-Schwarz in $L_2(\nu_n\otimes g)$ it follows:
+\begin{align}
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n} )\leq &   -\gamma (1-\frac{\gamma L}{2} )\mathcal{D}_{\beta_n}(\nu_n) +\gamma L\beta_n\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}\mathcal{D}^{\frac{1}{2}}_{\beta_n}(\nu_n)
+\end{align}
+It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n)$ and that $\beta_n$ satisfies \cref{eq:control_noise_level_bis}, so that:
+\begin{align}
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n} )\leq &   -\frac{\gamma}{2} (1-\gamma L )\mathcal{D}_{\beta_n}(\nu_n)
+\end{align}
 \end{proof}
 
 
