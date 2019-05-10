@@ -1,26 +1,26 @@
 
 \subsection{Background on optimal transport}
 
-In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
+In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to \cite{santambrogio2017euclidean} for a clear review on the subject. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
 
 \subsubsection{$2$-Wasserstein geometry}\label{subsec:wasserstein_flow}
 
-Let $\mathcal{P}_2(\X)$ the set of probability distributions on $\X$ with finite second moment.
 Let $T: \X \rightarrow \X$ be a measurable map, and $\rho \in \mathcal{P}(\X)$. The push-forward measure $T_{\#}\rho$
 is characterized by:
-\begin{align*}
-	&\quad T_{\#}\rho(A) = \rho(T^{-1}(A)) \text{ for every measurable set A,}\\
-\text{or}& \int_{y \in \X} \phi(y) d(T_{\#}\rho)(y) =\int_{x \in \X}\phi(T(x)) d\rho(x) \text{ for every measurable function $\phi$.}
-\end{align*}
-For two given probability distributions $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$ we denote by $\Pi(\nu,\mu)$ the set of possible couplings between $\nu$ and $\mu$. In other words $\Pi(\nu,\mu)$ contains all possible distributions $\pi$ on $\X\times \X$ such that if $(X,Y) \sim \pi $ then $X \sim \nu $ and $Y\sim \mu$. The $2$-Wasserstein distance on $\mathcal{P}_2(\X)$ is defined by means of optimal coupling between $\nu$ and $\mu$ in the following way:
+\begin{align}
+%	&\quad T_{\#}\rho(A) = \rho(T^{-1}(A)) \text{ for every measurable set A,}\\
+%\text{or}&
+ \int_{y \in \X} \phi(y) d(T_{\#}\rho)(y) =\int_{x \in \X}\phi(T(x)) d\rho(x) \text{ for every measurable function $\phi$.}
+\end{align}
+Let $\mathcal{P}_2(\X)$ the set of probability distributions on $\X$ with finite second moment. For two given probability distributions $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$ we denote by $\Pi(\nu,\mu)$ the set of possible couplings between $\nu$ and $\mu$. In other words $\Pi(\nu,\mu)$ contains all possible distributions $\pi$ on $\X\times \X$ such that if $(X,Y) \sim \pi $ then $X \sim \nu $ and $Y\sim \mu$. The $2$-Wasserstein distance on $\mathcal{P}_2(\X)$ is defined by means of optimal coupling between $\nu$ and $\mu$ in the following way:
 \begin{align}\label{eq:wasserstein_2}
 W_2^2(\nu,\mu) := \inf_{\pi\in\Pi(\nu,\mu)} \int \Vert x - y\Vert^2 d\pi(x,y) \qquad \forall \nu, \mu\in \mathcal{P}_2(\X)
 \end{align}
-It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
+It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. \aknote{Maybe we can defer the def of pushforward measures and equation of $s_t$ to the Appendix?}For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
 \begin{equation}\label{eq:convex_combination}
 s_t(x,y) = (1-t)x+ty \qquad \forall x,y\in \X, \; \forall t\in [0,1].
 \end{equation}
-The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of the optimal coupling $\pi^{*}$ by $s_t$:    \aknote{weird. st not operator}
+The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of the optimal coupling $\pi^{*}$ by $s_t$:  
 \begin{equation}\label{eq:displacement_geodesic}
 \rho_t = (s_t)_{\#}\pi^{*}
 \end{equation}
@@ -28,17 +28,17 @@ It is easy to see that \cref{eq:displacement_geodesic} satisfies the following b
 \begin{align}\label{eq:boundary_conditions}
 \rho_0 = \nu \qquad \rho_1 = \mu.
 \end{align}
-Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a vector field $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho$ satisfies the continuity equation:
+Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a \textit{velocity vector field} $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho_t$ satisfies the continuity equation:
 \begin{equation}\label{eq:continuity_equation}
 \partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
 \end{equation}
-Equation \cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho)$ of the curve $\rho$ would be given by:
+Equation \cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho_t)$ of the curve $\rho_t$ would be given by:
 \begin{equation}
 l(\rho)^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t \quad \text{ where } \quad 
 \Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
 \end{equation}
-\aknote{add constant speed geodesics}
-This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{Santambrogio:2015} 5.28 ):
+%\aknote{add constant speed geodesics}
+This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{Santambrogio:2015}, Theorem\aknote{check} 5.28):
 \begin{align}\label{eq:benamou-brenier-formula}
 W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
 \end{align}
@@ -57,9 +57,10 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 \subsubsection{Gradient flows on the space of probability measures}\label{sec:gradient_flows_functionals}
 
 
-Let $\F : \mathcal{P}(\X) \rightarrow \R \cup \infty$, $\rho \mapsto \F(\rho)$ a functional. We call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{P}(\X)$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$. Consider a 
+%Let $\F : \mathcal{P}(\X) \rightarrow \R \cup \infty$, $\rho \mapsto \F(\rho)$ a functional. %We call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{P}(\X)$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$. 
+Consider a 
 \textit{Lyapunov functional} 
-(or "free energy") $\F$ 
+(or "free energy") $\F$ over the space of probability measures $\mathcal{P}(\X)$
 (see \cite{Villani:2004}), 
 i.e. a functional of the form:
 \begin{equation}\label{eq:lyapunov}
@@ -70,17 +71,17 @@ interaction energy. The formal gradient flow equation associated to this functio
 \begin{equation}\label{eq:continuity_equation1}
 \frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho})=div( \rho \nabla (U'(\rho) + V + W * \rho))
 \end{equation}
-where $\nabla \frac{\partial \F}{\partial \rho}$ is the strong subdifferential of $\F(\rho_t)$ associated with the 2-Wasserstein
+where $\nabla \frac{\partial \F}{\partial \rho}$ is the strong subdifferential of $\F$ associated with the 2-Wasserstein
 metric (see \cite{ambrosio2008gradient}, Lemma 10.4.1). Indeed, for some generalized notion of gradient $\nabla_{W_2}$, and for sufficiently regular $\rho$ and $\F$, the r.h.s. of \eqref{eq:continuity_equation1} corresponds to $-\nabla_{W_2}\F(\rho)$.
-The dissipation of entropy is defined as: %see  http://wwwf.imperial.ac.uk/~jcarrill/RICAM/CharlaRICAM2014-1.pdf
+The dissipation of entropy is defined as\aknote{add ref villani again}: 
 \begin{align}
-       \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(\rho)= \int |\xi|^2 \rho(x)dx
+       \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(\rho)= \int |\nabla \frac{\partial \F}{\partial \rho}|^2 \rho(x)dx
 %&\text{ and } \xi= \nabla \frac{\partial \F}{\partial \rho} = \nabla (U'(\rho) + V + W * \rho)
 \end{align}
-Standard considerations from fluid mechanics tell us that the continuity equation \eqref{eq:continuity_equation1} may be interpreted as the equation ruling the evolution of the density $\rho_t$ of a family of particles initially distributed according to some $\rho_0$ and each of which follows the velocity/vector field $v_t=\nabla \frac{\partial{\F}}{\partial{\rho_t}}$.
+Standard considerations from fluid mechanics tell us that the continuity equation \eqref{eq:continuity_equation1} may be interpreted as the equation ruling the evolution of the density $\rho_t$ of a family of particles initially distributed according to some $\rho_0$, and each particle follows the velocity vector field $v_t=\nabla \frac{\partial{\F}}{\partial{\rho_t}}(\rho_t)$.
 
-\begin{remark} \label{rem:KL_Lyapunov}
-	A famous example of a functional \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\rho, \mu \in \mathcal{M}^+$ by
+\begin{remark} \label{rem:KL_Lyapunov}\aknote{define in the appendix div, laplacian...}
+	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\rho, \mu \in \mathcal{P}(\X)$ by
 	$KL(\rho,\mu)=\int log(\frac{\rho(x)}{\mu(x)})\rho(x)dx$. Indeed, $KL(\rho, \mu)=\int U(\rho(x))dx + \int V(x) \rho(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla \log(\rho) + \nabla V=  \nabla \log(\frac{\rho}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
 	\begin{equation}\label{eq:Fokker-Planck}
 	\frac{\partial{\rho}}{\partial t}= div(\rho \nabla V )+ \Delta \rho

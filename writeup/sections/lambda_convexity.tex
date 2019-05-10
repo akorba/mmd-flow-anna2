@@ -4,18 +4,18 @@
 
 \subsection{Lambda displacement convexity of the MMD}
 
-One important criterion to characterize the convergence of the gradient flow of a functional $\F$ is the notion of \textit{displacement convexity} of such a functional. Displacement convexity (see \cite{Villani:2004}, Definition 1). states that the functional evaluated at any distribution in a geodesic path between two distributions $\nu$ and $\nu'$ will be upper-bounded by a convex mixture of $\F(\nu)$ and $\F(\nu')$, as explained formally in the following definition.
+One important criterion to characterize the convergence of the gradient flow of a functional $\F$ is the notion of \textit{displacement convexity} of such a functional. Displacement convexity (see \cite{Villani:2004}, Definition 1) states that the functional evaluated at any distribution in a geodesic path between two distributions $\nu$ and $\mu$ will be upper-bounded by a convex mixture of $\F(\nu)$ and $\F(\mu)$, as explained formally in the following definition.
 \begin{definition}\label{def:displacement_convexity}
  Let $\mu$
-and $\nu$ be two probabilities densities. There exists a $\mu-a.e.$
-unique gradient of a convex function, denoted by $\nabla\phi$, such that $\nu$
-is equal to $\nabla\phi_{\#}\mu$ and one can define \aknote{the displacement geodesic?} $\rho_{t}=((1-t)Id+t\nabla\phi)_{\#}\mu$
+and $\nu$ in $\mathcal{P}(\X)$. There exists a $\mu-a.e.$
+unique gradient of a convex function, denoted by $\nabla\phi$, such that $\mu$
+is equal to $\nabla\phi_{\#}\nu$ and one can define \aknote{the displacement geodesic?} $\rho_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$
 for $0\leq t\leq1$. We say that a functional $\nu\mapsto\mathcal{F}(\nu)$
 is displacement convex if 
-\[
+\begin{equation}
 t\mapsto\mathcal{F}(\rho_{t})
-\]
- is convex for any $\mu$ and $\nu$. Moreover, we say that $\mathcal{F}$
+\end{equation}
+ is convex for any $\nu$ and $\mu$. Moreover, we say that $\mathcal{F}$
 is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$
 such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
 \end{definition}
@@ -29,67 +29,69 @@ This notion of convexity is to be related to the more widely used notion of conv
 Although mixture convexity holds for $\F$ (see \cref{lem:mixture_convexity}), this property is less critical for characterizing convergence of gradient flows in the $W_2$ metric. On the other hand, displacement convexity is compatible with the $W_2$ metric \cite{Bottou:2017} and is therefore the natural notion to use in our setting. Unfortunately, $\F$ fails to be displacement convex in general. Instead we will show that $\F$ satisfies some weaker notion of convexity called $\Lambda$-displacement convexity:
 %
 \begin{definition}\label{def:lambda-convexity}
-($\Lambda$-convexity \cite{Villani:2009} Definition 16.4). Let $(\mu,v)\mapsto\Lambda(\mu,v)$
-be a function that defines for each probability distribution $\mu$
+($\Lambda$-convexity \cite{Villani:2009} Definition 16.4). Let $(\nu,v)\mapsto\Lambda(\nu,v)$
+be a function that defines for each probability distribution $\nu$
 a quadratic form on the set of square integrable vectors valued functions
-$v$ , i.e: $v\in L_{2}(\mathbb{R}^{d},\mathbb{R}^{d},\mu)$ . We
-further assume that:
-\[
-\inf_{\mu,v}\frac{\Lambda(\mu,v)}{\Vert v\Vert_{L_{2}(\mu)}^{2}}>-\infty.
-\]
-We say that a functional $\mu\mapsto\mathcal{F}(\mu)$ is $\Lambda$-convex
-if for any $\mu$ and $\nu$ and a minimizing geodesic $\text{\ensuremath{\rho_{t}}}$
-between $\mu$ and $\nu$ with velocity vector field $v_{t}$, i.e:
-$\partial_{t}\rho_{t}+div(\rho_{t}v_{t})=0;\rho_{0}=\mu;\rho_{1}=\nu$
+$v$ , i.e: $v\in L_{2}(\mathbb{R}^{d},\mathbb{R}^{d},\nu)$ . We
+further assume that $\inf_{\nu,v}\Lambda(\nu,v)/\Vert v\Vert_{L_{2}(\nu)}^{2}>-\infty$.
+%\[
+%\inf_{\nu,v}\frac{\Lambda(\nu,v)}{\Vert v\Vert_{L_{2}(\nu)}^{2}}>-\infty.
+%\]
+We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is $\Lambda$-convex
+if for any $\nu$ and $\mu$ and a minimizing geodesic $\text{\ensuremath{\rho_{t}}}$
+between $\nu$ and $\mu$ with velocity vector field $v_{t}$, i.e:
+$\partial_{t}\rho_{t}+div(\rho_{t}v_{t})=0;\rho_{0}=\nu;\rho_{1}=\mu;$
 the following holds:
 \begin{equation*}
-\frac{d^{2}\mathcal{F}(\rho_{t})}{dt^{2}}\geq\Lambda(\rho_{t},v_{t})\qquad\forall t\in[0,1].
+\frac{d^{2}\mathcal{F}(\rho_{t})}{dt^{2}}\geq\Lambda(\rho_{t},v_{t})\qquad\forall\; t\in[0,1].
 \end{equation*}
 \end{definition}
 
-To show the $\Lambda$-convexity of the functional defined in \cref{eq:MMD_functional} we first make the following assumptions on the kernel:
+To show the $\Lambda$-convexity of the functional defined in \cref{eq:mmd_functional} we first make the following assumptions on the kernel:
 \begin{assumplist} 
 \item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
 \item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
 \item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,x')$.
 \end{assumplist}\aknote{do we have an order of magnitude for lambda? or just we put a remark to say it's satisfied by the gaussian kernel}
-The next proposition states that the functional defined in \cref{eq:MMD_functional} is $\Lambda$-displacement convex and provide and explicit expression for the functional $\Lambda$.
+The next proposition states that the functional defined in \cref{eq:mmd_functional} is $\Lambda$-displacement convex and provide and explicit expression for the functional $\Lambda$.
 
 \begin{proposition}
 \label{prop:lambda_convexity} Suppose \cref{assump:bounded_fourth_oder} is satisfied for some $\lambda \in \R^+$. The functional $\nu\mapsto \F(\nu)$ is $\text{\ensuremath{\Lambda}}$-convex
 with $\Lambda$ given by:
 \begin{equation}
-\Lambda(\rho,v)=\langle v,(C_{\rho}-\lambda \F(\rho)^{\frac{1}{2}}I)v\rangle_{L_{2}(\rho)}\label{eq:Lambda}
+\Lambda(\nu,v)=\langle v,(C_{\nu}-\lambda \F(\nu)^{\frac{1}{2}}I)v\rangle_{L_{2}(\nu)}\label{eq:Lambda}
 \end{equation}
-where $C_{\rho}$ is the (positive) operator defined by:
+where $C_{\nu}$ is the (positive) operator defined by:
 \begin{align}\label{eq:positive_operator_C}
-	(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')
+	(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')
 \end{align}
 \end{proposition}
 %
 %
-Consider the geodesic \aknote{path/geodesic/curve?}$\rho_{t}=((1-t)Id+t\nabla\phi)_{\#}\mu$ of \cref{def:displacement_convexity}. It is worth noting that $\rho_{0}=\mu$ and at time $t=0$ we have
-that $\F(\rho_{0})=0$, hence we get:
+Consider the geodesic $\rho_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$ of \cref{def:displacement_convexity}. It is worth noting that $\rho_{1}=\mu$ and at time $t=1$ we have
+that $\F(\rho_{1})=0$, hence we get:
 \[
-\frac{d^{2}\F(\rho_{t})}{dt^{2}}\vert_{t=0}=\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}\geq0.
+\frac{d^{2}\F(\rho_{t})}{dt^{2}}\vert_{t=1}=\langle v_{t},C_{\rho_{t}}v_{t}\rangle_{L_{2}(\rho_{t})}\geq0.
 \]
 This shows that $\nu\mapsto \F(\nu)$ has a non-negative
 hessian at $\mu$ which is not surprising since $\mu$ is the global
 minimum of this functional.
-\begin{corollary}\label{cor:integral_lambda_convexity}
-For any geodesic $\rho_{t}$ between two probability distributions
-$\rho_{0}$ and $\rho_{1}$ the following holds:
+\begin{corollary}\label{cor:integral_lambda_convexity}\aknote{we can merge the two corollaries}
+For any geodesic $\rho_{t}$ between
+$\rho_{0}$ and $\rho_{1}$ in $\mathcal{P}(\X)$ the following holds:
 \begin{equation}
 \F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
 \end{equation}
-where $\Lambda$ is given by \cref{eq:Lambda} and $G$ is given
-by:
-\[
-G(s,t)=\begin{cases}
-s(1-t) & s\leq t\\
-t(1-s) & s\geq t
-\end{cases}
-\]
+where $\Lambda$ is given by \cref{eq:Lambda} and $G(s,t)=s(1-t) \mathbb{I}\{s\leq t\}
++t(1-s) \mathbb{I}\{s\geq t\}$.
+%and $G$ is given
+%by:
+%\[
+%G(s,t)=\begin{cases}
+%s(1-t) & s\leq t\\
+%t(1-s) & s\geq t
+%\end{cases}
+%\]
 \end{corollary}
 %
 
@@ -126,16 +128,16 @@ $W_{2}(\rho,\rho_{0})=\mathcal{O}(\epsilon)$ and
 \]
 \end{enumerate}
 %
-\begin{remark}
+%\begin{remark}
 The result in \Cref{prop:almost_convex_optimization} means that it is possible to optimize the cost function $\rho\mapsto \F(\rho)$
 on $\mathcal{P}$ as long as the barrier $\inf_{\rho\in\mathcal{P}}\F(\rho)+K$
-is not reached. We provide now a simple proof of this result.
-\end{remark}
+is not reached. A possible direction would be to directly leverage the tighter inequality in \cref{eq:integral_lambda_convexity} to get a better description of the loss landscape.%We provide now a simple proof of this result.
+%\end{remark}
 
 
-\begin{remark}
-	A possible direction would be to directly leverage the tighter inequality in \cref{eq:integral_lambda_convexity} to get a better description of the loss landscape.
-\end{remark}
+%\begin{remark}
+%	A possible direction would be to directly leverage the tighter inequality in \cref{eq:integral_lambda_convexity} to get a better description of the loss landscape.
+%\end{remark}
 
 
 
