@@ -2,7 +2,7 @@
 
 \subsection{Noisy MMD flow}
 
-Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima. One way to see how this could happen, at least formally, is by looking at \cref{eq:decreasing_mmd} at equilibrium. Indeed $\F(n_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, this implies that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$ one can show that under simple regularity conditions that the equilibrium condition
+Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima.\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} One way to see how this could happen, at least formally, is by looking at \cref{eq:decreasing_mmd} at equilibrium. Indeed $\F(n_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, this implies that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$ one can show that under simple regularity conditions that the equilibrium condition
 \begin{align}\label{eq:equilibrium_condition}
 	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
 \end{align} 
