@@ -47,7 +47,7 @@ Now we will use the inequality in \cref{prop:PL_type_inequality} to prove a conv
 	%\begin{align}
 	%	\dot{\F}(\nu_t) \leq  -\frac{4}{C}\F(\nu_t)^2
 	%\end{align}
-It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
+It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution.\asnote{If $\F(\nu_t)=0$ at some $t$, then $\forall t' \geq t, \F(\nu_{t'})=0$ right? So the Proposition should be Either there exists $t$ such that $\F(\nu_t)=0$ (in which case finite time convergence happens) Or convergence with rate $O(1/t)$} Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
 
 All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. It is also possible to have a time depended constant $C_t$ as long as its growth is such that:
