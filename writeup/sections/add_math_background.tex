@@ -14,7 +14,8 @@ is said to be characteristic if:
 \end{equation}
 is injective, i.e. $\mu$ is mapped to a unique element in $\kH$ called its mean embedding.  Suppose additionally that $k(.,.)$ is continuous, $\X$ is compact, and that $\kH$ is dense in $C(\X)$ the space of continuous bounded functions on $\X$. Under these conditions, the MMD is a metric (\cite{gretton2012kernel}, Theorem 5).
 
-\subsubsection{Optimal transport}
+%\subsubsection{Optimal transport}
+\input{sections/background_OT}
 
 \subsubsection{Stochastic processes}\label{sec:ito_stochastic}
 
@@ -39,7 +40,7 @@ where the second line is obtained by integrating by parts on both sides of the e
 
 \subsubsection{Additional lemmas}
 
-\begin{lemma}\label{lem:mixture_convexity}
+\begin{lemma}\label{lem:mixture_convexity}[Mixture convexity]
 	The functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
 	\begin{align*}
 	\F(\lambda \nu_1+(1-\lambda)\nu_2)\leq \lambda \F(\nu_1)+ (1-\lambda)\F(\nu_2)
@@ -55,10 +56,10 @@ where the second line is obtained by integrating by parts on both sides of the e
 \end{proof}
 
 
-\begin{lemma}\label{lem:mmd_w2}
+\begin{lemma}\label{lem:mmd_w2}[Lipschitzness of the MMD w.r.t. the $W_1$ and $W_2$ distance]
 	 Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then for all $\mu, \nu$ in $\mathcal{P}(\X)$:
 	\begin{equation}
-	MMD^2(\mu,\nu)\le  L_k W_1^2(\mu,\nu) \le L_k W_2^2(\mu,\nu)
+	MMD^2(\mu,\nu)\le  L_k^2 W_1^2(\mu,\nu) \le L_k^2 W_2^2(\mu,\nu)
 	\end{equation}
 \end{lemma}
 \begin{proof}

@@ -1,84 +1,50 @@
-
-%In this subsection we assume that $MMD^2$ is $\lambda$-geodesically-convex. Conditions under which this holds will be provided in the next section.
-
-%\subsection{Analysis of the theoretical algorithm}
-
-%Equation~\eqref{eq:discretized_process} provides a theoretical algorithm to minimize $MMD^2(\cdot,\pi)$. The algorithm is only theoretical because it requires to compute $\nabla f_k(X_k)$.
-
-%This algorithm is the discretization of the Gradient flow associated to $MMD^2$. Since $MMD^2$ is $\lambda$-convex, using Theorem 11.1.4 of~\cite{ambrosio2008gradient}, the gradient flow $(\rho_t)$ satisfies
-%\begin{equation}
-%    \label{eq:evi}
-%    \frac12 \frac{d}{dt} W^2(\rho_t,\nu) + \frac{\lambda}{2}W^2(\rho_t,\nu) \leq MMD^2(\nu,\mu) - MMD^2(\rho_t,\pi)
-%\end{equation}
-%Unfortunately, $\lambda \leq 0$ (otherwise it would mean that $MMD^2$ is strongly-geodesically-convex and hence geodesically convex).
-
-%For the theoretical algorithm~\eqref{eq:discretized_process} we can expect a discretized version of~\eqref{eq:evi} to hold : \asnote{This should hold, I haven't proved it yet but I will do it later}
-%\begin{equation}
-%    \label{eq:evi-discrete}
-%    W^2(\rho_{k+1},\pi) \leq  W^2(\rho_{k},\pi) -2\gamma_{k+1}\left( \frac{\lambda}{2}W^2(\rho_{k},\pi) + MMD^2(\rho_{k+1},\pi) - MMD^2(\pi,\pi)\right)
-%\end{equation}
-%Since $\lambda \leq 0$ we cannot have a rate from this inequality (I think).
-%However, if $\sum \gamma_k < \infty$, using Robbins Siegmund lemma, we know that $W^2(\rho_{k},\pi)$ converges to some $\ell \geq 0$. \asnote{From this it might be possible to prove that $W^2(\overline{\rho_{k}},\pi)$ converges to zero, but it would be a lot of work. It looks like Pakes Hasminskii criterion}
-
-%\subsection{Another Lyapunov function}
-
-%In this section we try to use $MMD^2(\cdot,\pi)$ as a Lyapunov function (instead of $W^2(\cdot,\pi)$), like in Theorem 3.3 of Liu 2017. Once this is done, we can use the Gradient Lojasiewicz inequality to get a rate (see Bolte, it's like log sobolev inequality)
-
-%Taylor : 
-
-
 \subsection{Convergence of the space discretized flow - Sample-based setting}
 
 Two settings are usually encountered in the sampling literature: one is called \textit{density-based}, i.e. $\mu$ is known up to a constant, and the other is called \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
-The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of \eqref{eq:langevin_diffusion}, seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions\aknote{be more precise}. In contrast, the gradient of $f_t$ can be 'easily'\aknote{complete by a rate on MMD} estimated by:
+The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of \eqref{eq:langevin_diffusion}, seems much more adapted to the first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_t$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient,li2018gradient,shi2018spectral}). In contrast, the gradient of $f_t$ can be 'easily' estimated by:
 \begin{equation}
 \widehat{\nabla f_t}(z)= \frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(u_i,z) -\frac{1}{n}\sum_{i=1}^{n}\nabla_{z}k(v_i,z) 
 \end{equation}
 where $(u_1, \dots, u_n)\sim \mu$ and $(v_1, \dots, v_n)\sim \rho_t$. We denote by $\widehat{ \mu}=\sum_{j=1}^{n}\delta_{u_i}$. In the sample-based setting, i.e. given $\widehat{\mu}$, since we do not have access to $(v_1, \dots, v_n)\sim \rho_t$, it is natural to consider the following system of $n$ interacting particles (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis):
 \begin{align}\label{eq:sample_based_process}
-&\widehat{X}_t^{j,n}=X_{0}+\int_{0}^t \sigma(\widehat{X}_s^{j,n}, \widehat{\rho}_s^n, \widehat{\mu})ds \quad \text{for t in [0,T]}\\
+&\widehat{X}_t^{j,n}=X_{0}+\int_{0}^t \sigma_{\widehat{\mu}}(\widehat{X}_s^{j,n}, \widehat{\rho}_s^n)ds \quad \text{for t in [0,T]}\\
 &\forall s \in [0,T]\;,\quad \widehat{\rho}_s^n=\sum_{j=1}^{n} \delta_{\widehat{X}_s^{j,n}} \text{ denotes the empirical measure } 
 \end{align}
-The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:theoretical_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}).
-More precisely, we need a uniform propagation of chaos (i.e bounded uniformly in time).
+where the coefficient $\sigma_{\mu}$ in \eqref{eq:theoretical_process} has been replaced by $\sigma_{\widehat{\mu}}$. The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:theoretical_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}).
 
 
-%It is thus natural to consider the stochastic process:
-%\begin{equation}\label{eq:sample_based_process}
-%dY_{t}=-\widehat{\nabla f_t}(Y_t) 
-%\end{equation}
 
-
-\begin{proposition}\aknote{proof not complete} Let $\widehat{\rho}_t^N$, be the distributions of the process \eqref{eq:sample_based_process}. %Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then:
+\begin{proposition}\aknote{proof not complete} Let $\widehat{\rho}_t^N$, be the distributions of the process \eqref{eq:sample_based_process}.
 	\begin{equation}
-	MMD^2(\rho_t,\widehat{\rho}_t^N)\le ?%L_k^2( \frac{C_1}{n}+ \frac{C_2}{n^{\frac{1}{d}}})
+	MMD^2(\rho_t,\widehat{\rho}_t^N)\le ?+ \frac{C_2}{n^{\frac{1}{d}}} + \frac{C_3}{t}
 	\end{equation}
 \end{proposition}
 \begin{proof} 
 	Introduce the process:
 	\begin{align}\label{eq:intermediary_process}
-	&\widetilde{X}_t=X_{0}+\int_{0}^t \sigma(\widetilde{X}_s, \widetilde{\rho}_s, \widehat{\mu})ds \quad \text{for t in [0,T]}\\
+	&\widetilde{X}_t=X_{0}+\int_{0}^t \sigma_{\widehat{\mu}}(\widetilde{X}_s, \widetilde{\rho}_s)ds \quad \text{for t in [0,T]}\\
 	&\forall s \in [0,T]\;,\quad \widetilde{\rho}_s \text{ denotes the probability distribution of } X_s
 	\end{align}
+	We firstly use new types of bound in the literature, characterizing a \textit{uniform in time} propagation of chaos.
 	\begin{lemma}
-		By \cite{durmus2018elementary}, we have a uniform in time propagation of chaos:
+		By \cite{durmus2018elementary}, we have a uniform in time propagation of chaos:\aknote{cannot use in our case. looking for a bound now}
 		\begin{equation}
 		W_1(\widetilde{\rho}_t,\widehat{\rho}_t^N)\le \frac{A}{\sqrt{N}}
 		\end{equation}
 	\end{lemma}
 \begin{proof}
-	Indeed, we verify the three assumptions. 
+	%Indeed, we verify the three assumptions. 
 \end{proof}
-	Now, it is a bit trickier to control $X_t-\widetilde{X_t}$. Maybe we can do:
+	We now turn to bounding the distance between $\mu$ and $\widetilde{\rho_t}$. By the triangle inequality:
 	\begin{equation}\label{eq:decomposition}
-	W_1(\mu, \widetilde{\rho}_t)\le W_1(\mu, \widehat{\mu})+W_1(\widehat{\mu}, \widetilde{\rho_t})
+	MMD^2(\mu, \widetilde{\rho}_t)\le MMD^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\rho_t})\le L_k^2 W_1^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\rho_t})
 	\end{equation}
-	Indeed, firstly we control the first r.h.s. term in \eqref{eq:decomposition} since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:
+	where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
 	\begin{equation}
-	\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C_2}{n^{\frac{1}{d}}}
+	\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C}{n^{\frac{1}{d}}}
 	\end{equation}
 	\begin{remark}
 		Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
 	\end{remark}
-	Then, for the second term in \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$.\aknote{if $\widehat{ \mu}$ satisfy the assumptions we may need to apply these rates}
+	Let $C_2=C L_k^2$. Then, for the second term in \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
 \end{proof}
