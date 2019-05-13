@@ -18,15 +18,14 @@ Indeed, in this case we have $(1/2)MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int
 \end{equation} 
 where $f_t(z)= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$ to alleviate notations. The following proposition gives the time dissipation of $\F$ as well as the associated gradient flow.
 
-\begin{proposition}\label{prop:mmd_flow} The gradient flow associated to $F$ can be written:
+\begin{proposition}\label{prop:mmd_flow} The gradient flow associated to $\F$ and as the dissipation can be written:
 \begin{equation}\label{eq:continuity_equation_mmd}
-\frac{\partial \rho_t}{\partial t}= div(\rho_t  \nabla f_t)
+\frac{\partial \rho_t}{\partial t}= div(\rho_t  \nabla f_t) ,\quad  \quad \frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
 \end{equation}
- where $\nabla f_t$ is the gradient of the witness function $f_t$, defined by $\nabla f_t(z)= \int \nabla_{z}k(.,z) d\mu -  \int \nabla_{z}k(.,z) d\rho_t$. Hence, the dissipation of $\F$ can be written:  
- \begin{equation}
- \frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
- \end{equation}
-
+ where $\nabla f_t$ is the gradient of the witness function $f_t$, defined by $\nabla f_t(z)= \int \nabla_{z}k(.,z) d\mu -  \int \nabla_{z}k(.,z) d\rho_t$. %Hence, the dissipation of $\F$ can be written:  
+ %\begin{equation}
+ %\frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
+ %\end{equation}
 \end{proposition}
 \begin{remark}
 	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \cref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
