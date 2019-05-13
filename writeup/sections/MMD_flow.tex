@@ -43,6 +43,9 @@ It can be interpreted as the position $X_t$ of a particle at time $t > 0$, follo
 &\forall s \in [0,T]\;,\quad \rho_s \text{ denotes the probability distribution of } X_s
 \end{align}
 with $\sigma_{\mu}(X_s, \rho_s)=-\nabla f_s(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_s -  \int \nabla_{X_s}k(.,X_s) d\mu$, and $X_0$ is distributed according to a given initial measure $\rho_0$. The non-linearity in the SDE \eqref{eq:theoretical_process} appears through the dependency of its coefficients on the law of the process. Suppose that $\nabla k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\|\nabla k(x,.)-\nabla k(y,.) \|_{\kH}\le L'_k \|x-y\|$. Hence, $\sigma$  Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$) and Equation~\eqref{eq:theoretical_process} admits a unique solution (see \cite{jourdain2007nonlinear}).
+In contrast, it is much more difficult to prove the existence and uniqueness of the invariant probabilities of the PDE \eqref{eq:continuity_equation_mmd}. 
+Indeed, to the best of our knowledge, such a property relies generally on the convexity of $V+2W$; if this holds, the process \eqref{eq:theoretical_process} converges
+toward the unique invariant probability as the time goes to infinity. Moreover, if the confining potential is not convex, it has been shown in some cases that the diffusion may admit several invariant probabilities (see \cite{herrmann2010non, tugaut2014phase}).%, tugaut2014self
 \aknote{What about the conditions for existence and uniqueness of the PDE\eqref{eq:continuity_equation_mmd}? does it relate to lambda convexity as santambrogio says? or Following Chizat Bach solutions exist for all t > 0 for appropriate initial $\mu_0$ that are compactly
 	supported in $\X$?}
 \begin{remark}
