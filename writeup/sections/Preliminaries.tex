@@ -26,6 +26,20 @@ When samples from both $\mu$ and $\nu$ are available \cref{eq:closed_form_MMD} c
 %\begin{align}\label{eq:loss_functional}
 %\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
 %\end{align}
+\paragraph{Gradient flow of the MMD.}\label{paragraph:flow_MMD}
+We consider now the problem of transporting mass from an initial distribution $\nu_0$ to a target distribution $\mu$ by finding a continuous path $\nu_t$ starting from $\nu_0$ that would ideally converge to $\mu$ while decreasing $\F(\nu_t)$. Such path should be physically plausible in that  teleportation phenomena are not allowed. For instance, the path $\nu_t = (1-e^{-t})\mu + e^{-t}\nu_0$ would constantly teleport mass between $\mu$ and $\nu_0$ although it decreases  $\F$ since $\F(\nu_t)=e^{-2t}\F(\nu_0)$. The physicality of the path is better understood in terms of classical statistical physics: if $\nu_0$ is an initial configuration of $N$ particles, these can be moved towards a different configuration $\mu$ through successive small transformations without jumping form a location to another. There are practical situations in machine learning where this constraint will arise naturally as we will see in \cref{subsec:training_neural_networks}. 
+
+The optimal transport theory provides a way to construct such a continuous path by means of the \textit{continuity equation}. Given a vector field $V_t$ on $\X$ and an initial condition $\nu_0$, the continuity equation is a partial differential equation which defines a path $\nu_t$ evolving under the action of the vector field $V_t$, and reads $\partial_t \nu_t = -div(\nu_t V_t)$ for all $t\geq0$.
+This equation expresses two facts, the first one is that $-div(\nu_t V_t)$ reflects the infinitesimal changes in $\nu_t$ as dictated by $V_t$, the second fact is that the total mass of $\nu_t$ doesn't vary in time as a consequence of the divergence theorem. The reader can find more detailed discussions in \cite{Santambrogio:2015}.  
+The choice of $V_t$ determines the path $\nu_t$, therefore there must be a direct link between $V_t$ and $\F(\nu_t)$ if one wants to construct a gradient flow for of $\F$. Following  \cite{ambrosio2008gradient}, such link is obtained by choosing $V_t$ to be the negative gradient of the differential of $\F(\nu_t)$ at $\nu_t$. By \cref{prop:differential_mmd}, we know that the differential of $\F(\nu_t)$  at $\nu_t$ is given by $f_{\mu,\nu_t}$, hence $V_t(x) = -\nabla f_{\mu,\nu_t}(x)$. The
+gradient flow of $\F$ is then defined by the solution $(\nu_t)_{t\geq 0}$ of:
+\begin{align}\label{eq:continuity_mmd}
+	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t}).
+\end{align}
+\cref{eq:continuity_mmd} is peculiar in that the vector field depends itself on $\nu_t$. This type of equations is associated in probability theory literature to the so called McKean-Vlasov process \cite{kac1956foundations,mckean1966class}:
+\begin{align}\label{eq:mcKean_Vlasov_process}
+	\dot{X}_t = -\nabla f_{\mu,\nu_t}(X_t) \qquad X_0\sim \nu_0.
+\end{align}
 In fact,  \cref{eq:mcKean_Vlasov_process} defines a process $(X_t)_{t\geq 0}$ whose distribution $(\nu_t)_{t\geq 0}$ satisfies \cref{eq:continuity_mmd} as shown in \cref{thm:existence_uniqueness}. 
 $(X_t)_{t\geq 0}$ can be interpreted as  the trajectory of a single particle starting from an initial random position $X_0$ drawn from $\nu_0$. Its trajectory is then driven by a velocity field $-\nabla f_{\mu,\nu_t}$. However, such particle interacts with other particles driven by the same velocity field, which affects its trajectory. This interaction is captured by the velocity field, here $-\nabla f_{\mu,\nu_t}$ through the dependence on the current configuration of all particles $\nu_t$.
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under mild conditions on the kernel $k$ and are provided in \cref{thm:existence_uniqueness}:
