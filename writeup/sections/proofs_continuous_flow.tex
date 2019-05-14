@@ -2,7 +2,7 @@
 
 \subsubsection{Proof of \cref{prop:mmd_flow}}
 
-In the case where $\F= \frac{1}{2} \|f_t\|^2_{\kH}$, by simple derivations we obtain:
+We firstly derive the strong subdifferential of $\F$ associated with the 2-Wasserstein metric. Since $\F= \frac{1}{2} \|f_t\|^2_{\kH}$, by simple derivations we obtain:
 \begin{equation}
  \nabla \frac{\partial\frac{1}{2} \|f_t\|^2_{\kH}}{\partial \rho_t}= \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle \frac{\partial \E_{\rho_t}[k(Y,.)]}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle k(Y,.), f_t \rangle_{\kH}
 \end{equation}
@@ -150,7 +150,26 @@ which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$
 	\end{enumerate}
 \end{proof}
 
+\subsubsection{Proof of \cref{prop:lojasiewicz}}
 
+\begin{proof}
+	Indeed, this follows simply from the definition of the negative Sobolev distance: Consider $g = \Vert \nabla f_t\Vert^{-1}_{L_2(\nu_t)} f_t$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
+	\begin{align}
+	\Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)}\geq \vert \nu_t(g) - \mu(g)  \vert
+	\end{align}
+	Now, recall the definition of $g$, which implies that
+	\[
+	\vert \nu_t(g) - \mu(g)  \vert = \Vert \nabla f_t\Vert^{-1}_{L_2(\nu_t)} \vert \nu_t(f_t)-\mu(f_t)\vert.
+	\]
+	But since $f_t$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\nu_t(f_t)-\mu(f_t) = \Vert f_t\Vert^2_{\kH}$.
+	Using \cref{eq:bounded_neg_sobolev}, we get the desired Lojasiewicz inequality \eqref{eq:PL_type_inequality}.\\
+	
+	Then, by \cref{prop:mmd_flow,eq:PL_type_inequality}, we have that:  
+	\begin{align}
+	\dot{\F}(\nu_t) = - \Vert \nabla f_t \Vert^2_{L_2(\nu_t)} \leq  -\frac{4}{C}\F(\nu_t)^2	
+	\end{align}
+	It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
+\end{proof}
 
 
 
