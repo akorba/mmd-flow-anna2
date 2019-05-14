@@ -26,6 +26,20 @@ When samples from both $\mu$ and $\nu$ are available \cref{eq:closed_form_MMD} c
 %\begin{align}\label{eq:loss_functional}
 %\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
 %\end{align}
+In fact,  \cref{eq:mcKean_Vlasov_process} defines a process $(X_t)_{t\geq 0}$ whose distribution $(\nu_t)_{t\geq 0}$ satisfies \cref{eq:continuity_mmd} as shown in \cref{thm:existence_uniqueness}. 
+$(X_t)_{t\geq 0}$ can be interpreted as  the trajectory of a single particle starting from an initial random position $X_0$ drawn from $\nu_0$. Its trajectory is then driven by a velocity field $-\nabla f_{\mu,\nu_t}$. However, such particle interacts with other particles driven by the same velocity field, which affects its trajectory. This interaction is captured by the velocity field, here $-\nabla f_{\mu,\nu_t}$ through the dependence on the current configuration of all particles $\nu_t$.
+Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under mild conditions on the kernel $k$ and are provided in \cref{thm:existence_uniqueness}:
+\begin{theorem}\label{thm:existence_uniqueness}(Existence and uniqueness)
+	Under \manote{some assumptions}, and given $\nu_0\in \mathcal{P}_2(\X)$ there exists a unique process $(\X_t)_{t\geq 0}$ with $X_0\sim \nu_0$ and satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process}. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} and defines a gradient flow of $\F$. 
+\end{theorem}
+A proof of \cref{thm:existence_uniqueness} is provided in \manote{proof} and relies on standard existence and uniqueness results of McKean-Vlasov processes under regularity of the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)$ \cite{Jourdain:2007}. Such regularity is ensured if the kernel $k$ has Lipschitz gradients for instance. Besides, the existence and uniqueness of the process itself, one would like the functional $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. While the latter is hard to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}, the first property is rather easy to get and is the object of \cref{prop:decay_mmd}:
+\begin{proposition}\label{prop:decay_mmd}
+	Under the assumptions of \cref{thm:existence_uniqueness}, $\F(\nu_t)$ is decreasing in time and satisfies:
+	\begin{align}\label{eq:time_evolution_mmd}
+		\dot{\F}(\nu_t)= - \int \Vert \nabla f_{\mu,\nu_t}(x) \Vert^2 \diff \nu_t(x)  
+	\end{align}
+\end{proposition}
+From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. We conclude this section with a remark regarding to connexion to other gradient flows in Wasserstein space.
 \begin{remark}
 A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is equal to the KL divergence between some reference distribution $\mu$ and a current distribution $\nu$: $KL(\mu\Vert \nu_t ) =  \int \log (\mu(x))\diff \nu_t(x) -\int \log(\nu_t(x))\diff \nu_t(x)$. In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $\diff X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$.
  
