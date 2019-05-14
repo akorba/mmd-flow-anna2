@@ -26,6 +26,13 @@ When samples from both $\mu$ and $\nu$ are available \cref{eq:closed_form_MMD} c
 %\begin{align}\label{eq:loss_functional}
 %\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
 %\end{align}
+\begin{remark}
+A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is equal to the KL divergence between some reference distribution $\mu$ and a current distribution $\nu$: $KL(\mu\Vert \nu_t ) =  \int \log (\mu(x))\diff \nu_t(x) -\int \log(\nu_t(x))\diff \nu_t(x)$. In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $\diff X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$.
+ 
+ While the entropy term in the $KL$ prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$ defined in \cref{eq:potentials}. Indeed, when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.  \aknote{to check, ref malrieu?}
+
+The solution to the Fokker-Planck equation describing the gradient flow of the $KL$ can be shown to towards $\mu$ under mild assumptions. This follows from the displacement convexity of the $KL$ along the Wasserstein geodesics \manote{ref}. Unfortunately the $MMD$ is not displacement convex in general as we will see in \manote{ref}. This makes the task of proving the convergence of the gradient flow of the $MMD$ to the global optimum $\mu$ much harder. In fact, when the external potential $V$ in \cref{eq:potentials} is not convex, which is the case for instance when $k$ is a gaussian kernel, it was shown that the diffusion may admit several local minima (see \cite{herrmann2010non,tugaut2014phase}) \manote{make sure that these conditions are relevant for us}. Moreover, we show in \cref{sec:Lojasiewicz_inequality} that local minima which are not global exist and that it is rather easy to reach them.
+\end{remark}
 
 \subsection{Training neural networks as flow of the MMD}\label{subsec:training_neural_networks}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
