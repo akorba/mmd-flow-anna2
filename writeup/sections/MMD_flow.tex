@@ -2,55 +2,58 @@
 
 \section{MMD gradient flow}\label{sec:mmd_flow}
 
-\subsection{MMD as a free energy}
 
-Interestingly, for a fixed target distribution $\mu$, it appears that the $MMD^2$ can be written
-as a free energy \cref{eq:lyapunov}, by choosing the potential energy $V$ and interaction energy $W$ as follows:
-\begin{align}
-V(x)=-\int  k(x,x')\mu(x')\text{,} \quad
-W(x,x')=\frac{1}{2}k(x,x')
-\end{align}
-Indeed, in this case we have $(1/2)MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=(1/2)\E_{\mu\otimes \mu}[k(x,x')]$. 
- Hence, we can consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flows_functionals} and the loss functional defined as:
-\begin{equation}\label{eq:mmd_functional}
-\F(\rho_t)=\frac{1}{2}MMD^2(\rho_t, \mu)=\frac{1}{2}\|f_t\|^2_{\kH}
-%&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
-\end{equation} 
-where $f_t(z)= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$ to alleviate notations. The following proposition gives the time dissipation of $\F$ as well as the associated gradient flow.
 
-\begin{proposition}\label{prop:mmd_flow} The gradient flow associated to $\F$ and as the dissipation can be written:
-\begin{equation}\label{eq:continuity_equation_mmd}
-\frac{\partial \rho_t}{\partial t}= div(\rho_t  \nabla f_t) ,\quad  \quad \frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
-\end{equation}
- where $\nabla f_t$ is the gradient of the witness function $f_t$, defined by $\nabla f_t(z)= \int \nabla_{z}k(.,z) d\mu -  \int \nabla_{z}k(.,z) d\rho_t$. %Hence, the dissipation of $\F$ can be written:  
- %\begin{equation}
- %\frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
- %\end{equation}
-\end{proposition}
-\begin{remark}
-	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \cref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
-	\begin{align}\label{eq:decreasing_mmd}
-	\frac{d KL(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\mu}(X))\|^2]
-	\end{align}
-\end{remark}
-A stochastic process whose distribution satisfies \cref{eq:continuity_equation_mmd} can thus be written (see \cref{sec:ito_stochastic} on Itô's formula):
-\begin{equation}\label{eq:stochastic_process}
-dX_t=-\nabla f_t(X_t) = - (\nabla V (X_t) + \nabla W * \rho_t(X_t))
-\end{equation}
-It can be interpreted as the position $X_t$ of a particle at time $t > 0$, following the velocity vector field $\nabla \frac{\partial{\F}}{\partial{\rho_t}}=\nabla f_t$.  Equation \eqref{eq:stochastic_process} is actually a McKean Vlasov model (see \cite{kac1956foundations}, \cite{mckean1966class}), a particular kind of SDE (Stochastic Differential Equation) driven by a Levy process:
-\begin{align}\label{eq:theoretical_process}
-&X_t=X_{0}+\int_{0}^t \sigma_{\mu}(X_s, \rho_s)ds \quad \text{for t in [0,T]}\\
-&\forall s \in [0,T]\;,\quad \rho_s \text{ denotes the probability distribution of } X_s
-\end{align}
-with $\sigma_{\mu}(X_s, \rho_s)=-\nabla f_s(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_s -  \int \nabla_{X_s}k(.,X_s) d\mu$, and $X_0$ is distributed according to a given initial measure $\rho_0$. The non-linearity in the SDE \eqref{eq:theoretical_process} appears through the dependency of its coefficients on the law of the process. Suppose that $\nabla k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\|\nabla k(x,.)-\nabla k(y,.) \|_{\kH}\le L'_k \|x-y\|$. Hence, $\sigma$  Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$) and Equation~\eqref{eq:theoretical_process} admits a unique solution (see \cite{jourdain2007nonlinear}).
-In contrast, it is much more difficult to prove the existence and uniqueness of the invariant probabilities of the PDE \eqref{eq:continuity_equation_mmd}. 
-Indeed, to the best of our knowledge, such a property relies generally on the convexity of $V+2W$; if this holds, the process \eqref{eq:theoretical_process} converges
-toward the unique invariant probability as the time goes to infinity. Moreover, if the confining potential is not convex, it has been shown in some cases that the diffusion may admit several invariant probabilities (see \cite{herrmann2010non, tugaut2014phase}).%, tugaut2014self
-\aknote{What about the conditions for existence and uniqueness of the PDE\eqref{eq:continuity_equation_mmd}? does it relate to lambda convexity as santambrogio says? or Following Chizat Bach solutions exist for all t > 0 for appropriate initial $\mu_0$ that are compactly
-	supported in $\X$?}
-\begin{remark}
-	Consider a family of particles whose density satisfy Equation\cref{eq:continuity_equation} for some free energy $\F$. Both KL and $MMD^2$ can be written as free energies \eqref{eq:lyapunov}, with a potential energy $V$ term which drive the particles to the target distribution $\mu$. While the entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$. Indeed, when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
-\end{remark}
+
+%\subsection{MMD as a free energy}
+%
+%Interestingly, for a fixed target distribution $\mu$, it appears that the $MMD^2$ can be written
+%as a free energy \cref{eq:lyapunov}, by choosing the potential energy $V$ and interaction energy $W$ as follows:
+%\begin{align}
+%V(x)=-\int  k(x,x')\mu(x')\text{,} \quad
+%W(x,x')=\frac{1}{2}k(x,x')
+%\end{align}
+%Indeed, in this case we have $(1/2)MMD^2(\rho,\mu)=C+ \int V(x) \rho(x)dx + \int W(x,x')\rho(x)\rho(x')$, where $C=(1/2)\E_{\mu\otimes \mu}[k(x,x')]$. 
+% Hence, we can consider a flow $(\rho_t)_{t>0}$ as described in \cref{sec:gradient_flows_functionals} and the loss functional defined as:
+%\begin{equation}\label{eq:mmd_functional}
+%\F(\rho_t)=\frac{1}{2}MMD^2(\rho_t, \mu)=\frac{1}{2}\|f_t\|^2_{\kH}
+%%&= \E_{\rho_t \otimes \rho_t}[k(X,X')]+\E_{\pi \otimes \pi}[k(Y,Y')] - 2\E_{\rho_t \otimes \pi}[k(X,Y)]
+%\end{equation} 
+%where $f_t(z)= \int k(.,z)\diff \mu - \int k(.,z)\diff \rho_t$ to alleviate notations. The following proposition gives the time dissipation of $\F$ as well as the associated gradient flow.
+%
+%\begin{proposition}\label{prop:mmd_flow} The gradient flow associated to $\F$ and as the dissipation can be written:
+%\begin{equation}\label{eq:continuity_equation_mmd}
+%\frac{\partial \rho_t}{\partial t}= div(\rho_t  \nabla f_t) ,\quad  \quad \frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
+%\end{equation}
+% where $\nabla f_t$ is the gradient of the witness function $f_t$, defined by $\nabla f_t(z)= \int \nabla_{z}k(.,z) d\mu -  \int \nabla_{z}k(.,z) d\rho_t$. %Hence, the dissipation of $\F$ can be written:  
+% %\begin{equation}
+% %\frac{d \F(\rho_t)}{dt}=-\E_{X \sim \rho_t}[\|\nabla f_t(X)\|^2]\quad
+% %\end{equation}
+%\end{proposition}
+%\begin{remark}
+%	If the functional $\F$ was the KL divergence and $\rho_t$ a weak solution of the Fokker-Planck equation \cref{eq:Fokker-Planck}, we would obtain the following dissipation (see \cite{wibisono2018sampling}):
+%	\begin{align}\label{eq:decreasing_mmd}
+%	\frac{d KL(\rho_t, \mu)}{dt}=-\E_{X \sim \rho_t}[\|\nabla log(\frac{\rho_t}{\mu}(X))\|^2]
+%	\end{align}
+%\end{remark}
+%A stochastic process whose distribution satisfies \cref{eq:continuity_equation_mmd} can thus be written (see \cref{sec:ito_stochastic} on ItÃŽ's formula):
+%\begin{equation}\label{eq:stochastic_process}
+%dX_t=-\nabla f_t(X_t) = - (\nabla V (X_t) + \nabla W * \rho_t(X_t))
+%\end{equation}
+%It can be interpreted as the position $X_t$ of a particle at time $t > 0$, following the velocity vector field $\nabla \frac{\partial{\F}}{\partial{\rho_t}}=\nabla f_t$.  Equation \eqref{eq:stochastic_process} is actually a McKean Vlasov model (see \cite{kac1956foundations}, \cite{mckean1966class}), a particular kind of SDE (Stochastic Differential Equation) driven by a Levy process:
+%\begin{align}\label{eq:theoretical_process}
+%&X_t=X_{0}+\int_{0}^t \sigma_{\mu}(X_s, \rho_s)ds \quad \text{for t in [0,T]}\\
+%&\forall s \in [0,T]\;,\quad \rho_s \text{ denotes the probability distribution of } X_s
+%\end{align}
+%with $\sigma_{\mu}(X_s, \rho_s)=-\nabla f_s(X_s)=\int \nabla_{X_s}k(.,X_s) d\rho_s -  \int \nabla_{X_s}k(.,X_s) d\mu$, and $X_0$ is distributed according to a given initial measure $\rho_0$. The non-linearity in the SDE \eqref{eq:theoretical_process} appears through the dependency of its coefficients on the law of the process. Suppose that $\nabla k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\|\nabla k(x,.)-\nabla k(y,.) \|_{\kH}\le L'_k \|x-y\|$. Hence, $\sigma$  Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$) and Equation~\eqref{eq:theoretical_process} admits a unique solution (see \cite{jourdain2007nonlinear}).
+%In contrast, it is much more difficult to prove the existence and uniqueness of the invariant probabilities of the PDE \eqref{eq:continuity_equation_mmd}. 
+%Indeed, to the best of our knowledge, such a property relies generally on the convexity of $V+2W$; if this holds, the process \eqref{eq:theoretical_process} converges
+%toward the unique invariant probability as the time goes to infinity. Moreover, if the confining potential is not convex, it has been shown in some cases that the diffusion may admit several invariant probabilities (see \cite{herrmann2010non, tugaut2014phase}).%, tugaut2014self
+%\aknote{What about the conditions for existence and uniqueness of the PDE\eqref{eq:continuity_equation_mmd}? does it relate to lambda convexity as santambrogio says? or Following Chizat Bach solutions exist for all t > 0 for appropriate initial $\mu_0$ that are compactly
+%	supported in $\X$?}
+%\begin{remark}
+%	Consider a family of particles whose density satisfy Equation\cref{eq:continuity_equation} for some free energy $\F$. Both KL and $MMD^2$ can be written as free energies \eqref{eq:lyapunov}, with a potential energy $V$ term which drive the particles to the target distribution $\mu$. While the entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$. Indeed, when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
+%\end{remark}
 
  
 
