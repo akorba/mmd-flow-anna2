@@ -496,9 +496,11 @@ def train(Loss,optimizerG, optimizerD,netG, target, base_distribution=None, devi
 	print("Starting Training Loop...")
 	total_iters = 0
 	# For each epoch
+	Loss.noise_level = -1.
 	for epoch in range(num_epochs):
 		# For each batch in the dataloader
 		for j in range(generator_steps):
+
 			if learn_critic:
 				for i in range(critic_steps):
 					total_iters +=1
@@ -553,8 +555,11 @@ def train(Loss,optimizerG, optimizerD,netG, target, base_distribution=None, devi
 			optimizerG.step()
 
 			out = save(writer,out,loss,netG,j,'G_step')
+
 			if np.mod(j+1,5000)==0:
-				Loss.noise_level = -1
+				Loss.noise_level = 1
+				for g in optimizerG.param_groups:
+					g['lr'] = 10.
 				# Save Losses for plotting later
 			# Loss.zero_grad()
 			# real_data = target.sample([b_size])
