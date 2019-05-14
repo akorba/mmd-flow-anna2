@@ -27,33 +27,31 @@ When samples from both $\mu$ and $\nu$ are available \cref{eq:closed_form_MMD} c
 %\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
 %\end{align}
 
-\subsection{Training neural networks as flow of the MMD}
+\subsection{Training neural networks as flow of the MMD}\label{subsec:training_neural_networks}
+In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
 The MMD was successfully used to train generative networks \cite{Arbel:2018,Binkowski:2018}\manote{cite others}, where it is used as a loss functional between the data distribution and a parametric model distribution.
-Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{Rotskoff:2019}. Given a neural network or any parametric function $(z,\theta)\mapsto \psi(z,\theta)$ with parameter $\theta \in \Theta \subset \R^d$, we consider the supervised learning problem:
+Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{Rotskoff:2019}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
+ Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
 \begin{align}\label{eq:regression_network}
-	\min_{(\theta_1,...,\theta_m )\in \Theta} \mathcal{L}(\theta_1,...,\theta_m):= \mathbb{E}_{(y,z)\sim \mathbb{P}  }  \Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,\theta_i) \Vert^2
+	\min_{(x_1,...,x_m )\in \X} \mathcal{L}(x_1,...,x_m):= \mathbb{E}_{(y,z)\sim \mathbb{P}  }  \Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Vert^2
 \end{align}
-where $(y,z)$ are samples from the data distribution and the regression function is an average network of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(\theta_1,...,\theta_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This gives an expected network $\Psi(z,\nu) =  \int \psi(z,\theta) \diff \nu(\theta) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}(\Theta)$ the space of probability distributions:
+where $(y,z)$ are samples from the data distribution and the regression function is an average network of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
 \begin{align}\label{eq:lifted_regression}
-	\min_{\nu \in \mathcal{P}(\Theta)} \mathbb{E}_{(y,u)\sim \mathbb{P} }  \Vert y - \int \psi(z,\theta) \diff \nu(\theta) \Vert^2
+	\min_{\nu \in \mathcal{P}_2(\X)} \mathbb{E}_{(y,u)\sim \mathbb{P} }  \Vert y - \int \psi(z,x) \diff \nu(x) \Vert^2
 \end{align} 
-In the case where the model is well specified, there exists $\mu \in \mathcal{P}(\Theta) $ such that 
-\begin{equation}
-\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,\theta) \diff \mu(\theta)
-\end{equation}
-and the cost function \cref{eq:lifted_regression} can be expressed as an MMD between $\mu$ and $\nu$:
+In the case where the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$ and the cost function \cref{eq:lifted_regression} can be expressed as an MMD between $\mu$ and $\nu$:
 \begin{align}\label{eq:mmd_minimization}
-	\min_{\nu \in \mathcal{P}_2(\Theta)} \int k(\theta,\theta') (\diff\mu(\theta) -\diff\nu(\theta))(\diff\mu(\theta') -\diff\nu(\theta'))  := MMD_k^2(\mu,\nu)
+	\min_{\nu \in \mathcal{P}_2(\X)} \int k(x,x') (\diff\mu(x) -\diff\nu(x))(\diff\mu(x') -\diff\nu(x'))  := MMD_k^2(\mu,\nu)
 \end{align} 
 where the kernel $k$ is constructed from the data as an expected product of networks:
 \begin{align}
-	k(\theta,\theta') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,\theta)^T\psi(z,\theta')]
+	k(x,x') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,x)^T\psi(z,x')]
 \end{align}
-When the problem is miss-specified, the same formulation can be obtained provided that \cref{eq:lifted_regression} achieves a minimum at $\mu$\aknote{to precise}. Solving \cref{eq:regression_network} can be done using gradient descent which corresponds to a continuous-time dynamics for the particles $\theta_i$:
+ $\mu$\aknote{to precise}. Solving \cref{eq:regression_network} can be done using gradient descent which corresponds to a continuous-time dynamics for the particles $x_i$:
 \begin{align}\label{eq:particle_dynamics}
-	\dot{\theta}_i(t)= -\nabla \mathcal{L}(\theta_1(t),...,\theta_m(t)) \text{ for } i=1, \dots, m
+	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
 \end{align}  
-\aknote{The following paragraph may anticipate too much at this point}As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:mmd_minimization}, this leads to a continuity equation:
+\aknote{The following paragraph may anticipate too much at this point} As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:mmd_minimization}, this leads to a continuity equation:
 \begin{align}\label{eq:mmd_flow}
 	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
 \end{align}
