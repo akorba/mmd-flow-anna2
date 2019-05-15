@@ -98,23 +98,30 @@ where the kernel $k$ is constructed from the data as an expected product of netw
 \begin{align}
 	k(x,x') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,x)^T\psi(z,x')]
 \end{align}
- $\mu$\aknote{to precise}. Solving \cref{eq:regression_network} can be done using gradient descent which corresponds to a continuous-time dynamics for the particles $x_i$:
-\begin{align}\label{eq:particle_dynamics}
-	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
-\end{align}  
-\aknote{The following paragraph may anticipate too much at this point} As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:mmd_minimization}, this leads to a continuity equation:
-\begin{align}\label{eq:mmd_flow}
-	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
-\end{align}
-for an initial choice of distribution $\nu_0$. In \cref{eq:mmd_flow}, $f_{\mu,\nu_t}$ is the witness function between $\mu$ and $\nu_t$:% defined and is given by:
-\[
-f_{\mu,\nu_t}(\theta) =  \int k(\theta,\theta')(\diff \nu_t(\theta')-\diff\mu(\theta') ) 
-\]
-\cref{eq:mmd_flow} can be shown to have a unique solution and has a particle version which is described by:
-\begin{align}\label{eq:particle_equation}
-	\dot{X}_t = -\nabla f_{\mu,\nu_t}(X_t) \qquad X_0\sim \nu_0
-\end{align}
-In \manote{section} we describe the properties of this flow and explain why in general it might not reach the global optimum.
+Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
+\end{proposition}
+\cref{prop:inequality_mmd_loss} is shown in \manote{proof} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
+ \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general. One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the $MMD$ is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture \manote{some references and say why this is useful}.  
+%\begin{align}\label{eq:mmd_minimization}
+%	\min_{\nu \in \mathcal{P}_2(\X)} \int k(x,x') (\diff\mu(x) -\diff\nu(x))(\diff\mu(x') -\diff\nu(x'))  := MMD_k^2(\mu,\nu)
+%\end{align} 
+% $\mu$\aknote{to precise}. Solving \cref{eq:regression_network} can be done using gradient descent which corresponds to a continuous-time dynamics for the particles $x_i$:
+%\begin{align}\label{eq:particle_dynamics}
+%	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
+%\end{align}  
+%\aknote{The following paragraph may anticipate too much at this point} As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:mmd_minimization}, this leads to a continuity equation:
+%\begin{align}\label{eq:mmd_flow}
+%	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
+%\end{align}
+%for an initial choice of distribution $\nu_0$. In \cref{eq:mmd_flow}, $f_{\mu,\nu_t}$ is the witness function between $\mu$ and $\nu_t$:% defined and is given by:
+%\[
+%f_{\mu,\nu_t}(\theta) =  \int k(\theta,\theta')(\diff \nu_t(\theta')-\diff\mu(\theta') ) 
+%\]
+%\cref{eq:mmd_flow} can be shown to have a unique solution and has a particle version which is described by:
+%\begin{align}\label{eq:particle_equation}
+%	\dot{X}_t = -\nabla f_{\mu,\nu_t}(X_t) \qquad X_0\sim \nu_0
+%\end{align}
+%In \manote{section} we describe the properties of this flow and explain why in general it might not reach the global optimum.
 
 
 %\input{sections/background_OT}
