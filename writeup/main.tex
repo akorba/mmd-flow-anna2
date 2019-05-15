@@ -1,31 +1,8 @@
 \documentclass{article}
-%\usepackage[nonatbib]{neurips_2019}
-%\usepackage{graphicx}
-% \usepackage[english]{babel} 
-% \usepackage{csquotes}
-%  \usepackage{times}	
-%\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc} 
-%\DeclareUnicodeCharacter{00A0}{~}
-%
-%%% ==============================================================
-%% Packages divers (mathématiques, etc.)   
-%\usepackage{amssymb,amsmath,amscd,amsfonts,amsthm,bbm,mathrsfs,yhmath}
-%%\usepackage{enumerate}
-%\usepackage[shortlabels]{enumitem}
-%% \usepackage{showkeys}
-%%\usepackage{hyperref}
-
-
-
-
-
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
-
 \usepackage[nonatbib]{neurips_2019}
-
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{url}
@@ -268,9 +245,8 @@
 \maketitle
 
 
-\begin{abstract} 
-The Maximum Mean Discrepancy (MMD) was successfully used as a loss functional to train generative models. In a non-parametric setting the MMD can also be used as a loss function to learn distributions using optimal transport theory.
-In this work, we construct a Wasserstein gradient flow of the MMD and provide an algorithm to simulate such flow. The proposed algorithm is based on a space-time discretization of the theoretical gradient flow of the MMD and aims at finding the best probability distribution that is close to the data as much as possible. We analyze the convergence properties of the gradient flow towards a global optimum and provide a simple algorithmic fix to improve convergence. We also show that the discretized algorithm approaches the gradient flow of the MMD as the sample size increases. 
+\begin{abstract}
+We study the Wassertein gradient flow of the Maximum Mean Discrepancy (MMD). MMD can be seen as an energy functional %We derive algorithms that converge to the target distribution and verify numerically their performance.
 \end{abstract}
 
 
