@@ -234,7 +234,7 @@ Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ a
 Here we provide a proof for \cref{prop:decreasing_loss_iterations}
 
 
-\subsection{proof of \cref{prop:decreasing_loss_iterations}}\label{eq:proof_decreasing_noisy_loss}
+\subsubsection{Proof of \cref{prop:decreasing_loss_iterations}}\label{eq:proof_decreasing_noisy_loss}
 \begin{proof}
 To simplify notations, we write $V = \nabla f_{\mu,\nu_n}$ and 
 	\[
@@ -302,8 +302,63 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 \end{proof}
 
 
-
-
-
-
 \subsubsection{Proof of \cref{th:rates_mmd}}
+
+\begin{proof}
+	Iterating in \cref{eq:evi} we get:
+	\begin{align}
+	2\gamma \sum_{j=1}^{n+1} (\F(\nu_{j}) - \F(\mu)) \leq W_2^2(\nu_0,\mu) - 2\gamma \sum_{j=0}^n K(\rho^j)
+	\end{align}
+	Let us denote $\bar{K}$ the average value\asnote{$K(\rho^j)$ is bounded in $j$?} of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. Using \cref{lem:mixture_convexity} we have:
+	\begin{align}
+	\F(\bar{\nu}_{n+1})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma (n+1)} -\bar{K}
+	\end{align}
+	Now, consider the Lyapunov function $L_n = n \gamma (\F(\nu_n) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)$. Then,
+	\begin{align*}
+	L_{n+1} &= n\gamma(\F(\nu_{n+1}) - \F(\mu)) + \gamma(\F(\nu_{n+1}) - \F(\mu)) + \frac12 W_2^2(\nu_{n+1},\mu)\\
+	&\leq n\gamma(\F(\nu_{n+1}) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)-\gamma K(\rho^n)\\
+	&\leq n\gamma(\F(\nu_{n}) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)-\gamma K(\rho^n) -n\gamma^2 (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n \\
+	&\leq  L_n - \gamma K(\rho^n).
+	\end{align*}
+	where we used ~\cref{prop:decreasing_functional} in the penultimate inequality\asnote{Les deux derniers termes pourraient-ils se manger par miracle?}.
+	Finally, 
+	\begin{equation}
+	n\gamma (\F(\nu_{n}) - \F(\mu)) \leq L_n \leq L_0 -\gamma \sum_{j = 0}^{n-1} K(\rho^j)
+	\end{equation}
+\end{proof}
+
+\subsubsection{Proof of \cref{prop:sample_based_rates}}
+
+\begin{proof} 
+	Introduce the theoretical process associated to \eqref{eq:sample_based_process}, i.e. associated to the target distribution $\widehat{\mu}$:
+	\begin{align}\label{eq:intermediary_process}
+	\widetilde{X}_t=X_{0}+\int_{0}^t \nabla f_{\widehat{\mu}, \widetilde{\nu}_s}(\widetilde{X}_s)ds \quad \text{for t in [0,T]}
+	%	&\forall s \in [0,T]\;,\quad \widetilde{\rho}_s \text{ denotes the probability distribution of } X_s
+	\end{align}
+	where $\widetilde{\nu}_t \text{ denotes the probability distribution of } X_t \text{for all} t>0$. The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:intermediary_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}), and is given by:
+	\aknote{at some point, I was hoping for a uniform in time propagation of chaos (i.e. the constant does not increase with time $t$), check for instance \cite{durmus2018elementary}. However, I am not sure it is possible in our case. Apparently, when there are several solutions/invariant measures for \eqref{eq:continuity_mmd}}
+	\begin{equation}
+	W_1(\widetilde{\nu}_t,\widehat{\nu}_t^N)\le \frac{C(t)}{\sqrt{n}}
+	\end{equation}
+	Then, by \cref{lem:mmd_w2} we have that $MMD^2(\widetilde{\rho}_t,\widehat{\rho}_t^N)\le C_1(t)/n$.%We now turn to bounding the distance between $\nu_t$ and $\widetilde{\nu_t}$.
+	
+	
+	We now turn to bounding the distance between $\mu$ and $\widetilde{\rho_t}$. By the triangle inequality:
+	\begin{equation}\label{eq:decomposition}
+	MMD^2(\mu, \widetilde{\nu}_t)\le MMD^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})%\le L_k^2 W_1^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})
+	\end{equation}
+	Let $C_k=\sup_{x,y \in \X}k(x,y)$. The first r.h.s. term in \eqref{eq:decomposition} can be upper bounded as follows:
+	\begin{equation}
+	MMD^2( \mu,\widehat{\mu})\le C_k^2 \| \mu - \widehat{\mu}\|^2_{\kH}\le \frac{C_k^2}{n}
+	\end{equation}
+	where the last inequality results from \cite{tolstikhin2017minimax}.\aknote{not sure this is the best reference}
+	%where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
+	%\begin{equation}
+	%\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C}{n^{\frac{1}{d}}}
+	%\end{equation}
+	%\begin{remark}
+	%	Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
+	%\end{remark}
+	%Let $C_2=C L_k^2$. 
+	Then, for the second term at the r.h.s. of  \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
+\end{proof}
