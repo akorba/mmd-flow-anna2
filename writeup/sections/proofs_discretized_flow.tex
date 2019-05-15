@@ -345,14 +345,20 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 	
 	We now turn to bounding the distance between $\mu$ and $\widetilde{\rho_t}$. By the triangle inequality:
 	\begin{equation}\label{eq:decomposition}
-	MMD^2(\mu, \widetilde{\nu}_t)\le MMD^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})\le L_k^2 W_1^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})
+	MMD^2(\mu, \widetilde{\nu}_t)\le MMD^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})%\le L_k^2 W_1^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})
 	\end{equation}
-	where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
+	Let $C_k=\sup_{x,y \in \X}k(x,y)$. The first r.h.s. term in \eqref{eq:decomposition} can be upper bounded as follows:
 	\begin{equation}
-	\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C}{n^{\frac{1}{d}}}
+	MMD^2( \mu,\widehat{\mu})\le C_k^2 \| \mu - \widehat{\mu}\|^2_{\kH}\le \frac{C_k^2}{n}
 	\end{equation}
-	\begin{remark}
-		Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
-	\end{remark}
-	Let $C_2=C L_k^2$. Then, for the second term in \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
+	where the last inequality results from \cite{tolstikhin2017minimax}.\aknote{not sure this is the best reference}
+	%where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
+	%\begin{equation}
+	%\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C}{n^{\frac{1}{d}}}
+	%\end{equation}
+	%\begin{remark}
+	%	Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
+	%\end{remark}
+	%Let $C_2=C L_k^2$. 
+	Then, for the second term at the r.h.s. of  \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
 \end{proof}
