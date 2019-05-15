@@ -1,19 +1,88 @@
 \documentclass{article}
-\usepackage{neurips_2019,graphicx}
+%\usepackage[nonatbib]{neurips_2019}
+%\usepackage{graphicx}
+% \usepackage[english]{babel} 
+% \usepackage{csquotes}
+%  \usepackage{times}	
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc} 
+%\DeclareUnicodeCharacter{00A0}{~}
+%
+%%% ==============================================================
+%% Packages divers (mathématiques, etc.)   
+%\usepackage{amssymb,amsmath,amscd,amsfonts,amsthm,bbm,mathrsfs,yhmath}
+%%\usepackage{enumerate}
+%\usepackage[shortlabels]{enumitem}
+%% \usepackage{showkeys}
+%%\usepackage{hyperref}
 
- \usepackage[english]{babel} 
-  \usepackage{times}	
+
+
+
+
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc} 
-\DeclareUnicodeCharacter{00A0}{~}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
 
-%% ==============================================================
-% Packages divers (mathématiques, etc.)   
-\usepackage{amssymb,amsmath,amscd,amsfonts,amsthm,bbm,mathrsfs,yhmath}
-%\usepackage{enumerate}
-\usepackage[shortlabels]{enumitem}
-% \usepackage{showkeys}
-\usepackage{hyperref}
+\usepackage[nonatbib]{neurips_2019}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{etoolbox}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage{xparse}
+
+%%\usepackage{color}
+\usepackage{xcolor}
+%\usepackage[]{todonotes}
+%\setlength{\marginparwidth}{2cm}
+
+\usepackage{appendix}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{relsize}
+\usepackage{subcaption}
+
+
+
+
+\usepackage[textwidth=2cm, textsize=footnotesize]{todonotes}  
+%\setlength{\marginparwidth}{1.5cm}               %  this goes with todonotes
+
+%\usepackage{amsthm}
+%\usepackage[noabbrev,capitalize]{cleveref}
+
+\usepackage[colorlinks,linkcolor={red!80!black},citecolor={green!80!black},urlcolor={blue!80!black},hypertexnames=false]{hyperref}
+
+\usepackage[noabbrev,capitalize]{cleveref}
+%% make \cref{whatever} render like \eqref{whatever}
+\crefformat{equation}{(#2#1#3)}
+\crefrangeformat{equation}{(#3#1#4) to~(#5#2#6)}
+\crefmultiformat{equation}{(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{ and~(#2#1#3)}
+%% https://tex.stackexchange.com/a/121055/9019
+\crefname{appsec}{Appendix}{Appendices}
+
+% \usepackage{autonum}
+
+%\renewcommand\equationautorefname{\@gobble}
+%\usepackage[backend=biber,style=numeric,maxcitenames=2,maxbibnames=8,sortcites,isbn=false,doi=false,giveninits=true]{biblatex}
+%\renewbibmacro{in:}{}
+%\usepackage{utils/patch_biblatex}
+\usepackage[backend=bibtex,style=numeric,maxcitenames=2,maxbibnames=8,sortcites,isbn=false,doi=false,giveninits=true]{biblatex}
+%\usepackage[backend=bibtex]{biblatex}
+
+
+\addbibresource{biblio.bib}
+
 
 % Example definitions.
 % --------------------
@@ -121,7 +190,7 @@
 \newcommand{\F}{{{\mathcal F}}} 
 \newcommand{\Hil}{E}                % Hilbert   
 \newcommand{\Ban}{E}                % Banach   
-\newcommand{\RN}{{{\mathbb R}^N}} 
+%\newcommand{\RN}{{{\mathbb R}^N}} 
 \newcommand{\bR}{{{\mathbb R}}} 
 
 \newcommand{\m}{\mathfrak{m}}
@@ -143,8 +212,7 @@
 \newcommand{\todistshort}{{\stackrel{\mathcal{D}}{\to}}}
 \newcommand{\todistlong}{\xrightarrow[n\to\infty]{\mathcal D}}
 
-\usepackage[textwidth=2cm, textsize=footnotesize]{todonotes}  
-\setlength{\marginparwidth}{1.5cm}               %  this goes with todonotes
+
 \newcommand{\aknote}[1]{\todo[color=cyan!20]{#1}}
 \newcommand{\asnote}[1]{\todo[color=green!20]{#1}}
 \newcommand{\manote}[1]{\todo[color=magenta]{#1}}
@@ -157,10 +225,10 @@
 \newcommand{\myn}{{{\nabla ^{\gamma_{n+1}} g}}}
 \def\macom#1{{\textcolor{red}{[MA: #1]}}}
 %% ==============================================================
-\usepackage{amsthm}
-\usepackage[noabbrev,capitalize]{cleveref}
 
-\theoremstyle{definition}
+
+%\theoremstyle{definition}
+\makeatother
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -178,6 +246,8 @@
 %% https://tex.stackexchange.com/a/121055/9019
 
 
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
 \newlist{assumplist}{enumerate}{1}
 \setlist[assumplist]{label=(\textbf{\Alph*})}
 \Crefname{assumplisti}{Assumption}{Assumptions}
@@ -185,6 +255,10 @@
 \newlist{assumplist2}{enumerate}{1}
 \setlist[assumplist2]{label=(\textbf{\Roman*})}
 \Crefname{assumplist2i}{Assumption}{Assumptions}
+
+\newlist{proplist}{enumerate}{1}
+\setlist[proplist]{label=({\roman*})}
+\Crefname{proplisti}{Property}{Properties}
 
 
 
@@ -195,8 +269,8 @@
 
 
 \begin{abstract} 
-
-We study the Wassertein gradient flow of the Maximum Mean Discrepancy (MMD). MMD can be seen as an energy functional %We derive algorithms that converge to the target distribution and verify numerically their performance.
+The Maximum Mean Discrepancy (MMD) was successfully used as a loss functional to train generative models. In a non-parametric setting the MMD can also be used as a loss function to learn distributions using optimal transport theory.
+In this work, we construct a Wasserstein gradient flow of the MMD and provide an algorithm to simulate such flow. The proposed algorithm is based on a space-time discretization of the theoretical gradient flow of the MMD and aims at finding the best probability distribution that is close to the data as much as possible. We analyze the convergence properties of the gradient flow towards a global optimum and provide a simple algorithmic fix to improve convergence. We also show that the discretized algorithm approaches the gradient flow of the MMD as the sample size increases. 
 \end{abstract}
 
 
@@ -212,12 +286,15 @@ We study the Wassertein gradient flow of the Maximum Mean Discrepancy (MMD). MMD
 
 \input{sections/todo}
 
-\subsubsection*{References}
-\renewcommand\refname{\vskip -1cm}
-\bibliographystyle{apalike}
-\bibliography{biblio}
+%\subsubsection*{References}
+%\renewcommand\refname{\vskip -1cm}
+%\bibliographystyle{apalike}
+%\bibliography{biblio}
 
-\newpage
+\printbibliography
+
+\clearpage
+%\newpage
 
 \input{sections/Appendix}
 
