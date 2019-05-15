@@ -84,32 +84,34 @@ The MMD was successfully used to train generative networks \cite{Arbel:2018,Bink
 Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{Rotskoff:2019}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
  Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
 \begin{align}\label{eq:regression_network}
-	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim \mathbb{P}  } \left[ \Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Vert^2 \right ]
+	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim \mathbb{P}  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
 \end{align}
 where $(y,z)$ are samples from the data distribution and the regression function is an average network of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
 \begin{align}\label{eq:lifted_regression}
-	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,u)\sim \mathbb{P} } \left [ \Vert y - \int \psi(z,x) \diff \nu(x) \Vert^2 \right ]
+	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,u)\sim \mathbb{P} } \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
 \end{align} 
-In the case where the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$ and the cost function $\mathcal{L}$ defined in \cref{eq:lifted_regression} matches exactly the functional $\F$ defined in \cref{eq:mmd_as_free_energy} 
-\begin{align}\label{eq:mmd_minimization}
-	\min_{\nu \in \mathcal{P}_2(\X)} \int k(x,x') (\diff\mu(x) -\diff\nu(x))(\diff\mu(x') -\diff\nu(x'))  := MMD_k^2(\mu,\nu)
-\end{align} 
-where the kernel $k$ is constructed from the data as an expected product of networks:
+For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$:
+\begin{proposition}\label{prop:inequality_mmd_loss}
+	Assuming a global minimizer of \cref{eq:lifted_regression} is achieved by some $\mu\in \mathcal{P}_2(\X)$, the following inequality holds for any $\nu \in \mathcal{P}_2(\X)$:
+	\begin{align}\label{eq:inequality_mmd_nn}
+		\left(\bar{\mathcal{L}}(\mu)^{\frac{1}{2}} + \F^{\frac{1}{2}}(\nu)\right)^2
+		\geq 
+		\bar{\mathcal{L}}(\nu)
+		\geq
+		\mathcal{F}(\nu) + \bar{\mathcal{L}}(\mu)
+	\end{align}
+	where $\F(\nu)$ is defined by \cref{eq:mmd_as_free_energy} with  a kernel $k$  constructed from the data as an expected product of networks:
 \begin{align}
 	k(x,x') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,x)^T\psi(z,x')]
 \end{align}
 Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
 \end{proposition}
 \cref{prop:inequality_mmd_loss} is shown in \manote{proof} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
- \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general. One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the $MMD$ is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture \manote{some references and say why this is useful}.  
-%\begin{align}\label{eq:mmd_minimization}
-%	\min_{\nu \in \mathcal{P}_2(\X)} \int k(x,x') (\diff\mu(x) -\diff\nu(x))(\diff\mu(x') -\diff\nu(x'))  := MMD_k^2(\mu,\nu)
-%\end{align} 
-% $\mu$\aknote{to precise}. Solving \cref{eq:regression_network} can be done using gradient descent which corresponds to a continuous-time dynamics for the particles $x_i$:
-%\begin{align}\label{eq:particle_dynamics}
-%	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
-%\end{align}  
-%\aknote{The following paragraph may anticipate too much at this point} As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:mmd_minimization}, this leads to a continuity equation:
+ \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general. One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the $MMD$ is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture \manote{some references}. In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
+\begin{align}\label{eq:particle_dynamics}
+	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
+\end{align}  
+As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
 %\begin{align}\label{eq:mmd_flow}
 %	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
 %\end{align}
