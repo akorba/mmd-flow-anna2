@@ -245,9 +245,20 @@
 \maketitle
 
 
+\iffalse
+%AG: old abstract
+
 \begin{abstract}
 The Maximum Mean Discrepancy (MMD) was successfully used as a loss functional to train generative models. In a non-parametric setting, the MMD can also be used as a loss function to learn distributions using optimal transport theory.
 In this work, we construct a Wasserstein gradient flow of the MMD and provide an algorithm to simulate such flow. The proposed algorithm is based on a space-time discretization of the theoretical gradient flow of the MMD and aims at finding the best probability distribution that is close to the data as much as possible. We analyze the convergence properties of the gradient flow towards a global optimum and provide a simple algorithmic fix to improve convergence. We also show that the discretized algorithm approaches the gradient flow of the MMD as the sample size increases.
+\end{abstract}
+
+\fi
+
+\begin{abstract}
+  In this work, we construct a Wasserstein gradient flow of the maximum mean discrepancy (MMD), and provide an algorithm to simulate such flow.
+The MMD is an integral probability metric defined for a reproducing kernel Hilbert space (RKHS), and serves as a metric on probability measures for a sufficiently rich RKHS. Notably, both the MMD and its gradient have simple closed-form expressions.
+  The proposed algorithm is based on a space-time discretization of the theoretical gradient flow of the MMD, and aims at finding a  distribution of particles that is as  close as possible to a target distribution, where the target may itself be represented by a sample. We analyze the convergence properties of the gradient flow towards a global optimum and provide a simple algorithmic fix to improve convergence. We also show that the discretized algorithm approaches the gradient flow of the MMD as the sample size increases.
 \end{abstract}
 
 
