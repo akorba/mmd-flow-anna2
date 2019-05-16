@@ -491,7 +491,7 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 	\widetilde{X}_t=X_{0}+\int_{0}^t \nabla f_{\widehat{\mu}, \widetilde{\nu}_s}(\widetilde{X}_s)ds \quad \text{for t in [0,T]}
 	%	&\forall s \in [0,T]\;,\quad \widetilde{\rho}_s \text{ denotes the probability distribution of } X_s
 	\end{align}
-	where $\widetilde{\nu}_t \text{ denotes the probability distribution of } X_t \text{for all} t>0$. The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:intermediary_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}), and is given by:
+	where $\widetilde{\nu}_t \text{ denotes the probability distribution of } X_t \text{for all } t>0$. The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:intermediary_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}), and is given by:
 	\aknote{at some point, I was hoping for a uniform in time propagation of chaos (i.e. the constant does not increase with time $t$), check for instance \cite{durmus2018elementary}. However, I am not sure it is possible in our case. Apparently, when there are several solutions/invariant measures for \eqref{eq:continuity_mmd}}
 	\begin{equation}
 	W_1(\widetilde{\nu}_t,\widehat{\nu}_t^N)\le \frac{C(t)}{\sqrt{n}}
@@ -505,7 +505,7 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 	\end{equation}
 	Let $C_k=\sup_{x,y \in \X}k(x,y)$. The first r.h.s. term in \eqref{eq:decomposition} can be upper bounded as follows:
 	\begin{equation}
-	MMD^2( \mu,\widehat{\mu})\le C_k^2 \| \mu - \widehat{\mu}\|^2_{\kH}\le \frac{C_k^2}{n}
+	MMD^2( \mu,\widehat{\mu})\le \frac{C_2}{n}
 	\end{equation}
 	where the last inequality results from \cite{tolstikhin2017minimax}.\aknote{not sure this is the best reference}
 	%where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
