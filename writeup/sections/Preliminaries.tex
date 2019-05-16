@@ -1,5 +1,6 @@
 
 \section{Gradient flow of the MMD in $W_2$}\label{sec:gradient_flow}
+\subsection{Construction of the gradient flow}
 In this section we introduce the gradient flow of the Maximum Mean Discrepancy (MMD) and highlight some of its properties. We start by briefly reviewing the MMD introduced in \cite{gretton2012kernel}, more details are provided in \cref{sec:rkhs}. In all the paper, $\X\subset\R^d$ is the closure of a convex open set.
 \paragraph{Maximum Mean Discrepancy.}\label{subsec:MMD}
 Given a characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding RKHS (see \cite{smola1998learning}). The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$.
@@ -67,7 +68,7 @@ Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlas
 	Under Lipschitzness of $\nabla k$, and given $\nu_0\in \mathcal{P}_2(\X)$ there exists a unique process $(\X_t)_{t\geq 0}$ with $X_0\sim \nu_0$ and satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process}. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} and defines a gradient flow of $\F$. 
 \end{proposition}
 Under Lipschitzness of $\nabla k$, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and
-$W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cref{sec:ito_stochastic}).  %Such regularity is ensured if the kernel $k$ has Lipschitz gradients for instance. 
+$W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cref{sec:ito_stochastic}).  %Such regularity is ensured if the kernel $k$ has Lipschitz gradients for instance.
 Besides, the existence and uniqueness of the process itself, one would like the functional $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. While the latter is hard to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}, the first property is rather easy to get and is the object of \cref{prop:decay_mmd}:
 \begin{proposition}\label{prop:decay_mmd}
 	Under the assumptions of \cref{prop:existence_uniqueness}, $\F(\nu_t)$ is decreasing in time and satisfies:
@@ -76,9 +77,7 @@ Besides, the existence and uniqueness of the process itself, one would like the 
 	\end{align}
 \end{proposition}
 From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. We conclude this section with a remark referring to other well-known gradient flows in Wasserstein space.
-
-
-\begin{remark}
+\begin{remark}\label{remark:gradient_flow}
 A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is the KL divergence between the target distribution $\mu$ and a current distribution $\nu_t$: $KL(\nu_t\Vert \mu ) =  \int \log (\nu_t(x))\diff \nu_t(x) -\int \log(\mu(x))\diff \nu_t(x)$. In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $\diff X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$ and $W_t$ is a Brownian motion.
  
  While the entropy term in the $KL$ functional prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$ defined in \cref{eq:potentials}. Indeed, consider for instance the gaussian kernel $k(x,x')=e^{-\|x-x'\|^2}$. It is convex thus attractive at long distances ($\|x-x'\|>1$) but not at small distances (so repulsive).\aknote{not very precise yet but i think the interpretation could be interesting}
@@ -87,6 +86,12 @@ A different choice for $\F$  leads to a different continuity equation. A celebra
 
 The solution to the Fokker-Planck equation describing the gradient flow of the $KL$ can be shown to converge towards $\mu$ under mild assumptions. This follows from the displacement convexity of the $KL$ along the Wasserstein geodesics \manote{ref}. Unfortunately the $MMD^2$ is not displacement convex in general as we will see in \manote{ref}. This makes the task of proving the convergence of the gradient flow of the $MMD^2$ to the global optimum $\mu$ much harder. In fact, when the external potential $V$ in \cref{eq:potentials} is not convex, which is the case for instance when $k$ is a gaussian kernel, it was shown that the diffusion may admit several local minima (see \cite{herrmann2010non,tugaut2014phase}) \manote{make sure that these conditions are relevant for us}. Moreover, we show in \cref{sec:Lojasiewicz_inequality} that local minima which are not global exist and that it is rather easy to reach them.\aknote{hm wrong section?}
 \end{remark}
+ 
+
+
+
+
+
 
 \subsection{Training neural networks as flow of the MMD}\label{subsec:training_neural_networks}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
@@ -122,6 +127,9 @@ Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means t
 	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
 \end{align}  
 As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
+
+
+
 %\begin{align}\label{eq:mmd_flow}
 %	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
 %\end{align}
@@ -210,3 +218,68 @@ As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{e
 %
 %In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a convex  subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to the recent review of \cite{santambrogio2017euclidean} for further details. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
 %
+
+
+
+
+
+
+
+
+
+%\section{Discretized Gradient flow of the MMD}
+%
+%\paragraph{Approximate Euler-Maruyama discretization}
+%
+%
+%\subsection{Approximate Euler-Maruyama discretization}
+%
+%
+%
+%
+%\cref{eq:mcKean_Vlasov_process} suggests a time discretized approximation to \cref{eq:continuity_mmd} which will be analyzed in \cref{sec:convergence_mmd_flow}:
+%\begin{align}\cref{eq:time_discretized_flow}
+%	X_{k+1} = X_k - \gamma \nabla f_{\nu_k}(X_k) \qquad X_0\sim \nu_0
+%\end{align}
+%where $\gamma >0$ is the step-size. Using standard techniques from
+% 
+%
+%\paragraph{Modified gradient flow}
+%
+%
+%
+%\paragraph{Many particles regime}
+%
+
+
+
+
+
+
+%
+%
+%
+%\cref{eq:mcKean_Vlasov_process} suggests a time discretized approximation to \cref{eq:continuity_mmd} which will be analyzed in \cref{sec:convergence_mmd_flow}:
+%\begin{align}\cref{eq:time_discretized_flow}
+%	X_{k+1} = X_k - \gamma \nabla f_{\nu_k}(X_k) \qquad X_0\sim \nu_0
+%\end{align}
+%where $\gamma >0$ is the step-size. Using standard techniques from
+% 
+%
+%\paragraph{Modified gradient flow}
+%
+%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
