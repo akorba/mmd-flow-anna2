@@ -52,7 +52,7 @@ gradient flow of $\F$ is then defined by the solution $(\nu_t)_{t\geq 0}$ of:
 \begin{align}\label{eq:continuity_mmd}
 	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t}).
 \end{align}
-\cref{eq:continuity_mmd} is peculiar in that the vector field depends itself on $\nu_t$. This type of equations is associated in probability theory literature to the so called McKean-Vlasov process \cite{kac1956foundations,mckean1966class}:
+\cref{eq:continuity_mmd} is peculiar in that the vector field depends itself on $\nu_t$. This type of equations is associated in probability theory literature to the so called McKean-Vlasov process \cite{nac1956foundations,mckean1966class}:
 \begin{align}\label{eq:mcKean_Vlasov_process}
 	\dot{X}_t = -\nabla f_{\mu,\nu_t}(X_t) \qquad X_0\sim \nu_0.
 \end{align}
@@ -227,41 +227,57 @@ As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{e
 
 
 
-%\section{Discretized Gradient flow of the MMD}
-%
-%\paragraph{Approximate Euler-Maruyama discretization}
-%
-%
-%\subsection{Approximate Euler-Maruyama discretization}
-%
+\section{Discretized Gradient flow of the MMD}
+\subsection{Euler scheme}
+The continuous-time gradient flow introduced in \cref{eq:continuity_mmd} allows to formally consider the notion of gradient descent on $\mathcal{P}_2(\X)$ with $\F$ as a cost function. This is done by considering a forward-Euler scheme of \cref{eq:continuity_mmd}. Starting from an initial $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, it is possible to construct a sequence $\nu_n\in \mathcal{P}_2(\X)$ by iteratively applying:
+\begin{align}\label{eq:euler_scheme}
+	\nu_{n+1} = (I - \gamma \nabla f_{\mu,\nu_n})_{\#}\nu_n
+\end{align} 
+In terms of samples, \cref{eq:euler_scheme} is equivalent to:
+\begin{align}\label{eq:euler_scheme_particles}
+	X_{n+1} = X_n - \gamma \nabla f_{\mu,\nu_n}(X_n) \qquad X_0\sim \nu_0.
+\end{align}
+The asymptotic behavior of \cref{eq:euler_scheme} as $k\rightarrow \infty$ can be analyzed much more easily than the continuous-time flow. This will be the object of \cref{sec:convergence_mmd_flow}. For now, we provide a guarantee that the sequence $(\nu_n)_{n\geq 0}$ approaches $(\nu_t)_{t\geq 0}$ as $\gamma\rightarrow 0$:
+\begin{proposition}\label{prop:convergence_euler_scheme}
+	Consider the interpolation path $\rho_t^{\gamma}$ defined as:
+	\begin{align}
+		\rho_t^{\gamma} = (I-(t- k\gamma) \nabla f_{\mu,\nu_n})_{\#}\nu_n \qquad \forall t\in [k\gamma,(k+1)\gamma), \forall k\geq 0
+	\end{align}
+where $\nu_n$ is defined in \cref{eq:euler_scheme}. Then under \manote{asumptions: Lipschitz gradient + bounded hessian} and for all $T>0$:
+	\begin{align}
+		W_2(\rho_t^{\gamma},\nu_t)\leq \gamma C(T) \forall t\in [0,T]
+	\end{align}
+\end{proposition} 
+\cref{prop:convergence_euler_scheme}, means that $\nu_n$ can be interpolated giving rise to a path $\rho_t^{\gamma}$ which gets arbitrarily close to $\nu_t$ on finite intervals. Note that as $T \rightarrow \infty$ it is expected that the bound $C(T)$ would blow-up. However, this is enough to show that \cref{eq:euler_scheme} is indeed a discrete-time flow of the MMD. A proof is provided in \cref{appendix:subsec:convegence_time_discrete} and relies on standard techniques to control the discretization error of a forward-Euler scheme.
+\cref{eq:euler_scheme} is intractable in general as it requires to evaluate $f_{\mu,\nu_n}$ exactly at each iterations. Nevertheless, we present in \cref{subsec:euler_maruyama} a practical algorithm using a finite number of samples which is provably convergent towards \cref{eq:euler_scheme} as the sample-size increases. 
+
+\subsection{Approximate Euler-Maruyama scheme}\label{subsec:euler_maruyama}
+\cref{eq:euler_scheme} suggests a simple approximate scheme that can be computed in practice. Such scheme is known as the Euler-Maruyama scheme.
+Given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and step-size $\gamma$, the approximate scheme iteratively updates the particles $i$ using the following update equation: 
+\begin{align}\label{eq:euler_maruyama}
+	X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i)
+\end{align}
+
+Here $\hat{mu}$ and $\hat{\nu_n}$ denote the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. One nice property about this scheme is that $\nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i)$ can be evaluated easily:
+\begin{align}
+	\nabla f_{\hat{\mu},\hat{\nu_n}}(X_n^i) = \frac{1}{M}\sum_{m=1}^M \nabla_2 k(Y_m,X_n^i)-\frac{1}{N}\sum_{j=1}^N \nabla_2 k(X_n^j,X_n^i)
+\end{align}
+\cref{eq:euler_maruyama} is based on a similar discretization approaches as in \cite{Mroueh:2019,Simsekli:2018}. However, unlike the algorithms derived from the Negative Sobolev distance or the Sliced Wasserstein gradient flows, \cref{eq:euler_maruyama} is computationally less expensive. Indeed the cost of each iteration is $O((M+N)N)$ and uses $O(M+N)$ in memory.
+\cref{eq:euler_maruyama} can be seen as a particle version of \cref{eq:euler_scheme} and one would expect it to converge towards the its population version as $M$ and $N$ goes to infinity. This is made more formal in 
+\begin{proposition}\label{prop:convergence_euler_maruyama}
+	Under the same conditions as in \cref{prop:convergence_euler_scheme}:
+	\begin{equation}
+		W_2(\hat{\nu}_n,\nu_n) = (\frac{1}{M} + \frac{1}{N})M(\gamma n)
+	\end{equation}
+	Where $M(\gamma k)$ is a constant that only depends on $\gamma n$ and the choice of the kernel $k$.
+\end{proposition}
+\cref{prop:convergence_euler_maruyama} tries to control the propagation of the chaos at each iteration and uses techniques from \cite{Jourdain:2007}.
 %
 %
 %
 %\cref{eq:mcKean_Vlasov_process} suggests a time discretized approximation to \cref{eq:continuity_mmd} which will be analyzed in \cref{sec:convergence_mmd_flow}:
 %\begin{align}\cref{eq:time_discretized_flow}
-%	X_{k+1} = X_k - \gamma \nabla f_{\nu_k}(X_k) \qquad X_0\sim \nu_0
-%\end{align}
-%where $\gamma >0$ is the step-size. Using standard techniques from
-% 
-%
-%\paragraph{Modified gradient flow}
-%
-%
-% 
-%\paragraph{Many particles regime}
-%
-
-
-
-
-
-
-%
-%
-%
-%\cref{eq:mcKean_Vlasov_process} suggests a time discretized approximation to \cref{eq:continuity_mmd} which will be analyzed in \cref{sec:convergence_mmd_flow}:
-%\begin{align}\cref{eq:time_discretized_flow}
-%	X_{k+1} = X_k - \gamma \nabla f_{\nu_k}(X_k) \qquad X_0\sim \nu_0
+%	X_{n+1} = X_n - \gamma \nabla f_{\nu_n}(X_n) \qquad X_0\sim \nu_0
 %\end{align}
 %where $\gamma >0$ is the step-size. Using standard techniques from
 % 
