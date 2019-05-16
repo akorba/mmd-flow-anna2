@@ -1,8 +1,8 @@
 
 
-\section{Convergence properties of the MMD flow}\label{sec:convergence_mmd_flow}
+\section{Convergence properties of the continuous time MMD flow}\label{sec:convergence_mmd_flow}
 
-We are interested in analyzing the asymptotic properties of the gradient flow of the MMD. The main challenge is the lack of convexity of the MMD w.r.t. the metric structure of $\mathcal{P}_2(\X)$ endowed with the  Wasserstein distance. We make this more precise in \cref{subsection:barrier_optimization} where we show that flow generally be optimized up to some barrier.
+In this section, we investigate the convergence properties of the continuous time MMD flow. We characterize the speed of convergence, but we also show that since the flow only satisfies a weak notion of convexity with respect to the $W_2$ metric, it is only guaranteed to converge to a local minima. 
 
 %\subsection{MMD as a free energy}
 %
@@ -54,13 +54,15 @@ We are interested in analyzing the asymptotic properties of the gradient flow of
 %	Consider a family of particles whose density satisfy Equation\cref{eq:continuity_equation} for some free energy $\F$. Both KL and $MMD^2$ can be written as free energies \eqref{eq:lyapunov}, with a potential energy $V$ term which drive the particles to the target distribution $\mu$. While the entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$. Indeed, when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 %\end{remark}
 
- 
+
+
+
 
 \input{sections/lambda_convexity}
 
 \input{sections/lojasiewicz}
 
-\input{sections/noisy_mmd_flow}
+
 
 
 %\subsection{MMD flows in the literature}
