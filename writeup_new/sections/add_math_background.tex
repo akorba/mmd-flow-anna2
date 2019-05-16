@@ -1,0 +1,76 @@
+
+
+\subsection{Additional mathematical background}
+
+\subsubsection{MMD in Reproducing Kernel Hilbert Spaces (RKHS)}\label{sec:rkhs}
+
+We recall here fundamental definitions and properties of reproducing kernel Hilbert spaces (RKHS) (see \cite{smola1998learning}) and Maximum Mean Discrepancies (MMD). The key aspect of a RKHS is
+the reproducing property: for all $f \in \kH, f(x) = \langle f, k(x, .)\rangle_{\kH}$. 
+Suppose that $k(.,.))$ is measurable and that $\E_x[k(x,x)]<\infty$.
+Given $\mathcal{P}(\X)$ the set of probability measures defined on $\X$, $k$
+is said to be characteristic if:
+\begin{equation}
+\mu \mapsto \int k(.,x) d\mu(x)
+\end{equation}
+is injective, i.e. $\mu$ is mapped to a unique element in $\kH$ called its mean embedding.  Suppose additionally that $k(.,.)$ is continuous, $\X$ is compact, and that $\kH$ is dense in $C(\X)$ the space of continuous bounded functions on $\X$. Under these conditions, the MMD is a metric (\cite{gretton2012kernel}, Theorem 5).
+
+%\subsubsection{Optimal transport}
+\input{sections/background_OT}
+
+\subsubsection{Stochastic processes}\label{sec:ito_stochastic}
+
+Consider the Itô process, i.e. the stochastic process:
+\begin{equation}
+dX_t=g(X_t)dt.
+\end{equation}
+Let $f$ be a twice-differentiable scalar function, Itô's formula (see \cite{ito1951stochastic}) can be written:
+\begin{equation}
+df(X_t)=\nabla f(X_t).g(X_t)dt
+\end{equation}
+Let $\rho_t$ be the distribution of the process $X_t$. We have:
+\begin{align}
+\E[\frac{df}{dt}(X_t)]&= \E[\nabla f(X_t).g(X_t)]\\
+\Longleftrightarrow \int f(X) \frac{d \rho_t}{dt}(X)&=-\int f(X)div(g(X)\rho_t(X))
+\end{align}
+where the second line is obtained by integrating by parts on both sides of the equality. Finally, the distribution $\rho_t$ verifies the continuity equation: 
+\begin{equation}
+\frac{d\rho_t}{dt}=div(g\rho_t)
+\end{equation}
+
+
+\subsubsection{Additional lemmas}
+
+\begin{lemma}\label{lem:mixture_convexity}[Mixture convexity]
+	The functional $\F$ is mixture convex: for any probability distributions $\nu_1$ and $\nu_2$ and scalar $1\leq \lambda\leq 1$:
+	\begin{align*}
+	\F(\lambda \nu_1+(1-\lambda)\nu_2)\leq \lambda \F(\nu_1)+ (1-\lambda)\F(\nu_2)
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$.
+	We need to show that \[\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu')\leq 0\]
+	This follows from a simple computation which shows that:
+	\begin{align*}
+	\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
+	\end{align*}
+\end{proof}
+
+
+\begin{lemma}\label{lem:mmd_w2}[Lipschitzness of the MMD w.r.t. the $W_1$ and $W_2$ distance]
+	 Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then for all $\mu, \nu$ in $\mathcal{P}(\X)$:
+	\begin{equation}
+	MMD^2(\mu,\nu)\le  L_k^2 W_1^2(\mu,\nu) \le L_k^2 W_2^2(\mu,\nu)
+	\end{equation}
+\end{lemma}
+\begin{proof}
+Let $\mu, \nu$ in $\mathcal{P}(\X)$. By Proposition 20 in \cite{sriperumbudur2010hilbert} we have:
+\begin{equation}
+	MMD(\mu, \nu)	 \le \inf_{\pi \in \Pi(\mu, \nu)} \int \| k(x,.)-k(y,.) \|_{\kH} d\pi(\mu, \nu)
+\end{equation}
+Hence:
+\begin{align}
+	MMD^2(\mu, \nu)	
+	 \le (\inf_{\pi \in \Pi(\mu, \nu)} \int L_k \| x-y \| d\pi(\mu, \nu))^2
+ \le L_k^2 W_1^2(\mu, \nu) \le L_k^2 W_2^2(\mu,\nu)
+\end{align}
+\end{proof}

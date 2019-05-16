@@ -1,0 +1,37 @@
+%\subsection{Convergence of the space discretized flow - Sample-based setting}
+
+%Given samples $(u_1, \dots, u_N)\sim \mu, (v_1, \dots, v_N)\sim \nu_t$, the gradient of $f_{\mu, \nu_t}$ can be easily estimated by:
+%\begin{equation}
+%\nabla f_{\widehat{\mu},\widehat{\nu_t}}(z)= \frac{1}{N}\sum_{i=1}^{N}\nabla_{z}k(u_i,z) -\frac{1}{N}\sum_{i=1}^{N}\nabla_{z}k(v_i,z) 
+%\end{equation}
+%where $\widehat{ \mu}=\sum_{j=1}^{N}\delta_{u_i}$ and $\widehat{ \nu_t}=\sum_{j=1}^{N}\delta_{v_i}$. However, we do not have access to $(v_1, \dots, v_N)\sim \nu_t$ at each time $t$. A common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) is to consider the following system of $n$ interacting particles $(X_t^{1,N}, X_t^{2,N}, \dots, X_t^{N,N})$: 
+%\begin{equation}\label{eq:sample_based_process}
+%%X_t^{j,N}=X_{0}^j+\int_{0}^t \nabla f_{\widehat{\mu}, \nu_s^N}(X_s^{j,N})ds \quad \text{where } \nu_t^N=\frac{1}{N} \sum_{i=1}^N \delta_{X_t^{j,N}}
+%\dot{X}_t^{j,N}=-\nabla f_{\widehat{\mu}, \nu_t^N}(X_t^{j,N}) \text{ where } \nu_t^N=\frac{1}{N} \sum_{i=1}^N \delta_{X_t^{j,N}}
+%\end{equation}
+%%&\forall s \in [0,T]\;,\quad \widehat{\rho}_s^n=\sum_{j=1}^{n} \delta_{\widehat{X}_s^{j,n}} \text{ denotes the empirical measure } 
+%The following proposition, whose proof is deferred to the Appendix, quantifies the distance between the target distribution and the one of the latter particle system.
+%%Notice that the coefficient $\nabla f_{\mu, \nu_t}$ in \eqref{eq:mcKean_Vlasov_process} has been replaced by $\nabla f_{\widehat{\mu}, \widehat{\nu_t}}$ where $\widehat{\nu}_t$ is the density of the process defined in \eqref{eq:sample_based_process}. 
+%\begin{proposition}\label{prop:sample_based_rates}
+%	\aknote{the bound could be refined, and there are few mild assumptions - see the proof for details/discussion. In particular, by taking $t=\sqrt{n}$, we could get a $\mathcal{O(\frac{1}{\sqrt{N}})}$ bound.} Let $\nu_t^N$, be the distribution of the particle system \eqref{eq:sample_based_process}. We have, for all $t>0$:
+%	\begin{equation}
+%	MMD^2(\mu,\nu_t^N)\le \frac{C_1(t)}{N}+ \frac{C_2}{N} + \frac{C_3}{t}
+%	\end{equation}
+%\end{proposition}
+%Let us also introduce the Euler discretizations with time-step $h > 0$ of the SDE \eqref{eq:mcKean_Vlasov_process} (with $\widehat{ \mu}$ as a target distribution) and the particle system:
+%\begin{equation}\label{eq:discret_time}
+%X_{m+1}=X_m - \gamma \nabla f_{\widehat{\mu}, \nu_m}(X_m) \end{equation}
+%\begin{equation}\label{eq:sample_based_discret_time}
+%X_{m+1}^{j,N}=X_{m}^{j,N}- \gamma \nabla f_{\widehat{\mu}, \nu_m^N}(X_m^{j,N}) \quad \text{where } \nu_m^N=\frac{1}{N} \sum_{i=1}^N \delta_{X_m^{j,N}}
+%\end{equation}
+%\begin{proposition}%\label{prop:sample_based_rates}
+%	Let $\nu_m$,$\nu_m^N$, be the distributions of \eqref{eq:discret_time} and the particle system \eqref{eq:sample_based_discret_time}. We have, for all $t>0$:\aknote{from Jourdain 2019. Unfortunately I think it's hard to inherit this result in the noisy case}
+%	\begin{equation}
+%	MMD^2(\nu_m,\nu_m^N)\le \frac{C_1(t)}{N}
+%	\end{equation}
+%\end{proposition}
+%
+%\begin{remark}
+%	Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
+%	The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of the Langevin diffusion (see \cref{rk:kl_flow}), seems much more suitable for first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_{\mu, \nu_t}$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient,li2018gradient,shi2018spectral}). In contrast, the discretized flow of the $MMD^2$ presented in this section seems naturally adapted to the sample-based setting.
+%\end{remark}

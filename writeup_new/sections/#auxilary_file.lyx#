@@ -1,0 +1,712 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\begin_modules
+theorems-std
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+We consider the sequences 
+\begin_inset Formula $\nu_{k}^{\gamma}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bar{\nu}_{k}^{\gamma}$
+\end_inset
+
+ defined by induction: 
+\begin_inset Formula 
+\begin{align*}
+\nu_{k+1}^{\gamma} & =(I-\gamma\nabla f_{\mu,\nu_{^{k}}^{\gamma}})_{\#}\nu_{k}^{\gamma}\\
+\bar{\nu}_{k+1}^{\gamma} & =(I-\gamma\nabla f_{\mu,\nu_{^{\gamma k}}})_{\#}\bar{\nu}_{k}^{\gamma}
+\end{align*}
+
+\end_inset
+
+ with 
+\begin_inset Formula $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}=\nu_{0}$
+\end_inset
+
+.
+ We will first prove that 
+\end_layout
+
+\begin_layout Lemma
+\begin_inset CommandInset label
+LatexCommand label
+name "lem:euler_error_1"
+
+\end_inset
+
+For any 
+\begin_inset Formula $k\geq0$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+W_{2}(\nu_{\gamma k},\bar{\nu}_{k}^{\gamma})\le\gamma\frac{C}{L}(e^{k\gamma L}-1)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Let 
+\begin_inset Formula $\pi$
+\end_inset
+
+ be an optimal coupling between 
+\begin_inset Formula $\bar{\nu}_{k}^{\gamma}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{\gamma k}$
+\end_inset
+
+ and 
+\begin_inset Formula $(\bar{X}_{k}$
+\end_inset
+
+ ,
+\begin_inset Formula $X_{k})$
+\end_inset
+
+ a joint sample from 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+ Consider also the joint sample 
+\begin_inset Formula $(\bar{Y},Y)$
+\end_inset
+
+ obtained:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+Y=X_{k}-\int_{k\gamma}^{(k+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(x),\qquad\bar{Y}=\bar{X}_{k}-\gamma\nabla f_{\mu,\nu_{\gamma k}}(\bar{X}_{k}).
+\]
+
+\end_inset
+
+It is easy to see that 
+\begin_inset Formula $Y\sim\nu_{\gamma(k+1)}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bar{Y}\sim\bar{\nu}_{k+1}^{\gamma}$
+\end_inset
+
+.
+ Moreover, using 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lem:Taylor-expansion"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the error 
+\begin_inset Formula $\mathcal{E}(Y,X_{k},\gamma)=Y-X_{k}-\gamma\nabla f_{\mu,\nu_{\gamma k}}(X_{k})$
+\end_inset
+
+ satisfies:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\Vert\mathcal{E}(Y,X_{k},\gamma)\Vert\leq\gamma^{2}C
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $C>0$
+\end_inset
+
+ depends only on the choice of the kernel.
+ Denoting by 
+\begin_inset Formula $a_{k}=W_{2}(\nu_{\gamma k},\bar{\nu}_{k}^{\gamma})$
+\end_inset
+
+, one can therefore write:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+a_{k+1}\leq & \mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{\gamma k}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma k}}(\bar{x})+\mathcal{E}(y,x,\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
+\leq & \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{\gamma k}}(x)-\nabla f_{\mu,\nu_{\gamma k}}(\bar{x}))\Vert^{2}\right]^{\frac{1}{2}}+\gamma^{2}C\\
+\\
+\end{align*}
+
+\end_inset
+
+Using that 
+\begin_inset Formula $\nabla f_{\mu,\nu_{\gamma k}}$
+\end_inset
+
+ is 
+\begin_inset Formula $L$
+\end_inset
+
+-Lipschitz and recalling that 
+\begin_inset Formula $\mathbb{E}_{\pi}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}=W_{2}(\nu_{\gamma k},\bar{\nu}_{k}^{\gamma})$
+\end_inset
+
+ we can get:
+\begin_inset Formula 
+\[
+a_{k+1}\leq(1+\gamma L)a_{k}+\gamma^{2}C
+\]
+
+\end_inset
+
+Using the discrete Gronwall lemma and recalling that 
+\begin_inset Formula $a_{0}=0$
+\end_inset
+
+ by definition of 
+\begin_inset Formula $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\[
+a_{k}\leq\gamma\frac{C}{L}(e^{k\gamma L}-1)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Lemma
+For any 
+\begin_inset Formula $T>0$
+\end_inset
+
+ and 
+\begin_inset Formula $k$
+\end_inset
+
+ such that 
+\begin_inset Formula $k\gamma\leq T$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+W_{2}(\nu_{k}^{\gamma},\bar{\nu}_{k}^{\gamma})\leq\gamma\frac{C}{\sqrt{2}L}(e^{2TL}-1)^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Consider now an optimal coupling 
+\begin_inset Formula $\pi$
+\end_inset
+
+ between 
+\begin_inset Formula $\bar{\nu}_{k}^{\gamma}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{k}^{\gamma}$
+\end_inset
+
+.
+ Similarly to 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lem:euler_error_1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, we denote by 
+\begin_inset Formula $(\bar{X}_{k},X_{k})$
+\end_inset
+
+ a joint sample from 
+\begin_inset Formula $\pi$
+\end_inset
+
+ and 
+\begin_inset Formula $\bar{Y},Y$
+\end_inset
+
+ are obtained using:
+\begin_inset Formula 
+\[
+\bar{Y}=\bar{X}_{k}-\gamma\nabla f_{\mu,\nu_{\gamma k}}(\bar{X}_{k}),\qquad Y=X_{k}-\gamma\nabla f_{\mu,\nu_{k}^{\gamma}}(X_{k})
+\]
+
+\end_inset
+
+We again have that 
+\begin_inset Formula $Y\sim\nu_{k+1}^{\gamma}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bar{Y}\sim\bar{\nu}_{k+1}^{\gamma}$
+\end_inset
+
+.
+ Denoting by 
+\begin_inset Formula $b_{k}=W_{2}(\nu_{k}^{\gamma},\bar{\nu}_{k}^{\gamma})$
+\end_inset
+
+, we have:
+\begin_inset Formula 
+\begin{align*}
+b_{k+1} & \leq\mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{k}^{\gamma}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma k}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
+ & \leq b_{k}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{k}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma k}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
+\end{align*}
+
+\end_inset
+
+The term 
+\begin_inset Formula $\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{k}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma k}}(\bar{x})\Vert^{2}\right]$
+\end_inset
+
+ can be controlled in the following way:
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{k}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma k}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}} & \leq(E\left[\Vert\nabla f_{\mu,\nu_{k}^{\gamma}}(x)-\nabla f_{\mu,\nu_{k}^{\gamma}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}+\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{k}^{\gamma}}(\bar{x})-\nabla f_{\mu,\bar{\nu}_{k}^{\gamma}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}+\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\bar{\nu}_{k}^{\gamma}}(\bar{x})-\nabla f_{\mu,\nu_{\gamma k}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
+ & \leq L(2b_{k}+a_{k})
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $a_{k}=W_{2}(\bar{\nu}_{k}^{\gamma},\nu_{\gamma k})$
+\end_inset
+
+ and we used that 
+\begin_inset Formula $\nabla f_{\mu,\nu}(x)$
+\end_inset
+
+ is 
+\begin_inset Formula $L$
+\end_inset
+
+-Lipschitz in both 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Hence we have that:
+\end_layout
+
+\begin_layout Proof
+\begin_inset Formula 
+\[
+b_{k+1}\leq(1+2\gamma L)b_{k}+L\gamma a_{k}
+\]
+
+\end_inset
+
+But we have by 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lem:euler_error_1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ that 
+\begin_inset Formula 
+\[
+a_{k}\leq\gamma\frac{C}{L}(e^{k\gamma L}-1)
+\]
+
+\end_inset
+
+Hence, for any 
+\begin_inset Formula $k$
+\end_inset
+
+ such that 
+\begin_inset Formula $k\gamma\leq T$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\[
+b_{k+1}\leq(1+2\gamma L)b_{k}+C\gamma^{2}(e^{TL}-1).
+\]
+
+\end_inset
+
+Using again the dicrete Gronwall lemma, it follows:
+\begin_inset Formula 
+\[
+b_{k}\leq\gamma\frac{C}{2L}(e^{2TL}-1)^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+for 
+\begin_inset Formula $T>0$
+\end_inset
+
+ and 
+\begin_inset Formula $k\leq\frac{T}{\gamma}$
+\end_inset
+
+ we have that:
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Formula 
+\[
+W_{2}(\nu_{k}^{\gamma},\nu_{\gamma k})\leq\gamma M(T)
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $M(T)$
+\end_inset
+
+ is a constant that depends only on 
+\begin_inset Formula $T$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Consider the interpolation 
+\begin_inset Formula 
+\[
+\rho_{t}^{\gamma}=(I-(t-k\gamma)\nabla f_{\mu,\nu_{k}^{\gamma}})_{\#}\nu_{k}^{\gamma}\qquad\forall t\in[k\gamma,(k+1)\gamma)
+\]
+
+\end_inset
+
+we will show that 
+\begin_inset Formula 
+\[
+W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T))\qquad\forall t\in[0,T]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Let 
+\begin_inset Formula $\pi$
+\end_inset
+
+ be optimal coupling between 
+\begin_inset Formula $\nu_{k}^{\gamma}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{\gamma k}$
+\end_inset
+
+ with corresponding samples 
+\begin_inset Formula $(X,Y)$
+\end_inset
+
+, for 
+\begin_inset Formula $t\in[k\gamma,(k+1)\gamma)$
+\end_inset
+
+ we have that:
+\begin_inset Formula 
+\begin{align*}
+Y_{t} & =Y-\int_{k\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)\\
+X_{t} & =X-(t-k\gamma)\nabla f_{\mu,\nu_{k}^{\gamma}}(X).
+\end{align*}
+
+\end_inset
+
+Using 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lem:Taylor-expansion"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, we also have 
+\begin_inset Formula $\mathcal{E}(Y_{t},Y,(t-k\gamma))=Y_{t}-Y-(t-k\gamma)\nabla f_{\mu,\nu_{\gamma k}}(Y)$
+\end_inset
+
+ satisfies:
+\begin_inset Formula 
+\[
+\mathcal{E}(Y_{t},Y,(t-k\gamma))\leq(t-k\gamma)^{2}C
+\]
+
+\end_inset
+
+This allows to write:
+\end_layout
+
+\begin_layout Proof
+\begin_inset Formula 
+\begin{align*}
+W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert Y-X+(t-k\gamma)(\nabla f_{\mu,\nu_{\gamma k}}(X)-\nabla f_{\mu,\nu_{\gamma k}}(Y))+\mathcal{E}(Y_{t},Y,(t-k\gamma))\Vert^{2}\right]^{\frac{1}{2}}\\
+ & \leq W_{2}(\nu_{k}^{\gamma},\nu_{\gamma k})+(t-k\gamma)LW_{2}(\nu_{k}^{\gamma},\nu_{\gamma k})+(t-k\gamma)^{2}C\\
+ & \leq(1+\gamma L)W_{2}(\nu_{k}^{\gamma},\nu_{\gamma k})+\gamma^{2}C\\
+ & \leq\gamma\left[(1+\gamma L)M(T)+\gamma C\right]
+\end{align*}
+
+\end_inset
+
+Hence for 
+\begin_inset Formula $\gamma\leq\frac{1}{L}$
+\end_inset
+
+ we get 
+\begin_inset Formula 
+\[
+W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T)).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+Given 
+\begin_inset Formula $(X_{0}^{i})_{1\leq i\leq N}$
+\end_inset
+
+ and 
+\begin_inset Formula $(Y^{m})_{_{1\leq m\leq M}}$
+\end_inset
+
+ samples from 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{0}$
+\end_inset
+
+ and a step-size 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ the following holds:
+\end_layout
+
+\begin_layout Proposition
+Consider the scheme:
+\begin_inset Formula 
+\[
+X_{k+1}^{i}=X_{k}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $U_{k}^{i}$
+\end_inset
+
+ are i.i.d standard gaussians, then the following holds:
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Formula 
+\[
+W_{2}(\hat{\nu}_{k},\nu_{k})\leq\frac{1}{N}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Let 
+\begin_inset Formula $\bar{X}_{k}^{i}$
+\end_inset
+
+ be the particles obtained using:
+\begin_inset Formula 
+\[
+\bar{X}_{k+1}^{i}=\bar{X_{k}}^{i}-\gamma\nabla f_{\mu,\nu_{k}}(\bar{X_{k}}^{i}+\beta_{k}U_{k}^{i})\hfill\bar{X}_{0}^{i}=X_{0}^{i}
+\]
+
+\end_inset
+
+
+\begin_inset Formula $\bar{X}_{k}^{i}$
+\end_inset
+
+ follows by definition 
+\begin_inset Formula $\nu_{k}:$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+\begin_inset Formula 
+\begin{align*}
+W_{2}(\hat{\nu}_{k+1},\nu_{k+1}) & \leq W_{2}(\hat{\nu}_{k+1},\nu_{k+1}^{N})+W_{2}(\nu_{k+1}^{N},\nu_{k+1})\\
+ & \leq\frac{1}{\sqrt{N}}\sum\vert\vert
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Lemma
+\begin_inset CommandInset label
+LatexCommand label
+name "lem:Taylor-expansion"
+
+\end_inset
+
+Taylor expansion
+\end_layout
+
+\end_body
+\end_document
