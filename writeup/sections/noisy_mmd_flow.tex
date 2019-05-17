@@ -2,37 +2,47 @@
 
 \subsection{Noisy MMD flow}
 
-Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima.\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} One way to see how this could happen, at least formally, is by looking at \cref{eq:time_evolution_mmd} at equilibrium. Indeed $\F(n_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, this implies that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$ one can show that under simple regularity conditions that the equilibrium condition
+Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima. This can happen when \cref{bounded_neg_sobolev} doesn't hold. One way to see this, at least formally, is by looking at equilibrium condition for \cref{eq:time_evolution_mmd}.
+%\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
+Indeed $\F(n_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, this implies that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$
+\footnote{There are cases when $\nu_t$ doesn't converge to any distribution. This would happen is the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
+one can show that under simple regularity conditions that the equilibrium condition
 \begin{align}\label{eq:equilibrium_condition}
 	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
-\end{align} 
-must hold. If $\nu^*$ had a positive density then this would imply that $f_{\mu,\nu^{*}}(x)$ is constant everywhere. If the set of functions spanned by the RKHS associated to the MMD do not include constant functions, then it must hold that $f_{\mu,\nu^{*}}=0$ which in turn means that $MMD(\mu,\nu^{*})=0$, hence $\nu^*$ would be a global solution. However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. In that case, the optimality condition \cref{eq:equilibrium_condition} is of little use. Moreover, it suggests that the gradient flow could converge to some suboptimal configuration as the gradient is only evaluated near the support of $\nu^*$.
-Since \cref{eq:equilibrium_condition} seems to be the main obstruction to reach global optimality, we propose to construct, at least formally, a modified gradient flow for which the optimality condition would guarantee reaching the global optimum.
-Ideally, we would like to obtain an optimality condition of the form
-\begin{align}\label{eq:soothed_equilibrium_condition}
-	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff (\nu^{*}\star g)(x) =0  
 \end{align}
-where $\nu^{*}\star g$ means the convolution of $\nu^*$ with a gaussian distribution $g$. The smoothing effect of convolution directly implies that $\nu^{*}\star g$ has a positive density, which falls back in the scenario where the $\nu^*$ must a global optimum.
-We consider, at least formally, the following modified equation for $\nu_t$:
-\begin{align}\label{eq:smoothed_continuity_equation_mmd}
-	\partial_t \nu_t = div((\nu_t \star g) \nabla f_{\mu,\nu_t} )
-\end{align}
-This suggests a particle equation which would be given by:
-\begin{align}\label{eq:noisy_particles}
-	\dot{X}_t = -\nabla f_{\mu,\nu_t}( X_t + W_t  )
-\end{align}
-where $(W_t)$ is a brownian motion. Furthermore, $\F(\nu_t)$ satisfies
-\begin{align}\label{eq:smoothed_decreasing_mmd}
-	\dot{\F}(\nu_t) = -\int \Vert \nabla f_{\mu,\nu_t}(x)\Vert^2 \diff (\nu_t\star g)(x)
-\end{align}
-The existence and uniqueness of a solution to \cref{eq:smoothed_continuity_equation_mmd} for a general $g$ remains an open question to our knowledge. However, we find it useful here to state \cref{eq:smoothed_continuity_equation_mmd,eq:noisy_particles,eq:smoothed_decreasing_mmd} which are the modified analogs of \manote{ref to the analogs}.
-
-The above analysis suggests a noise injections algorithm which has a similar flavor to \manote{cite relevant litterature}:
+must hold. If $\nu^*$ turns out to have a positive density, this would imply that $f_{\mu,\nu^{*}}(x)$ is constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS doesn't contain constant functions\footnote{This is the case for the gaussian kernel for instance}. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. \manote{here a figure would be nice}  This suggests that the gradient flow could converge to a suboptimal solution $\nu^*$ on for which \cref{eq:equilibrium_condition}. 
+Since \cref{eq:equilibrium_condition} seems to be the main obstruction to reach global optimality, we propose an approximate gradient descent algorithm, which aims at avoiding local minima by injecting noise into the gradient:  
 \begin{align}\label{eq:discretized_noisy_flow}
 	X_{k+1} = X_{k} -\gamma \nabla f_{\mu,\nu_k}(X_k+ \beta_k U_k) \qquad k\geq 0
 \end{align}
-
-Here $U_k$ is a sample from a normal gaussian while $X_k$ is a sample at iteration $k$. Unlike the original flow where the gradient is evaluated at the current sample, here the sample is blurred first before evaluating the gradient. We would like to emphasize that this algorithm is different from adding noise to the samples themselves which would correspond to adding a diffusion term in \cref{eq:noisy_particles}. We show that \cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controled:
+Here $U_k$ is a sample from a normal gaussian while $X_k$ is a sample at iteration $k$ and $\beta_k$ is the noise level. Unlike in \cref{eq:euler_scheme}, here the sample is blurred first before evaluating the gradient.
+Intuitively, if $\nu_k$ approaches a local optimum $\nu^{*}$, $ \nabla f_{\mu,\nu_k}$ would be small on the support of $\nu_k$ but it might be much larger outside of it, hence evaluating $\nabla f_{\mu,\nu_k}$ outside the support of $\nu_k$ might help escaping the local minimum. We show in \manote{add this in the appendix} that \cref{eq:discretized_noisy_flow} is associated to an augmented McKean-Vlasov process that is different from adding a diffusion term to \cref{eq:continuity_mmd}. Indeed, in the later case, the update equation would be:
+\begin{align}\label{eq:diffusion}
+	X_{k+1} = X_{k} -\gamma \nabla f_{\mu,\nu_k}(X_k)+ \beta_k U_k \qquad k\geq 0.
+\end{align}
+%to construct, at least formally, a modified gradient flow for which the optimality condition would guarantee reaching the global optimum.
+%Ideally, we would like to obtain an optimality condition of the form
+%\begin{align}\label{eq:soothed_equilibrium_condition}
+%	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff (\nu^{*}\star g)(x) =0  
+%\end{align}
+%where $\nu^{*}\star g$ means the convolution of $\nu^*$ with a gaussian distribution $g$. The smoothing effect of convolution directly implies that $\nu^{*}\star g$ has a positive density, which falls back in the scenario where the $\nu^*$ must a global optimum.
+%We consider, at least formally, the following modified equation for $\nu_t$:
+%\begin{align}\label{eq:smoothed_continuity_equation_mmd}
+%	\partial_t \nu_t = div((\nu_t \star g) \nabla f_{\mu,\nu_t} )
+%\end{align}
+%This suggests a particle equation which would be given by:
+%\begin{align}\label{eq:noisy_particles}
+%	\dot{X}_t = -\nabla f_{\mu,\nu_t}( X_t + W_t  )
+%\end{align}
+%where $(W_t)$ is a brownian motion. Furthermore, $\F(\nu_t)$ satisfies
+%\begin{align}\label{eq:smoothed_decreasing_mmd}
+%	\dot{\F}(\nu_t) = -\int \Vert \nabla f_{\mu,\nu_t}(x)\Vert^2 \diff (\nu_t\star g)(x)
+%\end{align}
+%The existence and uniqueness of a solution to \cref{eq:smoothed_continuity_equation_mmd} for a general $g$ remains an open question to our knowledge. However, we find it useful here to state \cref{eq:smoothed_continuity_equation_mmd,eq:noisy_particles,eq:smoothed_decreasing_mmd} which are the modified analogs of \manote{ref to the analogs}.
+ \cref{eq:diffusion} corresponds to regularizing $\F$ using an entropic term as in \cite{mei2018mean,Simsekli:2018}. \cref{eq:discretized_noisy_flow} is also different from \cite{craig2016blob,carrillo2019blob} where $\F$ is regularized by convolving the interaction potential $W$ in \cref{eq:potentials}. Regularizing $\F$ means that the optimal solution such regularized problem will be generally different from the non-regularized one. This is not the case for \cref{eq:discretized_noisy_flow} where the global optimum of $\F$ is a fix-point. 
+ %As shown in \manote{add this in the appendix}, \cref{eq:discretized_noisy_flow} is associated to an augmented continuous-time dynamics  which decreases $\F$ under a condition on the noise level $\beta_k$:
+In fact \cref{eq:discretized_noisy_flow} is  closely related to the \textit{continuation methods} \cite{Gulcehre:2016a,Gulcehre:2016,Chaudhari:2017}  and \textit{graduated optimization}\cite{Hazan:2015} used for non-convex optimization in Euclidian spaces. Indeed given a non-convex cost function $f$, the graduated descent would lead to updates of the form: $X_{k+1} = X_k - \gamma \nabla f(X_k+\beta U_k )$. The main difference with \cref{eq:discretized_noisy_flow} is the dependence of $f$ on $\nu_k$ which is inherently due to functional optimization.
+We show that \cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controlled:
 \begin{proposition}\label{prop:decreasing_loss_iterations}
 	Let $(\nu_k)_{k\geq 0}$ be the sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$. Under \cref{assump:bounded_hessian}, and for a choice of $\beta_k$ such that:
 	\begin{align}\label{eq:control_level_noise}
@@ -45,19 +55,22 @@ Here $U_k$ is a sample from a normal gaussian while $X_k$ is a sample at iterati
 	Here $L$ is given in \cref{assump:bounded_hessian} and depends only on the choice of the kernel.
 \end{proposition}
 A proof of \cref{prop:decreasing_loss_iterations} is provided in \cref{eq:proof_decreasing_noisy_loss}.
-\begin{remark}
 
-\begin{itemize}
-	\item \cref{eq:control_level_noise} is always satisfied for $\beta_k = 0$ where we recover, the noise-free discretized flow. However, the interesting cases are when $\beta_k>0$. This allows the algorithm to use non-local information on the loss landscape by probing the gradient in regions outside of the support of $\nu_k$. Thus this algorithm could potentially escape local optima. 
-	\item At each iteration, the level of the noise needs to be adjusted such that the gradient is not too much blurred. This ensures that each step would decrease the loss functional.
-	\item The second crucial point, is the dependence of the level of the noise on the value of the loss functional itself in \cref{eq:control_level_noise}. This allows some tolerance for high levels of noise when the loss functional is already small. In fact this precise condition provides a Lojasiewicz type inequality for free, which will then be used in  to provide convergence rates in  \cref{sec:Lojasiewicz_inequality}.
-	\item $\beta_k$ doesn't need to decrease at each iteration, it could increase adaptively whenever needed, i.e. when  the sequence gets closer to a local optimum, it is helpful to increase the level of the noise to probe the gradient in regions where its value is not flat.
-\end{itemize}
+\begin{remark}
+	  %This allows the algorithm to use non-local information on the loss landscape by probing the gradient in regions outside of the support of $\nu_k$. Thus this algorithm could potentially escape local optima. 
+	At each iteration, the level of the noise needs to be adjusted such that the gradient is not too much blurred. This ensures that each step would decrease the loss functional. However, $\beta_k$ doesn't need to decrease at each iteration, it could increase adaptively whenever needed, i.e. when  the sequence gets closer to a local optimum, it is helpful to increase the level of the noise to probe the gradient in regions where its value is not flat.
+	Finally, \cref{eq:control_level_noise} is always satisfied for $\beta_k = 0$ where we recover, the noise-free discretized flow. However, the interesting cases are when $\beta_k>0$.
+	%The second crucial point, is the dependence of the level of the noise on the value of the loss functional itself in \cref{eq:control_level_noise}. This allows some tolerance for high levels of noise when the loss functional is already small. In fact this precise condition provides a Lojasiewicz type inequality for free, which will then be used in  to provide convergence rates in  \cref{sec:Lojasiewicz_inequality}.
  \end{remark}
- 
- Define $\beta_k^{*}$ the greatest $\beta_k$ such that \cref{eq:control_level_noise} holds. To get convergence towards the global solution, it is crucial to make sure that $\beta_k^{*}$ doesn't decay too quickly. This shouldn't be an issue in the vicinity of the global optimum $\mu$. That is because the functional value itself would be small hence allowing for moderate values of $\beta_k$. At critical points, one needs to quantify the effect of $\beta_k$ on the spectrum of the infinitesimal covariance operator.   
- 
- 
- \begin{theorem}\label{thm:convergence}
- Assume that $\sum_{k} \beta_k^{*} = \infty$ then $\F(\nu_k)\rightarrow 0$ when the noise level is set to $\beta_k^{*}$ for all $k\geq0$. \manote{This is not really a theorem :D }
+The natural question is whether \cref{eq:discretized_noisy_flow} converges towards to global optimum of $\F$. The answer will depend on how much noise is allowed to be injected while still decreasing $\F$. The higher $\beta_k$ is the faster it will converge. This is made more precise in \cref{thm:convergence_noisy_gradient}: 
+ \begin{theorem}\label{thm:convergence_noisy_gradient}
+ Assume that $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ and \cref{eq:control_level_noise} is satisfied for all $n$ then:
+ \begin{align}
+ 	\F(\nu_n)\leq \F(\nu_0) e^{-4L^2\gamma(1-\gamma L)\sum_{i=0}^n \beta^2_i}
+ \end{align}
  \end{theorem}
+ A proof of \cref{thm:convergence_noisy_gradient} is provided in \manote{add proof} and relies on \cref{eq:control_level_noise} to get a Lojasiewicz inequality which then controls the decay of $\F(\nu_n)$. A particular case when \cref{thm:convergence_noisy_gradient} holds is when $\beta_n$ is guaranteed to be always greater than a minimal value $\beta^*>0$ while still having \cref{eq:control_level_noise}. In this case, one recovers linear convergence rates for $\F(\nu_n)$.
+In \label{subsec:euler_maruyama} we provide a practical algorithm which performs noisy gradient updates as in \cref{eq:discretized_noisy_flow} and provide guarantees for this algorithm.
+ 
+ 
+ 
