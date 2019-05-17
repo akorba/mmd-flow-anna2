@@ -1,22 +1,20 @@
 
-\subsection{A rate of convergence for the continuous flow}\label{sec:Lojasiewicz_inequality}
+\subsection{Lojasiewicz type inequality - Convergence of the continuous flow}\label{sec:Lojasiewicz_inequality}
 
-Since we know by \cref{prop:decay_mmd} that Lyapunov functional $\mathcal{F}$ is decreasing along its gradient flow $t\mapsto \rho_t$, a natural question is to derive a rate of convergence.
-%  Here we would like to derive an inequality between the time derivative of the Lyapunov functional $\mathcal{F}$ along its gradient flow $t\mapsto \rho_t$. 
-For this purpose we first introduce the weighted negative Sobolev distance (see \cite{peyre2019computational}):% \manote{cite villani and peyre and Mroueh}:
+Here we would like to derive an inequality between the time derivative of the Lyapunov functional $\mathcal{F}$ along its gradient flow $t\mapsto \rho_t$. For this purpose we first introduce the weighted negative Sobolev distance \manote{cite villani and peyre and Mroueh}:
 \begin{align}\label{eq:neg_sobolev}
 	\Vert \nu - \mu \Vert_{\dot{H}^{-1}(\nu)} = \sup_{\substack{ f\in W_0^{1,2}(\nu), \; \nu(\Vert \nabla f \Vert^2) \leq 1 }} \vert \nu(f)-\mu(f)\vert 
 \end{align}
 Where $W_0^{1,2}(\nu)$ is the space $1$ order Sobolev functions with functions vanishing at the boundary of the domain.
-The distance defined in \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport as it linearizes the $W_2$ distance when $\mu$ is arbitrarily close to $\nu$. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $\mu$ (see \cite{mroueh2018regularized}). More precisely we will rely on the following statement to derive a rate of convergence:
+The distance defined in \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport as it linearizes the $W_2$ distance when $\mu$ is arbitrarily close to $\nu$. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $\mu$. However, this quantity might be infinite \manote{say exactly when it is finite} and one of the key problems would be to control its value during the evolution of the flow. More precisely we will rely on the following statement:
 \begin{align}\label{eq:bounded_neg_sobolev}
 	\Vert \nu_t  - \mu \Vert_{\dot{H}^{-1}(\nu_t)} \leq C \qquad \forall t\geq 0.
 \end{align} 
-where $\nu_t$ is defined by the gradient flow \eqref{eq:continuity_mmd} and $\mu$ is the target distribution. When \cref{eq:bounded_neg_sobolev}  holds, we have the following proposition:
+where $\nu_t$ is defined by the gradient flow and $\mu$ is the target distribution. When \cref{eq:bounded_neg_sobolev}  holds, we have the following proposition:
 \begin{proposition}\label{prop:lojasiewicz}
-	When \cref{eq:bounded_neg_sobolev} holds, the following Lojasiewicz-type inequality is then satisfied:% at all times:
+	When \cref{eq:bounded_neg_sobolev} holds, the following inequality is then satisfied at all times:
 	\begin{align}\label{eq:PL_type_inequality}
-		\Vert \nabla f_{\nu_t,\mu} \Vert_{L_2(\nu_t)} \geq \frac{1}{C} \Vert f_{\nu_t,\mu} \Vert^2_{\mathcal{H}} \qquad \forall t\geq 0.
+		\Vert \nabla f_t \Vert_{L_2(\nu_t)} \geq \frac{1}{C} \Vert f_t \Vert^2_{\mathcal{H}} \qquad \forall t\geq 0.
 	\end{align}
 	Then $t\mapsto \mathcal{F}(\nu_t)$ converges to $0$ with a rate of convergence given by:
 	\begin{align}
@@ -24,20 +22,16 @@ where $\nu_t$ is defined by the gradient flow \eqref{eq:continuity_mmd} and $\mu
 	\end{align}
 \end{proposition}
 
-All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. However, this quantity might be infinite \manote{say exactly when it is finite} and a fundamental problem would be to control its value during the evolution of the flow. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. For instance, it would be satisfied if $\mu \ll \nu_0$ and if this remains true along the flow. Another view on the problem would be to consider a time depended constant $C_t$ in \cref{eq:bounded_neg_sobolev}, such that $	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty$.
-%\begin{align}
-%	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty
-%\end{align}
-For instance $C_t$ could have up to a linear growth in time. In this case the decay of $\F(\nu_t)$ will no longer be in $\frac{1}{t}$ but only in $\frac{1}{\log(t)}$ \manote{This seems unlikely if we end up having convergence of $\nu_t$, but who nows.}. However, proving such results would be very involved and it is out of the scope of this study.
-%One possible promising condition for \cref{eq:bounded_neg_sobolev} to hold would be if $\mu \ll \nu_0$ and if this property is preserved during the dynamics.
+
+
+All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. It is also possible to have a time depended constant $C_t$ as long as its growth is such that:
+\begin{align}
+	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty
+\end{align}
+For instance $C_t$ could have up to a linear growth in time. In this case the decay of $\F(\nu_t)$ will no longer be in $\frac{1}{t}$ but only in $\frac{1}{\log(t)}$ \manote{This seems unlikely if we end up having convergence of $\nu_t$, but who nows.}.
+One possible promising condition for \cref{eq:bounded_neg_sobolev} to hold would be if $\mu \ll \nu_0$ and if this property is preserved during the dynamics.
 
 
  
-
-
-
-
-
-
-
-
+ 
+ 
