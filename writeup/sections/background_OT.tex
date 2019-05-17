@@ -54,6 +54,20 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 \end{remark}
 
 
+\begin{definition}\label{def:displacement_convexity}
+	Let $\mu$
+	and $\nu$ in $\mathcal{P}(\X)$. There exists a $\mu-a.e.$
+	unique gradient of a convex function, denoted by $\nabla\phi$, such that $\mu$
+	is equal to $\nabla\phi_{\#}\nu$ and one can define the displacement geodesic $\nu_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$
+	for $0\leq t\leq1$. We say that a functional $\nu\mapsto\mathcal{F}(\nu)$
+	is displacement convex if 
+	\begin{equation}
+	t\mapsto\mathcal{F}(\nu_{t})
+	\end{equation}
+	is convex for any $\nu$ and $\mu$. %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
+\end{definition}
+
+
 \subsubsection{Gradient flows on the space of probability measures}\label{sec:gradient_flows_functionals}
 
 
