@@ -149,6 +149,136 @@ W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T)).
 \end{lemma}
 
 
+\begin{proposition}\label{prop:propagation_chaos}
+Given $(X_{0}^{i})_{1\leq i\leq N}$ and $(Y^{m})_{_{1\leq m\leq M}}$
+samples from $\mu$ and $\nu_{0}$ and a step-size $\gamma$ the following
+holds:
+
+Consider the scheme:
+\[
+X_{k+1}^{i}=X_{k}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})
+\]
+where $U_{k}^{i}$ are i.i.d standard gaussians, then the following
+holds:
+
+\[
+\mathbb{E}[W_{2}(\hat{\nu}_{k},\nu_{k})]\leq \frac{1}{2}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{LT}-1)
+\]
+\end{proposition}
+%
+\begin{proof}
+Let $\bar{X}_{k}^{i}$ be the particles obtained using:
+\[
+\bar{X}_{k+1}^{i}=\bar{X_{k}}^{i}-\gamma\nabla f_{\mu,\nu_{k}}(\bar{X_{k}}^{i}+\beta_{k}U_{k}^{i})\hfill\bar{X}_{0}^{i}=X_{0}^{i}
+\]
+$\bar{X}_{k}^{i}$ follows by definition $\nu_{k}$ and $(X_{k+1}^{i},\bar{X}_{k+1}^{i})$
+are coupled through $U_{k}^{i}$ and $(X_{k}^{i},\bar{X}_{k}^{i})$,
+let's denote by $\pi_{k}$ such coupling between particles. Moreover,
+we denote by $\bar{\nu}_{k}$ the empirical distribution of $(\bar{X}_{k}^{i})_{1\leq i\leq N}$.
+We will control now $\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}\Vert^{2}\right]^{\frac{1}{2}}$
+which we denote by $c_{k}^{i}$. We have by recursion:
+
+\begin{align}
+c_{k+1}\leq & \frac{1}{N}\sum_{i=1}^{\sqrt{N}}(\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}-\gamma(\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i}))\Vert^{2}\right])^{\frac{1}{2}}\label{eq:main_inequality_c_k_1}\\
+\leq & (c_{k}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\bar{\nu}_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}])^{\frac{1}{2}}\\
+&+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}])^{\frac{1}{2}})^{2}\nonumber \\
+ & +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}])^{\frac{1}{2}}\\
+ & \leq\left(c_{k}+\gamma L(c_{k}+\mathbb{E}[W_{2}(\hat{\nu}_{k},\bar{\nu}_{k})^{2}]^{\frac{1}{2}})+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})\right)^{2}\nonumber \\
+\end{align}
+where the last inequality is obtained using that $\nabla f_{\mu,\nu}(x)$
+is jointly Lipschitz in $x$, $\mu$ and $\nu$. and $\mathcal{E}_{i}$
+and $\mathcal{G}_{i}$ are given by 
+\begin{align*}
+\mathcal{E}_{i} & =\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}]\\
+\mathcal{G}_{i} & =\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}]
+\end{align*}
+We will first controll the error term $\mathcal{E}$. To simplify
+notations, we write $Y^{i}=\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i}$.  We
+recall the expression of $\nabla f_{\mu,\nu}:$
+\begin{align*}
+\mathcal{E}_{i} & =\mathbb{E}[\Vert\frac{1}{N}\sum_{j=1}^{N}\nabla k(Y^{i},\bar{X}_{k}^{j})-\int\nabla k(Y^{i},x)d\nu_{k}(x)\Vert^{2}]\\
+ & =\frac{1}{N^{2}}\mathbb{E}[\sum_{l,j=1}^{N}\left\langle\nabla k(Y^{i},\bar{X}_{k}^{j})-\int\nabla k(Y^{i},x)d\nu_{k}(x),.\nabla k(Y^{i},\bar{X}_{k}^{l})-\int\nabla k(Y^{i},x)d\nu_{k}(x)\right\rangle]\\
+\end{align*}
+ By independence of the auxilary samples $\bar{X}_{i}$ and since
+they are distributed according to $\nu_{k}$ , the sum vanishes for
+all $l\neq j$ . What remains is:
+\begin{align*}
+\mathcal{E}_{i} & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(Y^{i},\bar{X}_{k}^{j})-\int\nabla k(Y^{i},x)d\nu_{k}(x)\Vert^{2}\right]\\
+ & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{X}_{k}^{j}-\int xd\nu_{k}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{k})
+\end{align*}
+Using exactly the same computations for $\mathcal{G}_{i}$, one has:
+\[
+\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)
+\]
+Now, by \ref{lem:Control_variance} we know that 
+\[
+var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}
+\]
+for all $k\leq\frac{T}{\gamma}$. Hence we get:
+\[
+c_{k+1}\leq c_{k}+\gamma L(c_{k}+\mathbb{E}[W_{2}(\hat{\nu}_{k},\bar{\nu}_{k})^{2}]^{\frac{1}{2}})+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{\gamma L}{\sqrt{M}}var(\mu))
+\]
+Now recall that:
+
+\[
+W_{2}^{2}(\hat{\nu}_{k},\bar{\nu}_{k})\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}\Vert^{2}\right]=c_{k}^{2}
+\]
+hence we have:
+\[
+c_{k+1}\leq(1+2\gamma L)c_{k}+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{\gamma L}{\sqrt{M}}var(\mu)).
+\]
+Using again the discrete Gronwall lemma \ref{lem:Discrete-Gronwall-lemma}
+we get:
+\[
+c_{k}\leq\frac{1}{2}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{LT}-1)
+\]
+Finally, it remains to notice that:
+\[
+\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})]\leq c_{k}^{2}
+\]
+to conclude. 
+\end{proof}
+
+
+
+\begin{lemma}
+\label{lem:Discrete-Gronwall-lemma}Discrete Gronwall lemma
+
+Let $a_{n+1}\leq(1+\gamma A)a_{n}+b$ with $\gamma>0$, $A>0$ and
+$b>0$ then 
+\[
+a_{n}\leq\frac{b}{\gamma A}(e^{n\gamma A}-1).
+\]
+\end{lemma}
+%
+\begin{lemma}
+\label{lem:Control_variance}Consider the an initial distribution
+$\nu_{0}$ with finite variance and set and define:
+\[
+X_{k+1}=X_{k}-\gamma\nabla f_{\mu,\nu_{k}}(X_{k}+\beta_{k}U_{k})
+\]
+
+And assume $\beta_{k}$ is a bounded sequence with $\beta_{k}\leq B$
+
+Then for all $T>0$ and $k\leq\frac{T}{\gamma}$, the variance of
+$\nu_{k}$ satisfies:
+\[
+var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0}))e^{TL}
+\]
+\end{lemma}
+%
+\begin{proof}
+Let's express the variance of $\nu_{k+1}$ in terms of $\nu_{k}$:
+\begin{align*}
+var(\nu_{k+1})^{\frac{1}{2}} & =(\mathbb{E}[\Vert X_{k+1}-\mathbb{E}[X_{k+1}]\Vert^{2}])^{\frac{1}{2}}\\
+ & =(\mathbb{E}[\Vert X_{k}-\gamma\nabla f_{\mu,\nu_{k}}(X_{k}+\beta_{k}U_{k})-\int xd\nu_{k}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]])^{\frac{1}{2}}\\
+ & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{k}}(X_{k}+\beta_{k}U_{k})-\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]\Vert^{2}])^{\frac{1}{2}}\\
+ & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L\mathbb{E}_{X,X'\sim\nu_{k}}[\Vert X+\beta_{k}U-X'+\beta_{k}U'\Vert^{2}]^{\frac{1}{2}}\\
+ & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L(var(\nu_{k})+\beta_{k})
+\end{align*}
+Recalling that $\beta_{k}$ is bounded by $B$ and using the discrete
+Gronwall lemma one can then conclude. 
+\end{proof}
 
 
 
