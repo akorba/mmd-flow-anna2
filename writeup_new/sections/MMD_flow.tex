@@ -54,14 +54,11 @@ We are interested in analyzing the asymptotic properties of the gradient flow of
 %	Consider a family of particles whose density satisfy Equation\cref{eq:continuity_equation} for some free energy $\F$. Both KL and $MMD^2$ can be written as free energies \eqref{eq:lyapunov}, with a potential energy $V$ term which drive the particles to the target distribution $\mu$. While the entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$. Indeed, when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 %\end{remark}
 
- 
+ \input{sections/lojasiewicz}
 
 \input{sections/lambda_convexity}
 
-\input{sections/lojasiewicz}
-
-\input{sections/noisy_mmd_flow}
-
+\input{sections/time_discretization}
 
 %\subsection{MMD flows in the literature}
 
