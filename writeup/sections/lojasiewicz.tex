@@ -1,5 +1,5 @@
 \subsection{A rate of convergence for the continuous flow}\label{sec:Lojasiewicz_inequality}
-By \cref{prop:decay_mmd} we know that $t\mapsto\mathcal{F}(\nu_t)$ decreases in time, thus a natural question is to ask whether it converges to $0$. One strategy is to find an upper-bound on $\F(\nu_t)$ in terms of the absolute value of its time derivative. Such type of inequalities are known in the optimization literature as Lojasiewicz inequalities \manote{some references here}.
+By \cref{prop:decay_mmd} we know that $t\mapsto\mathcal{F}(\nu_t)$ decreases in time, thus a natural question is to ask whether it converges to $0$. One strategy is to find an upper-bound on $\F(\nu_t)$ in terms of the absolute value of its time derivative. Such type of inequalities are known in the optimization literature as Lojasiewicz inequalities (see \cite{blanchet2018family}).
 This would provide a differential inequality which can be solved using the so called Gronwall's lemma. The solution of such inequality would be of the form $\F(\nu_t)\leq h(t)$ with $h(t)\rightarrow_{t\rightarrow \infty} 0$. Hence one can deduce the convergence of $\F(\nu_t)$ to the global minimizer and get estimates of the rate of convergence by means of $h(t)$.
 According to \cref{prop:decay_mmd}, the absolute value of the time derivative of $\F(\nu_t)$ is given by $\int \Vert \nabla f_{\mu,\nu_t}(x) \Vert^2 \diff \nu_t(x)$. This is nothing but the squared \textit{weighted Sobolev semi-norm} of $f_{\mu,\nu_t}$ also denoted as $\Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)}$ \footnote{Given a probability distribution $\nu$ the \textit{weighted Sobolev semi-norm} is defined for all squared integrable functions $f$ in $L_2(\nu)$ as $ \Vert f \Vert_{\dot{H}(\nu)} = \left(\int \Vert \nabla f(x) \Vert^2 \diff \nu(x) \right)^{\frac{1}{2}}$ with the convention $\Vert f \Vert_{\dot{H}^1(\nu)} = +\infty$ if $f$ doesn't have a square integrable gradient.}. Thus one needs to find a relationship between $\F(\nu_t) = \frac{1}{2} \Vert f_{\mu,\nu_t} \Vert_{\mathcal{H}}^2 $ and $\Vert f_{\mu,\nu_t} \Vert_{\dot{H}^1(\nu_t)}$. For this purpose, we consider a distance on $\mathcal{P}_2(\X)$ defined by duality using $\Vert . \Vert_{\dot{H}(\nu)}$:
 \begin{definition}\label{def:neg_sobolev}
@@ -11,7 +11,7 @@ According to \cref{prop:decay_mmd}, the absolute value of the time derivative of
 with possibly infinite values.
 \end{definition}
 \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport. Indeed, when $q$ is equal to $\nu$, it linearizes the $W_2(p,\nu)$ as $p$ becomes arbitrarily close to $\nu$ \cite{Villani:2009,Otto:2000,Peyre:2011}. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $q$ (see \cite{mroueh2018regularized}).
-Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite and since $f_{\mu,\nu_t}$ is itself square-integrable w.r.t $\nu_t$ (by assumption on the kernel), it can be shown that:
+Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite and since $f_{\mu,\nu_t}$ is itself square-integrable w.r.t $\nu_t$ (by a Lojasiewicz assumption on the kernel), it can be shown that:
 \begin{align}\label{eq:inequality_neg_sobolev}
 	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
 \end{align}
@@ -21,7 +21,7 @@ Hence, provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bo
 \end{align} 
 It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This is summarized in \cref{prop:lojasiewicz}:
 \begin{proposition}\label{prop:lojasiewicz}
-	Assume that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$ at all times $t\geq$ then $\F(\nu_t)$ converges to $0$ and satisfies:
+	Assume that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$ at all times $t\geq 0$ then $\F(\nu_t)$ converges to $0$ and satisfies:
 	\begin{align}
 	\mathcal{F}(\nu_t)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4t}
 	\end{align}
@@ -30,14 +30,14 @@ The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein
 
 Under similar conditions as in \cref{prop:lojasiewicz}, convergence of the discrete-time flow can be obtained:
 \begin{proposition}\label{prop:discrete_lojasiewicz}
-	Assume that $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$, where $\nu_n$ are defined in \cref{eq:euler_scheme} then $\F(\nu_n)$ converges to $0$ and satisfies:
+	Assume that $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$, where $\nu_n$ are defined in \cref{eq:euler_scheme} then $\F(\nu_n)$ converges to $0$ and satisfies:\aknote{L is the lipschitz constant of $\nabla f$?}
 	\begin{align}
 	\mathcal{F}(\nu_n)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4 \gamma(1-\gamma L) n}
 	\end{align}
 \manote{add a proof for this}
 \end{proposition}
 Proofs of \cref{prop:lojasiewicz,prop:discrete_lojasiewicz} are easy to obtain and are provided in \manote{proof}. 
-In practice, it is hard to guarantee that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded at all times. One possible approach could be to regularize $\F$ using an estimate of \cref{eq:neg_sobolev}. In fact \cite{Mroueh:2019} consider the gradient flow of a regularized version of $ \nu \mapsto  \Vert \mu - \nu \Vert_{\dot{H}^{-1}(\nu)}$ and show that it decreases the MMD. Combing both losses could improve the overall convergence properties of the MMD for an additional computational cost. In \cref{sec:noisy_flow} we propose a different approach to improve the convergence, but we first analyze in \cref{subsection:barrier_optimization} the case where $\F$ is only guaranteed to reach a barrier during optimization.
+In practice, it is hard to guarantee that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded at all times. One possible approach could be to regularize $\F$ using an estimate of \cref{eq:neg_sobolev}. In fact \cite{Mroueh:2019} consider the gradient flow of a regularized version of the negative Sobolev distance which can be written in closed-form, and shows that it decreases the MMD. Combing both losses could improve the overall convergence properties of the MMD for an additional computational cost. In \cref{sec:noisy_flow} we propose a different approach to improve the convergence, but we first analyze in \cref{subsection:barrier_optimization} the case where $\F$ is only guaranteed to reach a barrier during optimization.
 %All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. However, this quantity might be infinite \manote{say exactly when it is finite} and a fundamental problem would be to control its value during the evolution of the flow. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. For instance, it would be satisfied if $\mu \ll \nu_0$ and if this remains true along the flow. Another view on the problem would be to consider a time depended constant $C_t$ in \cref{eq:bounded_neg_sobolev}, such that $	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty$.
 %\begin{align}
 %	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty
