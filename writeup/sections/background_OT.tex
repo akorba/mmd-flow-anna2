@@ -53,20 +53,6 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 	Although, we will be interested in the $MMD$ as a loss function, we will not consider the geodesics that are naturally associated to it and we will rather consider the displacement geodesics defined in \cref{eq:displacement_geodesic} for reason that will become clear in \cref{subsec:wasserstein_flow}.
 \end{remark}
 
-
-\begin{definition}\label{def:displacement_convexity}[Displacement convexity]. Let $\mu$
-	and $\nu$ in $\mathcal{P}(\X)$. There exists a $\mu-a.e.$
-	unique gradient of a convex function, denoted by $\nabla\phi$, such that $\mu$
-	is equal to $\nabla\phi_{\#}\nu$ and one can define the displacement geodesic $\nu_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$
-	for $0\leq t\leq1$. We say that a functional $\nu\mapsto\mathcal{F}(\nu)$
-	is displacement convex if 
-	\begin{equation}
-	t\mapsto\mathcal{F}(\nu_{t})
-	\end{equation}
-	is convex for any $\nu$ and $\mu$. %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
-\end{definition}
-
-
 \subsubsection{Gradient flows on the space of probability measures}\label{sec:gradient_flows_functionals}
 
 
@@ -109,3 +95,66 @@ It is well-known (see for instance \cite{jordan1998variational}) that the distri
 
 The next section describes the dynamics of the gradient flow of \cref{eq:closed_form_MMD} under the $2$-Wasserstein metric as defined in \cref{subsec:wasserstein_flow}.
 %The MMD was successfully used for training generative models (\cite{mmd-gan,Binkowski:2018,Arbel:2018}) where it is used in a loss functional to learn the parameters of the generator network. This motivate the  
+
+
+\subsection{Convexity w.r.t. 2-Wassertein geodesics}\label{subsec:more_lambda_convexity}
+
+
+
+\begin{definition}\label{def:displacement_convexity}[Displacement convexity]. Let $\mu$
+	and $\nu$ in $\mathcal{P}(\X)$. There exists a $\mu-a.e.$
+	unique gradient of a convex function, denoted by $\nabla\phi$, such that $\mu$
+	is equal to $\nabla\phi_{\#}\nu$ and one can define the displacement geodesic $\nu_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$
+	for $0\leq t\leq1$. We say that a functional $\nu\mapsto\mathcal{F}(\nu)$
+	is displacement convex if 
+	\begin{equation}
+	t\mapsto\mathcal{F}(\nu_{t})
+	\end{equation}
+	is convex for any $\nu$ and $\mu$. %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
+\end{definition}
+
+\begin{definition}\label{def:lambda-convexity}[$\Lambda$ convexity]
+	We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is $\Lambda$-convex
+	if for any $\nu$ and $\mu$ and a minimizing geodesic $\text{\ensuremath{\nu_{t}}}$
+	between $\nu$ and $\mu$ with velocity vector field $v_{t}$, i.e:
+	$\partial_{t}\nu_{t}+div(\nu_{t}v_{t})=0;\nu_{0}=\nu;\nu_{1}=\mu;$
+	the following holds:
+	\begin{equation}\label{eq:lambda_displacement_convex}
+	\frac{d^{2}\mathcal{F}(\nu_{t})}{dt^{2}}\geq\Lambda(\nu_{t},v_{t})\qquad\forall\; t\in[0,1].
+	\end{equation}
+	where $(\nu,v)\mapsto\Lambda(\nu,v)$
+	is a function that defines for each $\nu \in \mathcal{P}(\X)$
+	a quadratic form on the set of square integrable vectors valued functions
+	$v$ , i.e: $v\in L_{2}(\mathbb{R}^{d},\mathbb{R}^{d},\nu)$. We
+	further assume that $\inf_{\nu,v}\Lambda(\nu,v)/\Vert v\Vert_{L_{2}(\nu)}^{2}>-\infty$. 
+	Also, the following holds:
+	\begin{equation}\label{eq:integral_lambda_convexity}
+	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\int_{0}^{1}\Lambda(\nu_{s},v_{s})G(s,t)ds
+	\end{equation}
+	where $G(s,t)=s(1-t) \mathbb{I}\{s\leq t\}
+	+t(1-s) \mathbb{I}\{s\geq t\}$.
+\end{definition}
+
+Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
+\begin{assumplist} 
+	\item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
+	\item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
+	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
+\end{assumplist}
+The next proposition states that the functional defined in \cref{sec:gradient_flow} is $\Lambda$-displacement convex and provide and explicit expression for the functional $\Lambda$. 
+%Some additional mild assumptions on the derivative of the kernel are also needed but deferred to the appendix for presentation purpose.\aknote{to do!!}
+
+\begin{proposition}
+	\label{prop:lambda_convexity} Suppose $\sup_{x,y} \partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)\le \lambda$ is satisfied for some $\lambda \in \R^+$. The functional $\nu\mapsto \F(\nu)$ is $\text{\ensuremath{\Lambda}}$-convex
+	with $\Lambda$ given by:
+	\begin{equation}
+	\Lambda(\nu,v)=\langle v,(C_{\nu}-\lambda \F(\nu)^{\frac{1}{2}}I)v\rangle_{L_{2}(\nu)}\label{eq:Lambda}
+	\end{equation}
+	where $C_{\nu}$ is the (positive) operator defined by $(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')$ for any $x \in \X$.
+	%\begin{align}\label{eq:positive_operator_C}
+	%(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')
+	%\end{align}
+\end{proposition}
+%
+%
+Consider the geodesic $\nu_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$ of \cref{def:displacement_convexity}, so that $\nu_{1}=\mu$ and at time $t=1$ and thus $\F(\nu_{1})=0$. It is worth noting that by \cref{prop:lambda_convexity}, we get that the non-negative hessian \eqref{eq:lambda_displacement_convex} at the global minimum $\mu$, is $\langle v_{t},C_{\nu_{t}}v_{t}\rangle_{L_{2}(\nu_{t})}$ which is positive. Also, we can now write the following convexity inequalities along the gradient flow of $\F$.
