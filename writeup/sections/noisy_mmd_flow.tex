@@ -1,6 +1,6 @@
 
 
-\subsection{Noisy MMD flow}\label{sec:noisy_flow}
+\subsection{A noisy update as a regularization}\label{sec:noisy_flow}
 
 Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima. This can happen when the negative sobolev norm (see section \cref{sec:Lojasiewicz_inequality} is not finite at all times. One way to see this, at least formally, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
 %\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
@@ -71,7 +71,7 @@ The natural question is whether \cref{eq:discretized_noisy_flow} converges towar
  \end{align}
  \end{theorem}
  A proof of \cref{thm:convergence_noisy_gradient} is provided in \manote{add proof} and relies on \cref{eq:control_level_noise} to get a Lojasiewicz inequality which then controls the decay of $\F(\nu_n)$. A particular case when \cref{thm:convergence_noisy_gradient} holds is when $\beta_n$ is guaranteed to be always greater than a minimal value $\beta^*>0$ while still having \cref{eq:control_level_noise}. In this case, one recovers linear convergence rates for $\F(\nu_n)$.
-In \label{subsec:euler_maruyama} we provide a practical algorithm which performs noisy gradient updates as in \cref{eq:discretized_noisy_flow} and provide guarantees for this algorithm.
+In \cref{sec:sample_based} we provide a practical algorithm which performs noisy gradient updates as in \cref{eq:discretized_noisy_flow} and provide guarantees for this algorithm.
  
  
  

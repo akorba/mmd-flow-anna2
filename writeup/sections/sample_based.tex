@@ -1,17 +1,18 @@
 %\subsection{Approximate Euler-Maruyama scheme}\label{subsec:euler_maruyama}
 
-\subsection{Sample-based}
+\subsection{The sample-based approximate scheme}\label{sec:sample_based}
 
-In the gradient descent \eqref{eq:euler_scheme_particles}, the drift depends on the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$, to which we do not have access. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. 
+In the gradient descent \eqref{eq:discretized_noisy_flow}, the vector field depends on the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$, to which we do not have access. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. 
 Given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and step-size $\gamma$, the approximate scheme iteratively updates the particles $i$ using the following update equation: 
 \begin{align}\label{eq:euler_maruyama}
 X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)
 \end{align}
-where $U_{k}^{i}$ are i.i.d standard gaussians and $\hat{\mu}$, $\hat{\nu}_n$ denote respectively the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. One nice property about this scheme is that $\nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i)$ can be evaluated easily by:
-\begin{align}
-\nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i) = \frac{1}{M}\sum_{m=1}^M \nabla_2 k(Y_m,X_n^i+\beta_n U_n^i)-\frac{1}{N}\sum_{j=1}^N \nabla_2 k(X_n^j+\beta_n U_n^j,X_n^i+\beta_n U_n^i)
-\end{align}
-%
+where $U_{n}^{i}$ are i.i.d standard gaussians and $\hat{\mu}$, $\hat{\nu}_n$ denote respectively the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. One nice property about this scheme is that $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily by:
+\begin{equation}
+%\nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,X_n^i+\beta_n U_n^i)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j+\beta_n U_n^j,X_n^i+\beta_n U_n^i)
+\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,.)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,.)
+\end{equation}
+where $\nabla_2k(x,.)$ denotes the gradient of $k$ w.r.t. the second variable for any $x \in \X$.
 However, unlike the algorithms derived from the Negative Sobolev distance or the Sliced Wasserstein gradient flows (see respectively \cite{Mroueh:2019,Simsekli:2018}), \cref{eq:euler_maruyama} is computationally less expensive. Indeed the cost of each iteration is $O((M+N)N)$ and uses $O(M+N)$ in memory.
 \cref{eq:euler_maruyama} can be seen as a particle version of \cref{eq:euler_scheme} and one would expect it to converge towards the its population version as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
 %\begin{theorem}\label{prop:convergence_euler_maruyama}
@@ -68,7 +69,7 @@ Notice that since we do not have access to true samples of $\nu_n$ at each itera
 	\label{fig:experiments}
 \end{figure}
 
-Figure \ref{fig:experiments} shows a boat.
+Figure \ref{fig:experiments} shows the result of the experiment.
 
 
 
