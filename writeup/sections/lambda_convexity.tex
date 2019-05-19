@@ -26,7 +26,7 @@ In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms
 \begin{theorem}\label{th:rates_mmd}
 	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded!!} If $\gamma \leq 1/L$, where $L$ is the Lipschitz constant of $\nabla k$, then
 \begin{align}
-\F(\nu_n)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
+\F(\nu_n) - \F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
 \end{align}
 \end{theorem}
 \cref{th:rates_mmd} is obtained using techniques from optimal transport and optimization. It relies on \cref{prop:lambda_convexity} and \cref{prop:decreasing_functional} to prove an \textit{extended variational inequality} (see \cref{prop:evi}) and concludes using a suitable Lyapunov function, a full proof is given in\cref{proof:th:rates_mmd}.
