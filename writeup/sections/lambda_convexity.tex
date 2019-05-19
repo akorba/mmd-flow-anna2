@@ -5,25 +5,25 @@
 %\subsection{Lambda displacement convexity of the MMD}
 \subsection{Optimization in a ($W_2$) non-convex setting}
 \label{subsection:barrier_optimization}
-One important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is the \textit{displacement convexity} of such a functional.  states that $t\mapsto \F(\nu_t)$ is a convex function whenever $t\mapsto\nu_t$ is a path of minimal length from two distributions $\mu$ and $\nu$ as explained in \cref{def:displacement_convexity} (see also \cite[Definition 16.5]{Villani:2004}). %The notion of path of minimal length depends on the choice of the metric. 
+One important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is the \textit{displacement convexity} of such a functional. The latter states that $t\mapsto \F(\nu_t)$ is a convex function whenever $t\mapsto\nu_t$ is a path of minimal length from two distributions $\mu$ and $\nu$ as explained in \cref{def:displacement_convexity} (see also \cite[Definition 16.5]{Villani:2004}). %The notion of path of minimal length depends on the choice of the metric. 
 Such paths are called  \textit{constant speed displacement geodesics} when additionally their velocity vector has a constant norm. We refer to \cite{Bottou:2017} for a more in-depth discussion.
 \textit{Displacement convexity} should not be confused with \textit{mixture convexity} which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is \textit{mixture convex} in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and $\nu,\nu'\in\mathcal{P}_2(\X)$ (\cref{lem:mixture_convexity}). Unfortunately, $\F$ is not \textit{displacement convex}. Instead, $\F$ only satisfies a weaker notion of displacement convexity called $\Lambda$-displacement convexity (\cite[Definition 16.5]{Villani:2009}): 
 %This implies that the gradient flow of $\F$ might not converge to the optimal solution. 
 %This could happen if for instance \cref{eq:Lojasiewicz_inequality} doesn't hold. 
 %It can be shown, however, that $\F$ is guaranteed to reach some barrier. This is a consequence of the $\Lambda$-displacement convexity of $\F$ which is 
 \begin{proposition}
-	\label{prop:lambda_convexity} Suppose \manote{assumtion} holds for some $B \in \R^+$. Then for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(V_t)_{0\leq t\leq 1}$ the following holds:
+	\label{prop:lambda_convexity} Suppose $\sup_{(x,y) \in \X, (i,j) \in \llbracket 1, d \rrbracket} \partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)\le B$  holds for some $B \in \R^+$. Then for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\nu_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(V_t)_{0\leq t\leq 1}$ the following holds:
 	\begin{equation}
-	\F(\rho_{t})\leq(1-t)\F(\nu)+t\F(\nu')-\int_0^1 \Lambda(\rho_s, V_s ) G(s,t)\diff s
+	\F(\nu_{t})\leq(1-t)\F(\nu)+t\F(\nu')-\int_0^1 \Lambda(\nu_s, V_s ) G(s,t)\diff s
 	\end{equation}
-	where $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\Lambda$ is defined for any pair $(\rho,V)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
+	where $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\Lambda$ is defined for any pair $(\nu,V)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
 	\begin{align}\label{eq:lambda}
-		\Lambda(\rho,V) = \Vert \int V(x).\nabla_x k(x,.) \diff \rho(x) \Vert^2_{\mathcal{H}} - B\F(\rho)^{\frac{1}{2}}  \int \Vert  V(x) \Vert^2 \diff \rho(x) 
+		\Lambda(\nu,V) = \Vert \int V(x).\nabla_x k(x,.) \diff \nu(x) \Vert^2_{\mathcal{H}} - B\F(\nu)^{\frac{1}{2}}  \int \Vert  V(x) \Vert^2 \diff \nu(x) 
 	\end{align}
 	\end{proposition}
-In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\rho_s, V_s ) G(s,t)\diff s$ can become negative, hence displacement convexity doesn't hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $\nu_n$ are obtained using \cref{eq:euler_scheme}. Such upper-bound would depend on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$ with velocity vectors $(V_s^n)_{0\leq s\leq 1}$. \cref{th:rates_mmd} provides such bound:
+In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\nu_s, V_s ) G(s,t)\diff s$ can become negative, hence displacement convexity doesn't hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $\nu_n$ are obtained using \cref{eq:euler_scheme}. Such upper-bound depends on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$ with velocity vectors $(V_s^n)_{0\leq s\leq 1}$. \cref{th:rates_mmd} provides such bound:
 \begin{theorem}\label{th:rates_mmd}
-	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded} If $\gamma \leq 1/L$, then
+	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded!!} If $\gamma \leq 1/L$, then
 \begin{align}
 \F(\nu_n)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
 \end{align}
