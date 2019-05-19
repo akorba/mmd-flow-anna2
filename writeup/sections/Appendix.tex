@@ -398,44 +398,58 @@ which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$
 
 \subsection{Descent up to a barrier}
 
-Now we provide a proof of \cref{th:rates_mmd}:
-\begin{proof}[Proof of \cref{th:rates_mmd}]\label{proof:th:rates_mmd}
-	By \cref{prop:evi} we have:
-	\[
-	2\gamma(\F(\nu_{n+1})-\F(\mu))
-\leq 
-W_2^2(\nu_j,\mu)-W_2^2(\nu_{j+1},\mu)-2\gamma K(\rho^j) \qquad \forall 1 \leq j\leq n 
-	\]
-	 Summing the above inequalities we get:
-	\begin{align}
-	2\gamma \sum_{j=1}^{n+1} (\F(\nu_{j}) - \F(\mu)) \leq W_2^2(\nu_0,\mu) - 2\gamma \sum_{j=0}^n K(\rho^j)
-	\end{align}
-	Let us denote $\bar{K}$ the average value\asnote{$K(\rho^j)$ is bounded in $j$?} of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. Using \cref{lem:mixture_convexity} we have:
-	\begin{align}
-	\F(\bar{\nu}_{n+1})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma (n+1)} -\bar{K}
-	\end{align}
-	Now, consider the Lyapunov function $L_n = n \gamma (\F(\nu_n) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)$. Then,
+To provide a proof of \cref{th:rates_mmd}, we need the following preliminary results. Firstly, an upper-bound on a scalar product involving $\nabla f_{\mu, \nu}$ for any $\mu, \nu \in \mathcal{P}_2(\X)$ in terms of the loss functional $\F$, is obtained using the $\Lambda$-displacement convexity $\F$ in \cref{lem:grad_flow_lambda_version}. Then, an EVI (Evolution Variational Inequality) is obtained in \cref{prop:evi} on the gradient flow of $\F$ in $W_2$. The proof of the theorem is given afterwards.
+\aknote{Very important: we have to clarify the boundedness of the $K(\rho_j)$ and $\bar{K}$!}
+
+
+\begin{lemma}	\label{lem:grad_flow_lambda_version}
+	Let $\nu$ be a distribution in $\mathcal{P}_2(\X)$ and $\mu$ the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal coupling between $\nu$ and $\mu$, and $\nu_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $V_t$ as defined in \cref{eq:continuity_equation}. Finally let $\nabla f_{\nu,\mu}(X)$ be the gradient of the witness function between $\mu$ and $\nu$. The following inequality holds: %\manote{This should be a standard result, just need to cite it}
 	\begin{align*}
-	L_{n+1} &= n\gamma(\F(\nu_{n+1}) - \F(\mu)) + \gamma(\F(\nu_{n+1}) - \F(\mu)) + \frac12 W_2^2(\nu_{n+1},\mu)\\
-	&\leq n\gamma(\F(\nu_{n+1}) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)-\gamma K(\rho^n)\\
-	&\leq n\gamma(\F(\nu_{n}) - \F(\mu)) + \frac12 W_2^2(\nu_n,\mu)-\gamma K(\rho^n) -n\gamma^2 (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n \\
-	&\leq  L_n - \gamma K(\rho^n).
+	\int \nabla f_{\mu, \nu}(x).(y-x) d\pi(x,y)
+	\leq
+	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\nu_s,V_s)(1-s)ds
 	\end{align*}
-	where we used ~\cref{prop:decreasing_functional} in the penultimate inequality\asnote{Les deux derniers termes pourraient-ils se manger par miracle?}.
-	Finally, 
-	\begin{equation}
-	n\gamma (\F(\nu_{n}) - \F(\mu)) \leq L_n \leq L_0 -\gamma \sum_{j = 0}^{n-1} K(\rho^j)
-	\end{equation}
+	where $\Lambda$ is defined \cref{prop:lambda_convexity}.
+\end{lemma}
+\begin{proof}
+	Recall that $\rho_t$ is given by $\nu_t = (s_t)_{\#}\pi$ with $s_t$ defined in \eqref{eq:convex_combination}. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
+	\begin{align*}
+	\mathcal{F}(\nu_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\nu_s,V_s)G(s,t)ds
+	\end{align*}
+	Hence by bringing $\mathcal{F}(\nu)$ to the l.h.s and dividing by $t$ and then taking its limit at $0$ it follows that:
+	\begin{align*}
+	\dot{\F}(\nu_t)\vert_{t=0}\leq \mathcal	{F}(\mu)-\mathcal{F}(\nu)-\int_0^1 \Lambda(\nu_s,V_s)(1-s)ds.	
+	\end{align*}
+	where $\dot{F}(\nu_t)=d\F(\nu_t)/dt$ and since $\lim_{t \rightarrow 0}G(s,t)=(1-s)$.
+	Moreover, by \cref{lem:derivatives_witness}, the time derivative of the witness function between $\nu$ and $\mu$ is well defined, so that $\dot{\F}(\rho_t)$ can be written as:
+	\[
+	\dot{\F}(\nu_t) = \langle f_{\mu,\nu_t},\dot{f}_{\mu,\nu_t} \rangle_{\kH}
+	\]
+	Now by \cref{lem:derivatives_witness}, \cref{eq:inner_prod_deriative_witness} it follows that:
+	\[
+	\dot{\F}(\nu_t) = \int \nabla f_{\mu,\nu_t}(x).V_t(x)\diff \nu_t(x)
+	\]
+	By definition of $\nu_t$,  one can further write:
+	\[
+	\dot{\F}(\nu_t) = \int \nabla f_{\mu,\nu_t}(s_t(x,y)).(y-x)\diff \pi(x,y)
+	\]
+	where we used the fact that $V_t(s_t(x,y))=(y-x)$\manote{cite something}. Hence at $t=0$ we get:
+	\[
+	\dot{\F}(\nu_t)\vert_{t=0} = \int \nabla f_{\mu,\nu}(x).(y-x)\diff \pi(x,y)
+	\]
+	which shows the desired result.
 \end{proof}
 
+
 \begin{proposition}\label{prop:evi}
-	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:discretized_flow}. If $\gamma \leq 1/L$, then
+	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme}. For $n\ge 0$, consider the scalar
+	 $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$ with velocity vectors $(V_s^n)_{0\leq s\leq 1}$. If $\gamma \leq 1/L$, where $\gamma$ is the Lispchitz constant of $\nabla k$, then:
 	\begin{align}
-2\gamma(\F(\nu_{n+1})-\F(\mu))
-\leq 
-W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
-\label{eq:evi}
-\end{align}
+	2\gamma(\F(\nu_{n+1})-\F(\mu))
+	\leq 
+	W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
+	\label{eq:evi}
+	\end{align}
 \end{proposition}
 
 
@@ -444,22 +458,23 @@ W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
 	\begin{align}
 	W_2^2(\mu,\nu_n)=\int \Vert X-Y \Vert^2 d\Pi^n(\nu_n,\mu)
 	\end{align}
-	Moreover, consider $Z=X-\gamma \phi_n(X)$ where $(X,Y)$ are samples from $\Pi^n$. It is easy to see that $(Z,Y)$ is a coupling between $\nu_{n+1}$ and $\mu$, therefore, by definition of the optimal transport map between $\nu_{n+1}$ and $\mu$ it follows that:
+	Moreover, consider $Z=X-\gamma \nabla f_{\mu, \nu_n}(X)$ where $(X,Y)$ are samples from $\pi^n$. It is easy to see that $(Z,Y)$ is a coupling between $\nu_{n+1}$ and $\mu$, therefore, by definition of the optimal transport map between $\nu_{n+1}$ and $\mu$ it follows that:
 	\begin{align}\label{eq:optimal_upper-bound}
-	W_2^2(\nu_{n+1},\mu)\leq \int \Vert X-\gamma \phi_{n}(X)-Y\Vert^2 d\Pi^n(\nu_n,\mu)
+	W_2^2(\nu_{n+1},\mu)\leq \int \Vert X-\gamma \nabla f_{\mu, \nu_n}(X)-Y\Vert^2 d\pi^n(\nu_n,\mu)
 	\end{align}
 	By expanding the r.h.s in \cref{eq:optimal_upper-bound}, the following inequality holds:
 	\begin{align}\label{eq:main_inequality}
-	W_2^2(\nu_{n+1},\mu)\leq W_2^2(\nu_{n},\mu) -2\gamma \int \langle \phi_n(X), X-Y \rangle d\Pi^n(\nu_n,\mu)+ \gamma^2D(\nu_n)
+	W_2^2(\nu_{n+1},\mu)\leq W_2^2(\nu_{n},\mu) -2\gamma \int \langle \nabla f_{\mu, \nu_n}(X), X-Y \rangle d\pi^n(\nu_n,\mu)+ \gamma^2D(\nu_n)
 	\end{align}
-	where $D(\nu_n) = \int \Vert \phi_n(X)\vert^2 d\nu_n $.
-	An upper-bound on $-2\gamma \int \langle \phi_n(X), X-Y \rangle d\Pi^n(\nu_n,\mu) $ in terms of the loss functional can be obtained using the $\Lambda$ displacement convexity of $\nu\mapsto \F(\nu)$. Indeed, by \cref{lem:grad_flow_lambda_version} it holds that:
+	where $D(\nu_n) = \int \Vert \nabla f_{\mu, \nu_n}(X)\Vert^2 d\nu_n $.
+	By \cref{lem:grad_flow_lambda_version} it holds that:
 	\begin{align}\label{eq:flow_upper-bound}
-	-2\gamma \int  \phi(X).(X-Y) d\Pi(\nu,\mu)
+	-2\gamma \int  \nabla f_{\mu, \nu_n}(X).(X-Y) d\pi(\nu,\mu)
 	\leq
-	-2\gamma\left(\F(\nu)- \F(\mu) +K(\rho^n)\right)
+	-2\gamma\left(\F(\nu_n)- \F(\mu) +K(\rho^n)\right)
 	\end{align}
-	where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho^n}_s)(1-s)ds$\aknote{as Adil said, we should try to quantify this}. Note that when $K(\rho^n)\leq 0$ it falls back to the convex setting.
+	where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho^n}_s)(1-s)ds$. %\aknote{as Adil said, we should try to quantify this}. 
+	Note that when $K(\rho^n)\leq 0$ it falls back to the convex setting.
 	Therefore, the following inequality holds:
 	\begin{align}
 	W_2^2(\nu_{n+1},\mu)\leq W_2^2(\nu_{n},\mu) - 2\gamma\left(\F(\nu_n)- \F(\mu) +K(\rho^n)\right) +\gamma^2 D(\nu_n)
@@ -470,12 +485,12 @@ W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
 	&+\gamma^2 D(\nu_n) -2\gamma (\F(\nu_n)-\F(\nu_{n+1}))
 	\label{eq:main_ineq_2}
 	\end{align}
-	It is possible to upper-bound the last two terms by a negative quantity when the step-size is small enough. This is mainly a consequence of the smoothness of the functional $\F$ and the fact that $\nu_{n+1}$ is obtained by following the steepest direction of $\F$ starting from $\nu_n$. \cref{prop:decreasing_functional} makes this statement more precise and enables to get the following inequality:
+	It is possible to upper-bound the last two terms on the r.h.s. by a negative quantity when the step-size is small enough. This is mainly a consequence of the smoothness of the functional $\F$ and the fact that $\nu_{n+1}$ is obtained by following the steepest direction of $\F$ starting from $\nu_n$. \cref{prop:decreasing_functional} makes this statement more precise and enables to get the following inequality:
 	\begin{align}
 	\gamma^2 D(\nu_n) -2\gamma (\F(\nu_n)-\F(\nu_{n+1})\leq -\gamma^2 (1-\gamma L)D(\nu_n),
 	\label{eq:decreasing_functional}
 	\end{align}
-	where $L$ is a constant that depends only on the choice of the kernel $k$ in $\F$. Combining  \cref{eq:main_ineq_2} and \cref{eq:decreasing_functional} it follows that:
+	where $L$ is the Lispchitz constant of $\nabla k$. Combining  \cref{eq:main_ineq_2} and \cref{eq:decreasing_functional} we finally get:
 	\begin{align}
 	2\gamma(\F(\nu_{n+1})-\F(\mu))+\gamma^2(1-\gamma L)D(\nu_n)
 	\leq 
@@ -484,45 +499,39 @@ W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
 	\end{align}
 \end{proof}
 
+We can now give the proof of the Theorem \cref{th:rates_mmd}.
 
-\begin{lemma}	\label{lem:grad_flow_lambda_version}
-Let $\nu$ be a distribution in $\mathcal{P}_2(\X)$ and $\mu$ the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal coupling between $\nu$ and $\mu$, and $\rho_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $v_t$ as defined in \cref{eq:continuity_equation}. Finally let $\phi(X)=\nabla f_{\nu,\mu}(X)$ the gradient of the witness function between $\mu$ and $\nu$. The following inequality holds: \manote{This should be a standard result, just need to cite it}
-\begin{align*}
-	\int \phi(x).(y-x) d\pi(x,y)
-	\leq
-	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds
-\end{align*}
-
-\end{lemma}
-\begin{proof}
-Recall that $\rho_t$ is given by $\rho_t = (s_t)_{\#}\pi$. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
-	\begin{align*}
-		\mathcal{F}(\rho_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\rho_s,v_s)G(s,t)ds
-	\end{align*}
-	Hence by bringing $\mathcal{F}(\nu)$ to the l.h.s and dividing by $t$ and then taking its limit at $0$ it follows that:
-	\begin{align*}
-	\dot{\F}(\rho_t)\vert_{t=0}\leq \mathcal	{F}(\mu)-\mathcal{F}(\nu)-\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds.	
-	\end{align*}
-	Moreover, by \cref{lem:derivatives_witness}, the time derivative of the witness function between $\nu$ and $\mu$ is well defined, so that $\dot{\F}(\rho_t)$ can be written as:
+\begin{proof}[Proof of \cref{th:rates_mmd}]\label{proof:th:rates_mmd}
+	By \cref{prop:evi} we have:
 	\[
-	\dot{\F}(\rho_t) = \langle f_{\mu,\rho_t},\dot{f}_{\mu,\rho_t} \rangle_{\kH}
+	2\gamma(\F(\nu_{j+1})-\F(\mu))
+\leq 
+W_2^2(\nu_j,\mu)-W_2^2(\nu_{j+1},\mu)-2\gamma K(\rho^j) \qquad \forall \; 0 \leq j\leq n 
 	\]
-	Now by \cref{lem:derivatives_witness},\cref{eq:inner_prod_deriative_witness} it follows that:
-\[
-\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(x).v_t(x)\diff \rho_t(x)
-\]
-By definition of $\rho_t$,  one can further write:
-\[
-\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(s_t(x,y)).(y-x)\diff \pi(x,y)
-\]
-where we used the fact that $v_t(s_t(x,y))=(y-x)$\manote{cite something}. Hence at $t=0$ we get:
-\[
-\dot{\F}(\rho_t)\vert_{t=0} = \int \nabla f_{\mu,\nu}(x).(y-x)\diff \pi(x,y)
-\]
-which shows the desired result.
+	 Summing the above inequalities for all time iterations $0 \le j \le n$ we get:
+	\begin{align}
+	2\gamma \sum_{j=1}^{n+1} (\F(\nu_{j}) - \F(\mu)) \leq W_2^2(\nu_0,\mu) - 2\gamma \sum_{j=0}^n K(\rho^j)
+	\end{align} %Using the mixture convexity of $\F$ (see \cref{lem:mixture_convexity}) we have:
+	%\begin{align}
+	%\F(\bar{\nu}_{n+1})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma (n+1)} -\bar{K}
+	%\end{align}
+	%where $\bar{\nu}_{n+1}$
+	Now, consider the Lyapunov function $L_j = j \gamma (\F(\nu_j) - \F(\mu)) + \frac12 W_2^2(\nu_j,\mu)$. At iteration $j+1$, we have:
+	\begin{align*}
+	L_{j+1} &= j\gamma(\F(\nu_{j+1}) - \F(\mu)) + \gamma(\F(\nu_{j+1}) - \F(\mu)) + \frac12 W_2^2(\nu_{j+1},\mu)\\
+	&\leq j\gamma(\F(\nu_{j+1}) - \F(\mu)) + \frac12 W_2^2(\nu_j,\mu)-\gamma K(\rho^j)\\
+	&\leq j\gamma(\F(\nu_{j}) - \F(\mu)) + \frac12 W_2^2(\nu_j,\mu)-\gamma K(\rho^j) -j\gamma^2 (1-\frac{\gamma}{2}L )\int \Vert \nabla f_{\mu, \nu_j}(X)\Vert^2 d\nu_j \\
+	&\leq  L_j - \gamma K(\rho^j).
+	\end{align*}
+	where we used ~\cref{prop:evi} and \cref{prop:decreasing_functional} successively for the two first inequalities. We thus get by telescopic summation: 
+	\begin{equation}
+	 L_n \leq L_0 -\gamma \sum_{j = 0}^{n-1} K(\rho^j)
+	\end{equation}
+		Let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations up to $n$. We can now write the final result:
+	\begin{equation}
+	\F(\nu_{n}) - \F(\mu) \leq \frac{W_2^2(\nu_0, \mu)}{2 \gamma n} -\bar{K}
+	\end{equation}
 \end{proof}
-
-
 
 
 
