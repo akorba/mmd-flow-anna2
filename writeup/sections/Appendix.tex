@@ -223,82 +223,36 @@ We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_fun
 
 
 \subsection{Time-discretized flow}\label{appendix:subsec:convegence_time_discrete}
-
+We start by showing that \cref{eq:euler_scheme} decreases the functional $\F$.
 \begin{proof}[Proof of \cref{prop:decreasing_functional}]\label{proof:prop:decreasing_functional}
-	Here we consider a path between $\nu_n$ and $\nu_{n+1}$ of the form:
-	\begin{align*}
-	\rho_t	=(I-\gamma t\phi_n)_{\#}\nu_n
-	\end{align*}
-	The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
-	\begin{align}\label{eq:taylor_expansion}
-	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \frac{d \mathcal{F}(\rho_t) }{dt}\vert_{t=0}+ \frac{1}{2} \int_0^1 \frac{d^2 \mathcal{F}(\rho_t)}{dt^2}(1-t)^2 dt 
-	\end{align} 
-	By taking $\phi=-\gamma \phi_n$ in \cref{lem:derivative_mmd} we have that:
-	\begin{align*}
-	\frac{d \mathcal{F}(\rho_t) }{dt} = -\gamma \int \nabla f_n(X).\phi_n(X)d\nu_n(X)=-\gamma \int \Vert \phi_n(X) \Vert^2 d\nu_n(X)
-	\end{align*}
-	since $\nabla f_n=\phi_n$.
-	Moreover, by \cref{assump:bounded_trace,assump:bounded_hessian} it follows from \cref{lem:derivative_mmd} that:
-	\begin{align}\label{eq:upper_bound_1}
-	\vert \frac{d^2 \mathcal{F}(\rho_t) }{dt^2}   \vert\leq L\int \Vert \phi_n(X) \Vert^2 d\nu_n(X)
+	Consider a path between $\nu_n$ and $\nu_{n+1}$ of the form $\rho_t	=(I-\gamma t\nabla f_{\mu,\nu_n})_{\#}\nu_n$. The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
+	\begin{align}\label{eq:taylor_expansion_decreasing}
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \dot{\mathcal{F}}(\rho_t)\vert_{t=0}+ \frac{1}{2} \int_0^1 \ddot{\mathcal{F}}(\rho_t)(1-t)^2 dt.
 	\end{align}
-	Using \cref{eq:taylor_expansion,eq:upper_bound_1} the result follows.
+	By \cref{assump:bounded_trace,assump:bounded_hessian} and using  \cref{lem:derivative_mmd}  with $\phi=-\gamma \nabla f_{\mu,\nu_n}$ it follows that 
+	\begin{align}\label{eq:derivatives_estimates_decrasing}
+		\dot{\mathcal{F}}(\rho_t)\vert_{t=0} = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x) \Vert^2 d\nu_n(x); \qquad \vert \ddot{ \mathcal{F}}(\rho_t) \vert\leq L\int \Vert \phi_n(X) \Vert^2 d\nu_n(X).
+	\end{align} 
+Hence, the result follows directly \cref{eq:taylor_expansion_decreasing,eq:derivatives_estimates_decrasing}.
 \end{proof}
 
-
+We  proof now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}. For this purpose, we start by introducing the sequences $\nu_n^{\gamma}$ and $\bar{\nu}_{n}^{\gamma}$
+defined by induction: $\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma}$ and $\bar{\nu}_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_{^{\gamma n}}})_{\#}\bar{\nu}_{n}^{\gamma}$. 
+%\begin{align}\label{eq:auxiliary_sequence}
+%\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma};\qquad
+%\bar{\nu}_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_{^{\gamma n}}})_{\#}\bar{\nu}_{n}^{\gamma}
+%\end{align}
+ with $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}=\nu_{0}$. Using $\nu_n^{\gamma}$ we also consider the interpolation path $\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}$ for all $t\in[n\gamma,(n+1)\gamma)$ and $n\in \mathbb{N}$, which is the same as in \cref{prop:convergence_euler_scheme}. 
 \begin{proof}[Proof of \cref{prop:convergence_euler_scheme}]\label{proof:prop:convergence_euler_scheme}
-Consider the interpolation 
-\[
-\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}\qquad\forall t\in[n\gamma,(n+1)\gamma)
-\]
-we will show that 
-\[
-W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T))\qquad\forall t\in[0,T]
-\]
-
 Let $\pi$ be optimal coupling between $\nu_{n}^{\gamma}$ and $\nu_{\gamma n}$
-with corresponding samples $(X,Y)$, for $t\in[n\gamma,(n+1)\gamma)$
-we have that:
+and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. Using \ref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y_{t},y,(t-n\gamma)):=y_{t}-y-(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ is uniformly bounded by $(t-n\gamma)^{2}C$ where $C$ is some positive constant. This allows to write:
 \begin{align*}
-Y_{t} & =Y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)\\
-X_{t} & =X-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(X).
-\end{align*}
-Using \ref{lem:Taylor-expansion}, we also have $\mathcal{E}(Y_{t},Y,(t-n\gamma))=Y_{t}-Y-(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(Y)$
-satisfies:
-\[
-\mathcal{E}(Y_{t},Y,(t-n\gamma))\leq(t-n\gamma)^{2}C
-\]
-This allows to write:
-
-\begin{align*}
-W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert Y-X+(t-n\gamma)(\nabla f_{\mu,\nu_{\gamma n}}(X)-\nabla f_{\mu,\nu_{\gamma n}}(Y))+\mathcal{E}(Y_{t},Y,(t-n\gamma))\Vert^{2}\right]^{\frac{1}{2}}\\
+W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert y-x+(t-n\gamma)(\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(y))+\mathcal{E}(y_{t},y,(t-n\gamma))\Vert^{2}\right]^{\frac{1}{2}}\\
  & \leq W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-n\gamma)LW_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-n\gamma)^{2}C\\
- & \leq(1+\gamma L)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+\gamma^{2}C\\
+ & \leq(1+\gamma L)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+\gamma^{2}C \leq(1+\gamma L)(W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma}) + W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma}))+\gamma^{2}C \\
  & \leq\gamma\left[(1+\gamma L)M(T)+\gamma C\right]
 \end{align*}
-Where we used \cref{prop:discrete_flow}. Hence for $\gamma\leq\frac{1}{L}$ we get 
-\[
-W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T)).
-\]
-\end{proof}
-
-
-Consider the sequences auxiliary sequence $\bar{\nu}_{n}^{\gamma}$
-defined by induction: 
-\begin{align}\label{eq:auxiliary_sequence}
-\bar{\nu}_{n+1}^{\gamma} & =(I-\gamma\nabla f_{\mu,\nu_{^{\gamma n}}})_{\#}\bar{\nu}_{n}^{\gamma}
-\end{align}
- with $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}=\nu_{0}$.
-
-\begin{proposition}\label{prop:discrete_flow}
-for $T>0$ and $n\leq\frac{T}{\gamma}$ we have that:
-\[
-W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})\leq\gamma M(T)
-\]
-where $M(T)$ is a constant that depends only on $T$.
-\end{proposition}
-\begin{proof}
-	This is a direct consequence of \cref{lem:euler_error_1,lem:euler_error_2} using triangular inequality $W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n}) \leq W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma}) + W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})  $ for $\bar{\nu}_n^{\gamma}$ as defined in \cref{eq:auxiliary_sequence}.
+The second line is obtained using that $\nabla f_{\mu,\nu_{\gamma n}}(x))$ is $L$-Lipschitz in $x$. \manote{state clearly this assumption} For the last inequality, we used \cref{lem:euler_error_1,lem:euler_error_2}  where $M(T)$ a constant that depends only on $T$. Hence for $\gamma\leq\frac{1}{L}$ we get $W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T)).$
 \end{proof}
 
 \begin{lemma}
@@ -309,39 +263,18 @@ W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})\le\gamma\frac{C}{L}(e^{n\gamma L}-1
 \end{lemma}
 \begin{proof}
 Let $\pi$ be an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
-and $\nu_{\gamma n}$ and $(\bar{X}_{n}$ ,$X_{n})$ a joint sample
-from $\pi$. Consider also the joint sample $(\bar{Y},Y)$ obtained:
-\end{proof}
-\[
-Y=X_{n}-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(x),\qquad\bar{Y}=\bar{X}_{n}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{X}_{n}).
-\]
-It is easy to see that $Y\sim\nu_{\gamma(n+1)}$ and $\bar{Y}\sim\bar{\nu}_{n+1}^{\gamma}$.
-Moreover, using \ref{lem:Taylor-expansion}, the error $\mathcal{E}(Y,X_{n},\gamma)=Y-X_{n}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(X_{n})$
-satisfies:
-
-\[
-\Vert\mathcal{E}(Y,X_{n},\gamma)\Vert\leq\gamma^{2}C
-\]
-where $C>0$ depends only on the choice of the kernel. Denoting by
-$a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore
-write:
-
+and $\nu_{\gamma n}$ and  $(\bar{x}$ ,$x)$ a joint sample
+from $\pi$. Consider also the joint sample $(\bar{y},y)$ obtained from  $(\bar{x}$ ,$x)$ by applying the gradient flow of $\F$ in continuous time to get $y=x-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(x)$ and by taking a discrete step from $\bar{x}$ to write $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$. It is easy to see that $y\sim\nu_{\gamma(n+1)}$ and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$.
+Moreover, using \ref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y,x,\gamma):=y-x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ is uniformly bounded by $\gamma^{2}C$ where $C$ is some positive constant that depends only on the choice of the kernel. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
 \begin{align*}
 a_{n+1}\leq & \mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})+\mathcal{E}(y,x,\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
-\leq & \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x}))\Vert^{2}\right]^{\frac{1}{2}}+\gamma^{2}C\\
-\\
+\leq & \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x}))\Vert^{2}\right]^{\frac{1}{2}}+\gamma^{2}C
 \end{align*}
 Using that $\nabla f_{\mu,\nu_{\gamma n}}$ is $L$-Lipschitz and
-recalling that $\mathbb{E}_{\pi}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$
-we can get:
-\[
-a_{n+1}\leq(1+\gamma L)a_{n}+\gamma^{2}C
-\]
-Using the discrete Gronwall lemma and recalling that $a_{0}=0$ by
-definition of $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}$ we get:
-\[
-a_{n}\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)
-\]
+recalling that $\mathbb{E}_{\pi}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, we get the recursive inequality $a_{n+1}\leq(1+\gamma L)a_{n}+\gamma^{2}C$. Finally, 
+using \cref{lem:Discrete-Gronwall-lemma} and recalling that $a_{0}=0$, since by
+definition $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}$, we conclude that $a_{n}\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)$.
+\end{proof}
 
 \begin{lemma}\label{lem:euler_error_2}
 For any $T>0$ and $n$ such that $n\gamma\leq T$
@@ -353,45 +286,19 @@ W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})\leq\gamma\frac{C}{\sqrt{2}L}(e^{2
 \begin{proof}
 Consider now an optimal coupling $\pi$ between $\bar{\nu}_{n}^{\gamma}$
 and $\nu_{n}^{\gamma}$. Similarly to \ref{lem:euler_error_1}, we
-denote by $(\bar{X}_{n},X_{n})$ a joint sample from $\pi$ and $\bar{Y},Y$
-are obtained using:
-\[
-\bar{Y}=\bar{X}_{n}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{X}_{n}),\qquad Y=X_{n}-\gamma\nabla f_{\mu,\nu_{n}^{\gamma}}(X_{n})
-\]
-We again have that $Y\sim\nu_{n+1}^{\gamma}$ and $\bar{Y}\sim\bar{\nu}_{n+1}^{\gamma}$.
-Denoting by $b_{n}=W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})$,
+denote by $(\bar{x},x)$ a joint sample from $\pi$ and $(\bar{y},y)$
+is obtained from $(\bar{x},x)$  by applying the discrete updates  : $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$ and $y=x-\gamma\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. We again have that $y\sim\nu_{n+1}^{\gamma}$ and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$.
+Now, denoting by $b_{n}=W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})$, it is easy to see from the definition of $\bar{y}$ and $y$ that
 we have:
 \begin{align*}
 b_{n+1} & \leq\mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
- & \leq b_{n}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
+&\leq (1+\gamma L)  \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}} + \gamma L W_2(\nu_n^{\gamma},\nu_{\gamma n}))\\
+ & \leq (1+ 2\gamma L)b_n + \gamma L W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})
 \end{align*}
-The term $\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})\Vert^{2}\right]$
-can be controlled in the following way:
-\begin{align*}
-\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}  \leq & \mathbb{E}_{\pi}\left[\Vert\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\nabla f_{\mu,\nu_{n}^{\gamma}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
-	&+\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{n}^{\gamma}}(\bar{x})-\nabla f_{\mu,\bar{\nu}_{n}^{\gamma}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
-	&+ \mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\bar{\nu}_{n}^{\gamma}}(\bar{x})-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
-  \leq & L(2b_{n}+a_{n})
-\end{align*}
-where $a_{n}=W_{2}(\bar{\nu}_{n}^{\gamma},\nu_{\gamma n})$ and we
-used that $\nabla f_{\mu,\nu}(x)$ is $L$-Lipschitz in both $x$
-and $\nu$. Hence we have that:
-
-\[
-b_{n+1}\leq(1+2\gamma L)b_{n}+L\gamma a_{n}
-\]
-But we have by \ref{lem:euler_error_1} that 
-\[
-a_{n}\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)
-\]
-Hence, for any $n$ such that $n\gamma\leq T$ we get:
-\[
-b_{n+1}\leq(1+2\gamma L)b_{n}+C\gamma^{2}(e^{TL}-1).
-\]
-Using again the dicrete Gronwall lemma, it follows:
-\[
-b_{n}\leq\gamma\frac{C}{2L}(e^{2TL}-1)^{2}
-\]
+The second line is obtained recalling that $\nabla f_{\mu,\nu}(x)$ is $L$-Lipschitz in both $x$
+and $\nu$.\manote{state assumption clearly} The third line follows by triangular inequality and recalling that $\mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}}= W_2(\nu_n^{\gamma},\bar{\nu}_n^{\gamma}) = b_n$ since $\pi$ is an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
+and $\nu_{n}^{\gamma}$. 
+By \ref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)$, hence, for any $n$ such that $n\gamma\leq T$ we get the recursive inequality: $b_{n+1}\leq(1+2\gamma L)b_{n}+C\gamma^{2}(e^{TL}-1)$. Finally, using again \cref{lem:Discrete-Gronwall-lemma}, it follows that $b_{n}\leq\gamma\frac{C}{2L}(e^{2TL}-1)^{2}$.
 \end{proof}
 %
 
