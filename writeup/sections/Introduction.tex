@@ -1,7 +1,7 @@
 
 
 \section{Introduction}
-
+\iffalse
 %OLD INTRO ON LANGEVIN MONTE CARLO
 %This paper deals with the problem of sampling from a probability measure $\mu$ on $(\R^d,\mathcal{B}(\R^d))$ which admits a density, still denoted by $\mu$, with respect to the Lebesgue measure.
 %This problem appears in machine learning, Bayesian inference, computational physics... Classical methods to tackle this issue are Markov Chain Monte Carlo methods, for instance Metropolis-Hastings algorithm, Gibbs sampling. The main drawback of these methods is that one needs to choose an appropriate proposal distribution, which is not trivial. Consequently, other algorithms based on continuous dynamics have been proposed, such as the over-damped Langevin diffusion:
@@ -34,6 +34,26 @@ restrictive assumptions on the kernel or modified dynamics.
 
 In this paper, we investigate the gradient flow for the Maximum Mean Discrepancy. In particular, we underline the intrisic limits of the MMD flow regarding convergence and propose a regularized flow. The latter suggests a practical algorithm that can be used for optimizing neural networks, which simply consists in injecting noise to the particles before performing the gradient updates. We show theoretically and through experiments that the resulting noisy algorithm converges to the global optimum of the Maximum Mean Discrepancy unlike the original Wasserstein-2 flow, and provide rates of convergence. 
 %\asnote{We will probably reviewed by Mroueh so we need to compare their results to ours}
+
+This paper is organized as follows.  \cref{sec:gradient_flow} is devoted to deriving the MMD flow and motivate its study.
+\cref{sec:convergence_mmd_flow} investigates the convergence towards a global optimum of the MMD flow. Finally, \cref{sec:discretized_flow} proposes a new algorithm and provides guarantees for the discretized flow (in time and space) of converging towards the continuous flow. 
+
+
+
+
+\fi
+
+
+
+
+Optimal transport theory provides a powerful conceptual and mathematical framework for gradient flows on the space of distributions, and has thus found numerous applications in statistics and machine learning~\cite{cuturi,ambrosio2008gradient}. A seminal work is surely the one of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient
+flow equation for the relative entropy functional (also known as the Kullback-Liebler (KL) divergence) with respect to the Wassertein metric. Recently, some sampling algorithms, where the goal is to provide a sequence of iterates approximating a target distribution $\mu$, have been interpreted as discretized gradient flows~\cite{liu2017stein, csimcsekli2018sliced, bernton2018langevin, mroueh2018regularized,durmus2018analysis,wibisono2018sampling}. In particular, Langevin algorithm can be seen as a gradient algorithm applied to the KL divergence.~\cite{bernton2018langevin,wibisono2018sampling,durmus2018analysis}). %, taking the form of McKean-Vlasov ODEs or SDEs . On the other hand, gradient flows and interacting particle systems were also used recently to analyse the convergence of gradient descent algorithms for neural networks as the number of parameters grows \cite{chizat2018global,rotskoff2018neural,mei2018mean, sirignano2018mean, rotskoff2019global}. Indeed, during the optimization process, the parameters of the network can be seen as interacting particles whose dynamics can be described by a partial differential equation (PDE) in the population limit.% This corresponds to a Wasserstein gradient flow of some generally non-convex energy functional.
+Alternatively the Maximum Mean Discrepancy (MMD)~\cite{gretton2012kernel} can be used as a loss to match probability distributions. It has the advantage of being easily estimated and to lead to closed form computations.
+
+%Unfortunately, such a functional is non-convex in the Wasserstein-2 space. This implies, in particular, that the flow could converge to a local solution. It was shown in \cite{chizat2018global,rotskoff2019global} that gradient descent would still converge asymptotically to a global solution in the large data limit but they rely on %appropriate assumptions on the functional
+%restrictive assumptions on the kernel or modified dynamics. 
+
+In this paper, we investigate the gradient flow of the Maximum Mean Discrepancy. We study the continuous time convergence properties of this flow, provide an algorithm based on a space-time discretization to simulate such flow and study the convergence properties of the algorithm. In particular, we underline the theoretical and empirical limits of the MMD flow regarding convergence. Therefore, we introduce a regularized dynamics and the related practical algorithm that can be used for optimizing neural networks. We show theoretically and through experiments that the regularized algorithm converges to the target distribution, and provide convergence rates.
 
 This paper is organized as follows.  \cref{sec:gradient_flow} is devoted to deriving the MMD flow and motivate its study.
 \cref{sec:convergence_mmd_flow} investigates the convergence towards a global optimum of the MMD flow. Finally, \cref{sec:discretized_flow} proposes a new algorithm and provides guarantees for the discretized flow (in time and space) of converging towards the continuous flow. 
