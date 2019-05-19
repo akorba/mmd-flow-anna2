@@ -245,7 +245,7 @@ defined by induction: $\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}
  with $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}=\nu_{0}$. Using $\nu_n^{\gamma}$ we also consider the interpolation path $\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}$ for all $t\in[n\gamma,(n+1)\gamma)$ and $n\in \mathbb{N}$, which is the same as in \cref{prop:convergence_euler_scheme}. 
 \begin{proof}[Proof of \cref{prop:convergence_euler_scheme}]\label{proof:prop:convergence_euler_scheme}
 Let $\pi$ be optimal coupling between $\nu_{n}^{\gamma}$ and $\nu_{\gamma n}$
-and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. Using \ref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y_{t},y,(t-n\gamma)):=y_{t}-y-(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ is uniformly bounded by $(t-n\gamma)^{2}C$ where $C$ is some positive constant. This allows to write:
+and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. Using \cref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y_{t},y,(t-n\gamma)):=y_{t}-y-(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ is uniformly bounded by $(t-n\gamma)^{2}C$ where $C$ is some positive constant. This allows to write:
 \begin{align*}
 W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert y-x+(t-n\gamma)(\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(y))+\mathcal{E}(y_{t},y,(t-n\gamma))\Vert^{2}\right]^{\frac{1}{2}}\\
  & \leq W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-n\gamma)LW_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-n\gamma)^{2}C\\
@@ -255,8 +255,8 @@ W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert y-x+(t-n\gamma)(\na
 The second line is obtained using that $\nabla f_{\mu,\nu_{\gamma n}}(x))$ is $L$-Lipschitz in $x$. \manote{state clearly this assumption} For the last inequality, we used \cref{lem:euler_error_1,lem:euler_error_2}  where $M(T)$ a constant that depends only on $T$. Hence for $\gamma\leq\frac{1}{L}$ we get $W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{L}+2M(T)).$
 \end{proof}
 
-\begin{lemma}
-\label{lem:euler_error_1}For any $n\geq0$:
+\begin{lemma}\label{lem:euler_error_1}
+For any $n\geq0$:
 \[
 W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})\le\gamma\frac{C}{L}(e^{n\gamma L}-1)
 \]
@@ -265,7 +265,7 @@ W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})\le\gamma\frac{C}{L}(e^{n\gamma L}-1
 Let $\pi$ be an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
 and $\nu_{\gamma n}$ and  $(\bar{x}$ ,$x)$ a joint sample
 from $\pi$. Consider also the joint sample $(\bar{y},y)$ obtained from  $(\bar{x}$ ,$x)$ by applying the gradient flow of $\F$ in continuous time to get $y=x-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(x)$ and by taking a discrete step from $\bar{x}$ to write $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$. It is easy to see that $y\sim\nu_{\gamma(n+1)}$ and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$.
-Moreover, using \ref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y,x,\gamma):=y-x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ is uniformly bounded by $\gamma^{2}C$ where $C$ is some positive constant that depends only on the choice of the kernel. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
+Moreover, using \cref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y,x,\gamma):=y-x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ is uniformly bounded by $\gamma^{2}C$ where $C$ is some positive constant that depends only on the choice of the kernel. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
 \begin{align*}
 a_{n+1}\leq & \mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})+\mathcal{E}(y,x,\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
 \leq & \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x}))\Vert^{2}\right]^{\frac{1}{2}}+\gamma^{2}C
@@ -285,7 +285,7 @@ W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})\leq\gamma\frac{C}{\sqrt{2}L}(e^{2
 %
 \begin{proof}
 Consider now an optimal coupling $\pi$ between $\bar{\nu}_{n}^{\gamma}$
-and $\nu_{n}^{\gamma}$. Similarly to \ref{lem:euler_error_1}, we
+and $\nu_{n}^{\gamma}$. Similarly to \cref{lem:euler_error_1}, we
 denote by $(\bar{x},x)$ a joint sample from $\pi$ and $(\bar{y},y)$
 is obtained from $(\bar{x},x)$  by applying the discrete updates  : $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$ and $y=x-\gamma\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. We again have that $y\sim\nu_{n+1}^{\gamma}$ and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$.
 Now, denoting by $b_{n}=W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})$, it is easy to see from the definition of $\bar{y}$ and $y$ that
@@ -298,7 +298,7 @@ b_{n+1} & \leq\mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{n}^{\gamma}
 The second line is obtained recalling that $\nabla f_{\mu,\nu}(x)$ is $L$-Lipschitz in both $x$
 and $\nu$.\manote{state assumption clearly} The third line follows by triangular inequality and recalling that $\mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}}= W_2(\nu_n^{\gamma},\bar{\nu}_n^{\gamma}) = b_n$ since $\pi$ is an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
 and $\nu_{n}^{\gamma}$. 
-By \ref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)$, hence, for any $n$ such that $n\gamma\leq T$ we get the recursive inequality: $b_{n+1}\leq(1+2\gamma L)b_{n}+C\gamma^{2}(e^{TL}-1)$. Finally, using again \cref{lem:Discrete-Gronwall-lemma}, it follows that $b_{n}\leq\gamma\frac{C}{2L}(e^{2TL}-1)^{2}$.
+By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)$, hence, for any $n$ such that $n\gamma\leq T$ we get the recursive inequality: $b_{n+1}\leq(1+2\gamma L)b_{n}+C\gamma^{2}(e^{TL}-1)$. Finally, using again \cref{lem:Discrete-Gronwall-lemma}, it follows that $b_{n}\leq\gamma\frac{C}{2L}(e^{2TL}-1)^{2}$.
 \end{proof}
 %
 
@@ -798,92 +798,53 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 
 \subsection{sample-based approximate scheme}
 \begin{proof}[Proof of \cref{prop:convergence_euler_maruyama}]\label{proof:propagation_chaos}
-
-Given $(U_{k}^{i})_{1\leq i\leq N}$ i.i.d standard gaussians and $(X_{0}^{i})_{1\leq i\leq N}$ i.i.d. samples from $\nu_0$ we consider $X_k^i$ and $\bar{X}_{k}^{i}$  the particles obtained using:
-\begin{align}
-X_{k+1}^{i}&=X_{k}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})\qquad X_0^i  \\
-\bar{X}_{k+1}^{i}&=\bar{X_{k}}^{i}-\gamma\nabla f_{\mu,\nu_{k}}(\bar{X_{k}}^{i}+\beta_{k}U_{k}^{i})\qquad \bar{X}_{0}^{i}=X_{0}^{i}
-\end{align}
-where $U_{k}^{i}$ are i.i.d standard gaussians. $\bar{X}_{k}^{i}$ follows by definition $\nu_{k}$ and $(X_{k+1}^{i},\bar{X}_{k+1}^{i})$
-are coupled through $U_{k}^{i}$ and $(X_{k}^{i},\bar{X}_{k}^{i})$,
-let's denote by $\pi_{k}$ such coupling between particles. Moreover,
-we denote by $\bar{\nu}_{k}$ the empirical distribution of $(\bar{X}_{k}^{i})_{1\leq i\leq N}$.
-We will control now $\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}\Vert^{2}\right]^{\frac{1}{2}}$
-which we denote by $c_{k}^{i}$. We have by recursion:
-
+Let $(u_{k}^{i})_{1\leq i\leq N}$ be i.i.d standard gaussian variables and $(x_{0}^{i})_{1\leq i\leq N}$ i.i.d. samples from $\nu_0$. We consider $(x_k^i)_{1\leq i\leq N}$ the particles obtained using the approximate scheme \cref{eq:euler_maruyama}: $x_{k+1}^{i}=x_{k}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})$ starting from $(x_{0}^{i})_{1\leq i\leq N}$. Similarly, we denote by $(\bar{x}_{k}^{i})_{1\leq i\leq N}$ the particles obtained using the exact update equation \cref{eq:discretized_noisy_flow}: $\bar{x}_{k+1}^{i}=\bar{x}_{k}^{i}-\gamma\nabla f_{\mu,\nu_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})$ also starting from $(x_{0}^{i})_{1\leq i\leq N}$.
+By definition of $\nu_k$ we have that  $(\bar{x}_{k}^{i})_{1\leq i\leq N}$ are i.i.d. samples drawn from $\nu_k$ with empirical distribution denoted by $\bar{\nu}_{k}$.
+%Moreover, $(X_{k+1}^{i},\bar{X}_{k+1}^{i})$ are coupled through $U_{k}^{i}$ and $(X_{k}^{i},\bar{X}_{k}^{i})$, with a coupling denoted by $\pi_{k}$. 
+We will control the expected error $c_{k}$ defined as  $c^2_{k}= \frac{1}{N}\sum_{i=1}^N \mathbb{E}\left[\Vert x_{k}^{i}-\bar{x}_{k}^{i}\Vert^{2}\right]$. By recursion, we have:
 \begin{align*}
-c_{k+1}\leq & \frac{1}{\sqrt{N}}\left(\sum_{i=1}^{N}\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}-\gamma(\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i}))\Vert^{2}\right]\right)^{\frac{1}{2}}\label{eq:main_inequality_c_k_1}\\
-\leq & (c_{k}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\bar{\nu}_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}])^{\frac{1}{2}}\\
-&+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}])^{\frac{1}{2}})^{2}\nonumber \\
- & +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}])^{\frac{1}{2}}\\
- & \leq c_{k}+\gamma L(c_{k}+\mathbb{E}[W_{2}(\hat{\nu}_{k},\bar{\nu}_{k})^{2}]^{\frac{1}{2}})+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})\nonumber \\
+c_{k+1} = & \frac{1}{\sqrt{N}}\left(\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{k}^{i}-\bar{x}_{k}^{i}-\gamma(\nabla f_{\hat{\mu},\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i}))\Vert^{2}\right]\right)^{\frac{1}{2}}\label{eq:main_inequality_c_k_1}\\
+\leq &  c_{k} +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})  \\
+& +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\bar{\nu}_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})\Vert^{2}])^{\frac{1}{2}}\\
+  \leq & c_{k}+\gamma L(c_{k}+\mathbb{E}[W_{2}(\hat{\nu}_{k},\bar{\nu}_{k})^{2}]^{\frac{1}{2}})+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})
 \end{align*}
-where the last inequality is obtained using that $\nabla f_{\mu,\nu}(x)$
-is jointly Lipschitz in $x$, $\mu$ and $\nu$. and $\mathcal{E}_{i}$
-and $\mathcal{G}_{i}$ are given by 
+where the second line follows from a simple triangular inequality and the last line is obtained recalling that $\nabla f_{\mu,\nu}(x)$
+is jointly Lipschitz in $x$ and $\nu$.\manote{state this condition as assumption} Here, $\mathcal{E}_{i}$ represents the error between $\bar{\nu}_k$ and $\nu_k$ while $\mathcal{G}_{i}$  represents the error between $\hat{\mu}$ and $\mu$ and are given by: 
 \begin{align*}
-\mathcal{E}_{i} & =\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}]\\
-\mathcal{G}_{i} & =\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})-\nabla f_{\mu,\hat{\nu}_{k}}(X_{k}^{i}+\beta_{k}U_{k}^{i})\Vert^{2}]
+\mathcal{E}_{i} & =\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})\Vert^{2}]\\
+\mathcal{G}_{i} & =\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})\Vert^{2}]
 \end{align*}
-We will first controll the error term $\mathcal{E}$. To simplify
-notations, we write $Y^{i}=\bar{X}_{k}^{i}+\beta_{k}U_{k}^{i}$.  We
-recall the expression of $\nabla f_{\mu,\nu}:$
+We will first control the error term $\mathcal{E}_i$. To simplify
+notations, we write $y^{i}=\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i}$. Recalling the expression of $\nabla f_{\mu,\nu}$ \manote{from where??} and expanding the squared norm in $\mathcal{E}_i$, it follows:
 \begin{align*}
-\mathcal{E}_{i} & =\mathbb{E}[\Vert\frac{1}{N}\sum_{j=1}^{N}\nabla k(Y^{i},\bar{X}_{k}^{j})-\int\nabla k(Y^{i},x)d\nu_{k}(x)\Vert^{2}]\\
- & =\frac{1}{N^{2}}\mathbb{E}[\sum_{l,j=1}^{N}\left\langle\nabla k(Y^{i},\bar{X}_{k}^{j})-\int\nabla k(Y^{i},x)d\nu_{k}(x),.\nabla k(Y^{i},\bar{X}_{k}^{l})-\int\nabla k(Y^{i},x)d\nu_{k}(x)\right\rangle]\\
+\mathcal{E}_{i} & =\mathbb{E}[\Vert\frac{1}{N}\sum_{j=1}^{N}\nabla k(y^{i},\bar{x}_{k}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}]\\
+ & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(y^{i},\bar{x}_{k}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}\right]\\
+ & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{x}_{k}^{j}-\int xd\nu_{k}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{k}).
 \end{align*}
- By independence of the auxilary samples $\bar{X}_{i}$ and since
-they are distributed according to $\nu_{k}$ , the sum vanishes for
-all $l\neq j$ . What remains is:
-\begin{align*}
-\mathcal{E}_{i} & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(Y^{i},\bar{X}_{k}^{j})-\int\nabla k(Y^{i},x)d\nu_{k}(x)\Vert^{2}\right]\\
- & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{X}_{k}^{j}-\int xd\nu_{k}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{k})
-\end{align*}
-Using exactly the same computations for $\mathcal{G}_{i}$, one has:
-\[
-\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)
-\]
-Now, by \ref{lem:Control_variance} we know that 
-\[
-var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}
-\]
-for all $k\leq\frac{T}{\gamma}$. Hence we get:
-\[
-c_{k+1}\leq c_{k}+\gamma L(c_{k}+\mathbb{E}[W_{2}(\hat{\nu}_{k},\bar{\nu}_{k})^{2}]^{\frac{1}{2}})+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{\gamma L}{\sqrt{M}}var(\mu))
-\]
-Now recall that:
-
-\[
-W_{2}^{2}(\hat{\nu}_{k},\bar{\nu}_{k})\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}\Vert^{2}\right]=c_{k}^{2}
-\]
-hence we have:
+The second line is obtained using the independence of the auxiliary samples $\bar{x}_{i}$ and recalling that they are distributed according to $\nu_{k}$. The last line uses the fact that $\nabla k(y,x)$ is $L$-Lipshitz in $x$. To control the variance $var(\nu_k)$ we use  \cref{lem:Control_variance} which implies that $var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}$ for all $k\leq\frac{T}{\gamma}$.
+\manote{state this assumption clearly}
+To control $\mathcal{G}_{i}$, it is sufficient to expend again the squared norm and recall that $\nabla k(y,x)$ is $L$-Lipschitz in $x$ which then implies that $\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)$. Finally, one can observe that  $W_{2}^{2}(\hat{\nu}_{k},\bar{\nu}_{k})\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}\Vert^{2}\right]=c_{k}^{2}$, hence $c_k$ satisfies the recursion:
 \[
 c_{k+1}\leq(1+2\gamma L)c_{k}+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{\gamma L}{\sqrt{M}}var(\mu)).
 \]
-Using again the discrete Gronwall lemma \ref{lem:Discrete-Gronwall-lemma}
-we get:
+Using \cref{lem:Discrete-Gronwall-lemma} to solve the above inequality, it follows that:
 \[
 c_{k}\leq\frac{1}{2}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{LT}-1)
 \]
-Finally, it remains to notice that:
-\[
-\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})]\leq c_{k}^{2}
-\]
-to conclude. 
+Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})]\leq c_{k}^{2}$ which gives the desired upper-bound on $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})]$. 
 \end{proof}
 
 
 
 %
 \begin{lemma}\label{lem:Control_variance}
-Consider the an initial distribution
-$\nu_{0}$ with finite variance and set and define:
+Consider an initial distribution
+$\nu_{0}$ with finite variance, a sequence $(\beta_k)_{ k \geq 0}$ of non-negative numbers bounded by $B<\infty$ and define the sequence of probability distributions $\nu_k$ as in \cref{eq:discretized_noisy_flow}:
 \[
-X_{k+1}=X_{k}-\gamma\nabla f_{\mu,\nu_{k}}(X_{k}+\beta_{k}U_{k})
+x_{k+1}=x_{k}-\gamma\nabla f_{\mu,\nu_{k}}(x_{k}+\beta_{k}u_{k}) \qquad x_0 \sim \nu_0
 \]
-
-And assume $\beta_{k}$ is a bounded sequence with $\beta_{k}\leq B$
-
+where $(u_k)_{k\geq 0}$ are standard gaussian variables. 
+\manote{add assumptions}
 Then for all $T>0$ and $k\leq\frac{T}{\gamma}$, the variance of
 $\nu_{k}$ satisfies:
 \[
@@ -892,52 +853,51 @@ var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0}))e^{TL}
 \end{lemma}
 %
 \begin{proof}
-Let's express the variance of $\nu_{k+1}$ in terms of $\nu_{k}$:
+The idea is to find a recursion from $var(\nu_{k})$ to $var(\nu_{k+1})$:
 \begin{align*}
-var(\nu_{k+1})^{\frac{1}{2}} & =(\mathbb{E}[\Vert X_{k+1}-\mathbb{E}[X_{k+1}]\Vert^{2}])^{\frac{1}{2}}\\
- & =(\mathbb{E}[\Vert X_{k}-\gamma\nabla f_{\mu,\nu_{k}}(X_{k}+\beta_{k}U_{k})-\int xd\nu_{k}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]])^{\frac{1}{2}}\\
- & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{k}}(X_{k}+\beta_{k}U_{k})-\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]\Vert^{2}])^{\frac{1}{2}}\\
- & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L\mathbb{E}_{X,X'\sim\nu_{k}}[\Vert X+\beta_{k}U-X'+\beta_{k}U'\Vert^{2}]^{\frac{1}{2}}\\
+var(\nu_{k+1})^{\frac{1}{2}} 
+ & =(\mathbb{E}[\Vert x_{k}-\gamma\nabla f_{\mu,\nu_{k}}(x_{k}+\beta_{k}u_{k})-\int xd\nu_{k}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]])^{\frac{1}{2}}\\
+ & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{k}}(x_{k}+\beta_{k}u_{k})-\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]\Vert^{2}])^{\frac{1}{2}}\\
+ & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L\mathbb{E}_{x,x'\sim\nu_{k}}[\Vert x+\beta_{k}u-x'+\beta_{k}u'\Vert^{2}]^{\frac{1}{2}}\\
  & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L(var(\nu_{k})+\beta_{k})
 \end{align*}
-Recalling that $\beta_{k}$ is bounded by $B$ and using the discrete
-Gronwall lemma one can then conclude. 
+The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_k}(x)$ is $L$-Lipschitz in $x$. \manote{again state this assumption clearly}. Recalling that $\beta_{k}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
 \end{proof}
 
 
-\begin{proof}[Proof of \cref{prop:sample_based_rates}](Sample based rates)
-	Introduce the theoretical process associated to \eqref{eq:sample_based_process}, i.e. associated to the target distribution $\widehat{\mu}$:
-	\begin{align}\label{eq:intermediary_process}
-	\widetilde{X}_t=X_{0}+\int_{0}^t \nabla f_{\widehat{\mu}, \widetilde{\nu}_s}(\widetilde{X}_s)ds \quad \text{for t in [0,T]}
-	%	&\forall s \in [0,T]\;,\quad \widetilde{\rho}_s \text{ denotes the probability distribution of } X_s
-	\end{align}
-	where $\widetilde{\nu}_t \text{ denotes the probability distribution of } X_t \text{for all } t>0$. The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:intermediary_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}), and is given by:
-	\aknote{at some point, I was hoping for a uniform in time propagation of chaos (i.e. the constant does not increase with time $t$), check for instance \cite{durmus2018elementary}. However, I am not sure it is possible in our case. Apparently, when there are several solutions/invariant measures for \eqref{eq:continuity_mmd}}
-	\begin{equation}
-	W_1(\widetilde{\nu}_t,\widehat{\nu}_t^N)\le \frac{C(t)}{\sqrt{n}}
-	\end{equation}
-	Then, by \cref{lem:mmd_w2} we have that $MMD^2(\widetilde{\rho}_t,\widehat{\rho}_t^N)\le C_1(t)/n$.%We now turn to bounding the distance between $\nu_t$ and $\widetilde{\nu_t}$.
-	
-	
-	We now turn to bounding the distance between $\mu$ and $\widetilde{\rho_t}$. By the triangle inequality:
-	\begin{equation}\label{eq:decomposition}
-	MMD^2(\mu, \widetilde{\nu}_t)\le MMD^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})%\le L_k^2 W_1^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})
-	\end{equation}
-	Let $C_k=\sup_{x,y \in \X}k(x,y)$. The first r.h.s. term in \eqref{eq:decomposition} can be upper bounded as follows:
-	\begin{equation}
-	MMD^2( \mu,\widehat{\mu})\le \frac{C_2}{n}
-	\end{equation}
-	where the last inequality results from \cite{tolstikhin2017minimax}.\aknote{not sure this is the best reference}
-	%where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
-	%\begin{equation}
-	%\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C}{n^{\frac{1}{d}}}
-	%\end{equation}
-	%\begin{remark}
-	%	Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
-	%\end{remark}
-	%Let $C_2=C L_k^2$. 
-	Then, for the second term at the r.h.s. of  \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
-\end{proof}
+%\begin{proof}[Proof of \cref{prop:sample_based_rates}](Sample based rates)
+%	Introduce the theoretical process associated to \eqref{eq:sample_based_process}, i.e. associated to the target distribution $\widehat{\mu}$:
+%	\begin{align}\label{eq:intermediary_process}
+%	\widetilde{X}_t=X_{0}+\int_{0}^t \nabla f_{\widehat{\mu}, \widetilde{\nu}_s}(\widetilde{X}_s)ds \quad \text{for t in [0,T]}
+%	%	&\forall s \in [0,T]\;,\quad \widetilde{\rho}_s \text{ denotes the probability distribution of } X_s
+%	\end{align}
+%	where $\widetilde{\nu}_t \text{ denotes the probability distribution of } X_t \text{for all } t>0$. The convergence of the empirical measure of the particle system \eqref{eq:sample_based_process} to the solution of \eqref{eq:intermediary_process} has been stated under the name propagation of chaos (see \cite{kac1956foundations}, \cite{sznitman1991topics}), and is given by:
+%	\aknote{at some point, I was hoping for a uniform in time propagation of chaos (i.e. the constant does not increase with time $t$), check for instance \cite{durmus2018elementary}. However, I am not sure it is possible in our case. Apparently, when there are several solutions/invariant measures for \eqref{eq:continuity_mmd}}
+%	\begin{equation}
+%	W_1(\widetilde{\nu}_t,\widehat{\nu}_t^N)\le \frac{C(t)}{\sqrt{n}}
+%	\end{equation}
+%	Then, by \cref{lem:mmd_w2} we have that $MMD^2(\widetilde{\rho}_t,\widehat{\rho}_t^N)\le C_1(t)/n$.%We now turn to bounding the distance between $\nu_t$ and $\widetilde{\nu_t}$.
+%	
+%	
+%	We now turn to bounding the distance between $\mu$ and $\widetilde{\rho_t}$. By the triangle inequality:
+%	\begin{equation}\label{eq:decomposition}
+%	MMD^2(\mu, \widetilde{\nu}_t)\le MMD^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})%\le L_k^2 W_1^2(\mu, \widehat{\mu})+MMD^2(\widehat{\mu}, \widetilde{\nu_t})
+%	\end{equation}
+%	Let $C_k=\sup_{x,y \in \X}k(x,y)$. The first r.h.s. term in \eqref{eq:decomposition} can be upper bounded as follows:
+%	\begin{equation}
+%	MMD^2( \mu,\widehat{\mu})\le \frac{C_2}{n}
+%	\end{equation}
+%	where the last inequality results from \cite{tolstikhin2017minimax}.\aknote{not sure this is the best reference}
+%	%where the last inequality results from \cref{lem:mmd_w2}. Firstly, the first r.h.s. term in \eqref{eq:decomposition} can be upper bounded since it was shown in \cite{dudley1969speed} that when $d > 2$, if $\mu$ has a compact support in $\R^d$ then:\aknote{there's maybe a better rate in MMD, in $\sqrt{n}$, since it is twice diff in $\rho$, see Lemma 5.10 in \url{https://arxiv.org/pdf/1804.08542.pdf}}
+%	%\begin{equation}
+%	%\E[W_1^2(\widehat{\mu},\mu)]\le \frac{C}{n^{\frac{1}{d}}}
+%	%\end{equation}
+%	%\begin{remark}
+%	%	Note that more recently, sharper rates of convergence  for $W_p(\widehat{ \mu}, \mu)$, for $p\ge 1$, have been computed in \cite{weed2017sharp} for a larger class of measures. These rates involve an intrinsic dimension of the measure $\mu$ (its Wassertein dimension). 
+%	%\end{remark}
+%	%Let $C_2=C L_k^2$. 
+%	Then, for the second term at the r.h.s. of  \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
+%\end{proof}
 
 
 
