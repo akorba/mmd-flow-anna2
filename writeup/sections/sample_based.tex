@@ -3,16 +3,16 @@
 \subsection{The sample-based approximate scheme}\label{sec:sample_based}
 
 In the gradient descent \eqref{eq:discretized_noisy_flow}, the vector field depends on the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$, to which we do not have access. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. Specifically, we adopt the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which considers a system of $N$ interacting particles $(X_n^{1,N}, X_n^{2,N}, \dots, X_n^{N,N})$ and their empirical distribution in order to approximate $\nu_n$. 
-Given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and step-size $\gamma$, the approximate scheme iteratively updates the particles using the following update equation: 
-\begin{align}\label{eq:euler_maruyama}
-X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)\quad \text{ for all } 1 \le i \le N
-\end{align}
-where $U_{n}^{i}$ are i.i.d standard gaussians and $\hat{\mu}$, $\hat{\nu}_n$ denote respectively the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. One nice property about this scheme is that $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily by:
-\begin{equation}
+Given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and step-size $\gamma$, the approximate scheme iteratively updates the i-th particle using the following update equation: 
+\begin{multline}\label{eq:euler_maruyama}
+X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)\; \text{ with }\\ \nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,.)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,.)
+\end{multline}
+where $U_{n}^{i}$ are i.i.d standard gaussians, $\hat{\mu}$, $\hat{\nu}_n$ denote respectively the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$, and $\nabla_2k(x,.)$ denotes the gradient of $k$ w.r.t. the second variable for any $x \in \X$. One nice property about this scheme is that $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily by the available samples.
+%\begin{equation}
 %\nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,X_n^i+\beta_n U_n^i)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j+\beta_n U_n^j,X_n^i+\beta_n U_n^i)
-\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,.)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,.)
-\end{equation}
-where $\nabla_2k(x,.)$ denotes the gradient of $k$ w.r.t. the second variable for any $x \in \X$.
+%\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,.)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,.)
+%\end{equation}
+%where $\nabla_2k(x,.)$ denotes the gradient of $k$ w.r.t. the second variable for any $x \in \X$.
 However, unlike the algorithms derived from the Negative Sobolev distance or the Sliced Wasserstein gradient flows (see respectively \cite{Mroueh:2019,Simsekli:2018}), \cref{eq:euler_maruyama} is computationally less expensive. Indeed the cost of each iteration is $O((M+N)N)$ and uses $O(M+N)$ in memory.
 \cref{eq:euler_maruyama} can be seen as a particle version of \cref{eq:euler_scheme} and one would expect it to converge towards the population version as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
 %\begin{theorem}\label{prop:convergence_euler_maruyama}
@@ -64,7 +64,7 @@ However, unlike the algorithms derived from the Negative Sobolev distance or the
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=1.\linewidth]{figures/Gaussians_error_4}
+	\includegraphics[width=0.8\linewidth]{figures/Gaussians_error_4}
 	\caption{An illustration of the performance of the regular versus noisy MMD flow.}
 	\label{fig:experiments}
 \end{figure}

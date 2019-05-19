@@ -15,7 +15,8 @@ Equation \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal trans
 \end{align}
 Hence, provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded by some positive constant $C$ at all times, one gets a functional version of Lojasiewicz inequality:
 \begin{align}\label{eq:Lojasiewicz_inequality}
-	4\F(\nu_t)^2\leq C^2 \int \Vert \nabla f_{\mu,\nu_t} \Vert^2 \diff \nu_t(x)  \qquad \forall t\geq 0.
+	%4\F(\nu_t)^2\leq C^2 \int \Vert \nabla f_{\mu,\nu_t} \Vert^2 \diff \nu_t(x)  \qquad \forall t\geq 0.
+	4\F(\nu_t)^2\leq C^2\frac{d \F(\nu_t)}{dt} \qquad \forall t\geq 0.
 \end{align} 
 It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This is summarized in \cref{prop:lojasiewicz}:
 \begin{proposition}\label{prop:lojasiewicz}
