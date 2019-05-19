@@ -24,7 +24,7 @@ Such paths are called  \textit{constant speed displacement geodesics} when addit
 \cref{prop:lambda_convexity} can be obtained by computing the second time-derivative of $\F(\rho_t)$ which is then lower-bounded by $\Lambda(\rho_t,V_t)$ (see \cref{proof:prop:lambda_convexity} for a full proof).
 In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\rho_s, V_s ) G(s,t)\diff s$ can become negative, hence displacement convexity doesn't hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $\nu_n$ are obtained using \cref{eq:euler_scheme}. Such upper-bound would depend on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$ with velocity vectors $(V_s^n)_{0\leq s\leq 1}$. \cref{th:rates_mmd} provides such bound:
 \begin{theorem}\label{th:rates_mmd}
-	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded!!} If $\gamma \leq 1/L$, then
+	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded!!} If $\gamma \leq 1/L$, where $L$ is the Lipschitz constant of $\nabla k$, then
 \begin{align}
 \F(\nu_n)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
 \end{align}
