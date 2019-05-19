@@ -2,7 +2,8 @@
 
 \subsection{A noisy update as a regularization}\label{sec:noisy_flow}
 
-Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well remain stuck in local minima. This can happen when the negative sobolev norm (see section \cref{sec:Lojasiewicz_inequality} is not finite at all times. One way to see this, at least formally, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
+Although the Wasserstein flow of the MMD decreases the MMD in time, it can very well
+ remain stuck in local minima. This can happen when the negative sobolev norm (see section \cref{sec:Lojasiewicz_inequality} is not finite at all times. One way to see this, at least formally, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
 %\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
 Indeed $\F(\nu_t)$ is a non-negative decreasing function of time, it must therefore converge to some limit, which implies in turn that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$
 \footnote{There are cases when $\nu_t$ doesn't converge to any distribution. This would happen is the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
