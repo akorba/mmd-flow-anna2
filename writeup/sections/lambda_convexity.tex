@@ -5,12 +5,34 @@
 %\subsection{Lambda displacement convexity of the MMD}
 \subsection{Optimization in a ($W_2$) non-convex setting}
 \label{subsection:barrier_optimization}
+One important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is the \textit{displacement convexity} of such a functional.  states that $t\mapsto \F(\nu_t)$ is a convex function whenever $t\mapsto\nu_t$ is a path of minimal length from two distributions $\mu$ and $\nu$ as explained in \cref{def:displacement_convexity} (see also \cite[Definition 16.5]{Villani:2004}). %The notion of path of minimal length depends on the choice of the metric. 
+Such paths are called  \textit{constant speed displacement geodesics} when additionally their velocity vector has a constant norm. We refer to \cite{Bottou:2017} for a more in-depth discussion.
+\textit{Displacement convexity} should not be confused with \textit{mixture convexity} which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is \textit{mixture convex} in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and $\nu,\nu'\in\mathcal{P}_2(\X)$ (\cref{lem:mixture_convexity}). Unfortunately, $\F$ is not \textit{displacement convex}. Instead, $\F$ only satisfies a weaker notion of displacement convexity called $\Lambda$-displacement convexity (\cite[Definition 16.5]{Villani:2009}): 
+%This implies that the gradient flow of $\F$ might not converge to the optimal solution. 
+%This could happen if for instance \cref{eq:Lojasiewicz_inequality} doesn't hold. 
+%It can be shown, however, that $\F$ is guaranteed to reach some barrier. This is a consequence of the $\Lambda$-displacement convexity of $\F$ which is 
+\begin{proposition}
+	\label{prop:lambda_convexity} Suppose \manote{assumtion} holds for some $B \in \R^+$. Then for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(V_t)_{0\leq t\leq 1}$ the following holds:
+	\begin{equation}
+	\F(\rho_{t})\leq(1-t)\F(\nu)+t\F(\nu')-\int_0^1 \Lambda(\rho_s, V_s ) G(s,t)\diff s
+	\end{equation}
+	where $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\Lambda$ is defined for any pair $(\rho,V)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
+	\begin{align}\label{eq:lambda}
+		\Lambda(\rho,V) = \Vert \int V(x).\nabla_x k(x,.) \diff \rho(x) \Vert^2_{\mathcal{H}} - B\F(\rho)^{\frac{1}{2}}  \int \Vert  V(x) \Vert^2 \diff \rho(x) 
+	\end{align}
+	\end{proposition}
+In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\rho_s, V_s ) G(s,t)\diff s$ can become negative, hence displacement convexity doesn't hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $\nu_n$ are obtained using \cref{eq:euler_scheme}. Such upper-bound would depend on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$ with velocity vectors $(V_s^n)_{0\leq s\leq 1}$. \cref{th:rates_mmd} provides such bound:
+\begin{theorem}\label{th:rates_mmd}
+	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded} If $\gamma \leq 1/L$, then
+\begin{align}
+\F(\nu_n)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
+\end{align}
+\end{theorem}
+When $\bar{K}$ is non-negative, one recovers the usual convergence rate as $O(\frac{1}{n})$ for the gradient descent algorithm. However, $\bar{K}$ can be negative in general and would therefore act as a barrier on the optimal value that $\F(\nu_n)$ can achieve. In that sense, the above result is similar to \cite[Theorem 6.9]{Bottou:2017}. 
 
-In optimal transport, one important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is the \textit{displacement convexity} of such a functional. Displacement convexity (see \cite{Villani:2004}) states that $t\mapsto \F(\nu_t)$ is a convex function whenever $t\mapsto\nu_t$ is a path of minimal length (w.r.t. a metric) from two distributions $\mu$ and $\nu$ as explained formally in \cref{def:displacement_convexity} in the Appendix. %The notion of path of minimal length depends on the choice of the metric. 
-In the case of Wasserstein metric, such paths are called  \textit{displacement geodesics} and are in general intractable to compute. %Other distances would lead to different geodesics. For a more in-depth discussion we refer to \cite{Bottou:2017}.
 
 
-This notion of convexity should not be confused with \textit{mixture convexity} which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is \textit{mixture convex} in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and for all $\nu,\nu'\in\mathcal{P}_2(\X)$ (\cref{lem:mixture_convexity}). Unfortunately, $\F$ is not \textit{displacement convex} which makes the gradient flow prone to converge to local minima, and it only satisfies a weaker notion of convexity, as stated in the following proposition. However, it will be sufficient to show that the flow of $\F$ can decrease until it reaches a barrier. %The size of the barrier depends on a relaxed notion of convexity called $\Lambda$-displacement convexity:
+%However, it will be sufficient to show that the flow of $\F$ can decrease until it reaches a barrier. %The size of the barrier depends on a relaxed notion of convexity called $\Lambda$-displacement convexity:
 
 %It can be shown that $\F$ is $\text{\ensuremath{\Lambda}}$-displacement convex under mild assumptions on the kernel $k$:
 %\begin{proposition}
@@ -70,83 +92,84 @@ This notion of convexity should not be confused with \textit{mixture convexity} 
 %%
 
 
-\begin{proposition}
-	\label{prop:loser_bound}Assume the distributions are supported on
-	$\mathcal{X}$ and the kernel is bounded, i.e: $\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert<\infty$.
-	Then the following holds:
-	\begin{equation}
-	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})+t(1-t)K
-	\end{equation}
-	where $K$ is a constant depending on $\X$ and the kernel $k$ in $\F$.
-\end{proposition}
-%
-%
-\cref{prop:loser_bound}, is a loose bound and does not account for the local
-convexity of the MMD (see \cref{subsec:more_lambda_convexity} for more details on the convexity properties of this flow). However, it allows to state the following result,
-which is inspired from (\cite{Bottou:2017}, Theorem 6.3) but generalizes
-it to the case of 'almost convex' functionals.
-\begin{proposition}
-	\label{prop:almost_convex_optimization}
-	(Almost convex optimization). Let $\mathcal{P}$ be a closed subset
-	of $\mathcal{P}(\mathcal{X})$ which is displacement convex\aknote{weird for a set to be displacement convex? it was for functionals}. Then
-	for all $M>\inf_{\nu\in\mathcal{P}}\F(\nu)+K$, the following
-	holds:
-\end{proposition}
-\begin{enumerate}
-	\item The level set $L(\mathcal{P},M)=\{\nu\in\mathcal{P}:\F(\nu)\leq M\}$
-	is connected
-	\item For all $\nu_{0}\in\mathcal{P}$ such that $\F(\nu_0)>M$
-	and all $\epsilon>0$, there exists $\nu\in\mathcal{P}$ such that
-	$W_{2}(\nu,\nu_{0})=\mathcal{O}(\epsilon)$ and
-	\[
-	\F(\nu)\leq \F(\nu_{0})-\epsilon(\F(\nu_{0})-M).
-	\]
-\end{enumerate}
-%
-%\begin{remark}
-The result in \Cref{prop:almost_convex_optimization} means that it is possible to optimize the cost function $\nu\mapsto \F(\nu)$
-on $\mathcal{P}$ as long as the barrier $\inf_{\nu\in\mathcal{P}}\F(\nu)+K$
-is not reached. However, this barrier remains large, since it depends on particular of the diameter of $\X$. A possible direction to refine the statement in \cref{prop:almost_convex_optimization} would be to directly leverage the local convexity of $\F$ to get a better description of the loss landscape
- %tighter inequality in \cref{eq:integral_lambda_convexity} to get a better description of the loss landscape.\aknote{can we really?}
-
-
-%\cref{prop:almost_convex_optimization} guarantees the existence of a direction of descent that minimizes the functional $\F$ provided that the starting point $\rho_1$ has a potential greater than the barrier $K$. %, i.e:
-%\begin{align}\label{eq:barrier_condition}
-%	\F(\rho_1)> \inf_{\rho\in \mathcal{P}} \F(\rho) + K
-%\end{align}
-One natural question to ask is whether the  discretized gradient flow algorithm provides such way to reach the barrier $K$ and at what speed this happens. %This subsection will answer that question. 
-Firstly, we state few propositions that will lead us to the final result. The proofs exploit in particular the local convexity of $\F$. \aknote{we basically need Proposition 10 to state the final result but we can also not say it}
-
-
-%\begin{proposition}\label{prop:decreasing_functional}
-%	Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
-%	\begin{align*}
-%	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n
-%	\end{align*}
+%\begin{proposition}
+%	\label{prop:loser_bound}Assume the distributions are supported on
+%	$\mathcal{X}$ and the kernel is bounded, i.e: $\sup_{x,y\in\mathcal{X}}\vert k(x,y)\vert<\infty$.
+%	Then the following holds:
+%	\begin{equation}
+%	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})+t(1-t)K
+%	\end{equation}
+%	where $K$ is a constant depending on $\X$ and the kernel $k$ in $\F$.
 %\end{proposition}
+%
+%
 
-\begin{proposition}\label{prop:evi}
-	Consider the sequence of distributions $\nu_m$ obtained from \cref{eq:euler_scheme}. If $\gamma \leq 1/L$, then
-	\begin{align}
-2\gamma(\F(\nu_{n+1})-\F(\mu))
-\leq 
-W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
-\label{eq:evi}
-\end{align}
-where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho}^n_s)(1-s)ds$.
-\end{proposition}
-
-\begin{theorem}\label{th:rates_mmd}
-	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded} If $\gamma \leq 1/L$, then
-	%\begin{align}
-%\F(\bar{\nu}_{n})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}
+%\cref{prop:loser_bound}, is a loose bound and does not account for the local
+%convexity of the MMD (see \cref{subsec:more_lambda_convexity} for more details on the convexity properties of this flow). However, it allows to state the following result,
+%which is inspired from (\cite{Bottou:2017}, Theorem 6.3) but generalizes
+%it to the case of 'almost convex' functionals.
+%\begin{proposition}
+%	\label{prop:almost_convex_optimization}
+%	(Almost convex optimization). Let $\mathcal{P}$ be a closed subset
+%	of $\mathcal{P}(\mathcal{X})$ which is displacement convex\aknote{weird for a set to be displacement convex? it was for functionals}. Then
+%	for all $M>\inf_{\nu\in\mathcal{P}}\F(\nu)+K$, the following
+%	holds:
+%\end{proposition}
+%\begin{enumerate}
+%	\item The level set $L(\mathcal{P},M)=\{\nu\in\mathcal{P}:\F(\nu)\leq M\}$
+%	is connected
+%	\item For all $\nu_{0}\in\mathcal{P}$ such that $\F(\nu_0)>M$
+%	and all $\epsilon>0$, there exists $\nu\in\mathcal{P}$ such that
+%	$W_{2}(\nu,\nu_{0})=\mathcal{O}(\epsilon)$ and
+%	\[
+%	\F(\nu)\leq \F(\nu_{0})-\epsilon(\F(\nu_{0})-M).
+%	\]
+%\end{enumerate}
+%%
+%%\begin{remark}
+%The result in \Cref{prop:almost_convex_optimization} means that it is possible to optimize the cost function $\nu\mapsto \F(\nu)$
+%on $\mathcal{P}$ as long as the barrier $\inf_{\nu\in\mathcal{P}}\F(\nu)+K$
+%is not reached. However, this barrier remains large, since it depends on particular of the diameter of $\X$. A possible direction to refine the statement in \cref{prop:almost_convex_optimization} would be to directly leverage the local convexity of $\F$ to get a better description of the loss landscape
+% %tighter inequality in \cref{eq:integral_lambda_convexity} to get a better description of the loss landscape.\aknote{can we really?}
+%
+%
+%%\cref{prop:almost_convex_optimization} guarantees the existence of a direction of descent that minimizes the functional $\F$ provided that the starting point $\rho_1$ has a potential greater than the barrier $K$. %, i.e:
+%%\begin{align}\label{eq:barrier_condition}
+%%	\F(\rho_1)> \inf_{\rho\in \mathcal{P}} \F(\rho) + K
+%%\end{align}
+%One natural question to ask is whether the  discretized gradient flow algorithm provides such way to reach the barrier $K$ and at what speed this happens. %This subsection will answer that question. 
+%Firstly, we state few propositions that will lead us to the final result. The proofs exploit in particular the local convexity of $\F$. \aknote{we basically need Proposition 10 to state the final result but we can also not say it}
+%
+%
+%%\begin{proposition}\label{prop:decreasing_functional}
+%%	Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
+%%	\begin{align*}
+%%	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{\gamma}{2}L )\int \Vert \phi_n(X)\Vert^2 d\nu_n
+%%	\end{align*}
+%%\end{proposition}
+%
+%\begin{proposition}\label{prop:evi}
+%	Consider the sequence of distributions $\nu_m$ obtained from \cref{eq:euler_scheme}. If $\gamma \leq 1/L$, then
+%	\begin{align}
+%2\gamma(\F(\nu_{n+1})-\F(\mu))
+%\leq 
+%W_2^2(\nu_n,\mu)-W_2^2(\nu_{n+1},\mu)-2\gamma K(\rho^n).
+%\label{eq:evi}
 %\end{align}
-%where $\bar{\nu}=\frac{1}{N}\sum_{n=1}^N \nu_n$. Moreover, 
-\begin{align}
-\F(\nu_n)-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
-\end{align}
-\end{theorem}
-
-The Euler scheme of the MMD flow is thus guaranteed to converge up to a barrier. In practice, we will see in the experiments \cref{sec:discretized_flow} that the algorithm can be stuck in local minimas on simple examples. We point out that the results in the latter section, concerning the rates of convergence, remains in continuous time, but \cref{th:rates_mmd} provides a stronger result. \aknote{not well said but let's tell a story for now}In the next section, we propose a modified algorithm which will be guaranteed to converge to a global optimum.
-
-
+%where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho}^n_s)(1-s)ds$.
+%\end{proposition}
+%
+%%\begin{theorem}\label{th:rates_mmd}
+%%	Consider the sequence of distributions $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations from $0$ to $n$. \aknote{show that $\bar{K}$ is bounded} If $\gamma \leq 1/L$, then
+%%	%\begin{align}
+%%%\F(\bar{\nu}_{n})-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}
+%%%\end{align}
+%%%where $\bar{\nu}=\frac{1}{N}\sum_{n=1}^N \nu_n$. Moreover, 
+%%\begin{align}
+%%\F(\nu_n)-\F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
+%%\end{align}
+%%\end{theorem}
+%
+%The Euler scheme of the MMD flow is thus guaranteed to converge up to a barrier. In practice, we will see in the experiments \cref{sec:discretized_flow} that the algorithm can be stuck in local minimas on simple examples. We point out that the results in the latter section, concerning the rates of convergence, remains in continuous time, but \cref{th:rates_mmd} provides a stronger result. \aknote{not well said but let's tell a story for now}In the next section, we propose a modified algorithm which will be guaranteed to converge to a global optimum.
+%
+%

@@ -11,13 +11,13 @@ According to \cref{prop:decay_mmd}, the absolute value of the time derivative of
 with possibly infinite values.
 \end{definition}
 \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport. Indeed, when $q$ is equal to $\nu$, it linearizes the $W_2(p,\nu)$ as $p$ becomes arbitrarily close to $\nu$ \cite{Villani:2009,Otto:2000,Peyre:2011}. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $q$ (see \cite{mroueh2018regularized}).
-Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite and since $f_{\mu,\nu_t}$ is itself square-integrable w.r.t $\nu_t$ (by assumption on the kernel), it can be shown that:
-\begin{align}\label{eq:inequality_neg_sobolev}
-	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
-\end{align}
-Hence, provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded by some positive constant $C$ at all times, one gets a functional version of Lojasiewicz inequality:
+Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is bounded by some positive constant $C$ at all times $t$ one can get a functional version of Lojasiewicz inequality:
+%\begin{align}\label{eq:inequality_neg_sobolev}
+%	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
+%\end{align}
+%Hence, provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded by some positive constant $C$ at all times, 
 \begin{align}\label{eq:Lojasiewicz_inequality}
-	2\F(\nu_t)^2\leq C^2 \int \Vert \nabla f_{\mu,\nu_t} \Vert^2 \diff \nu_t(x)  \qquad \forall t\geq 0.
+	4\F(\nu_t)^2\leq C^2 \int \Vert \nabla f_{\mu,\nu_t} \Vert^2 \diff \nu_t(x)  \qquad \forall t\geq 0.
 \end{align} 
 It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This is summarized in \cref{prop:lojasiewicz}:
 \begin{proposition}\label{prop:lojasiewicz}
@@ -26,7 +26,7 @@ It is then possible to use the general strategy explained earlier to prove the c
 	\mathcal{F}(\nu_t)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4t}
 	\end{align}
 \end{proposition}
-The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein distance appears in the context of Wasserstein flows is not a coincidence. In fact, other gradient flows of the same functional $\F$ under a different metric, would lead to an inequality similar to \cref{eq:inequality_neg_sobolev} but with a linearization of the appropriate metric. For instance, in \cite{Rotskoff:2019}, a gradient flow of functionals similar to $\F$ is considered under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that $\chi^2(\mu\Vert \nu_t)$ is bounded, which turns out to approximate $KL(\mu\Vert \nu_t)$ when $\mu$ and $\nu_t$ are close as shown in \manote{add some appendix section}.
+The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein distance appears in the context of Wasserstein flows is not a coincidence. In fact, other gradient flows of the same functional $\F$ under a different metric, would lead to an inequality similar to \cref{eq:Lojasiewicz_inequality}. The only difference come from the different linearization that arises from that choice of metric. For instance, in \cite{Rotskoff:2019}, a gradient flow of functionals similar to $\F$ is considered under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that $\chi^2(\mu\Vert \nu_t)$ is bounded, which turns out to approximate $KL(\mu\Vert \nu_t)$ when $\mu$ and $\nu_t$ are close as shown in \manote{add some appendix section}.
 
 Under similar conditions as in \cref{prop:lojasiewicz}, convergence of the discrete-time flow can be obtained:
 \begin{proposition}\label{prop:discrete_lojasiewicz}

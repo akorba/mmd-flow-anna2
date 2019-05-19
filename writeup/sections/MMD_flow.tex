@@ -1,8 +1,8 @@
 
 
 \section{Convergence properties of the MMD flow}\label{sec:convergence_mmd_flow}
-We are interested in analyzing the asymptotic properties of the gradient flow of the MMD. The main challenge is the lack of convexity of the MMD w.r.t. the metric structure of $\mathcal{P}_2(\X)$ endowed with the  Wasserstein distance. We show in \cref{sec:Lojasiewicz_inequality} that convergence to the global optimum happens provided that some energy functional remains bounded at all times. In  \cref{subsection:barrier_optimization}, we show that when the previous criterion fails  to hold, one can still optimize the MMD up to some barrier using a weaker notion of convexity.
-%\subsection{MMD as a free energy}
+We are interested in analyzing the asymptotic properties of the gradient flow of the MMD. The main challenge is the lack of convexity of the MMD w.r.t. the Wasserstein metric structure. In  \cref{subsection:barrier_optimization}, we show that $\F$ is only $\Lambda$-convex and that standard optimization techniques only provide a lose bound on its asymptotic value.
+In \cref{sec:Lojasiewicz_inequality}, we exploit a Lojasiewicz type inequality to prove the convergence to the global optimum provided that some energy functional remains bounded at all times. %\subsection{MMD as a free energy}
 %
 %Interestingly, for a fixed target distribution $\mu$, it appears that the $MMD^2$ can be written
 %as a free energy \cref{eq:lyapunov}, by choosing the potential energy $V$ and interaction energy $W$ as follows:
@@ -52,9 +52,11 @@ We are interested in analyzing the asymptotic properties of the gradient flow of
 %	Consider a family of particles whose density satisfy Equation\cref{eq:continuity_equation} for some free energy $\F$. Both KL and $MMD^2$ can be written as free energies \eqref{eq:lyapunov}, with a potential energy $V$ term which drive the particles to the target distribution $\mu$. While the entropy function $U$ in KL prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$. Indeed, when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.\aknote{to check, ref malrieu?}
 %\end{remark}
 
- \input{sections/lojasiewicz}
-
 \input{sections/lambda_convexity}
+
+\input{sections/lojasiewicz}
+
+
 
 \input{sections/time_discretization}
 
