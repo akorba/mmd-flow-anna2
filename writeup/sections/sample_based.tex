@@ -2,10 +2,10 @@
 
 \subsection{The sample-based approximate scheme}\label{sec:sample_based}
 
-In the gradient descent \eqref{eq:discretized_noisy_flow}, the vector field depends on the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$, to which we do not have access. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. 
-Given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and step-size $\gamma$, the approximate scheme iteratively updates the particles $i$ using the following update equation: 
+In the gradient descent \eqref{eq:discretized_noisy_flow}, the vector field depends on the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$, to which we do not have access. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. Specifically, we adopt the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which considers a system of $N$ interacting particles $(X_n^{1,N}, X_n^{2,N}, \dots, X_n^{N,N})$ and their empirical distribution in order to approximate $\nu_n$. 
+Given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and step-size $\gamma$, the approximate scheme iteratively updates the particles using the following update equation: 
 \begin{align}\label{eq:euler_maruyama}
-X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)
+X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)\quad \text{ for all } 1 \le i \le N
 \end{align}
 where $U_{n}^{i}$ are i.i.d standard gaussians and $\hat{\mu}$, $\hat{\nu}_n$ denote respectively the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. One nice property about this scheme is that $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily by:
 \begin{equation}
@@ -14,7 +14,7 @@ where $U_{n}^{i}$ are i.i.d standard gaussians and $\hat{\mu}$, $\hat{\nu}_n$ de
 \end{equation}
 where $\nabla_2k(x,.)$ denotes the gradient of $k$ w.r.t. the second variable for any $x \in \X$.
 However, unlike the algorithms derived from the Negative Sobolev distance or the Sliced Wasserstein gradient flows (see respectively \cite{Mroueh:2019,Simsekli:2018}), \cref{eq:euler_maruyama} is computationally less expensive. Indeed the cost of each iteration is $O((M+N)N)$ and uses $O(M+N)$ in memory.
-\cref{eq:euler_maruyama} can be seen as a particle version of \cref{eq:euler_scheme} and one would expect it to converge towards the its population version as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
+\cref{eq:euler_maruyama} can be seen as a particle version of \cref{eq:euler_scheme} and one would expect it to converge towards the population version as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
 %\begin{theorem}\label{prop:convergence_euler_maruyama}
 %Under the same conditions as in \cref{prop:convergence_euler_scheme} and for any $\frac{T}{\gamma}\geq n\geq 0$:
 %\begin{equation}
@@ -28,8 +28,8 @@ However, unlike the algorithms derived from the Negative Sobolev distance or the
 \mathbb{E}[W_{2}(\hat{\nu}_{n},\nu_{n})]\leq \frac{1}{2}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{LT}-1)
 \]
 \end{theorem}
-Notice that since we do not have access to true samples of $\nu_n$ at each iteration $n$, we have adopted the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which considers the system of  $N$ interacting particles $(X_n^{1,N}, X_n^{2,N}, \dots, X_n^{N,N})$ and their empirical distribution in order to approximate $\nu_n$.
-\cref{prop:convergence_euler_maruyama} tries to control the propagation of the chaos at each iteration and uses techniques from \cite{Jourdain:2007}, however, the proof is much simpler since it is provided in discrete time. Notice also that these rates remain true when no noise is added to the updates, i.e. for the original flow when $B=0$. A proof is provided in \cref{proof:propagation_chaos}. The dependence in $\sqrt{N}$ underlines the fact that our algorithm could be interesting as a sampling algorithm when one only has access to samples of $\mu$ (see \cref{subsec:kl_flow}).
+%Notice that since we do not have access to true samples of $\nu_n$ at each iteration $n$, we have adopted the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which considers the system of  $N$ interacting particles $(X_n^{1,N}, X_n^{2,N}, \dots, X_n^{N,N})$ and their empirical distribution in order to approximate $\nu_n$.
+\cref{prop:convergence_euler_maruyama} tries to control the propagation of the chaos at each iteration and uses techniques from \cite{Jourdain:2007}, however, the proof is much simpler since it is provided in discrete time. Notice also that these rates remain true when no noise is added to the updates, i.e. for the original flow when $B=0$. A proof is provided in \cref{proof:propagation_chaos}. The dependence in $\sqrt{M}$ underlines the fact that our algorithm could be interesting as a sampling algorithm when one only has access to $M$ samples of $\mu$ (see \cref{subsec:kl_flow} for a more detailed discussion).
 
 %\begin{remark}
 %Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$. The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of the Langevin diffusion (see \cref{remark:gradient_flow}), seems much more suitable for first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_{\mu, \nu_n}$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient},\cite{li2018gradient},\cite{shi2018spectral}). In contrast, the discretized flow of the $MMD^2$ presented in this section seems naturally adapted to the sample-based setting.
@@ -69,7 +69,7 @@ Notice that since we do not have access to true samples of $\nu_n$ at each itera
 	\label{fig:experiments}
 \end{figure}
 
-Figure \ref{fig:experiments} shows the result of the experiment.
+We finally illustrate \ref{fig:experiments} the behavior of the proposed algorithm, with a simple experiment. The target distribution $\mu$ and initial distribution $\nu_0$ are taken respectively as $\mathcal{N}(0,a)$ and $\mathcal{N}(0,b)$, and the number of particles $N=1000$ and $M=1000$. The middle figure represent the initial samples. Algorithm \eqref{eq:euler_maruyama} is run for $10^4$ iterations, when $\beta_n=0$ for all $n$ (which corresponds to the regular discretized MMD flow), and when $\beta_n=?$. The right figure illustrates that the samples of the regular MMD flow seem stuck in a local minima and did not converge \aknote{however the red curve is not flat yet, beware}, whereas the ones of the Noisy MMD flow did. The results of this experiment confirm that the injected noise seem to regularize the MMD flow and improve convergence.
 
 
 

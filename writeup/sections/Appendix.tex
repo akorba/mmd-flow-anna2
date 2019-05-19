@@ -634,6 +634,15 @@ which shows the desired result.
 	It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
 
+\begin{proof}[Proof of \cref{prop:discrete_lojasiewicz}]\label{proof:prop:discrete_lojasiewicz}
+By replacing $t$ by $n$ in the previous proof and using Proposition~\cref{prop:} we have
+$$
+\cF(\nu_{n+1}) - \cF(\nu_n) \leq -\gamma\left(1-\frac{L\gamma}{2}\right)\|\phi_n\|_{L_2(\nu_n)}^2 \leq -\frac{4}{C}\gamma\left(1-\frac{L\gamma}{2}\right)\cF(\nu_n)^2.
+$$
+This implies that $0 \leq \cF(\nu_{n+1}) \leq \cF(\nu_n) $. Hence, $$\frac{1}{\cF(\nu_n)^2} \leq \frac{1}{\cF(\nu_n)\cF(\nu_{n+1})}$$ and $$ \frac{\cF(\nu_{n+1}) - \cF(\nu_{n})}{\cF(\nu_n)\cF(\nu_{n+1})} \leq \frac{\cF(\nu_{n+1}) - \cF(\nu_{n})}{\cF(\nu_n)^2}.$$ Finally, 
+$$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1-\frac{L\gamma}{2}\right)$$ and the proof is concluded by summing over $n$ and rearranging the terms.
+\end{proof}
+
 \manote{Add a discussion here about what Bruna does}
 
 
