@@ -1,4 +1,4 @@
-*.pdf
+
 .texpadtmp/
 */-checkpoint.ipynb
 *.pyc

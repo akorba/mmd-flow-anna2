@@ -61,6 +61,8 @@ This perspective allows to provide a dynamical interpretation of the $W_2$ as th
 W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
 \end{align}
 where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}.
+\paragraph{Linearization of the $W_2$} Given a probability distribution $\nu$ the \textit{weighted Sobolev semi-norm} is defined for all squared integrable functions $f$ in $L_2(\nu)$ as $ \Vert f \Vert_{\dot{H}(\nu)} = \left(\int \Vert \nabla f(x) \Vert^2 \diff \nu(x) \right)^{\frac{1}{2}}$ with the convention $\Vert f \Vert_{\dot{H}^1(\nu)} = +\infty$ if $f$ doesn't have a square integrable gradient. \manote{write up a section about linearizing $W_2$ and maybe relate it to other distances}
+
 
 \begin{remark}
 	Such paths should not be confused with another kind of paths called \textit{mixture geodesics}. The mixture geodesic $(m_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
