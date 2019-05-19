@@ -1,21 +1,187 @@
 
 
-\subsection{Additional mathematical background}
+\subsection{Mathematical background}
 
-\subsubsection{MMD in Reproducing Kernel Hilbert Spaces (RKHS)}\label{sec:rkhs}
+\subsubsection{Maximum Mean Discrepancy and Reproducing Kernel Hilbert Spaces}\label{sec:rkhs}
+We recall here fundamental definitions and properties of reproducing kernel Hilbert spaces (RKHS) (see \cite{smola1998learning}) and Maximum Mean Discrepancies (MMD). 
+Given a positive semi-definite kernel $(x,y)\mapsto k(x,y)\in \R$ defined for all $x,y\in\X$, we denote by $\kH$ its corresponding RKHS (see \cite{smola1998learning}). The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$. A key property of $\kH$ is the reproducing property: for all $f \in \kH, f(x) = \langle f, k(x, .)\rangle_{\kH}$. Moreover, if $k$ is $m$-times differentiable w.r.t each of its coordinates, then any $f\in \kH$  is $m$-times differentiable  and $\partial^{\alpha}f(x)=\langle f, \partial^{\alpha} k(x,.) \rangle_{\kH}$ where $\alpha$ is any multi-index with $\alpha \leq m$ \cite[Lemma 4.34]{Steinwart:2008a}. when $k$ has at most quadratic growth, then for all $\mu\in \mathcal{P}_2(\X)$, $\int k(x,x) \diff \mu(x) <\infty$. In that case, for any $\mu\in \mathcal{P}_2(\X)$,  $ phi_{\mu} := \inf k(.,x)\diff \mu(x)$ is a well defined element in $\kH$ called the mean embedding of $\mu$. $k$ is said to be characteristic when such mean embedding is injective, that is any mean embedding is associated to a unique probability distribution. When $k$ is characteristic, it is possible to define a distance between distributions in $\mathcal{P}_2(\X)$ called the Maximum Mean Discrepancy:
+\begin{align}
+	MMD(\mu,\nu) = \Vert \phi_{\mu} - \phi_{\nu}\Vert_{\kH} \qquad \forall \mu,\nu \in \mathcal{P}_2(\X).
+\end{align}
+The difference between the mean embeddings of $\mu$ and $\nu$ is an element in $\kH$ called the witness function between $\mu$ and $\nu$:  $f_{\mu,\nu} = \phi_{\nu} - \phi_{\mu}$.
+%Suppose that $k(.,.))$ is measurable and that $\E_x[k(x,x)]<\infty$.
+%Given $\mathcal{P}(\X)$ the set of probability measures defined on $\X$, $k$
+%is said to be characteristic if:
+%\begin{equation}
+%\mu \mapsto \int k(.,x) d\mu(x)
+%\end{equation}
+%is injective, i.e. $\mu$ is mapped to a unique element in $\kH$ called its mean embedding.  Suppose additionally that $k(.,.)$ is continuous, $\X$ is compact, and that $\kH$ is dense in $C(\X)$ the space of continuous bounded functions on $\X$. Under these conditions, the MMD is a metric (\cite{gretton2012kernel}, Theorem 5).
 
-We recall here fundamental definitions and properties of reproducing kernel Hilbert spaces (RKHS) (see \cite{smola1998learning}) and Maximum Mean Discrepancies (MMD). The key aspect of a RKHS is
-the reproducing property: for all $f \in \kH, f(x) = \langle f, k(x, .)\rangle_{\kH}$. 
-Suppose that $k(.,.))$ is measurable and that $\E_x[k(x,x)]<\infty$.
-Given $\mathcal{P}(\X)$ the set of probability measures defined on $\X$, $k$
-is said to be characteristic if:
-\begin{equation}
-\mu \mapsto \int k(.,x) d\mu(x)
+%In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to %\cite{santambrogio2017euclidean} for a clear review on the subject. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
+
+\subsubsection{$2$-Wasserstein geometry}\label{subsec:wasserstein_flow}
+
+Let $T: \X \rightarrow \X$ be a measurable map, and $\rho \in \mathcal{P}(\X)$. The push-forward measure $T_{\#}\rho$
+is characterized by:
+\begin{align}
+%	&\quad T_{\#}\rho(A) = \rho(T^{-1}(A)) \text{ for every measurable set A,}\\
+%\text{or}&
+ \int_{y \in \X} \phi(y) d(T_{\#}\rho)(y) =\int_{x \in \X}\phi(T(x)) d\rho(x) \text{ for every measurable function $\phi$.}
+\end{align}
+Let $\mathcal{P}_2(\X)$ the set of probability distributions on $\X$ with finite second moment. For two given probability distributions $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$ we denote by $\Pi(\nu,\mu)$ the set of possible couplings between $\nu$ and $\mu$. In other words $\Pi(\nu,\mu)$ contains all possible distributions $\pi$ on $\X\times \X$ such that if $(X,Y) \sim \pi $ then $X \sim \nu $ and $Y\sim \mu$. The $2$-Wasserstein distance on $\mathcal{P}_2(\X)$ is defined by means of optimal coupling between $\nu$ and $\mu$ in the following way:
+\begin{align}\label{eq:wasserstein_2}
+W_2^2(\nu,\mu) := \inf_{\pi\in\Pi(\nu,\mu)} \int \Vert x - y\Vert^2 d\pi(x,y) \qquad \forall \nu, \mu\in \mathcal{P}_2(\X)
+\end{align}
+It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. \aknote{Maybe we can defer the def of pushforward measures and equation of $s_t$ to the Appendix?}For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
+\begin{equation}\label{eq:convex_combination}
+s_t(x,y) = (1-t)x+ty \qquad \forall x,y\in \X, \; \forall t\in [0,1].
 \end{equation}
-is injective, i.e. $\mu$ is mapped to a unique element in $\kH$ called its mean embedding.  Suppose additionally that $k(.,.)$ is continuous, $\X$ is compact, and that $\kH$ is dense in $C(\X)$ the space of continuous bounded functions on $\X$. Under these conditions, the MMD is a metric (\cite{gretton2012kernel}, Theorem 5).
+The function $s_t$ is well defined since $\X$ is a convex set. More formally, $\rho_t$ can be written as the projection or push-forward of the optimal coupling $\pi^{*}$ by $s_t$:  
+\begin{equation}\label{eq:displacement_geodesic}
+\rho_t = (s_t)_{\#}\pi^{*}
+\end{equation}
+It is easy to see that \cref{eq:displacement_geodesic} satisfies the following boundary conditions:
+\begin{align}\label{eq:boundary_conditions}
+\rho_0 = \nu \qquad \rho_1 = \mu.
+\end{align}
+Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a \textit{velocity vector field} $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho_t$ satisfies the continuity equation:
+\begin{equation}\label{eq:continuity_equation}
+\partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
+\end{equation}
+Equation \cref{eq:continuity_equation} is well defined in distribution sense even when $\rho_t$ doesn't have a density. $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ at time $t$ so that the length $l(\rho_t)$ of the curve $\rho_t$ would be given by:
+\begin{equation}
+l(\rho)^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t \quad \text{ where } \quad 
+\Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
+\end{equation}
+%\aknote{add constant speed geodesics}
+This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{Santambrogio:2015}, Theorem\aknote{check} 5.28):
+\begin{align}\label{eq:benamou-brenier-formula}
+W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
+\end{align}
+where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}.
 
-%\subsubsection{Optimal transport}
-\input{sections/background_OT}
+\begin{remark}
+	Such paths should not be confused with another kind of paths called \textit{mixture geodesics}. The mixture geodesic $(m_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
+	\begin{align}\label{eq:mixture_geodesic}
+	m_t = (1-t)\nu + t\mu \qquad \forall t \in [0,1].
+	\end{align}
+	Paths of the form \cref{eq:mixture_geodesic} can be thought as the shortest paths between two distributions when distances on $\mathcal{P}_2(\X)$ are measured using the $MMD$ (\cite{Bottou:2017} Theorem 5.3). We refer to \cite{Bottou:2017} for an overview of the notion of shortest paths in probability spaces and for the differences between mixture geodesics and displacement geodesics.
+	Although, we will be interested in the $MMD$ as a loss function, we will not consider the geodesics that are naturally associated to it and we will rather consider the displacement geodesics defined in \cref{eq:displacement_geodesic} for reasons that will become clear in \cref{subsec:lambda_convexity}.
+\end{remark}
+
+\subsubsection{Gradient flows on the space of probability measures}\label{subsec:gradient_flows_functionals}
+
+
+%Let $\F : \mathcal{P}(\X) \rightarrow \R \cup \infty$, $\rho \mapsto \F(\rho)$ a functional. %We call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{P}(\X)$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$. 
+Consider a 
+general functional $\F$ over the space of probability measures $\mathcal{P}(\X)$ of the form:
+\begin{equation}\label{eq:lyapunov}
+\F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
+\end{equation}
+where  $U$ is the internal energy, $V$ the potential (or confinement) energy and $W$ the
+interaction energy. The formal gradient flow equation associated to this functional can be written:
+\begin{equation}\label{eq:continuity_equation1}
+\frac{\partial \rho}{\partial t}= div( \rho \nabla \frac{\partial \F}{\partial \rho})=div( \rho \nabla (U'(\rho) + V + W * \rho))
+\end{equation}
+where $\nabla \frac{\partial \F}{\partial \rho}$ is the strong subdifferential of $\F$ associated with the 2-Wasserstein
+metric (see \cite{ambrosio2008gradient}, Lemma 10.4.1). Indeed, for some generalized notion of gradient $\nabla_{W_2}$, and for sufficiently regular $\rho$ and $\F$, the r.h.s. of \eqref{eq:continuity_equation1} corresponds to $-\nabla_{W_2}\F(\rho)$.
+The dissipation of entropy is defined as\aknote{add ref villani again}: 
+\begin{align}
+       \frac{d \F(\rho)}{dt} =-D(\rho) \quad \text{ with } D(\rho)= \int |\nabla \frac{\partial \F}{\partial \rho}|^2 \rho(x)dx
+%&\text{ and } \xi= \nabla \frac{\partial \F}{\partial \rho} = \nabla (U'(\rho) + V + W * \rho)
+\end{align}
+Standard considerations from fluid mechanics tell us that the continuity equation \eqref{eq:continuity_equation1} may be interpreted as the equation ruling the evolution of the density $\rho_t$ of a family of particles initially distributed according to some $\rho_0$, and each particle follows the velocity vector field $v_t=\nabla \frac{\partial{\F}}{\partial{\rho_t}}(\rho_t)$.
+
+\begin{remark} \label{rem:KL_Lyapunov}\aknote{define in the appendix div, laplacian...}
+	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\rho, \mu \in \mathcal{P}(\X)$ by
+	$KL(\rho,\mu)=\int log(\frac{\rho(x)}{\mu(x)})\rho(x)dx$. Indeed, $KL(\rho, \mu)=\int U(\rho(x))dx + \int V(x) \rho(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \rho}= \nabla \log(\rho) + \nabla V=  \nabla \log(\frac{\rho}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
+	\begin{equation}\label{eq:Fokker-Planck}
+	\frac{\partial{\rho}}{\partial t}= div(\rho \nabla V )+ \Delta \rho
+	\end{equation}
+It is well-known (see for instance \cite{jordan1998variational}) that the distribution of the Langevin diffusion:
+	\begin{equation}\label{eq:langevin_diffusion}
+	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
+	\end{equation}
+	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}.
+\end{remark}
+
+
+The next section describes the dynamics of the gradient flow of \cref{eq:closed_form_MMD} under the $2$-Wasserstein metric as defined in \cref{subsec:gradient_flows_functionals}.
+%The MMD was successfully used for training generative models (\cite{mmd-gan,Binkowski:2018,Arbel:2018}) where it is used in a loss functional to learn the parameters of the generator network. This motivate the  
+
+
+\subsection{Displacement convexity}\label{subsec:lambda_convexity}
+Just as for Euclidian spaces, an  important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is given by displacement convexity:
+\begin{definition}\label{def:displacement_convexity}[Displacement convexity]. Let $\mu$
+	and $\nu$ in $\mathcal{P}(\X)$. There exists a $\mu-a.e.$
+	unique gradient of a convex function, denoted by $\nabla\phi$, such that $\mu$
+	is equal to $\nabla\phi_{\#}\nu$ and one can define the displacement geodesic $\nu_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$
+	for $0\leq t\leq1$. We say that a functional $\nu\mapsto\mathcal{F}(\nu)$
+	is displacement convex if 
+	\begin{equation}
+	t\mapsto\mathcal{F}(\nu_{t})
+	\end{equation}
+	is convex for any $\nu$ and $\mu$. %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
+\end{definition}
+\cref{def:displacement_convexity} can be relaxed to more general notion of convexity called $\Lambda$-displacement convexity. We first define an admissible functional $\Lambda$:
+\begin{definition}\label{def:conditions_lambda}[Admissible $\Lambda$ functional]
+	A functional $(\rho,V)\mapsto \Lambda(\rho,V) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and any square integrable vectors field $V\in L_2(\X,\X,\rho)$ is admissible, if it satisfies:
+	\begin{itemize}
+	\item For any $\rho \in \mathcal{P}_2(\X)$,  $V\mapsto \Lambda(\rho,V)$ is a quadratic form on $V$.
+	\item For any minimizing geodesic $(\rho_t)_{0\leq t\leq 1}$ between two distributions $\nu$ and $\nu'$ with corresponding vector fields $(V_t)_{0\leq t\leq 1}$ it holds that $\inf_{0\leq t\leq 1}\Lambda(\rho_t,V_t)/\Vert V_t\Vert_{L_{2}(\rho_t)}^{2}>-\infty$ 
+\end{itemize}
+\end{definition}
+We can now define the notion of $\Lambda$-convexity:
+\begin{definition}\label{def:lambda-convexity}[$\Lambda$ convexity]
+	We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is $\Lambda$-convex
+	if for any $\nu$ and $\nu'$ and a constant speed geodesic $\text{\ensuremath{\rho_{t}}}$
+	between $\nu$ and $\nu'$ with velocity vector field $V_{t}$, i.e:
+	$\partial_{t}\rho_{t}+div(\rho_{t}V_{t})=0;\nu_{0}=\nu;\nu_{1}=\nu';$
+	the following holds:
+	\begin{equation}\label{eq:lambda_displacement_convex}
+		\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\int_{0}^{1}\Lambda(\nu_{s},v_{s})G(s,t)ds \qquad\forall\; t\in[0,1].
+	\end{equation}
+	where $(\rho,V)\mapsto\Lambda(\rho,V)$ satisfies \cref{def:conditions_lambda}.
+	and $G(s,t)=s(1-t) \mathbb{I}\{s\leq t\}
+	+t(1-s) \mathbb{I}\{s\geq t\}$.
+	A particular case is when $\Lambda(\rho,V)= \lambda \int \Vert V(x) \Vert^2 \diff \rho(x)   $ for some $\lambda\in \R$. In that case, \cref{eq:lambda_displacement_convex} becomes:
+\begin{align}\label{eq:semi-convexity}
+	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\frac{\lambda}{2}t(1-t)W_2^2(\nu,\nu')  \qquad\forall\; t\in[0,1].
+\end{align}
+\end{definition}
+\cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
+
+Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
+\begin{assumplist} 
+	\item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
+	\item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
+	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
+\end{assumplist}
+The next proposition states that the functional defined in \cref{sec:gradient_flow} is $\Lambda$-displacement convex and provide and explicit expression for the functional $\Lambda$. 
+%Some additional mild assumptions on the derivative of the kernel are also needed but deferred to the appendix for presentation purpose.\aknote{to do!!}
+
+\begin{proposition}
+	\label{prop:lambda_convexity} Suppose $\sup_{x,y} \partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)\le \lambda$ is satisfied for some $\lambda \in \R^+$. The functional $\nu\mapsto \F(\nu)$ is $\text{\ensuremath{\Lambda}}$-convex
+	with $\Lambda$ given by:
+	\begin{equation}
+	\Lambda(\nu,v)=\langle v,(C_{\nu}-\lambda \F(\nu)^{\frac{1}{2}}I)v\rangle_{L_{2}(\nu)}\label{eq:Lambda}
+	\end{equation}
+	where $C_{\nu}$ is the (positive) operator defined by $(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')$ for any $x \in \X$.
+	%\begin{align}\label{eq:positive_operator_C}
+	%(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')
+	%\end{align}
+\end{proposition}
+%
+%
+Consider the geodesic $\nu_{t}=((1-t)Id+t\nabla\phi)_{\#}\nu$ of \cref{def:displacement_convexity}, so that $\nu_{1}=\mu$ and at time $t=1$ and thus $\F(\nu_{1})=0$. It is worth noting that by \cref{prop:lambda_convexity}, we get that the non-negative hessian \eqref{eq:lambda_displacement_convex} at the global minimum $\mu$, is $\langle v_{t},C_{\nu_{t}}v_{t}\rangle_{L_{2}(\nu_{t})}$ which is positive. Also, we can now write the following convexity inequalities along the gradient flow of $\F$.
+
+
+
+
+
+
+
+%\input{sections/background_OT}
 
 \subsubsection{Stochastic processes}\label{sec:ito_stochastic}
 
@@ -70,6 +236,8 @@ $W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniq
 	Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
 	The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of the Langevin diffusion, seems much more suitable for first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_{\mu, \nu_n}$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient},\cite{li2018gradient},\cite{shi2018spectral}). In contrast, the discretized flow of the $MMD^2$ presented in this section seems naturally adapted to the sample-based setting.
 \end{remark}
+
+
 
 
 \subsection{Lambda displacement convexity of the MMD}

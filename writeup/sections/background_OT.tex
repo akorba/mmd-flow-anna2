@@ -1,7 +1,7 @@
 
 %\subsection{Background on optimal transport}
 
-In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to %\cite{santambrogio2017euclidean} for a clear review on the subject. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
+%In this section we recall how to endow the space of probability measures $\mathcal{P}(\X)$ on $\X$ a compact, convex subset of $\R^d$ with a distance (e.g, optimal transport distances), and then deal with gradient flows of suitable functionals on such a metric space. The reader may refer to %\cite{santambrogio2017euclidean} for a clear review on the subject. For a given distributions $\nu\in\mathcal{P}(\X)$ and an integrable function $f$ under $\nu$, the expectation of $f$ under $\nu$ will be written either as $\nu(f)$ or $\int f \diff\nu$ depending on the context. 
 
 \subsubsection{$2$-Wasserstein geometry}\label{subsec:wasserstein_flow}
 
@@ -50,18 +50,15 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 	m_t = (1-t)\nu + t\mu \qquad \forall t \in [0,1].
 	\end{align}
 	Paths of the form \cref{eq:mixture_geodesic} can be thought as the shortest paths between two distributions when distances on $\mathcal{P}_2(\X)$ are measured using the $MMD$ (\cite{Bottou:2017} Theorem 5.3). We refer to \cite{Bottou:2017} for an overview of the notion of shortest paths in probability spaces and for the differences between mixture geodesics and displacement geodesics.
-	Although, we will be interested in the $MMD$ as a loss function, we will not consider the geodesics that are naturally associated to it and we will rather consider the displacement geodesics defined in \cref{eq:displacement_geodesic} for reason that will become clear in \cref{subsec:wasserstein_flow}.
+	Although, we will be interested in the $MMD$ as a loss function, we will not consider the geodesics that are naturally associated to it and we will rather consider the displacement geodesics defined in \cref{eq:displacement_geodesic} for reasons that will become clear in \cref{subsec:lambda_convexity}.
 \end{remark}
 
-\subsubsection{Gradient flows on the space of probability measures}\label{sec:gradient_flows_functionals}
+\subsubsection{Gradient flows on the space of probability measures}\label{subsec:gradient_flows_functionals}
 
 
 %Let $\F : \mathcal{P}(\X) \rightarrow \R \cup \infty$, $\rho \mapsto \F(\rho)$ a functional. %We call $\frac{\partial{\F}}{\partial{\rho}}$ if it exists, the unique (up to additive constants) function such that $\frac{d}{d\epsilon}\F(\rho+\epsilon  f)_{\epsilon=0}=\int\frac{\partial{\F}}{\partial{\rho}}(\rho) df$ for every perturbation $f$ such that, at least for $\epsilon \in [0, \epsilon_0]$, the measure $\rho +\epsilon f$ belongs to $\mathcal{P}(\X)$. The function $\frac{\partial{\F}}{\partial{\rho}}$ is called first variation of the functional $\F$ at $\rho$. 
 Consider a 
-\textit{Lyapunov functional} 
-(or "free energy") $\F$ over the space of probability measures $\mathcal{P}(\X)$
-(see \cite{Villani:2004}), 
-i.e. a functional of the form:
+general functional $\F$ over the space of probability measures $\mathcal{P}(\X)$ of the form:
 \begin{equation}\label{eq:lyapunov}
 \F(\rho)=\int U(\rho(x)) \rho(x)dx + \int V(x)\rho(x)dx + \int W(x,y)\rho(x)\rho(y)dxdy
 \end{equation}
@@ -93,14 +90,12 @@ It is well-known (see for instance \cite{jordan1998variational}) that the distri
 \end{remark}
 
 
-The next section describes the dynamics of the gradient flow of \cref{eq:closed_form_MMD} under the $2$-Wasserstein metric as defined in \cref{subsec:wasserstein_flow}.
+The next section describes the dynamics of the gradient flow of \cref{eq:closed_form_MMD} under the $2$-Wasserstein metric as defined in \cref{subsec:gradient_flows_functionals}.
 %The MMD was successfully used for training generative models (\cite{mmd-gan,Binkowski:2018,Arbel:2018}) where it is used in a loss functional to learn the parameters of the generator network. This motivate the  
 
 
-\subsection{Convexity w.r.t. 2-Wassertein geodesics}\label{subsec:more_lambda_convexity}
-
-
-
+\subsection{Displacement convexity}\label{subsec:lambda_convexity}
+Just as for Euclidian spaces, an  important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is given by displacement convexity:
 \begin{definition}\label{def:displacement_convexity}[Displacement convexity]. Let $\mu$
 	and $\nu$ in $\mathcal{P}(\X)$. There exists a $\mu-a.e.$
 	unique gradient of a convex function, denoted by $\nabla\phi$, such that $\mu$
@@ -112,28 +107,33 @@ The next section describes the dynamics of the gradient flow of \cref{eq:closed_
 	\end{equation}
 	is convex for any $\nu$ and $\mu$. %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
 \end{definition}
-
+\cref{def:displacement_convexity} can be relaxed to more general notion of convexity called $\Lambda$-displacement convexity. We first define an admissible functional $\Lambda$:
+\begin{definition}\label{def:conditions_lambda}[Admissible $\Lambda$ functional]
+	A functional $(\rho,V)\mapsto \Lambda(\rho,V) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and any square integrable vectors field $V\in L_2(\X,\X,\rho)$ is admissible, if it satisfies:
+	\begin{itemize}
+	\item For any $\rho \in \mathcal{P}_2(\X)$,  $V\mapsto \Lambda(\rho,V)$ is a quadratic form on $V$.
+	\item For any minimizing geodesic $(\rho_t)_{0\leq t\leq 1}$ between two distributions $\nu$ and $\nu'$ with corresponding vector fields $(V_t)_{0\leq t\leq 1}$ it holds that $\inf_{0\leq t\leq 1}\Lambda(\rho_t,V_t)/\Vert V_t\Vert_{L_{2}(\rho_t)}^{2}>-\infty$ 
+\end{itemize}
+\end{definition}
+We can now define the notion of $\Lambda$-convexity:
 \begin{definition}\label{def:lambda-convexity}[$\Lambda$ convexity]
 	We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is $\Lambda$-convex
-	if for any $\nu$ and $\mu$ and a minimizing geodesic $\text{\ensuremath{\nu_{t}}}$
-	between $\nu$ and $\mu$ with velocity vector field $v_{t}$, i.e:
-	$\partial_{t}\nu_{t}+div(\nu_{t}v_{t})=0;\nu_{0}=\nu;\nu_{1}=\mu;$
+	if for any $\nu$ and $\nu'$ and a constant speed geodesic $\text{\ensuremath{\rho_{t}}}$
+	between $\nu$ and $\nu'$ with velocity vector field $V_{t}$, i.e:
+	$\partial_{t}\rho_{t}+div(\rho_{t}V_{t})=0;\nu_{0}=\nu;\nu_{1}=\nu';$
 	the following holds:
 	\begin{equation}\label{eq:lambda_displacement_convex}
-	\frac{d^{2}\mathcal{F}(\nu_{t})}{dt^{2}}\geq\Lambda(\nu_{t},v_{t})\qquad\forall\; t\in[0,1].
+		\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\int_{0}^{1}\Lambda(\nu_{s},v_{s})G(s,t)ds \qquad\forall\; t\in[0,1].
 	\end{equation}
-	where $(\nu,v)\mapsto\Lambda(\nu,v)$
-	is a function that defines for each $\nu \in \mathcal{P}(\X)$
-	a quadratic form on the set of square integrable vectors valued functions
-	$v$ , i.e: $v\in L_{2}(\mathbb{R}^{d},\mathbb{R}^{d},\nu)$. We
-	further assume that $\inf_{\nu,v}\Lambda(\nu,v)/\Vert v\Vert_{L_{2}(\nu)}^{2}>-\infty$. 
-	Also, the following holds:
-	\begin{equation}\label{eq:integral_lambda_convexity}
-	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\int_{0}^{1}\Lambda(\nu_{s},v_{s})G(s,t)ds
-	\end{equation}
-	where $G(s,t)=s(1-t) \mathbb{I}\{s\leq t\}
+	where $(\rho,V)\mapsto\Lambda(\rho,V)$ satisfies \cref{def:conditions_lambda}.
+	and $G(s,t)=s(1-t) \mathbb{I}\{s\leq t\}
 	+t(1-s) \mathbb{I}\{s\geq t\}$.
+	A particular case is when $\Lambda(\rho,V)= \lambda \int \Vert V(x) \Vert^2 \diff \rho(x)   $ for some $\lambda\in \R$. In that case, \cref{eq:lambda_displacement_convex} becomes:
+\begin{align}\label{eq:semi-convexity}
+	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\frac{\lambda}{2}t(1-t)W_2^2(\nu,\nu')  \qquad\forall\; t\in[0,1].
+\end{align}
 \end{definition}
+\cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
 
 Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist} 

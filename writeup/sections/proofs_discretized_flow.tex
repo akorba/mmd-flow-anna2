@@ -423,28 +423,6 @@ The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
 
 Let $  \nu$ and $\nu'$ be two distributions and $\Pi$ a coupling between $\nu$ and $\nu'$. We consider the path $\rho_t$ defined as $\rho_t=(\pi_t)_{\#}\Pi$ where $\pi_t(X,Y)=(1-t)X+tY$. It is possible to provide an expression for the time derivative of $\mathcal{F}{\rho_t}$. This is given by ?\\\aknote{beware, not finished!}
 
-%\begin{lemma}\label{lem:time_derivative}
-%The time derivative of $\mathcal{F}(\rho_t)$ is given by:
-%	\begin{align*}
-%		\frac{d \mathcal{F}(\rho_t)}{dt}&=\int \nabla f_t(\pi_t(X)).(Y-X)d\Pi(X,Y)\\
-%	\end{align*}
-%	where $f_t$ is the witness function at time $t$ and is given by:
-%	\begin{align}
-%	f_t(x)=\rho_t(k(X,x))-\mu(k(X,x)) \qquad \forall t\in [0,1]
-%	\end{align}	
-%\end{lemma}
-%\begin{proof}
-%	The proof is very similar to the one in \cref{lem:derivative_mmd}. Indeed we still have
-%	\begin{align*}
-%		\frac{d \mathcal{F}(\rho_t)}{dt} = \langle f_t , \frac{df_t}{dt} \rangle
-%	\end{align*}
-%	And the time derivative of $f_t$ at each point $x\in\mathbb{R}^d$ is obtained by direct computation:
-%	\begin{align*}
-%		 \frac{df_t}{dt}= \int \nabla k(\pi_t(X,Y),.).(Y-X)d\Pi(X,Y)
-%	\end{align*}
-%	The result follows using the reproducing property in $\kH$.
-% \end{proof}
-
 
 
 
@@ -648,3 +626,21 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 	%Let $C_2=C L_k^2$. 
 	Then, for the second term at the r.h.s. of  \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
 \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
