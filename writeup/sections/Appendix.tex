@@ -161,7 +161,7 @@ We can now define the notion of $\Lambda$-convexity:
 	+t(1-s) \mathbb{I}\{s\geq t\}$.
 	A particular case is when $\Lambda(\rho,v)= \lambda \int \Vert v(x) \Vert^2 \diff \rho(x)   $ for some $\lambda\in \R$. In that case, \cref{eq:lambda_displacement_convex} becomes:
 \begin{align}\label{eq:semi-convexity}
-	\F(\nu_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\frac{\lambda}{2}t(1-t)W_2^2(\nu,\nu')  \qquad\forall\; t\in[0,1].
+	\F(\rho_{t})\leq(1-t)\F(\nu_{0})+t\F(\nu_{1})-\frac{\lambda}{2}t(1-t)W_2^2(\nu_0,\nu_1)  \qquad\forall\; t\in[0,1].
 \end{align}
 \end{definition}
 \cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
@@ -414,39 +414,39 @@ To provide a proof of \cref{th:rates_mmd}, we need the following preliminary res
 
 
 \begin{lemma}	\label{lem:grad_flow_lambda_version}
-	Let $\nu$ be a distribution in $\mathcal{P}_2(\X)$ and $\mu$ the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal coupling between $\nu$ and $\mu$, and $\nu_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $V_t$ as defined in \cref{eq:continuity_equation}. Finally let $\nabla f_{\nu,\mu}(X)$ be the gradient of the witness function between $\mu$ and $\nu$. The following inequality holds: %\manote{This should be a standard result, just need to cite it}
+	Let $\nu$ be a distribution in $\mathcal{P}_2(\X)$ and $\mu$ the target distribution such that $\F(\mu)=0$.  Let $\pi$ be an optimal coupling between $\nu$ and $\mu$, and $\rho_t$ the displacement geodesic defined by \cref{eq:displacement_geodesic} with its corresponding velocity vector  $v_t$ as defined in \cref{eq:continuity_equation}. Finally let $\nabla f_{\nu,\mu}(X)$ be the gradient of the witness function between $\mu$ and $\nu$. The following inequality holds: %\manote{This should be a standard result, just need to cite it}
 	\begin{align*}
 	\int \nabla f_{\mu, \nu}(x).(y-x) d\pi(x,y)
 	\leq
-	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\nu_s,V_s)(1-s)ds
+	\F(\mu)- \F(\nu) -\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds
 	\end{align*}
 	where $\Lambda$ is defined \cref{prop:lambda_convexity}.
 \end{lemma}
 \begin{proof}
 	Recall that $\rho_t$ is given by $\nu_t = (s_t)_{\#}\pi$ with $s_t$ defined in \eqref{eq:convex_combination}. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
 	\begin{align*}
-	\mathcal{F}(\nu_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\nu_s,V_s)G(s,t)ds
+	\mathcal{F}(\rho_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\rho_s,v_s)G(s,t)ds
 	\end{align*}
 	Hence by bringing $\mathcal{F}(\nu)$ to the l.h.s and dividing by $t$ and then taking its limit at $0$ it follows that:
 	\begin{align*}
-	\dot{\F}(\nu_t)\vert_{t=0}\leq \mathcal	{F}(\mu)-\mathcal{F}(\nu)-\int_0^1 \Lambda(\nu_s,V_s)(1-s)ds.	
+	\dot{\F}(\rho_t)\vert_{t=0}\leq \mathcal	{F}(\mu)-\mathcal{F}(\nu)-\int_0^1 \Lambda(\rho_s,v_s)(1-s)ds.	
 	\end{align*}
-	where $\dot{F}(\nu_t)=d\F(\nu_t)/dt$ and since $\lim_{t \rightarrow 0}G(s,t)=(1-s)$.
+	where $\dot{F}(\rho_t)=d\F(\rho_t)/dt$ and since $\lim_{t \rightarrow 0}G(s,t)=(1-s)$.
 	Moreover, by \cref{lem:derivatives_witness}, the time derivative of the witness function between $\nu$ and $\mu$ is well defined, so that $\dot{\F}(\rho_t)$ can be written as:
 	\[
-	\dot{\F}(\nu_t) = \langle f_{\mu,\nu_t},\dot{f}_{\mu,\nu_t} \rangle_{\kH}
+	\dot{\F}(\rho_t) = \langle f_{\mu,\rho_t},\dot{f}_{\mu,\rho_t} \rangle_{\kH}
 	\]
 	Now by \cref{lem:derivatives_witness}, \cref{eq:inner_prod_deriative_witness} it follows that:
 	\[
-	\dot{\F}(\nu_t) = \int \nabla f_{\mu,\nu_t}(x).V_t(x)\diff \nu_t(x)
+	\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(x).v_t(x)\diff \nu_t(x)
 	\]
-	By definition of $\nu_t$,  one can further write:
+	By definition of $\rho_t$,  one can further write:
 	\[
-	\dot{\F}(\nu_t) = \int \nabla f_{\mu,\nu_t}(s_t(x,y)).(y-x)\diff \pi(x,y)
+	\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(s_t(x,y)).(y-x)\diff \pi(x,y)
 	\]
-	where we used the fact that $V_t(s_t(x,y))=(y-x)$\manote{cite something}. Hence at $t=0$ we get:
+	where we used the fact that $v_t(s_t(x,y))=(y-x)$\manote{cite something}. Hence at $t=0$ we get:
 	\[
-	\dot{\F}(\nu_t)\vert_{t=0} = \int \nabla f_{\mu,\nu}(x).(y-x)\diff \pi(x,y)
+	\dot{\F}(\rho_t)\vert_{t=0} = \int \nabla f_{\mu,\nu}(x).(y-x)\diff \pi(x,y)
 	\]
 	which shows the desired result.
 \end{proof}
@@ -636,20 +636,18 @@ W_2^2(\nu_j,\mu)-W_2^2(\nu_{j+1},\mu)-2\gamma K(\rho^j) \qquad \forall \; 0 \leq
 \subsection{Lojasiewicz type inequalities}
 
 \begin{proof}[Proof of \cref{prop:lojasiewicz}]\label{proof:prop:lojasiewicz}
-	Indeed, this follows simply from the definition of the negative Sobolev distance: Consider $g = \Vert \nabla f_t\Vert^{-1}_{L_2(\nu_t)} f_t$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
+	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} f_{\mu, \nu_t}$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
 	\begin{align}
-	\Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)}\geq \vert \nu_t(g) - \mu(g)  \vert
+	\Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)}\geq \vert \int g \diff \nu_t - \int g \diff \mu  \vert
 	\end{align}
 	Now, recall the definition of $g$, which implies that
 	\[
-	\vert \nu_t(g) - \mu(g)  \vert = \Vert \nabla f_t\Vert^{-1}_{L_2(\nu_t)} \vert \nu_t(f_t)-\mu(f_t)\vert.
+	\vert \int g \diff \nu_t - \int g \diff \mu  \vert = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} \vert \int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu, \nu_t} \diff \mu \vert.
 	\]
-	But since $f_t$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\nu_t(f_t)-\mu(f_t) = \Vert f_t\Vert^2_{\kH}$.
-	Using \cref{eq:bounded_neg_sobolev}, we get the desired Lojasiewicz inequality \eqref{eq:PL_type_inequality}.\\
-	
-	Then, by \cref{prop:mmd_flow,eq:PL_type_inequality}, we have that:  
+	But since $f_{\mu, \nu_t}$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu,\nu_t}\diff \mu = \Vert f_{\mu, \nu_t}\Vert^2_{\kH}$. We thus get the desired Lojasiewicz inequality \eqref{eq:inequality_neg_sobolev}.\aknote{make this passage clearer} Then, by 
+	using $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \le C$ and \cref{prop:decay_mmd}, we have that:  
 	\begin{align}
-	\dot{\F}(\nu_t) = - \Vert \nabla f_t \Vert^2_{L_2(\nu_t)} \leq  -\frac{4}{C}\F(\nu_t)^2	
+	\dot{\F}(\nu_t) = - \Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)} \leq  -\frac{4}{C}\F(\nu_t)^2	
 	\end{align}
 	It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
