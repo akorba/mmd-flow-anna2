@@ -348,15 +348,15 @@ Hence
 \begin{equation*}
 \mathcal{L}(\nu)=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge \mathcal{L}(\mu)+ \mathcal{F}(\nu)
 \end{equation*}
-which proves the first half of the framing. Then, we also have by Cauchy-Schwartz inequality:\aknote{not clear}
+which proves the first half of the framing by substracting $var(y)$ on each side of the inequality. Then, we also have by Cauchy-Schwartz inequality:
 \begin{align*}
-\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)- \phi(z,\nu)}\diff s(z)&\le\int \Vert \phi(z,\mu)-m(z)\Vert^2 \Vert \phi(z,\nu)-\phi(z,\mu)\Vert^2 \diff s(z)\\
-&=2 \mathcal{L}(\mu)^{\frac12}\mathcal{F(\nu)}
+\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)- \phi(z,\nu)}\diff s(z)&\le\int \Vert \phi(z,\mu)-m(z)\Vert^2 \diff s(z)\int \Vert \phi(z,\nu)-\phi(z,\mu)\Vert^2 \diff s(z)\\
+&=2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
 \end{align*}
 which proves the second half of the framing since:
 \begin{align*}
-\mathcal{L}(\nu)&\le \mathcal{L}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)\\
-&\le(\mathcal{L}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
+\bar{\mathcal{L}}(\nu)&\le \bar{\mathcal{L}}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)^{\frac12}\\
+&\le(\bar{\mathcal{L}}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
 \end{align*}
 \end{proof}
 
