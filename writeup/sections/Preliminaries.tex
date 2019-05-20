@@ -99,11 +99,11 @@ The MMD was successfully used to train generative networks \cite{Arbel:2018,Bink
 Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{Rotskoff:2019}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
  Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
 \begin{align}\label{eq:regression_network}
-	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim \mathbb{P}  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
+	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim p  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
 \end{align}
-where $(y,z)$ are samples from the data distribution and the regression function is an average network of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
+where $(y,z) \sim p$ are samples from the data distribution and the regression function is an average network of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
 \begin{align}\label{eq:lifted_regression}
-	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,u)\sim \mathbb{P} } \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
+	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
 \end{align} 
 For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$:
 \begin{proposition}\label{prop:inequality_mmd_loss}
@@ -116,7 +116,7 @@ For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by s
 		\mathcal{F}(\nu) + \bar{\mathcal{L}}(\mu)
 	\end{align}
 	where $\F(\nu)$ is defined by \cref{eq:mmd_as_free_energy} with  a kernel $k$  constructed from the data as an expected product of networks:
-\begin{align}
+\begin{align}\label{eq:kernel_NN}
 	k(x,x') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,x)^T\psi(z,x')]
 \end{align}
 Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
