@@ -34,7 +34,7 @@ Let $\mathcal{P}_2(\X)$ the set of probability distributions on $\X$ with finite
 \begin{align}\label{eq:wasserstein_2}
 W_2^2(\nu,\mu) := \inf_{\pi\in\Pi(\nu,\mu)} \int \Vert x - y\Vert^2 d\pi(x,y) \qquad \forall \nu, \mu\in \mathcal{P}_2(\X)
 \end{align}
-It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. \aknote{Maybe we can defer the def of pushforward measures and equation of $s_t$ to the Appendix?}For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
+It is a well established fact that such optimal coupling $\pi^*$ exists. Moreover, it can be used to define a path $(\rho_t)_{t\in [0,1]}$ between $\nu$ and $\mu$ in $\mathcal{P}_2(\X)$. For a given time $t$ in $[0,1]$ and given a sample $(x,y)$ from $\pi^{*}$, it possible to construct a sample $z_t$ from $\rho_t$ by taking the convex combination of $x$ and $y$: $z_t = s_t(x,y)$ where $s_t$ is given by \cref{eq:convex_combination}
 \begin{equation}\label{eq:convex_combination}
 s_t(x,y) = (1-t)x+ty \qquad \forall x,y\in \X, \; \forall t\in [0,1].
 \end{equation}
@@ -209,9 +209,8 @@ We state here all the assumptions used to prove all the results:
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $k$ and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[existence and uniqueness]
 \aknote{this will go in the Appendix. please comment the other proposition in the appendix if this stays in the main.tex}
-Under Lipschitzness of $\nabla k$, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cref{sec:ito_stochastic}). The uniqueness of a gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven later, and from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$.\aknote{check} The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+	Under Lipschitzness of $\nabla k$, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula. The uniqueness of a gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven later, and from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$.\aknote{check} The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
 \end{proof}
-
 
 We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
 
@@ -966,7 +965,7 @@ The second and last lines are obtained using a triangular inequality while the t
 
 
 
-\begin{lemma}\label{lem:derivative_mmd_augmented}\manote{Notations still needs to be adjusted in this lemma}\manote{State assumption on bounded hessian}
+\begin{lemma}\label{lem:derivative_mmd_augmented}\manote{State assumption on bounded hessian}
 	Let $\phi$ be a map from  $\X \times\mathcal{U} $ to $\X$  and $q$ in $\mathcal{P}_2(\X \times \mathcal{U})$. Denote by  $P_x$ as the projection map from $\X \times\mathcal{U}$ to $\X$ and consider the path $\rho_t$ between $(P_x)_{\#}q$ and $(P_x+\phi)_{\#}q$ given by: $\rho_t=  (P_x+t\phi)_{\#}q \qquad \forall t\in [0,1]$.
 Then, the time derivative of $\mathcal{F}(\rho_t)$ is given by:
 	\begin{align*}
@@ -987,7 +986,7 @@ We start by computing the first derivative. Recalling that $\mathcal{F}(\rho_t)$
 \dot{\F}(\rho_t)=\langle f_{t},\dot{f}_{t}\rangle_{\kH}.
 \]
 Using the definition
-of $\rho_{t}=(I+t\phi)_{\#}q$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below} \manote{use the proposition giving the time derivative of witness}
+of $\rho_{t}=(I+t\phi)_{\#}q$ we can write:\manote{use the proposition giving the time derivative of witness}
 \[
 \dot{f}_{t}=\int \phi(x,u).\nabla k(s_t(x,u),.)\diff q(x,u),
 \]
@@ -1008,16 +1007,16 @@ The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
 \end{proof}
 
 
-\begin{lemma}\label{lem:integral_lambda_convexity}\aknote{we can merge the two corollaries}
+\begin{lemma}\label{lem:integral_lambda_convexity}
 Assume that for any geodesic $\rho_{t}$ between
 $\rho_{0}$ and $\rho_{1}$ in $\mathcal{P}(\X)$ with velocity vectors $(V_t)_{0\leq t\leq 1}$ the following holds:
 \[
 \ddot{\F}(\rho_{t}) \geq \Lambda(\rho_t,V_t)
 \]
 from some admissible functional $\Lambda$ as defined in \cref{def:conditions_lambda}, then:
-\begin{equation}
-\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
-\end{equation}
+\begin{align*}
+\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds
+\end{align*}
 with $G(s,t)=s(1-t) \mathbbm{1}\{s\leq t\}
 +t(1-s) \mathbbm{1}\{s\geq t\}$ for $0\leq s,t\leq 1$.
 
