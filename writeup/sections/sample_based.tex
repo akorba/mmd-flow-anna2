@@ -4,9 +4,9 @@
 
 The update equation \eqref{eq:discretized_noisy_flow} involves computing expectations of the gradient of the kernel $k$ w.r.t the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. Specifically, we adopt the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which, at each iteration $n$, considers a system of $N$ interacting particles $(X_n^i)_{1\leq i\leq N}$  and their empirical distribution in order to approximate $\nu_n$. 
 More precisely, given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and a step-size $\gamma$, the approximate scheme iteratively updates the $i$-th particle using: 
-\begin{equation}\label{eq:euler_maruyama}
-X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)\;
-\end{equation}
+\begin{align}\label{eq:euler_maruyama}
+X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i);
+\end{align}
 where $U_{n}^{i}$ are i.i.d standard gaussians whereas $\hat{\mu}$ and $\hat{\nu}_n$ denote the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. In \cref{eq:euler_maruyama}, $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily using only the available samples at iteration $n$:
 \begin{align}
 	 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
