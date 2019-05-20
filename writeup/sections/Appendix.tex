@@ -172,7 +172,7 @@ We can now define the notion of $\Lambda$-convexity:
 We state here all the assumptions on the kernel $k$ used to prove all the results: \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist}
-	\item \label{assump:lipschitness_nabla_k} $\nabla k(x,.) - \nabla k(y,.)\le \alpha \Vert x-y \Vert^2$ for any $x,y \in \X$.
+	\item \label{assump:lipschitness_nabla_k} $|\nabla k(x,.) - \nabla k(y,.)|\le L_k \Vert x-y \Vert$ for any $x,y \in \X$.
 	\item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
 	\item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
 	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
@@ -397,22 +397,25 @@ which proves the second half of the framing since:
 We provide now a proof of \cref{prop:lambda_convexity}:
 \begin{proof}[Proof of \cref{prop:lambda_convexity}]\label{proof:prop:lambda_convexity}[$\Lambda$- displacement convexity of the MMD]
 To prove that $\nu\mapsto \F(\nu)$ is $\Lambda$-convex
-we need to compute the second derivative $\ddot{\F}(\rho_{t})$
+we need to compute the second time derivative $\ddot{\F}(\rho_{t})$
 where $\rho_{t}$ is a displacement geodesic between two probability
-distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such a minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall from \cref{eq:mmd_norm_witness} that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By  \cref{lem:derivatives_witness},\cref{eq:derivatives_witness}, we know that $\dot{f}_t$ and $\ddot{f}_t $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
+distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such a minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. %To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. 
+We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By  \cref{lem:derivatives_witness}, \cref{eq:derivatives_witness}, we know that $\dot{f}_{\mu, \nu_t}$ and $\ddot{f}_{\mu, \nu_t} $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
 \[
- \dot{\F}(\rho_t) = \langle f_t, \dot{f_t}\rangle_{\kH};\qquad \ddot{\F}(\rho_t) = \Vert \dot{f_t}\Vert^2_{\kH} + \langle f_t, \ddot{f_t}\rangle_{\kH}.
+ \dot{\F}(\rho_t) = \langle f_{\mu,\nu_t}, \dot{f}_{\mu,\nu_t}\rangle_{\kH};\qquad \ddot{\F}(\rho_t) = \Vert \dot{f}_{\mu,\nu_t}\Vert^2_{\kH} + \langle f_{\mu,\nu_t}, \ddot{f}_{\mu,\nu_t}\rangle_{\kH}.
  \]
-While $\Vert \dot{f_t}\Vert^2_{\kH}$ is non-negative, $\langle f_t, \ddot{f_t}\rangle_{\kH}$ can in general be negative. We are only interested in quantifying how negative it can get, for this purpose we use Cauchy-Schwartz inequality which directly gives:
+While $\Vert \dot{f}_{\mu,\nu_t}\Vert^2_{\kH}$ is non-negative, $\langle f_{\mu,\nu_t}, \ddot{f}_{\mu,\nu_t}\rangle_{\kH}$ can in general be negative. We are only interested in quantifying how negative it can get, for this purpose we use Cauchy-Schwartz inequality which directly gives:
 \[
-\ddot{\F}(\rho_t)\geq  \Vert \dot{f}_t \Vert^2_{\kH} - \Vert f_t \Vert_{\kH}\Vert \ddot{f}_t\Vert_{\kH} 
+\ddot{\F}(\rho_t)\geq  \Vert \dot{f}_{\mu,\nu_t} \Vert^2_{\kH} - \Vert f_{\mu,\nu_t} \Vert_{\kH}\Vert \ddot{f}_{\mu,\nu_t}\Vert_{\kH} 
 \]
 
 Finally by \cref{lem:derivatives_witness}, \cref{eq:norm_derivative_witness}, we can conclude that:
 \[
 	\ddot{\F}(\rho_t)\geq  \langle v_t,(C_{\rho_t} - \lambda \F(\rho_t)^{\frac{1}{2}}) v_t \rangle_{L_2(\rho_t)} 
 \]
-with $C_{\rho_t}$ given by \cref{eq:positive_operator_C} and $I$ is the identity operator in $L_2(\rho_t)$. Now we can introduce the function:
+where $C_{\rho_t}$ is the positive operator given by  $(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')$ for any $x \in \X$.
+%and $I$ is the identity operator in $L_2(\rho_t)$. 
+Now we can introduce the function:
 \begin{align}
 	\Lambda(\nu,v) = \langle v ,( C_{\nu} -\lambda \F(\nu)^{\frac{1}{2}} I) v \rangle_{L_2(\nu)} 
 \end{align}
