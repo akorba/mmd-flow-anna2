@@ -109,18 +109,18 @@ The dissipation of energy along the flow is defined as (see \cite{Villani:2004})
 \end{align}
 Standard considerations from fluid mechanics tell us that the continuity equation \eqref{eq:continuity_equation1} may be interpreted as the equation ruling the evolution of the density $\nu_t$ of a family of particles initially distributed according to some $\nu_0$, and each particle follows the velocity vector field $V_t=\nabla \frac{\partial{\F}}{\partial{\nu_t}}(\nu_t)$.
 
-\begin{remark} \label{rem:KL_Lyapunov}
-	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\nu, \mu \in \mathcal{P}(\X)$ by
-	$KL(\nu,\mu)=\int log(\frac{\nu(x)}{\mu(x)})\nu(x)dx$. Indeed, $KL(\nu, \mu)=\int U(\nu(x))dx + \int V(x) \nu(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \nu}= \nabla \log(\nu) + \nabla V=  \nabla \log(\frac{\nu}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
-	\begin{equation}\label{eq:Fokker-Planck}
-	\frac{\partial{\nu}}{\partial t}= div(\nu \nabla V )+ \Delta \nu
-	\end{equation}
-	where $\Delta$ is the Laplacian operator. It is well-known (see for instance \cite{jordan1998variational}) that the distribution of the Langevin diffusion:
-	\begin{equation}\label{eq:langevin_diffusion}
-	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
-	\end{equation}
-	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}.
-\end{remark}
+%\begin{remark} \label{rem:KL_Lyapunov}
+%	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\nu, \mu \in \mathcal{P}(\X)$ by
+%	$KL(\nu,\mu)=\int log(\frac{\nu(x)}{\mu(x)})\nu(x)dx$. Indeed, $KL(\nu, \mu)=\int U(\nu(x))dx + \int V(x) \nu(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \nu}= \nabla \log(\nu) + \nabla V=  \nabla \log(\frac{\nu}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
+%	\begin{equation}\label{eq:Fokker-Planck}
+%	\frac{\partial{\nu}}{\partial t}= div(\nu \nabla V )+ \Delta \nu
+%	\end{equation}
+%	where $\Delta$ is the Laplacian operator. It is well-known (see for instance \cite{jordan1998variational}) that the distribution of the Langevin diffusion:
+%	\begin{equation}\label{eq:langevin_diffusion}
+%	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
+%	\end{equation}
+%	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}.
+%\end{remark}
 
 
 %The next section describes the dynamics of the gradient flow of \cref{eq:closed_form_MMD} under the $2$-Wasserstein metric as defined in \cref{subsec:gradient_flows_functionals}.
@@ -172,7 +172,7 @@ We can now define the notion of $\Lambda$-convexity:
 We state here all the assumptions on the kernel $k$ used to prove all the results: \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist}
-	\item \label{assump:lipschitness_nabla_k} $\nabla k(x,x') - \nabla k(y,.)\le \alpha \Vert x-y \Vert^2$ for any $x,y \in \X$.
+	\item \label{assump:lipschitness_nabla_k} $|\nabla k(x,.) - \nabla k(y,.)|\le L_k \Vert x-y \Vert$ for any $x,y \in \X$.
 	\item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
 	\item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
 	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
@@ -222,7 +222,7 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $\nabla k$.% and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[existence and uniqueness]
-Under \cref{assump:lipschitness_nabla_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$). Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$.\aknote{check}  The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+Under \cref{assump:lipschitness_nabla_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$). Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$ (see \cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
 \end{proof}
 
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
@@ -323,25 +323,68 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 
 \subsection{Connection with Neural Networks: \cref{prop:inequality_mmd_loss}}
 
-\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}
-	\manote{write proof}
+\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. Equipped with these notations, by definition of $\F$ \eqref{eq:mmd_as_free_energy} we have:
+	\begin{align*}
+	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x')\\
+	&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff}- \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
+	&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+	&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
+	 	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+	 &\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
+	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
+	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
+	\end{align*}
+	We can thus expand $\mathcal{L}(\nu)$:
+\begin{align*}
+ \mathcal{L}(\nu)&=\frac12 \int \Vert y- \phi(z,\nu)\Vert^2 \diff p(y,z)\\
+ &=\frac12 \int \Vert y- \phi(z,\mu)\Vert^2\diff p(y,z)+\frac12 \int \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2 \diff s(z)\\
+ &\phantom{{}=\frac12 \int \Vert y- } + \int \ps{y-\phi(z,\mu), y-\phi(z,\nu)}\diff p(y,z)\notag\\
+ &=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\end{align*}
+where we have denoted $m(z)=\int y \diff p(y|z)$. However because $\mu$ is a global solution of \eqref{eq:lifted_regression} (see \cite{chizat2018global}).\aknote{not clear}
+\begin{equation*}
+\ps{\phi(z,\mu)-m(z),\phi(z,\mu)}=0\text{ and }\ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\ge0
+\end{equation*}
+Hence 
+\begin{equation*}
+\mathcal{L}(\nu)=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge \mathcal{L}(\mu)+ \mathcal{F}(\nu)
+\end{equation*}
+which proves the first half of the framing by substracting $var(y)$ on each side of the inequality. Then, we also have by Cauchy-Schwartz inequality:
+\begin{align*}
+\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)- \phi(z,\nu)}\diff s(z)&\le\int \Vert \phi(z,\mu)-m(z)\Vert^2 \diff s(z)\int \Vert \phi(z,\nu)-\phi(z,\mu)\Vert^2 \diff s(z)\\
+&=2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
+\end{align*}
+which proves the second half of the framing since:
+\begin{align*}
+\bar{\mathcal{L}}(\nu)&\le \bar{\mathcal{L}}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)^{\frac12}\\
+&\le(\bar{\mathcal{L}}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
+\end{align*}
 \end{proof}
 
-\subsection{Comparison with the KL flow}\label{subsec:kl_flow}
+\subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
 
-%\begin{remark}\label{remark:gradient_flow}
-	A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is the KL divergence between the target distribution $\mu$ and a current distribution $\nu_t$: $KL(\nu_t\Vert \mu ) =  \int \log (\nu_t(x))\diff \nu_t(x) -\int \log(\mu(x))\diff \nu_t(x)$.\aknote{add that KL=U+V} In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $d X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$ and $W_t$ is a Brownian motion.
+
+%	A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is the KL divergence between the target distribution $\mu$ and a current distribution $\nu_t$: $KL(\nu_t\Vert \mu ) =  \int \log (\nu_t(x))\diff \nu_t(x) -\int \log(\mu(x))\diff \nu_t(x)$.\aknote{add that KL=U+V} In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $d X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$ and $W_t$ is a Brownian motion.
+%\begin{remark} \label{rem:KL_Lyapunov}
+
+\textit{Continuity equation and McKean Vlasov process.}	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\nu, \mu \in \mathcal{P}(\X)$ by
+	$KL(\nu,\mu)=\int log(\frac{\nu(x)}{\mu(x)})\nu(x)dx$. Indeed, $KL(\nu, \mu)=\int U(\nu(x))dx + \int V(x) \nu(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \nu}= \nabla \log(\nu) + \nabla V=  \nabla \log(\frac{\nu}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
+	\begin{equation}\label{eq:Fokker-Planck}
+	\frac{\partial{\nu}}{\partial t}= div(\nu \nabla V )+ \Delta \nu
+	\end{equation}
+	where $\Delta$ is the Laplacian operator. It is well-known (see for instance \cite{jordan1998variational}) that the distribution of the Langevin diffusion:
+	\begin{equation}\label{eq:langevin_diffusion}
+	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
+	\end{equation}
+	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}. While the entropy term in the $KL$ functional prevents the particles from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$ defined in \cref{eq:potentials}. Indeed, consider for instance the gaussian kernel $k(x,x')=e^{-\|x-x'\|^2}$. It is convex thus attractive at long distances ($\|x-x'\|>1$) but not at small distances (so repulsive). %\aknote{not very precise yet but i think the interpretation could be interesting}
 	
-	While the entropy term in the $KL$ functional prevents the particle from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$ defined in \cref{eq:potentials}. Indeed, consider for instance the gaussian kernel $k(x,x')=e^{-\|x-x'\|^2}$. It is convex thus attractive at long distances ($\|x-x'\|>1$) but not at small distances (so repulsive).\aknote{not very precise yet but i think the interpretation could be interesting}
-	%when $W$ is convex, this gives raise to a general aggregation behavior of the particles, while when it is not, the particles would push each other apart.
 	
-	
-	The solution to the Fokker-Planck equation describing the gradient flow of the $KL$ can be shown to converge towards $\mu$ under mild assumptions. This follows from the displacement convexity of the $KL$ along the Wasserstein geodesics \manote{ref}. Unfortunately the $MMD^2$ is not displacement convex in general as we will see in \manote{ref}. This makes the task of proving the convergence of the gradient flow of the $MMD^2$ to the global optimum $\mu$ much harder. In fact, when the external potential $V$ in \cref{eq:potentials} is not convex, which is the case for instance when $k$ is a gaussian kernel, it was shown that the diffusion may admit several local minima (see \cite{herrmann2010non,tugaut2014phase}) \manote{make sure that these conditions are relevant for us}. Moreover, we show in \cref{sec:Lojasiewicz_inequality} that local minima which are not global exist and that it is rather easy to reach them.
+\textit{Convergence to a global minimum.} The solution to the Fokker-Planck equation describing the gradient flow of the $KL$ can be shown to converge towards $\mu$ under mild assumptions. This follows from the displacement convexity of the $KL$ along the Wasserstein geodesics. Unfortunately the $MMD^2$ is not displacement convex in general as it is shown in \cref{subsection:barrier_optimization}. This makes the task of proving the convergence of the gradient flow of the $MMD^2$ to the global optimum $\mu$ much harder. Moreover, we show in \cref{sec:Lojasiewicz_inequality} that local minima which are not global exist and that it is rather easy to reach them. Interestingly, it was shown for some free energies \eqref{eq:lyapunov} that when the external potential $V$ is not convex, the diffusion may admit several local minima, i.e. there exists several invariant measures to \eqref{eq:continuity_equation}, under specific assumptions on $V$ (see \cite{herrmann2010non,tugaut2014phase}). Such assumptions do not apply to the confinement potential $V$ \eqref{eq:potentials} here, but the study of invariant measures of $\eqref{eq:continuity_mmd}$ is left for future work.
+
 %\end{remark}
-\begin{remark}[Sampling algorithms]
-	Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
+\textit{Sampling algorithms}. Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
 	The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of the Langevin diffusion, seems much more suitable for first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_{\mu, \nu_n}$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient},\cite{li2018gradient},\cite{shi2018spectral}). In contrast, the discretized flow of the $MMD^2$ presented in this section seems naturally adapted to the sample-based setting.
-\end{remark}
+%\end{remark}
 
 
 
@@ -355,22 +398,25 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 We provide now a proof of \cref{prop:lambda_convexity}:
 \begin{proof}[Proof of \cref{prop:lambda_convexity}]\label{proof:prop:lambda_convexity}[$\Lambda$- displacement convexity of the MMD]
 To prove that $\nu\mapsto \F(\nu)$ is $\Lambda$-convex
-we need to compute the second derivative $\ddot{\F}(\rho_{t})$
+we need to compute the second time derivative $\ddot{\F}(\rho_{t})$
 where $\rho_{t}$ is a displacement geodesic between two probability
-distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such a minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall from \cref{eq:mmd_norm_witness} that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By  \cref{lem:derivatives_witness},\cref{eq:derivatives_witness}, we know that $\dot{f}_t$ and $\ddot{f}_t $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
+distributions $\nu_{0}$ and $\nu_{1}$ as defined in \cref{eq:displacement_geodesic}. Such a minimizing geodesic always exists and can be written as $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \cref{eq:convex_combination} and $\pi$ is an optimal coupling between $\nu_0$ and $\nu_1$ (\cite{Santambrogio:2015}, Theorem 5.27). Moreover, we denote by $v_t$ the corresponding velocity vector as defined in \cref{eq:continuity_equation}. Recall that $\F(\rho_t) = \frac{1}{2} \Vert f_{\mu,\rho_t}\Vert^2_{\mathcal{H}}$, with $f_{\mu,\rho_t}$ defined in \cref{eq:witness_function}. %To simplify notations we will write $f_t:= f_{\mu,\rho_t}$. 
+We start by computing the first derivative of $ t\mapsto \F(\rho_t) $. By  \cref{lem:derivatives_witness}, \cref{eq:derivatives_witness}, we know that $\dot{f}_{\mu, \nu_t}$ and $\ddot{f}_{\mu, \nu_t} $ are well defined elements of $\kH$ for any given $t\in [0,1]$, hence 
 \[
- \dot{\F}(\rho_t) = \langle f_t, \dot{f_t}\rangle_{\kH};\qquad \ddot{\F}(\rho_t) = \Vert \dot{f_t}\Vert^2_{\kH} + \langle f_t, \ddot{f_t}\rangle_{\kH}.
+ \dot{\F}(\rho_t) = \langle f_{\mu,\nu_t}, \dot{f}_{\mu,\nu_t}\rangle_{\kH};\qquad \ddot{\F}(\rho_t) = \Vert \dot{f}_{\mu,\nu_t}\Vert^2_{\kH} + \langle f_{\mu,\nu_t}, \ddot{f}_{\mu,\nu_t}\rangle_{\kH}.
  \]
-While $\Vert \dot{f_t}\Vert^2_{\kH}$ is non-negative, $\langle f_t, \ddot{f_t}\rangle_{\kH}$ can in general be negative. We are only interested in quantifying how negative it can get, for this purpose we use Cauchy-Schwartz inequality which directly gives:
+While $\Vert \dot{f}_{\mu,\nu_t}\Vert^2_{\kH}$ is non-negative, $\langle f_{\mu,\nu_t}, \ddot{f}_{\mu,\nu_t}\rangle_{\kH}$ can in general be negative. We are only interested in quantifying how negative it can get, for this purpose we use Cauchy-Schwartz inequality which directly gives:
 \[
-\ddot{\F}(\rho_t)\geq  \Vert \dot{f}_t \Vert^2_{\kH} - \Vert f_t \Vert_{\kH}\Vert \ddot{f}_t\Vert_{\kH} 
+\ddot{\F}(\rho_t)\geq  \Vert \dot{f}_{\mu,\nu_t} \Vert^2_{\kH} - \Vert f_{\mu,\nu_t} \Vert_{\kH}\Vert \ddot{f}_{\mu,\nu_t}\Vert_{\kH} 
 \]
 
 Finally by \cref{lem:derivatives_witness}, \cref{eq:norm_derivative_witness}, we can conclude that:
 \[
 	\ddot{\F}(\rho_t)\geq  \langle v_t,(C_{\rho_t} - \lambda \F(\rho_t)^{\frac{1}{2}}) v_t \rangle_{L_2(\rho_t)} 
 \]
-with $C_{\rho_t}$ given by \cref{eq:positive_operator_C} and $I$ is the identity operator in $L_2(\rho_t)$. Now we can introduce the function:
+where $C_{\rho_t}$ is the positive operator given by  $(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')$ for any $x \in \X$.
+%and $I$ is the identity operator in $L_2(\rho_t)$. 
+Now we can introduce the function:
 \begin{align}
 	\Lambda(\nu,v) = \langle v ,( C_{\nu} -\lambda \F(\nu)^{\frac{1}{2}} I) v \rangle_{L_2(\nu)} 
 \end{align}
@@ -637,18 +683,22 @@ W_2^2(\nu_j,\mu)-W_2^2(\nu_{j+1},\mu)-2\gamma K(\rho^j) \qquad \forall \; 0 \leq
 \subsection{Lojasiewicz type inequalities}
 
 \begin{proof}[Proof of \cref{prop:lojasiewicz}]\label{proof:prop:lojasiewicz}
-	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} f_{\mu, \nu_t}$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
-	\begin{align}
-	\Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)}\geq \vert \int g \diff \nu_t - \int g \diff \mu  \vert
+	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} f_{\mu, \nu_t}$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert g \Vert_{\dot{H}(\nu_t)}= \Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
+	\begin{align}\label{eq:loja1}
+	\vert \int g \diff \nu_t - \int g \diff \mu  \vert \leq \Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)} 
 	\end{align}
 	Now, recall the definition of $g$, which implies that
-	\[
+	\begin{equation}\label{eq:loja2}
 	\vert \int g \diff \nu_t - \int g \diff \mu  \vert = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} \vert \int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu, \nu_t} \diff \mu \vert.
-	\]
-	But since $f_{\mu, \nu_t}$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu,\nu_t}\diff \mu = \Vert f_{\mu, \nu_t}\Vert^2_{\kH}$. We thus get the desired Lojasiewicz inequality \eqref{eq:inequality_neg_sobolev}.\aknote{make this passage clearer} Then, by 
-	using $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \le C$ and \cref{prop:decay_mmd}, we have that:  
+	\end{equation}
+	But since $f_{\mu, \nu_t}$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu,\nu_t}\diff \mu = \Vert f_{\mu, \nu_t}\Vert^2_{\kH}$. Combining \eqref{eq:loja1} and \eqref{eq:loja2} we thus get the desired Lojasiewicz inequality on $f_{\mu,\nu_t}$:
+	\begin{equation}
+	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
+	\end{equation}
+	where $\Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)}=\Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)}$ by definition. Then, by 
+	using \cref{prop:decay_mmd} and $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \le C$, we have that:  
 	\begin{align}
-	\dot{\F}(\nu_t) = - \Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)} \leq  -\frac{4}{C}\F(\nu_t)^2	
+	\dot{\F}(\nu_t) = - \Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)} \leq -\frac{1}{C}\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}}= -\frac{4}{C}\F(\nu_t)^2	
 	\end{align}
 	It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
