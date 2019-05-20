@@ -172,10 +172,11 @@ We can now define the notion of $\Lambda$-convexity:
 We state here all the assumptions on the kernel $k$ used to prove all the results: \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist}
-	\item \label{assump:lipschitness_nabla_k} $\nabla k(x,.) - \nabla k(y,.)\le \alpha \Vert x-y \Vert^2$ for any $x,y \in \X$.
+	\item \label{assump:lipschitness_nabla_k} $\nabla k(x,x') - \nabla k(y,.)\le \alpha \Vert x-y \Vert^2$ for any $x,y \in \X$.
 	\item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
 	\item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
 	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
+	\item \label{assump:lipschitz_gradient_k} $\Vert  \nabla k(x,x') - \nabla k(y,y')\Vert \leq L(\Vert \Vert x-y\Vert + \Vert x'-y' \Vert   \Vert) $ for all $x,x',y,y' \in \X$.
 \end{assumplist}
 
 
@@ -236,15 +237,15 @@ By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is 
 \subsection{Time-discretized flow}\label{appendix:subsec:convegence_time_discrete}
 We start by showing that \cref{eq:euler_scheme} decreases the functional $\F$.
 \begin{proof}[Proof of \cref{prop:decreasing_functional}]\label{proof:prop:decreasing_functional}
-	Consider a path between $\nu_n$ and $\nu_{n+1}$ of the form $\rho_t	=(I-\gamma t\nabla f_{\mu,\nu_n})_{\#}\nu_n$. The function $t\mapsto \mathcal{F}(\rho_t)$ is twice differentiable, hence one can use a Taylor expansion with integral remainder to get:
+	Consider a path between $\nu_n$ and $\nu_{n+1}$ of the form $\rho_t	=(I-\gamma t\nabla f_{\mu,\nu_n})_{\#}\nu_n$. We know by \cref{prop:grad_witness_function} that $\nabla f_{\m,\nu_n}$ is $2L$ Lipschitz, thus by \cref{lem:derivative_mmd_augmented} and using $\phi(x) = -\gamma \nabla f_{\mu,\nu_n}(x)$ and $\psi(x) = x$, $\F(\rho_t)$, it follows that $\F(\rho_t)$ is differentiable and hence absolutely continuous. Therefore one can write:
 	\begin{align}\label{eq:taylor_expansion_decreasing}
-	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \dot{\mathcal{F}}(\rho_t)\vert_{t=0}+ \frac{1}{2} \int_0^1 \ddot{\mathcal{F}}(\rho_t)(1-t)^2 dt.
+	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \dot{\mathcal{F}}(\rho_0)+  \int_0^1 \dot{\F}(\rho_s)- \dot{\F}(\rho_0)dt.
 	\end{align}
-	By \cref{assump:bounded_trace,assump:bounded_hessian} and using  \cref{lem:derivative_mmd_augmented}  with $\phi=-\gamma \nabla f_{\mu,\nu_n}$ it follows that 
-	\begin{align}\label{eq:derivatives_estimates_decrasing}
-		\dot{\mathcal{F}}(\rho_t)\vert_{t=0} = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x) \Vert^2 d\nu_n(x); \qquad \vert \ddot{ \mathcal{F}}(\rho_t) \vert\leq L\int \Vert \phi_n(X) \Vert^2 d\nu_n(X).
-	\end{align} 
-Hence, the result follows directly \cref{eq:taylor_expansion_decreasing,eq:derivatives_estimates_decrasing}.
+	Moreover, \cref{lem:derivative_mmd_augmented} allows to write:
+	\begin{align*}
+		\dot{\mathcal{F}}(\rho_0) = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x) \Vert^2 d\nu_n(x); \qquad \vert \dot{\F}(\rho_s)- \dot{\F}(\rho_0)\vert \leq 3s\gamma^2 L\int \Vert \nabla f_{\mu,\nu_n}(X) \Vert^2 d\nu_n(X).
+	\end{align*} 
+Hence, the result follows directly by applying the above expression to \cref{eq:taylor_expansion_decreasing}.
 \end{proof}
 
 We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}. For this purpose, we start by introducing the sequences $\nu_n^{\gamma}$ and $\bar{\nu}_{n}^{\gamma}$
@@ -423,7 +424,7 @@ To provide a proof of \cref{th:rates_mmd}, we need the following preliminary res
 	where $\Lambda$ is defined \cref{prop:lambda_convexity}.
 \end{lemma}
 \begin{proof}
-	Recall that $\rho_t$ is given by $\nu_t = (s_t)_{\#}\pi$ with $s_t$ defined in \eqref{eq:convex_combination}. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
+	Recall that $\rho_t$ is given by $\rho_t = (s_t)_{\#}\pi$ with $s_t$ defined in \eqref{eq:convex_combination}. By $\Lambda$-convexity of $\mathcal{F}$ the following inequality holds:
 	\begin{align*}
 	\mathcal{F}(\rho_{t})\leq (1-t)\mathcal{F}(\nu)+t \mathcal{F}(\mu) - \int_0^1 \Lambda(\rho_s,v_s)G(s,t)ds
 	\end{align*}
@@ -927,7 +928,20 @@ The second and last lines are obtained using a triangular inequality while the t
 
 \section{Auxiliary results}
 
-
+\begin{proposition}\label{prop:grad_witness_function}
+Under \cref{assump:lipschitz_gradient_k}, the witness function $f_{\nu,\nu'}$ between any probability distributions $\nu$ and $\nu'$ in $\mathcal{P}_2(\X)$ is differentiable and satisfies:
+\[
+\nabla f_{\nu,\nu'}(x) = \int \nabla k(x,x')\diff \nu(x') - \int \nabla k(x,x')\diff \nu'(x') \qquad \forall x\in \X
+\]
+Moreover, the map $(x,\mu,\nu)\mapsto f_{\mu,\nu}(x)$ is Lipschitz with:
+\[
+\Vert \nabla f_{\mu,\nu}(x) - \nabla f_{\mu',\nu'}(y)\Vert \leq 2L (\Vert x-y \Vert + W_2(\mu,\mu') + W_2(\nu,\nu')) 
+\]
+Finally, each component of $\nabla f_{\nu,\nu'}$ belongs to $\kH$.
+\end{proposition}
+\begin{proof}\manote{write proof}
+	
+\end{proof}
 
 %\begin{lemma}\label{lem:derivative_mmd}\manote{Notations still needs to be adjusted in this lemma}
 %	Let $\phi$ be a vector field on $\X$ and $\nu$ in $\mathcal{P}_2(\X)$. Consider the path $\delta_t$ between $\nu$ and $(I+\phi)_{\#}\nu$ given by:
@@ -976,44 +990,37 @@ The second and last lines are obtained using a triangular inequality while the t
 
 
 \begin{lemma}\label{lem:derivative_mmd_augmented}\manote{State assumption on bounded hessian}
-	Let $\phi$ be a map from  $\X \times\mathcal{U} $ to $\X$  and $q$ in $\mathcal{P}_2(\X \times \mathcal{U})$. Denote by  $P_x$ as the projection map from $\X \times\mathcal{U}$ to $\X$ and consider the path $\rho_t$ between $(P_x)_{\#}q$ and $(P_x+\phi)_{\#}q$ given by: $\rho_t=  (P_x+t\phi)_{\#}q \qquad \forall t\in [0,1]$.
-Then, the time derivative of $\mathcal{F}(\rho_t)$ is given by:
+Let $U$ be an open set, $q$ a probability distribution in $\mathcal{P}_2(\X \times \mathcal{U})$ and $\psi$ and $\phi$ two measurable maps from  $\X \times\mathcal{U} $ to $\X$  which are square-integrable w.r.t $q$. Consider the path $\rho_t$ from  $(\psi)_{\#}q$ and $(\psi+\phi)_{\#}q$ given by: $\rho_t=  (\psi+t\phi)_{\#}q \qquad \forall t\in [0,1]$. Under \cref{assump:lipschitz_gradient_k}, $\mathcal{F}(\rho_t)$ is differentiable in $t$ with
 	\begin{align*}
-		\dot{\F}(\rho_t)&=\int \nabla f_{\mu,\rho_t}(x+t\phi(x,u)) \phi(x,u)\diff q(x,u)
+		\dot{\F}(\rho_t)&=\int \nabla f_{\mu,\rho_t}(\psi(x,u)+t\phi(x,u)) \phi(x,u)\diff q(x,u)
 	\end{align*}
 where $f_{\mu,\rho_t}$ is the witness function between $\mu$ and $\rho_t$ as defined in \cref{eq:witness_function}.	
-Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
+Moreover:
 \begin{align*}
-		\ddot{\F}(\rho_t) \vert \leq 3L \int \Vert \phi(x,u) \Vert^2 dq(x,u)
+		\vert \dot{\F}(\rho_t) - \dot{\F}(\rho_s) \vert \leq 3L\vert t-s \vert\int \Vert \phi(x,u) \Vert^2 dq(x,u)
 \end{align*}
-	where $L$ is a positive constant defined in \cref{assump:bounded_trace,assump:bounded_hessian}.
-	
 \end{lemma}
 \begin{proof}
-For simplicity, we write $f_t$ instead of $f_{\mu,\rho_t}$ and denote by $s_t(x,u)= x+t\phi(x,u)$
-We start by computing the first derivative. Recalling that $\mathcal{F}(\rho_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
+For simplicity, we write $f_t$ instead of $f_{\mu,\rho_t}$ and denote by $s_t(x,u)= \psi(x,u)+t\phi(x,u)$
+The function $h: t\mapsto k(s_t(x,u),s_t(x',u')) - k(s_t(x,u),z) - k(s_t(x',u'),z)$ is differentiable for all $(x,u)$,$(x',u')$ in $\X\times \mathcal{U}$ and $z\in \X$. 
+Moreover, by \cref{assump:lipschitz_gradient_k}, a simple computation shows that for all $0\leq t\leq 1$:
 \[
-\dot{\F}(\rho_t)=\langle f_{t},\dot{f}_{t}\rangle_{\kH}.
+\vert \dot{h} \vert \leq L\left[ (\Vert z - \phi(x,u)\Vert + \Vert \psi(x,u)\Vert) \Vert \phi(x',u')\Vert +  
+(\Vert z - \phi(x',u')\Vert + \Vert \psi(x',u')\Vert )\Vert \phi(x,u)\Vert \right]
 \]
-Using the definition
-of $\rho_{t}=(I+t\phi)_{\#}q$ we can write:\manote{use the proposition giving the time derivative of witness}
-\[
-\dot{f}_{t}=\int \phi(x,u).\nabla k(s_t(x,u),.)\diff q(x,u),
-\]
-hence:
-\[
-\dot{\mathcal{F}}(\rho_{t})=\int\phi(x,u).\nabla f_{t}(s_t(x,u))\diff q(x,u).
-\]
-Now the second derivative is obtained by direct derivation of the above expression:
-	\begin{align*}
-		\ddot{\mathcal{F}}(\rho_t) =& \int \phi(x,u)^THf_t(s_t(x,u))\phi(x,u)\diff q(x,u)\\ 
-		&+\int \phi(x,u)^T\nabla_x\nabla_y k(s_t(x,u),s_t(x',u')) ) \phi(x',u')\diff q(x,u)\diff q(x',u') 
-	\end{align*}
-where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \cref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
+The right hand side of the above inequality is integrable when $z$,  $(x,u)$ and  $(x',u')$ are independent and such that $z\sim \mu$ and both $(x,u)$ and $(x',u')$ are distributed according to $q$. Therefore, by the differentiation lemma \cite[Theorem 6.28]{Klenke:2008} it follows that $\F(\rho_t)$ is differentiable and:
+\begin{align}\label{eq:time_derivative_mmd}
+\dot{\F}(\rho_t) = \mathbb{E}\left[(\nabla_1 k(s_t(x,u),s_t(x',u'))-\nabla_1 k(s_t(x,u),z)).\phi(x,u)\right].
+\end{align}
+By \cref{prop:grad_witness_function}, we directly get $\dot{\F}(\rho_t) = \int \nabla f_{\mu,\rho_t}(\psi(x,u)+t\phi(x,u)) \phi(x,u)\diff q(x,u)$.
+ We shall control now the difference $\vert \dot{F}(\rho_t)-\dot{\F}(\rho_{t'})\vert$. Let $0\leq t,t'\leq 1$, using \cref{assump:lipschitness_nabla_k} and recalling that $s_t(x,u)-s_{t'}(x,u)= (t-t')\phi(x,u)$ a simple computation shows:
 \begin{align*}
-	4L \int \Vert \phi(x,u)\Vert^2\diff q(x,u)  
+	\vert\dot{\F}(\rho_t)-\dot{\F}(\rho_{t'}) \vert 
+	&\leq L\vert t-t' \vert \mathbb{E}\left[(2\Vert \phi(x,u) \Vert + \Vert \phi(x',u')\Vert )\Vert \phi(x,u)\Vert  \right]\\
+	  &\leq L\vert t-t'\vert(2\mathbb{E}\left[\Vert \phi(x,u)\Vert^2 \right]  + \mathbb{E}\left[\Vert \phi(x,u)\Vert \right]^2)\\
+	 &\leq 3L\vert t-t'\vert\int\Vert \phi(x,u)\Vert^2 \diff q(x,u).
 \end{align*}
-The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
+which gives the desired upper-bound.
 \end{proof}
 
 
