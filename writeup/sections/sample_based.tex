@@ -4,14 +4,14 @@
 
 The update equation \eqref{eq:discretized_noisy_flow} involves computing expectations of the gradient of the kernel $k$ w.r.t the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. Specifically, we adopt the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which, at each iteration $n$, considers a system of $N$ interacting particles $(X_n^i)_{1\leq i\leq N}$  and their empirical distribution in order to approximate $\nu_n$. 
 More precisely, given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and a step-size $\gamma$, the approximate scheme iteratively updates the $i$-th particle using: 
-\begin{multline}\label{eq:euler_maruyama}
+\begin{equation}\label{eq:euler_maruyama}
 X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)\;
-\end{multline}
+\end{equation}
 where $U_{n}^{i}$ are i.i.d standard gaussians whereas $\hat{\mu}$ and $\hat{\nu}_n$ denote the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. In \cref{eq:euler_maruyama}, $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily using only the available samples at iteration $n$:
 \begin{align}
 	 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
 \end{align}
-where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. The overall computational cost of such algorithm is $O((M+N)N)$ and it uses $O(M+N)$ in memory. The computational cost becomes  $O(M+N)$ when the kernel is approximated using random features as is the case for regression with neural networks (\cref{subsec:training_neural_networks}). This is in contrast to the higher cost of other particle sampling algorithms based on other distances as the Negative Sobolev distance \cite{Mroueh:2019}  or the Sliced Wasserstein distance \cite{Simsekli:2018}.
+where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. The overall computational cost of such algorithm is $O((M+N)N)$ and it uses $O(M+N)$ in memory. The computational cost becomes  $O(M+N)$ when the kernel is approximated using random features as is the case for regression with neural networks (\cref{subsec:training_neural_networks}). This is in contrast to the higher cost of other particle sampling algorithms based on other distances as the Negative Sobolev distance \cite{Mroueh:2019}\aknote{Anna/Arthur: explain that mroueh needs at each iteration a computation which is cubic in the number of samples?}  or the Sliced Wasserstein distance \cite{csimcsekli2018sliced}.
 The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \cref{eq:discretized_noisy_flow}, so one would expect it to converge towards its population version  \cref{eq:discretized_noisy_flow} as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
 %\begin{theorem}\label{prop:convergence_euler_maruyama}
 %Under the same conditions as in \cref{prop:convergence_euler_scheme} and for any $\frac{T}{\gamma}\geq n\geq 0$:
@@ -48,7 +48,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 %
 %
 \textbf{Experiments}
-
+\aknote{if possible get a flat curve for the MMD flow, or precise it's in a log scale/very very slow convergence}
 
 \begin{figure}[ht]
 	\centering

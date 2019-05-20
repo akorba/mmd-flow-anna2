@@ -1,10 +1,10 @@
 
 \section{Gradient flow of the MMD in $W_2$}\label{sec:gradient_flow}
 \subsection{Construction of the gradient flow}
-In this section we introduce the gradient flow of the Maximum Mean Discrepancy (MMD) and highlight some of its properties. We start by briefly reviewing the MMD introduced in \cite{gretton2012kernel}, more details are provided in \cref{sec:rkhs}. In all the paper, $\X\subset\R^d$ is the closure of a convex open set.
+In this section we introduce the gradient flow of the Maximum Mean Discrepancy (MMD) and highlight some of its properties. We start by briefly reviewing the MMD introduced in \cite{gretton2012kernel}, more details are provided in \cref{sec:rkhs}. In all the paper, $\X\subset\R^d$ is the closure of a convex open set, and $\mathcal{P}_2(\X)$ is the set of probability distributions on $X$ with finite second moment/
 \paragraph{Maximum Mean Discrepancy.}\label{subsec:MMD}
 Given a characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding RKHS (see \cite{smola1998learning}). In all the paper, we will suppose that its gradient $\nabla k$ is Lipschitz with constant $L$. The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$.
-When the kernel has at most a quadratic growth, it is possible to define a distance on $\mathcal{P}_2(\X)$ called the Maximum Mean Discrepancy. It is given as the RKHS norm of the \textit{witness function} $f_{\mu,\nu}$ between $\mu$ and $\nu$ which is by definition the difference between the mean embeddings of $\nu$ and $\mu$:\asnote{Put Equivalent definition as an IPM} 
+When the kernel has at most a quadratic growth, it is possible to define a distance on $\mathcal{P}_2(\X)$ called the Maximum Mean Discrepancy. It is given as the RKHS norm of the \textit{witness function} $f_{\mu,\nu}$ between $\mu$ and $\nu$ which is by definition the difference between the mean embeddings of $\nu$ and $\mu$:%\asnote{Put Equivalent definition as an IPM} 
 \begin{align}\label{eq:witness_function}
 MMD(\mu,\nu) = \Vert f_{\mu,\nu} \Vert_{\kH}, \qquad f_{\nu,\mu}(z) = \int k(x,z)\diff \nu(x) - \int k(x,z)\diff \mu(x)  \qquad z\in \X
 \end{align}
@@ -50,13 +50,13 @@ gradient flow of $\F$ is then defined by the solution $(\nu_t)_{t\geq 0}$ of:
 \begin{align}\label{eq:continuity_mmd}
 	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t}).
 \end{align}
-Equation \cref{eq:continuity_mmd} is peculiar in that the vector field depends itself on $\nu_t$. This type of equation is associated in the probability theory literature to the so-called McKean-Vlasov process \cite{kac1956foundations,mckean1966class}:
+Equation \cref{eq:continuity_mmd} is non-linear in that the vector field depends itself on $\nu_t$. This type of equation is associated in the probability theory literature to the so-called McKean-Vlasov process \cite{kac1956foundations,mckean1966class}:
 \begin{align}\label{eq:mcKean_Vlasov_process}
 	d X_t = -\nabla f_{\mu,\nu_t}(X_t)dt \qquad X_0\sim \nu_0.
 \end{align}
 
 In fact,  \cref{eq:mcKean_Vlasov_process} defines a process $(X_t)_{t\geq 0}$ whose distribution $(\nu_t)_{t\geq 0}$ satisfies \cref{eq:continuity_mmd} as shown in \cref{prop:existence_uniqueness}. 
-$(X_t)_{t\geq 0}$ can be interpreted as  the trajectory of a single particle starting from an initial random position $X_0$ drawn from $\nu_0$. Its trajectory is then driven by a velocity field $-\nabla f_{\mu,\nu_t}$. However, such particle interacts with other particles driven by the same velocity field, which affects its trajectory. This interaction is captured by the velocity field through the dependence on the current configuration of all particles $\nu_t$.
+$(X_t)_{t\geq 0}$ can be interpreted as  the trajectory of a single particle starting from an initial random position $X_0$ drawn from $\nu_0$. Its trajectory is then driven by a velocity field $-\nabla f_{\mu,\nu_t}$. Such particle interacts with other particles driven by the same velocity field, which affects its trajectory. This interaction is captured by the velocity field through the dependence on the current configuration of all particles $\nu_t$.
 %Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under mild conditions on the kernel $k$ and are provided in \cref{thm:existence_uniqueness}:
 %\begin{theorem}\label{thm:existence_uniqueness}(Existence and uniqueness)
 %	Under \manote{some assumptions}, and given $\nu_0\in \mathcal{P}_2(\X)$ there exists a unique process $(\X_t)_{t\geq 0}$ with $X_0\sim \nu_0$ and satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process}. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} in a weak sense and hence defines a gradient flow of $\F$. 
@@ -68,7 +68,7 @@ Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlas
 	Let $\nu_0\in \mathcal{P}_2(\X)$. %Assume that $\nabla k$ is Lipschitz continuous. 
 	Then, there exists a unique process $(X_t)_{t\geq 0}$  satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process} such that $X_0 \sim \nu$. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} starting from $\nu_0$ and defines a gradient flow of $\F$. 
 \end{proposition}
-Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. The first property, stated in the next proposition, is rather easy to get and is the object of \cref{prop:decay_mmd} with a proof differed to \cref{proof:prop:decay_mmd}: 
+Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. The first property, stated in the next proposition, is rather easy to get and is the object of \cref{prop:decay_mmd} with a proof deffered to \cref{proof:prop:decay_mmd}: 
 \begin{proposition}\label{prop:decay_mmd}
 	Under the assumptions of \cref{prop:existence_uniqueness}, $\F(\nu_t)$ is decreasing in time and satisfies:
 	\begin{align}\label{eq:time_evolution_mmd}
@@ -76,7 +76,7 @@ Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ 
 	\end{align}
 \end{proposition}
 This property results from the expression of the differential of $\F$ \eqref{prop:differential_mmd} and the theory of $W_2$ gradient flows (see \cref{subsec:gradient_flows_functionals}). Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
-From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$\aknote{we should say that the limit is not necessarily the same for all $\nu_0$ due to the non convexity of the potential $V$} since it is a lower-bounded and non-increasing function of time. The reader may refer to \cref{subsec:kl_flow} for a connection to other well-known gradient flows in Wassertein space. We know motivate the study of this flow by recent considerations and applications in Machine Learning.
+From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. The reader may refer to \cref{subsec:kl_flow} for a connection to other well-known gradient flows in Wassertein space. We know motivate the study of this flow by recent considerations and applications in Machine Learning.
 
 %We conclude this section with a remark referring to other well-known gradient flows in Wasserstein space.
 %\begin{remark}\label{remark:gradient_flow}
@@ -95,13 +95,13 @@ From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional fo
 
 \subsection{Training neural networks as flow of the MMD}\label{subsec:training_neural_networks}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
-The MMD was successfully used to train generative networks \cite{Arbel:2018,Binkowski:2018}\manote{cite others}, where it is used as a loss functional between the data distribution and a parametric model distribution.
-Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{Rotskoff:2019}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
+The MMD was successfully used to train generative networks \cite{Arbel:2018,Binkowski:2018}\manote{cite others}\aknote{Arthur's note: Cramer gan, MMD gan, Zoubin Gan +?}, where it is used as a loss functional between the data distribution and a parametric model distribution.
+Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{rotskoff2018neural}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
  Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
 \begin{align}\label{eq:regression_network}
 	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim p  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
 \end{align}
-where $(y,z) \sim p$ are samples from the data distribution and the regression function is an average network of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
+where $(y,z) \sim p$ are samples from the data distribution and the regression function is an average of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
 \begin{align}\label{eq:lifted_regression}
 	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
 \end{align} 
@@ -126,7 +126,7 @@ The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ ca
 \begin{align}\label{eq:particle_dynamics}
 	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
 \end{align}  
-As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
+As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
 %\begin{align}\label{eq:mmd_flow}
 %	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
 %\end{align}
@@ -221,7 +221,7 @@ As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{e
 
 %\section{Discretized Gradient flow of the MMD}
 \subsection{Euler scheme}
-The continuous-time gradient flow introduced in \cref{eq:continuity_mmd} allows to formally consider the notion of gradient descent on $\mathcal{P}_2(\X)$ with $\F$ as a cost function. This is done by considering a forward-Euler scheme of \cref{eq:continuity_mmd}. For any $T: \X \rightarrow \X$ a measurable map, and $\nu \in \mathcal{P}(\X)$, we denote the pushforward measure by $T_{\#}\nu$ (see the formal definition in \cref{subsec:wasserstein_flow}). Starting from an initial $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, it is possible to construct a sequence $\nu_n\in \mathcal{P}_2(\X)$ by iteratively applying:
+The continuous-time gradient flow introduced in \cref{eq:continuity_mmd} allows to formally consider the notion of gradient descent on $\mathcal{P}_2(\X)$ with $\F$ as a cost function. This is done by considering a forward-Euler scheme of \cref{eq:continuity_mmd}. For any $T: \X \rightarrow \X$ a measurable map, and $\nu \in \mathcal{P}_2(\X)$, we denote the pushforward measure by $T_{\#}\nu$ (see the formal definition in \cref{subsec:wasserstein_flow}). Starting from an initial $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, it is possible to construct a sequence $\nu_n\in \mathcal{P}_2(\X)$ by iteratively applying:
 \begin{align}\label{eq:euler_scheme}
 	\nu_{n+1} = (I - \gamma \nabla f_{\mu,\nu_n})_{\#}\nu_n
 \end{align} 
@@ -252,4 +252,4 @@ where $\nu_n$ is defined in \cref{eq:euler_scheme}. Then under mild assumptions 
 	\end{align*}
 \end{proposition}
 \cref{prop:decreasing_functional} is a discrete analog of \cref{prop:decay_mmd}. The proofs and detailed assumptions are given in \cref{proof:prop:decreasing_functional}. 
-In fact, \cref{eq:euler_scheme} is intractable in general as it requires to evaluate $f_{\mu,\nu_n}$ exactly at each iterations. Nevertheless, we present in \cref{sec:sample_based} a practical algorithm using a finite number of samples which is provably convergent towards \cref{eq:euler_scheme} as the sample-size increases. We thus begin by studying the convergence properties of the discretized in time MMD flow \eqref{eq:euler_scheme} in the next section. \asnote{Related works here?}
+In fact, \cref{eq:euler_scheme} is intractable in general as it requires to evaluate $f_{\mu,\nu_n}$ exactly at each iteration. Nevertheless, we present in \cref{sec:sample_based} a practical algorithm using a finite number of samples which is provably convergent towards \cref{eq:euler_scheme} as the sample-size increases. We thus begin by studying the convergence properties of the time discretized MMD flow \eqref{eq:euler_scheme} in the next section. \asnote{Related works here?}
