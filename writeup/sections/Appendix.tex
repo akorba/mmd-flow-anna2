@@ -229,7 +229,7 @@ We start by showing that \cref{eq:euler_scheme} decreases the functional $\F$.
 	\begin{align}\label{eq:taylor_expansion_decreasing}
 	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})=\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \dot{\mathcal{F}}(\rho_t)\vert_{t=0}+ \frac{1}{2} \int_0^1 \ddot{\mathcal{F}}(\rho_t)(1-t)^2 dt.
 	\end{align}
-	By \cref{assump:bounded_trace,assump:bounded_hessian} and using  \cref{lem:derivative_mmd}  with $\phi=-\gamma \nabla f_{\mu,\nu_n}$ it follows that 
+	By \cref{assump:bounded_trace,assump:bounded_hessian} and using  \cref{lem:derivative_mmd_augmented}  with $\phi=-\gamma \nabla f_{\mu,\nu_n}$ it follows that 
 	\begin{align}\label{eq:derivatives_estimates_decrasing}
 		\dot{\mathcal{F}}(\rho_t)\vert_{t=0} = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x) \Vert^2 d\nu_n(x); \qquad \vert \ddot{ \mathcal{F}}(\rho_t) \vert\leq L\int \Vert \phi_n(X) \Vert^2 d\nu_n(X).
 	\end{align} 
@@ -870,7 +870,7 @@ var(\nu_{k+1})^{\frac{1}{2}}
  & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L\mathbb{E}_{x,x'\sim\nu_{k}}[\Vert x+\beta_{k}u-x'+\beta_{k}u'\Vert^{2}]^{\frac{1}{2}}\\
  & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L(var(\nu_{k})+\beta_{k})
 \end{align*}
-The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_k}(x)$ is $L$-Lipschitz in $x$. \manote{again state this assumption clearly}. Recalling that $\beta_{k}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
+The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_k}(x)$ is $L$-Lipschitz in $x$. \manote{again state this assumption clearly} Recalling that $\beta_{k}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
 \end{proof}
 
 
@@ -920,92 +920,89 @@ The second and last lines are obtained using a triangular inequality while the t
 
 
 
-\begin{lemma}\label{lem:derivative_mmd}\manote{Notations still needs to be adjusted in this lemma}
-	Let $\phi$ be a vector field on $\X$ and $\nu$ in $\mathcal{P}_2(\X)$. Consider the path $\delta_t$ between $\nu$ and $(I+\phi)_{\#}\nu$ given by:
+%\begin{lemma}\label{lem:derivative_mmd}\manote{Notations still needs to be adjusted in this lemma}
+%	Let $\phi$ be a vector field on $\X$ and $\nu$ in $\mathcal{P}_2(\X)$. Consider the path $\delta_t$ between $\nu$ and $(I+\phi)_{\#}\nu$ given by:
+%	\begin{align*}
+%		\delta_t=  (I+t\phi)_{\#}\nu \qquad \forall t\in [0,1]
+%	\end{align*}
+%The time derivative of $\mathcal{F}(\delta_t)$ is given by:
+%	\begin{align*}
+%		\dot{\F}(\delta_t)&=\int \nabla f_{\mu,\delta_t}(x+t\phi(x)) \phi(x)d\nu(x)\\
+%	\end{align*}
+%where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as defined in \cref{eq:witness_function}.	
+%	Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
+%	\begin{align*}
+%		\ddot{\F}(\delta_t) \vert \leq 3L \int \Vert \phi(x) \Vert^2 d\nu(x)
+%	\end{align*}
+%	where $L$ is a positive constant defined in \cref{assump:bounded_trace,assump:bounded_hessian}.
+%	
+%\end{lemma}
+%\begin{proof}
+%For simplicity, we write $f_t$ instead of $f_{\mu,\delta_t}$.
+%We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
+%\[
+%\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}.
+%\]
+%Using the definition
+%of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below}
+%\[
+%\frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X),
+%\]
+%hence:
+%\[
+%\frac{d\mathcal{F}(\delta_{t})}{dt}=2\int\phi(X).\nabla f_{t}(\pi_{t}(X))d\nu(X)
+%\]
+%Now the second derivative is obtained by direct derivation of the above expression:
+%	\begin{align*}
+%		\frac{d^2 \mathcal{F}(\delta_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
+%		&+\int \phi(X)^T\nabla_x\nabla_y k(\pi_t(X),\pi_t(X')) ) \phi(X')d\nu(X)d\nu(X') 
+%	\end{align*}
+%where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \cref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
+%\begin{align*}
+%	4L \int \Vert \phi(X)\Vert^2d\nu(X)  
+%\end{align*}
+%The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
+%\end{proof}
+
+
+
+\begin{lemma}\label{lem:derivative_mmd_augmented}\manote{Notations still needs to be adjusted in this lemma}\manote{State assumption on bounded hessian}
+	Let $\phi$ be a map from  $\X \times\mathcal{U} $ to $\X$  and $q$ in $\mathcal{P}_2(\X \times \mathcal{U})$. Denote by  $P_x$ as the projection map from $\X \times\mathcal{U}$ to $\X$ and consider the path $\rho_t$ between $(P_x)_{\#}q$ and $(P_x+\phi)_{\#}q$ given by: $\rho_t=  (P_x+t\phi)_{\#}q \qquad \forall t\in [0,1]$.
+Then, the time derivative of $\mathcal{F}(\rho_t)$ is given by:
 	\begin{align*}
-		\delta_t=  (I+t\phi)_{\#}\nu \qquad \forall t\in [0,1]
+		\dot{\F}(\rho_t)&=\int \nabla f_{\mu,\rho_t}(x+t\phi(x,u)) \phi(x,u)\diff q(x,u)
 	\end{align*}
-The time derivative of $\mathcal{F}(\delta_t)$ is given by:
-	\begin{align*}
-		\dot{\F}(\delta_t)&=\int \nabla f_{\mu,\delta_t}(x+t\phi(x)) \phi(x)d\nu(x)\\
-	\end{align*}
-where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as defined in \cref{eq:witness_function}.	
-	Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
-	\begin{align*}
-		\ddot{\F}(\delta_t) \vert \leq 3L \int \Vert \phi(x) \Vert^2 d\nu(x)
-	\end{align*}
-	where $L$ is a positive constant defined in \cref{assump:bounded_trace,assump:bounded_hessian}.
-	
-\end{lemma}
-\begin{proof}
-For simplicity, we write $f_t$ instead of $f_{\mu,\delta_t}$.
-We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
-\[
-\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}.
-\]
-Using the definition
-of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below}
-\[
-\frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X),
-\]
-hence:
-\[
-\frac{d\mathcal{F}(\delta_{t})}{dt}=2\int\phi(X).\nabla f_{t}(\pi_{t}(X))d\nu(X)
-\]
-Now the second derivative is obtained by direct derivation of the above expression:
-	\begin{align*}
-		\frac{d^2 \mathcal{F}(\delta_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
-		&+\int \phi(X)^T\nabla_x\nabla_y k(\pi_t(X),\pi_t(X')) ) \phi(X')d\nu(X)d\nu(X') 
-	\end{align*}
-where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \cref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
+where $f_{\mu,\rho_t}$ is the witness function between $\mu$ and $\rho_t$ as defined in \cref{eq:witness_function}.	
+Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
 \begin{align*}
-	4L \int \Vert \phi(X)\Vert^2d\nu(X)  
+		\ddot{\F}(\rho_t) \vert \leq 3L \int \Vert \phi(x,u) \Vert^2 dq(x,u)
 \end{align*}
-The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
-\end{proof}
-
-
-
-\begin{lemma}\label{lem:derivative_mmd_augmented}\manote{Notations still needs to be adjusted in this lemma}
-	Let $\phi$ be a map from  $\X times\mathcal{U} $ to $\X$  and $\nu$ in $\mathcal{P}_2(\X \times \mathcal{U})$. Denote by  $P_x$ as the projection map from $\X times\mathcal{U}$ to $\X$ and consider the path $\delta_t$ between $(P_x)_{\#}\nu$ and $(P_x+\phi)_{\#}\nu$ given by:
-	\begin{align*}
-		\delta_t=  (P_x+t\phi)_{\#}\nu \qquad \forall t\in [0,1]
-	\end{align*}
-The time derivative of $\mathcal{F}(\delta_t)$ is given by:
-	\begin{align*}
-		\dot{\F}(\delta_t)&=\int \nabla f_{\mu,\delta_t}(x+t\phi(x,u)) \phi(x,u)d\nu(x,u)\\
-	\end{align*}
-where $f_{\mu,\delta_t}$ is the witness function between $\mu$ and $\delta_t$ as defined in \cref{eq:witness_function}.	
-	Moreover, under \cref{assump:bounded_trace,assump:bounded_hessian}, the second time derivative satisfies:
-	\begin{align*}
-		\ddot{\F}(\delta_t) \vert \leq 3L \int \Vert \phi(x,u) \Vert^2 d\nu(x,u)
-	\end{align*}
 	where $L$ is a positive constant defined in \cref{assump:bounded_trace,assump:bounded_hessian}.
 	
 \end{lemma}
 \begin{proof}
-For simplicity, we write $f_t$ instead of $f_{\mu,\delta_t}$.
-We start by computing the first derivative. Recalling that $\mathcal{F}(\delta_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
+For simplicity, we write $f_t$ instead of $f_{\mu,\rho_t}$ and denote by $s_t(x,u)= x+t\phi(x,u)$
+We start by computing the first derivative. Recalling that $\mathcal{F}(\rho_t)$ is given by $\frac{1}{2}\Vert f_t\Vert^2_{\kH} $, it follows that:
 \[
-\dot{\F}(\delta_t)=\langle f_{t},\frac{df_{t}}{dt}\rangle_{\kH}.
+\dot{\F}(\rho_t)=\langle f_{t},\dot{f}_{t}\rangle_{\kH}.
 \]
 Using the definition
-of $\delta_{t}=(I+t\phi)_{\#}\nu$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below}
+of $\rho_{t}=(I+t\phi)_{\#}q$ we can write:\aknote{$\pi_t$? guess this corresponds to the paragraph below} \manote{use the proposition giving the time derivative of witness}
 \[
-\frac{df_{t}}{dt}=\int \phi(X).\nabla k(\pi_{t}(X),.)d\nu(X),
+\dot{f}_{t}=\int \phi(x,u).\nabla k(s_t(x,u),.)\diff q(x,u),
 \]
 hence:
 \[
-\frac{d\mathcal{F}(\delta_{t})}{dt}=2\int\phi(X).\nabla f_{t}(\pi_{t}(X))d\nu(X)
+\dot{\mathcal{F}}(\rho_{t})=\int\phi(x,u).\nabla f_{t}(s_t(x,u))\diff q(x,u).
 \]
 Now the second derivative is obtained by direct derivation of the above expression:
 	\begin{align*}
-		\frac{d^2 \mathcal{F}(\delta_t)}{dt^2} =& \int \phi(X)^THf_t(\pi_t(X))\phi(X)d\nu(X)\\ 
-		&+\int \phi(X)^T\nabla_x\nabla_y k(\pi_t(X),\pi_t(X')) ) \phi(X')d\nu(X)d\nu(X') 
+		\ddot{\mathcal{F}}(\rho_t) =& \int \phi(x,u)^THf_t(s_t(x,u))\phi(x,u)\diff q(x,u)\\ 
+		&+\int \phi(x,u)^T\nabla_x\nabla_y k(s_t(x,u),s_t(x',u')) ) \phi(x',u')\diff q(x,u)\diff q(x',u') 
 	\end{align*}
 where $Hf_t$ is the hessian of $f_t$ in space and  $\nabla_x\nabla_y k(x,y)$ is the cross diagonal term of the hessian of $k$. By \cref{assump:bounded_hessian}, the first term in the above equation can be easily upper-bounded by:
 \begin{align*}
-	4L \int \Vert \phi(X)\Vert^2d\nu(X)  
+	4L \int \Vert \phi(x,u)\Vert^2\diff q(x,u)  
 \end{align*}
 The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
 \end{proof}
@@ -1015,14 +1012,14 @@ The last term can also be upper-bounded by $2L$ by \cref{assump:bounded_trace}.
 Assume that for any geodesic $\rho_{t}$ between
 $\rho_{0}$ and $\rho_{1}$ in $\mathcal{P}(\X)$ with velocity vectors $(V_t)_{0\leq t\leq 1}$ the following holds:
 \[
-\dot{\F}(\rho_{t}) \geq \Lambda(\rho_t,V_t)
+\ddot{\F}(\rho_{t}) \geq \Lambda(\rho_t,V_t)
 \]
 from some admissible functional $\Lambda$ as defined in \cref{def:conditions_lambda}, then:
 \begin{equation}
 \F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds\label{eq:integral_lambda_convexity}
 \end{equation}
 with $G(s,t)=s(1-t) \mathbbm{1}\{s\leq t\}
-+t(1-s) \mathbbm{1}\{s\geq t\}$.
++t(1-s) \mathbbm{1}\{s\geq t\}$ for $0\leq s,t\leq 1$.
 
 \end{lemma}
 \begin{proof}
@@ -1031,15 +1028,12 @@ with $G(s,t)=s(1-t) \mathbbm{1}\{s\leq t\}
 	$[0,1]$ with second derivative $\ddot{\phi}$ that is bounded below
 	in distribution sense the following identity holds:
 	\[
-	\phi(t)=(1-t)\phi(0)+t\phi(1)-\int_{0}^{1}\ddot{\phi}(s)G(s,t)ds
+	\phi(t)=(1-t)\phi(0)+t\phi(1)-\int_{0}^{1}\ddot{\phi}(s)G(s,t)ds.
 	\]
-	Hence, one can choose $\phi(t)=\F(\rho_{t})$ therefore, \aknote{do we have second derivative bounded below for mmd?}
-	it follows that:
+	This holds a fortiori for $\F(\rho_{t})$ since $\F$ is smooth. By assumption, we have that $\ddot{\F}(\rho_{t}) \geq \Lambda(\rho_t,V_t)$, hence, it follows that:
 	\[
-	\F(\rho_{t})=(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\dot{\F}(\rho_{s})G(s,t)ds
+	\F(\rho_{t})\leq(1-t)\F(\rho_{0})+t\F(\rho_{1})-\int_{0}^{1}\Lambda(\rho_{s},v_{s})G(s,t)ds.
 	\]
-	Now using the inequality from \cref{prop:lambda_convexity}, \cref{eq:integral_lambda_convexity}
-	follows directly. 
 \end{proof}
 
 
@@ -1050,82 +1044,86 @@ with $G(s,t)=s(1-t) \mathbbm{1}\{s\leq t\}
 	\end{align*}
 \end{lemma}
 \begin{proof}
-	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$.
-	We need to show that \[\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu')\leq 0\]
-	This follows from a simple computation which shows that:
-	\begin{align*}
-	\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
-	\end{align*}
+	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$. Expending the RKHS norm in $\F$ it follows directly that:
+	\[
+		\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
+	\]
+	which concludes the proof.
 \end{proof}
 
 
-\begin{lemma}\label{lem:mmd_w2}[Lipschitzness of the MMD w.r.t. the $W_1$ and $W_2$ distance]
-	 Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then for all $\mu, \nu$ in $\mathcal{P}(\X)$:
-	\begin{equation}
-	MMD^2(\mu,\nu)\le  L_k^2 W_1^2(\mu,\nu) \le L_k^2 W_2^2(\mu,\nu)
-	\end{equation}
-\end{lemma}
-\begin{proof}
-Let $\mu, \nu$ in $\mathcal{P}(\X)$. By Proposition 20 in \cite{sriperumbudur2010hilbert} we have:
-\begin{equation}
-	MMD(\mu, \nu)	 \le \inf_{\pi \in \Pi(\mu, \nu)} \int \| k(x,.)-k(y,.) \|_{\kH} d\pi(\mu, \nu)
-\end{equation}
-Hence:
-\begin{align}
-	MMD^2(\mu, \nu)	
-	 \le (\inf_{\pi \in \Pi(\mu, \nu)} \int L_k \| x-y \| d\pi(\mu, \nu))^2
- \le L_k^2 W_1^2(\mu, \nu) \le L_k^2 W_2^2(\mu,\nu)
-\end{align}
-\end{proof}
+%\begin{lemma}\label{lem:mmd_w2}[Lipschitzness of the MMD w.r.t. the $W_1$ and $W_2$ distance]
+%	 Suppose that $k$ is bounded and measurable on $\X$, and that there exists $L_k$ such that $\forall x,y \in \X$, $\| k(x,.)-k(y,.) \|_{\kH}\le L_k \|x-y\|$. Then for all $\mu, \nu$ in $\mathcal{P}(\X)$:
+%	\begin{equation}
+%	MMD^2(\mu,\nu)\le  L_k^2 W_1^2(\mu,\nu) \le L_k^2 W_2^2(\mu,\nu)
+%	\end{equation}
+%\end{lemma}
+%\begin{proof}
+%Let $\mu, \nu$ in $\mathcal{P}(\X)$. By Proposition 20 in \cite{sriperumbudur2010hilbert} we have:
+%\begin{equation}
+%	MMD(\mu, \nu)	 \le \inf_{\pi \in \Pi(\mu, \nu)} \int \| k(x,.)-k(y,.) \|_{\kH} d\pi(\mu, \nu)
+%\end{equation}
+%Hence:
+%\begin{align}
+%	MMD^2(\mu, \nu)	
+%	 \le (\inf_{\pi \in \Pi(\mu, \nu)} \int L_k \| x-y \| d\pi(\mu, \nu))^2
+% \le L_k^2 W_1^2(\mu, \nu) \le L_k^2 W_2^2(\mu,\nu)
+%\end{align}
+%\end{proof}
 
 
 \begin{lemma}
-\label{lem:Discrete-Gronwall-lemma}[Discrete Gronwall lemma]\manote{write proof}
-
-Let $a_{n+1}\leq(1+\gamma A)a_{n}+b$ with $\gamma>0$, $A>0$ and
-$b>0$ then 
+\label{lem:Discrete-Gronwall-lemma}[Discrete Gronwall lemma]
+Let $a_{n+1}\leq(1+\gamma A)a_{n}+b$ with $\gamma>0$, $A>0$,
+$b>0$ and $a_0=0$, then: 
 \[
 a_{n}\leq\frac{b}{\gamma A}(e^{n\gamma A}-1).
 \]
 \end{lemma}
-
-
-
-\subsection{Proof of \cref{prop:mmd_flow}}
-
-We firstly derive the strong subdifferential of $\F$ associated with the 2-Wasserstein metric. Since $\F= \frac{1}{2} \|f_t\|^2_{\kH}$, by simple derivations we obtain:
-\begin{equation}
- \nabla \frac{\partial\frac{1}{2} \|f_t\|^2_{\kH}}{\partial \rho_t}= \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle \frac{\partial \E_{\rho_t}[k(Y,.)]}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle k(Y,.), f_t \rangle_{\kH}
-\end{equation}
-Then, by applying the reproducing property we have that:
-\begin{equation}
-\nabla \langle k(Y,.), f_t \rangle_{\kH}
-= \nabla f_t(Y)
-\end{equation}
-where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$.
-
-
-\begin{lemma}\label{lem:time_derivative}
-The time derivative of $\mathcal{F}(\rho_t)$ is given by:
-	\begin{align*}
-		\frac{d \mathcal{F}(\rho_t)}{dt}&=\int \nabla f_t(\pi_t(X)).(Y-X)d\Pi(X,Y)\\
-	\end{align*}
-	where $f_t$ is the witness function at time $t$ and is given by:
-	\begin{align}
-	f_t(x)=\rho_t(k(X,x))-\mu(k(X,x)) \qquad \forall t\in [0,1]
-	\end{align}	
-\end{lemma}
 \begin{proof}
-	The proof is very similar to the one in \cref{lem:derivative_mmd}. Indeed we still have
-	\begin{align*}
-		\frac{d \mathcal{F}(\rho_t)}{dt} = \langle f_t , \frac{df_t}{dt} \rangle
-	\end{align*}
-	And the time derivative of $f_t$ at each point $x\in\mathbb{R}^d$ is obtained by direct computation:
-	\begin{align*}
-		 \frac{df_t}{dt}= \int \nabla k(\pi_t(X,Y),.).(Y-X)d\Pi(X,Y)
-	\end{align*}
-	The result follows using the reproducing property in $\kH$.
- \end{proof}
+	Using the recursion, it is easy to see that for any $n>0$:
+	\[
+	a_n \leq (1+\gamma A)^n a_0 + b(\sum_{i=0}^{n-1}(1+\gamma A )^{k}) 
+	\]
+	One concludes using the identity $\sum_{i=0}^{n-1}(1+\gamma A )^{k} =\frac{1}{\gamma A}((1+\gamma A)^{n} -1)$ and recalling that $(1+\gamma A)^{n} \leq e^{n\gamma A}$.
+\end{proof}
+
+
+%\subsection{Proof of \cref{prop:mmd_flow}}
+%
+%We firstly derive the strong subdifferential of $\F$ associated with the 2-Wasserstein metric. Since $\F= \frac{1}{2} \|f_t\|^2_{\kH}$, by simple derivations we obtain:
+%\begin{equation}
+% \nabla \frac{\partial\frac{1}{2} \|f_t\|^2_{\kH}}{\partial \rho_t}= \nabla \langle \frac{\partial f_t}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle \frac{\partial \E_{\rho_t}[k(Y,.)]}{\partial \rho_t}, f_t \rangle_{\kH}= \nabla \langle k(Y,.), f_t \rangle_{\kH}
+%\end{equation}
+%Then, by applying the reproducing property we have that:
+%\begin{equation}
+%\nabla \langle k(Y,.), f_t \rangle_{\kH}
+%= \nabla f_t(Y)
+%\end{equation}
+%where $\nabla f_t(Y)= \E_{X \sim \rho_t}[\nabla_{Y}k(X,Y)] -  \E_{X \sim \pi}[\nabla_{Y}k(X,Y)]$.
+
+
+%\begin{lemma}\label{lem:time_derivative}
+%The time derivative of $\mathcal{F}(\rho_t)$ is given by:
+%	\begin{align*}
+%		\frac{d \mathcal{F}(\rho_t)}{dt}&=\int \nabla f_t(\pi_t(X)).(Y-X)d\Pi(X,Y)\\
+%	\end{align*}
+%	where $f_t$ is the witness function at time $t$ and is given by:
+%	\begin{align}
+%	f_t(x)=\rho_t(k(X,x))-\mu(k(X,x)) \qquad \forall t\in [0,1]
+%	\end{align}	
+%\end{lemma}
+%\begin{proof}
+%	The proof is very similar to the one in \cref{lem:derivative_mmd}. Indeed we still have
+%	\begin{align*}
+%		\frac{d \mathcal{F}(\rho_t)}{dt} = \langle f_t , \frac{df_t}{dt} \rangle
+%	\end{align*}
+%	And the time derivative of $f_t$ at each point $x\in\mathbb{R}^d$ is obtained by direct computation:
+%	\begin{align*}
+%		 \frac{df_t}{dt}= \int \nabla k(\pi_t(X,Y),.).(Y-X)d\Pi(X,Y)
+%	\end{align*}
+%	The result follows using the reproducing property in $\kH$.
+% \end{proof}
 
 
 
