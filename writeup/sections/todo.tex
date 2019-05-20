@@ -18,12 +18,8 @@ Experiments/Literature
 \end{itemize}
 everywhere: treat comments if possible
 
-Add to appendix:\\
+%\subsubsection{Proof of \cref{prop:existence_uniqueness}}
 
-Given a probability distribution $\nu$ the \textit{weighted Sobolev semi-norm} is defined for all squared integrable functions $f$ in $L_2(\nu)$ as $ \Vert f \Vert_{\dot{H}(\nu)} = \left(\int \Vert \nabla f(x) \Vert^2 \diff \nu(x) \right)^{\frac{1}{2}}$ with the convention $\Vert f \Vert_{\dot{H}^1(\nu)} = +\infty$ if $f$ doesn't have a square integrable gradient.
-
-\subsubsection{Proof of \cref{prop:existence_uniqueness}}
-
-\begin{proof}\aknote{this will go in the Appendix. please comment the other proposition in the appendix if this stays in the main.tex}
-	Under Lipschitzness of $\nabla k$, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cref{sec:ito_stochastic}). The uniqueness of a gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven later, and from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$.\aknote{check} The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
-\end{proof}
+%\begin{proof}\aknote{this will go in the Appendix. please comment the other proposition in the appendix if this stays in the main.tex}
+%	Under Lipschitzness of $\nabla k$, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), hence we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cref{sec:ito_stochastic}). The uniqueness of a gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven later, and from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$.\aknote{check} The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+%\end{proof}
