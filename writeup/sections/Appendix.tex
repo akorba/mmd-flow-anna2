@@ -79,7 +79,7 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 \begin{equation}
 W_2(\nu, \nu+ \epsilon \chi) = \epsilon \Vert \chi \Vert_{\dot{H}^1(\nu)}+ o(\epsilon)
 \end{equation}
-\manote{write up a section about linearizing $W_2$ and maybe relate it to other distances}
+%\manote{write up a section about linearizing $W_2$ and maybe relate it to other distances}
 
 
 \subsection{Gradient flows on the space of probability measures}\label{subsec:gradient_flows_functionals}
@@ -169,14 +169,14 @@ We can now define the notion of $\Lambda$-convexity:
 \section{Construction of the gradient flow of the MMD}
 
 \subsection{Main assumptions on the kernel needed}
-We state here all the assumptions on the kernel $k$ used to prove all the results: \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
+We state here all the assumptions on the kernel $k$ used to prove all the results:% \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist}
-	\item \label{assump:lipschitness_nabla_k} $|\nabla k(x,.) - \nabla k(y,.)|\le L_k \Vert x-y \Vert$ for any $x,y \in \X$.
 	\item \label{assump:bounded_trace} $ \vert \sum_{1\leq i\leq d} \partial_i\partial_ik(x,x) \vert\leq \frac{L}{3}  $ for all $x\in \mathbb{R}^d$.
 	\item \label{assump:bounded_hessian} $\Vert H_xk(x,y) \Vert_{op} \leq \frac{L}{3}$ for all $x,y\in \mathbb{R}^d$, where $H_xk(x,y)$ is the hessian of $x\mapsto k(x,y)$ and $\Vert.\Vert_{op}$ is the operator norm.
 	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \mathbb{R}$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
-	\item \label{assump:lipschitz_gradient_k} $\Vert  \nabla k(x,x') - \nabla k(y,y')\Vert \leq L(\Vert \Vert x-y\Vert + \Vert x'-y' \Vert   \Vert) $ for all $x,x',y,y' \in \X$.
+	\item \label{assump:lipschitz_gradient_k} $\Vert  \nabla k(x,x') - \nabla k(y,y')\Vert \leq L(\Vert  x-y\Vert + \Vert x'-y' \Vert ) $ for all $x,x',y,y' \in \X$.
+	\item \label{assump:quad_growth}: $\Vert \nabla k(x,z) \Vert \le C \Vert x\Vert^2 $ for any $z \in \X$.
 \end{assumplist}
 
 
@@ -222,7 +222,7 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $\nabla k$.% and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[existence and uniqueness]
-Under \cref{assump:lipschitness_nabla_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$). Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$ (see \cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{Jourdain:2007}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}(\X)$ is in the domain of $\F$ (see \cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
 \end{proof}
 
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
@@ -979,17 +979,49 @@ The second and last lines are obtained using a triangular inequality while the t
 \section{Auxiliary results}
 
 \begin{proposition}\label{prop:grad_witness_function}
-Under \cref{assump:lipschitz_gradient_k}, the witness function $f_{\nu,\nu'}$ between any probability distributions $\nu$ and $\nu'$ in $\mathcal{P}_2(\X)$ is differentiable and satisfies:
-\[
-\nabla f_{\nu,\nu'}(x) = \int \nabla k(x,x')\diff \nu(x') - \int \nabla k(x,x')\diff \nu'(x') \qquad \forall x\in \X
-\]
-Moreover, the map $(x,\mu,\nu)\mapsto f_{\mu,\nu}(x)$ is Lipschitz with:
-\[
-\Vert \nabla f_{\mu,\nu}(x) - \nabla f_{\mu',\nu'}(y)\Vert \leq 2L (\Vert x-y \Vert + W_2(\mu,\mu') + W_2(\nu,\nu')) 
-\]
-Finally, each component of $\nabla f_{\nu,\nu'}$ belongs to $\kH$.
+Under \cref{assump:lipschitz_gradient_k}, the witness function $f_{\mu,\nu}$ between any probability distributions $\mu$ and $\nu$ in $\mathcal{P}_2(\X)$ is differentiable and satisfies:
+\begin{equation}\label{eq:gradient_witness}
+\nabla f_{\mu,\nu}(z) = \int \nabla_1 k(x,z)\diff \mu(x) - \int \nabla_1 k(x,z)\diff \nu(x) \qquad \forall z\in \X
+\end{equation}
+where $z \mapsto \nabla_1 k(x,z)$ denotes the gradient of $z\mapsto k(x,z)$ for a fixed $x \in \X$.
+ Moreover, the map $(z,\mu,\nu)\mapsto f_{\mu,\nu}(z)$ is Lipschitz with:
+\begin{equation}\label{eq:lipschitz_grad_witness}
+\Vert \nabla f_{\mu,\nu}(z) - \nabla f_{\mu',\nu'}(z')\Vert \leq 2L (\Vert z-z' \Vert + W_2(\mu,\mu') + W_2(\nu,\nu')) 
+\end{equation}
+Finally, each component of $\nabla f_{\mu,\nu}$ belongs to $\kH$.
 \end{proposition}
-\begin{proof}\manote{write proof}
+\begin{proof}
+	The expression of the witness function is given in \eqref{eq:witness_function}. To establish \eqref{eq:gradient_witness}, we simply need to check that:
+	\begin{equation}\label{eq:exchange_kernel_int}
+	\nabla \int k(x,z) \diff \nu(x) = \int \nabla k (x,z) \diff \nu(x) \text{ for all }\nu \in \mathcal{P}_2(\X).
+	\end{equation}
+	Then, by assumption \cref{assump:quad_growth}:
+	\begin{equation}
+	|\nabla k(x,z)|\le \Vert x\Vert ^2 \text{ with } \int \Vert x \Vert \diff \nu(x)<\infty
+	\end{equation}
+	since $\nu \in \mathcal{P}_2(\X)$. Then, by the theorem of the differentiation under the integral sign, we obtain \eqref{eq:exchange_kernel_int}.
+	
+	To prove the Lipschitzness of $(z,\mu,\nu)\mapsto f_{\mu,\nu}(z)$, we begin by the decomposition:
+	\begin{align}\label{eq:decompose_lipschitz}
+	\Vert \nabla f_{\mu,\nu}(z) - \nabla f_{\mu',\nu'}(z')\Vert &\leq \Vert \nabla f_{\mu,\nu}(z) - \nabla f_{\mu,\nu}(z')\Vert + \Vert \nabla f_{\mu,\nu}(z') - \nabla f_{\mu,\nu'}(z')\Vert\\
+	&\phantom{{}=\leq \Vert \nabla f_{\mu,\nu}(z)}+\Vert \nabla f_{\mu,\nu'}(z') - \nabla f_{\mu',\nu'}(z')\Vert\notag
+	\end{align}
+	For the first r.h.s. term we have by \cref{assump:lipschitz_gradient_k}:
+	\begin{multline*}
+	\Vert \nabla f_{\mu,\nu}(z) - \nabla f_{\mu,\nu}(z')\Vert =\\
+	\Vert \int (\nabla_1 k(x,z)-\nabla_1(k,z')) \diff \mu(x) - \int (\nabla_1 k(x,z)-\nabla_1(k,z'))\diff \nu(x)\Vert \le 2L \Vert z-z'\Vert
+	\end{multline*}
+	The second r.h.s. term can be written:
+	\begin{multline*}
+	\Vert \nabla f_{\mu,\nu}(z') - \nabla f_{\mu,\nu'}(z')\Vert = \Vert \int \nabla_1 k(x,z')\diff \nu'(x) - \int \nabla_1 k(x,z')\diff \nu(x) \Vert\\
+	\le L \Vert \int \frac{\nabla_1 k(x,z')}{L}\diff \nu'(x) - \int \frac{\nabla_1 k(x,z')}{L}\diff \nu(x) \Vert \le L W_2(\nu,\nu')
+	\end{multline*}
+	where we used the dual definition of the 1-Wassertein distance:
+	\begin{equation*}
+	W_1(\nu,\nu')=\sup_{g \text{ is 1-Lipschitz}} | \int g(x)\diff \nu(x) -\int g(x)\diff \nu'(x)| 
+	\end{equation*}
+	as well as the fact that $W_1(\nu,\nu')\le W_2(\nu,\nu')$ for all $\nu,\nu' \in \mathcal{P}_2(\X)$ (see \cite{peyre2019computational}). By the same computation on the last term at the r.h.s. of \eqref{eq:decompose_lipschitz} we obtain \eqref{eq:lipschitz_grad_witness}. 
+	%if we can pass the gradient inside the integral. It appears we can since the kernel verifies the following assumptions.
 	
 \end{proof}
 
