@@ -46,15 +46,15 @@ it would correspond to regularizing $\F$ using an entropic term as in \cite{mei2
 In fact \cref{eq:discretized_noisy_flow} is  closely related to the \textit{continuation methods} \cite{Gulcehre:2016a,Gulcehre:2016,Chaudhari:2017}  and \textit{graduated optimization} \cite{Hazan:2015} used for non-convex optimization in Euclidian spaces. Indeed given a non-convex cost function $F$, the graduated descent would lead to updates of the form: $X_{n+1} = X_n - \gamma \nabla F(X_n+\beta U_n )$. The main difference with \cref{eq:discretized_noisy_flow} is the dependence of $f_{\mu, \nu_n}$ on $\nu_n$ which is inherently due to functional optimization.
 We show in the following proposition, whose proof is provided in \cref{proof:prop:decreasing_loss_iterations}, that \cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controlled.
 \begin{proposition}\label{prop:decreasing_loss_iterations}
-	Let $(\nu_n)_{n\geq 0}$ be the sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$. Under \cref{assump:bounded_hessian}, and for a choice of $\beta_n$ such that:
+	Let $(\nu_n)_{n\geq 0}$ be the sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$. Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs}, and for a choice of $\beta_n$ such that:
 	\begin{align}\label{eq:control_level_noise}
-		8L^2\beta_n^2 \F(\nu_n) \leq \int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff \nu_n(x)\diff u   
+		8\lambda^2\beta_n^2 \F(\nu_n) \leq \int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff \nu_n(x)\diff u   
 	\end{align}
 	 the following inequality holds:
 	\begin{align}\label{eq:decreasing_loss_iterations}
-		\F(\nu_{n+1}) - \F(\nu_n  ) \leq -\frac{\gamma}{2}(1-\gamma L)\int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff\nu_n(x) \diff u
+		\F(\nu_{n+1}) - \F(\nu_n  ) \leq -\frac{\gamma}{2}(1-3\gamma L)\int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff\nu_n(x) \diff u.
 	\end{align}
-	Here $L$ is given in \cref{assump:bounded_hessian} and depends only on the choice of the kernel, and $g$ is the density of the standard gaussian distribution.
+$\lambda$ and $L$ are defined in \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs} and depend only on the choice of the kernel, and $g$ is the density of the standard gaussian distribution.
 \end{proposition}
 %A proof of \cref{prop:decreasing_loss_iterations} is provided in \cref{eq:proof_decreasing_noisy_loss}.
 
@@ -66,9 +66,9 @@ We show in the following proposition, whose proof is provided in \cref{proof:pro
  \end{remark}
 The natural question is whether \cref{eq:discretized_noisy_flow} converges towards to global optimum of $\F$. The answer will depend on how much noise is allowed to be injected while still decreasing $\F$. The higher the $\beta_n$ is, the faster it will converge. This is made more precise in \cref{thm:convergence_noisy_gradient}: 
  \begin{theorem}\label{thm:convergence_noisy_gradient}
- Assume that $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ and \cref{eq:control_level_noise} is satisfied for all $n$ then:
+ Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs} and if \cref{eq:control_level_noise} is satisfied for a sequence $(\beta_n)_{n\geq0}$ such that $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ then:
  \begin{align}
- 	\F(\nu_n)\leq \F(\nu_0) e^{-4L^2\gamma(1-\gamma L)\sum_{i=0}^n \beta^2_i}
+ 	\F(\nu_n)\leq \F(\nu_0) e^{-4\lambda^2\gamma(1-3\gamma L)\sum_{i=0}^n \beta^2_i}
  \end{align}
  \end{theorem}
  A proof of \cref{thm:convergence_noisy_gradient} is provided in \cref{proof:thm:convergence_noisy_gradient} and relies on \cref{eq:control_level_noise} to get a Lojasiewicz inequality which then controls the decay of $\F(\nu_n)$. A particular case when \cref{thm:convergence_noisy_gradient} holds is when $\beta_n$ is guaranteed to be always greater than a minimal value $\beta^*>0$ while still having \cref{eq:control_level_noise}. In this case, one recovers linear convergence rates for $\F(\nu_n)$.

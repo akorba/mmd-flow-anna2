@@ -96,7 +96,7 @@ From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional fo
 \subsection{Training neural networks as flow of the MMD}\label{subsec:training_neural_networks}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
 The MMD was successfully used to train generative networks \cite{Arbel:2018,Binkowski:2018}\manote{cite others}, where it is used as a loss functional between the data distribution and a parametric model distribution.
-Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{Rotskoff:2019}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
+Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{rotskoff2019global} . To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
  Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
 \begin{align}\label{eq:regression_network}
 	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim p  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
@@ -126,7 +126,7 @@ The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ ca
 \begin{align}\label{eq:particle_dynamics}
 	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
 \end{align}  
-As pointed out in \cite{chizat2018global,Rotskoff:2019}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
+As pointed out in \cite{chizat2018global,rotskoff2019global}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
 %\begin{align}\label{eq:mmd_flow}
 %	\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t})
 %\end{align}
@@ -237,7 +237,7 @@ will be the object of \cref{sec:convergence_mmd_flow}. For now, we provide a gua
 	\begin{align}
 		\rho_t^{\gamma} = (I-(t- n\gamma) \nabla f_{\mu,\nu_n})_{\#}\nu_n \qquad \forall t\in [n\gamma,(n+1)\gamma), \forall n\geq 0
 	\end{align}
-where $\nu_n$ is defined in \cref{eq:euler_scheme}. Then under mild assumptions on the kernel and for all $T>0$:%\manote{asumptions: Lipschitz gradient + bounded hessian} 
+where $\nu_n$ is defined in \cref{eq:euler_scheme}. Then under \cref{assump:lipschitz_gradient_k} and for all $T>0$:%\manote{asumptions: Lipschitz gradient + bounded hessian} 
 	\begin{align}
 		W_2(\rho_t^{\gamma},\nu_t)\leq \gamma C(T) \quad \forall t\in [0,T]
 	\end{align}
@@ -246,10 +246,11 @@ where $\nu_n$ is defined in \cref{eq:euler_scheme}. Then under mild assumptions 
 \cref{prop:convergence_euler_scheme} means that $\nu_n$ can be linearly interpolated giving rise to a path $\rho_t^{\gamma}$ which gets arbitrarily close to $\nu_t$ on bounded intervals. Note that as $T \rightarrow \infty$ it is expected that the bound $C(T)$ would blow-up. However, this is enough to show that \cref{eq:euler_scheme} is indeed a discrete-time flow of $\F$. In fact, provided that $\gamma$ is small enough, $\F(\nu_n)$ is a decreasing sequence:
 \begin{proposition}\label{prop:decreasing_functional}
 	%Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
- 	Let $L$ be the Lipschitz constant of $\nabla k$. Under mild assumptions on the kernel, the following inequality holds:
+ 	Under \cref{assump:lipschitz_gradient_k}, the following inequality holds:
 	\begin{align*}
 	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{3\gamma}{2}L )\int \Vert \nabla f_{\mu, \nu_n}(X)\Vert^2 d\nu_n
 	\end{align*}
+	where $L$ is the Lipschitz constant of $\nabla k$.
 \end{proposition}
 \cref{prop:decreasing_functional} is a discrete analog of \cref{prop:decay_mmd}. The proofs and detailed assumptions are given in \cref{proof:prop:decreasing_functional}. 
 In fact, \cref{eq:euler_scheme} is intractable in general as it requires to evaluate $f_{\mu,\nu_n}$ exactly at each iterations. Nevertheless, we present in \cref{sec:sample_based} a practical algorithm using a finite number of samples which is provably convergent towards \cref{eq:euler_scheme} as the sample-size increases. We thus begin by studying the convergence properties of the discretized in time MMD flow \eqref{eq:euler_scheme} in the next section. \asnote{Related works here?}

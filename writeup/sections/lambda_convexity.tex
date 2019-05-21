@@ -12,19 +12,20 @@ Displacement convexity should not be confused with \textit{mixture convexity} wh
 %This could happen if for instance \cref{eq:Lojasiewicz_inequality} doesn't hold. 
 %It can be shown, however, that $\F$ is guaranteed to reach some barrier. This is a consequence of the $\Lambda$-displacement convexity of $\F$ which is 
 \begin{proposition}
-	\label{prop:lambda_convexity} Suppose $\sup_{(x,y) \in \X, (i,j) \in \llbracket 1, d \rrbracket} \partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)\le \lambda$  holds for some $\lambda \in \R^+$. Then for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{0\leq t\leq 1}$ the following holds:
-	\begin{equation}
+	\label{prop:lambda_convexity} Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k,assump:bounded_fourth_oder}, $\F$ is $\Lambda$-displacement convex and satisfies:
+		\begin{equation}
 	\F(\rho_{t})\leq(1-t)\F(\nu)+t\F(\nu')-\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s
 	\end{equation}
-	where $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\Lambda$ is defined for any pair $(\rho,v)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
+for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{0\leq t\leq 1}$.
+The function $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\Lambda$ is defined for any pair $(\rho,v)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
 	\begin{align}\label{eq:lambda}
-		\Lambda(\rho,v) = \Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \Vert^2_{\mathcal{H}} - \lambda\F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x) 
+		\Lambda(\rho,v) = \Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \Vert^2_{\mathcal{H}} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x) 
 	\end{align}
 	\end{proposition}
 \cref{prop:lambda_convexity} can be obtained by computing the second time-derivative of $\F(\rho_t)$ which is then lower-bounded by $\Lambda(\rho_t,v_t)$ (see \cref{proof:prop:lambda_convexity} for a full proof).
 In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s$ can become negative, hence displacement convexity does not hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $(\nu_n)_{n \in \mathbb{N}}$ are obtained using \cref{eq:euler_scheme}. Such an upper-bound depends on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$, i.e. with velocity vectors $(v_s^n)_{0\leq s\leq 1}$ of a constant norm. \cref{th:rates_mmd} provides such bound:
 \begin{theorem}\label{th:rates_mmd}
-	Consider the sequence $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations. \aknote{show that $\bar{K}$ is bounded!!} If $\gamma \leq 1/L$, where $L$ is the Lipschitz constant of $\nabla k$, then:
+	Consider the sequence $\nu_n$ obtained from \cref{eq:euler_scheme} and let us denote $\bar{K}$ the average value of $(K(\rho^j))_{0\leq j \leq n}$ over iterations. \aknote{show that $\bar{K}$ is bounded!!} Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k,assump:bounded_fourth_oder} and if $\gamma \leq 1/L$, where $L$ is the Lipschitz constant of $\nabla k$, then:
 \begin{align}
 \F(\nu_n) - \F(\mu)\leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
 \end{align}
