@@ -45,7 +45,7 @@ it would correspond to regularizing $\F$ using an entropic term as in \cite{mei2
 %This is not the case for \cref{eq:discretized_noisy_flow} where the global optimum of $\F$ is a fixed point, as it will be shown in this section. 
  %As shown in \manote{add this in the appendix}, \cref{eq:discretized_noisy_flow} is associated to an augmented continuous-time dynamics  which decreases $\F$ under a condition on the noise level $\beta_k$:
 In fact \cref{eq:discretized_noisy_flow} is  closely related to the \textit{continuation methods} \cite{Gulcehre:2016a,Gulcehre:2016,Chaudhari:2017}  and \textit{graduated optimization} \cite{Hazan:2015} used for non-convex optimization in Euclidian spaces, which inject noise \textit{into} the gradient as well at each iteration. %Indeed given a non-convex cost function $F$, the graduated descent would lead to updates of the form: $X_{n+1} = X_n - \gamma \nabla F(X_n+\beta U_n )$. The main difference with \cref{eq:discretized_noisy_flow} is the dependence of $f_{\mu, \nu_n}$ on $\nu_n$ which is inherently due to functional optimization.
-We show in the following proposition, whose proof is provided in \cref{proof:prop:decreasing_loss_iterations}, that \cref{eq:discretized_noisy_flow} attains the global minimum of $\F$ provided the level of the noise is well controlled. %\cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controlled.
+We show in the following proposition, whose proof is provided in \cref{proof:prop:decreasing_loss_iterations}, that \cref{eq:discretized_noisy_flow} attains the global minimum of $\F$ provided the level of the noise is well controlled as well as the step-size. %\cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controlled.
 \begin{proposition}\label{prop:decreasing_loss_iterations}
 	Let $(\nu_n)_{n\geq 0}$ be the sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$. Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs}, and for a choice of $\beta_n$ such that:
 	\begin{align}\label{eq:control_level_noise}
@@ -59,6 +59,7 @@ $\lambda$ and $L$ are defined in \cref{assump:lipschitz_gradient_k,assump:Lipsch
 \begin{align}
 \F(\nu_n)\leq \F(\nu_0) e^{-4\lambda^2\gamma(1-3\gamma L)\sum_{i=0}^n \beta^2_i}
 \end{align}
+Thus $\F(\nu_n)\rightarrow 0$ for $\gamma\le 1/3L$.
 \end{proposition}
 %A proof of \cref{prop:decreasing_loss_iterations} is provided in \cref{eq:proof_decreasing_noisy_loss}.
 
