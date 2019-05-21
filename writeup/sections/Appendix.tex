@@ -647,7 +647,7 @@ We can now give the proof of the \cref{th:rates_mmd}.
 \subsection{Lojasiewicz type inequalities}
 
 \begin{proof}[Proof of \cref{prop:lojasiewicz}]\label{proof:prop:lojasiewicz}
-	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert f_{\mu, \nu_t}\Vert^{-1}_{\dot{H}^1(\nu_t)} f_{\mu, \nu_t}$, then $g\in L_2(\nu)$ and $\Vert g \Vert_{\dot{H}(\nu_t)}= \leq 1$. Therefore, we directly have:
+	This proof follows simply from the definition of the negative Sobolev distance. Under \cref{assump:lipschitz_gradient_k}, the kernel has at most quadratic growth hence, for any $\mu,\nu \in \mathcal{P}_2(\X)^2$, $f_{\mu,\nu}\in L_2(\nu)$. Consider $g = \Vert f_{\mu, \nu_t}\Vert^{-1}_{\dot{H}^1(\nu_t)} f_{\mu, \nu_t}$, then $g\in L_2(\nu_t)$ and $\Vert g \Vert_{\dot{H}(\nu_t)}\leq 1$. Therefore, we directly have:
 	\begin{align}\label{eq:loja1}
 	\vert \int g \diff \nu_t - \int g \diff \mu  \vert \leq \Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)} 
 	\end{align}

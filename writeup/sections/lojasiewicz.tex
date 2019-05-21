@@ -10,33 +10,34 @@ According to \cref{prop:decay_mmd}, the absolute value of the time derivative of
 \end{align}	
 with possibly infinite values.
 \end{definition}
-Equation \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport. Indeed, when $q$ is equal to $\nu$, it linearizes the $W_2(p,\nu)$ as $p$ becomes arbitrarily close to $\nu$ \cite{Villani:2009,Otto:2000,Peyre:2011}. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $q$ (see \cite{mroueh2018regularized}). Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite and since $f_{\mu,\nu_t}\in L_2(\nu_t)$ (by boundedness of the kernel\aknote{true?}), it is proved in \cref{proof:prop:lojasiewicz} that:
+Equation \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport. Indeed, when $q$ is equal to $\nu$, it linearizes the $W_2(p,\nu)$ as $p$ becomes arbitrarily close to $\nu$ \cite{Villani:2009,Otto:2000,Peyre:2011}. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $q$ (see \cite{mroueh2018regularized}). Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite and since $f_{\mu,\nu_t}\in L_2(\nu_t)$ under \cref{assump:lipschitz_gradient_k}, it is proved in \cref{proof:prop:lojasiewicz} that:
 \begin{align}\label{eq:inequality_neg_sobolev}
 	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
 \end{align}
-Hence, provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded by some positive constant $C$ at all times, one gets a functional version of Lojasiewicz inequality:
-\begin{align}\label{eq:Lojasiewicz_inequality}
-	%4\F(\nu_t)^2\leq C^2 \int \Vert \nabla f_{\mu,\nu_t} \Vert^2 \diff \nu_t(x)  \qquad \forall t\geq 0.
-	4\F(\nu_t)^2\leq C^2\frac{d \F(\nu_t)}{dt} \qquad \forall t\geq 0.
-\end{align} 
-It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This is summarized in \cref{prop:lojasiewicz}:
+and provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded by some positive constant $C$ at all times, that one gets a functional version of Lojasiewicz inequality for $\F$. 
+%\begin{align}\label{eq:Lojasiewicz_inequality}
+%	4\F(\nu_t)^2\leq C^2\frac{d \F(\nu_t)}{dt} \qquad \forall t\geq 0.
+%\end{align} 
+It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This result is given in \cref{prop:lojasiewicz}:
 \begin{proposition}\label{prop:lojasiewicz}
-	Assume that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$ at all times $t\geq 0$ then $\F(\nu_t)$ converges to $0$ and:
+	Assume \cref{assump:lipschitz_gradient_k} is satisfied and that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$, for all $t\geq 0$. Then $\F(\nu_t)$ converges to $0$ and:
 	\begin{align}
 	\mathcal{F}(\nu_t)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4t}
 	\end{align}
 \end{proposition}
-The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein distance appears in the context of Wasserstein flows is not a coincidence. In fact, other gradient flows of the same functional $\F$ under a different metric, would lead to an inequality similar to \cref{eq:Lojasiewicz_inequality}. The only difference comes from the different linearization that arises from that choice of metric. For instance, in \cite{Rotskoff:2019}, a gradient flow of functionals similar to $\F$ is considered under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that the chi-square divergence $\chi^2(\mu\Vert \nu_t)$ is bounded, which turns out to approximate $KL(\mu\Vert \nu_t)$ when $\mu$ and $\nu_t$ are close as shown in \manote{add some details in appendix section}.
+The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein distance appears in the context of Wasserstein flows is not a coincidence. In fact, other gradient flows of the same functional $\F$ under a different metric, would lead to an inequality similar to the Lojasiewicz inequality obtained for $\F$ in \cref{proof:prop:lojasiewicz}.  %\cref{eq:Lojasiewicz_inequality}. 
+The only difference comes from the different linearization that arises from that choice of metric. For instance, in \cite{Rotskoff:2019}, a gradient flow of functionals similar to $\F$ is considered under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that the chi-square divergence $\chi^2(\mu\Vert \nu_t)$ is bounded%, which turns out to approximate $KL(\mu\Vert \nu_t)$ when $\mu$ and $\nu_t$ are close as shown in 
+\manote{add some details in appendix section}.
 
 Under similar conditions as in \cref{prop:lojasiewicz}, convergence of the discrete-time flow can be obtained:
 \begin{proposition}\label{prop:discrete_lojasiewicz}
-	Assume that $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$, where $\nu_n$ are defined in \cref{eq:euler_scheme} and $L$ is the Lispchitz constant of $\nabla k$. Then $\F(\nu_n)$ converges to $0$ and satisfies:
+	Assume \cref{assump:lipschitz_gradient_k} and that $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$, where $\nu_n$ are defined in \cref{eq:euler_scheme} and $L$ is the Lispchitz constant of $\nabla k$. Then $\F(\nu_n)$ converges to $0$ and satisfies:
 	\begin{align}
 	\mathcal{F}(\nu_n)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4\gamma(1-\frac{3}{2}\gamma L) n}
 	\end{align}
 \end{proposition}
 Proofs of \cref{prop:lojasiewicz,prop:discrete_lojasiewicz} are direct consequences of \cref{prop:decay_mmd,prop:decreasing_functional} and the bounded energy assumption, see  \cref{proof:prop:lojasiewicz} for a proof.
-In practice, it is hard to guarantee that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded at all times. One possible approach could be to regularize $\F$ using an estimate of \cref{eq:neg_sobolev}. In fact \cite{Mroueh:2019} consider the gradient flow of a regularized version of the negative Sobolev distance which can be written in closed-form, and shows that it decreases the MMD. Combing both losses could improve the overall convergence properties of the MMD for an additional computational cost. In the next Section, we propose a different approach to improve the convergence, and a particle-based approximation of the MMD flow.
+In practice, it is hard to guarantee that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bounded at all times. One possible approach could be to regularize $\F$ using an estimate of \cref{eq:neg_sobolev}. In fact \cite{Mroueh:2019} considers the gradient flow of a regularized version of the negative Sobolev distance which can be written in closed-form conveniently, and shows that this one decreases the MMD. Combing both losses could improve the overall convergence properties of the MMD for an additional computational cost. In the next Section, we propose a different approach (or regularization) to improve the convergence, and a particle-based algorithm to approximate the MMD flow in practice.
 % but we first analyze in \cref{subsection:barrier_optimization} the case where $\F$ is only guaranteed to reach a barrier during optimization.
 %All the difficulty is to see now when \cref{eq:bounded_neg_sobolev} holds. However, this quantity might be infinite \manote{say exactly when it is finite} and a fundamental problem would be to control its value during the evolution of the flow. One possible strategy would be to start from initial $\nu_0$ such that $\Vert \nu_0  - \mu \Vert_{\dot{H}^{-1}(\nu_0)} \leq C $  for some finite positive value $C$ and then show that this property is preserved during the dynamics. For instance, it would be satisfied if $\mu \ll \nu_0$ and if this remains true along the flow. Another view on the problem would be to consider a time depended constant $C_t$ in \cref{eq:bounded_neg_sobolev}, such that $	\lim_{t\rightarrow +\infty} \int_0^t C_s^{-1}\diff s = +\infty$.
 %\begin{align}
