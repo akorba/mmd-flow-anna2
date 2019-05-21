@@ -129,7 +129,8 @@ Standard considerations from fluid mechanics tell us that the continuity equatio
 
 
 \subsection{Displacement convexity}\label{subsec:lambda_convexity}
-Just as for Euclidian spaces, an  important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is given by displacement convexity:
+Just as for Euclidian spaces, an  important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is given by displacement convexity (see\cite[Definition 16.5]{Villani:2004})):
+
 \begin{definition}\label{def:displacement_convexity}[Displacement convexity] 
 We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is displacement convex
 	if for any $\nu$ and $\nu'$ and a constant speed geodesic $(\text{\ensuremath{\rho_{t}}})_{t \in [0,1]}$
@@ -140,7 +141,7 @@ We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is displacement convex
 	\end{equation}
  %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
 \end{definition}
-\cref{def:displacement_convexity} can be relaxed to a more general notion of convexity called $\Lambda$-displacement convexity. We first define an admissible functional $\Lambda$:
+\cref{def:displacement_convexity} can be relaxed to a more general notion of convexity called $\Lambda$-displacement convexity (see \cite[Definition 16.5]{Villani:2009}). We first define an admissible functional $\Lambda$:
 \begin{definition}\label{def:conditions_lambda}[Admissible $\Lambda$ functional]
 	A functional $(\rho,v)\mapsto \Lambda(\rho,v) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and any square integrable vectors field $v\in L_2(\X,\X,\rho)$ is admissible, if it satisfies:
 	\begin{itemize}
