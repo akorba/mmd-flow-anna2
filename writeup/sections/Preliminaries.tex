@@ -1,15 +1,16 @@
 
 \section{Gradient flow of the MMD in $W_2$}\label{sec:gradient_flow}
 \subsection{Construction of the gradient flow}
-In this section we introduce the gradient flow of the Maximum Mean Discrepancy (MMD) and highlight some of its properties. We start by briefly reviewing the MMD introduced in \cite{gretton2012kernel}, more details are provided in \cref{sec:rkhs}. In all the paper, $\X\subset\R^d$ is the closure of a convex open set, and $\mathcal{P}_2(\X)$ is the set of probability distributions on $X$ with finite second moment/
-\paragraph{Maximum Mean Discrepancy.}\label{subsec:MMD}
-Given a characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding RKHS (see \cite{smola1998learning}). In all the paper, we will suppose that its gradient $\nabla k$ is Lipschitz with constant $L$. The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$.
+In this section we introduce the gradient flow of the Maximum Mean Discrepancy (MMD) and highlight some of its properties. We start by briefly reviewing the MMD introduced in \cite{gretton2012kernel}, more details are provided in \cref{sec:rkhs}. In all the paper, $\X\subset\R^d$ is the closure of a convex open set, and $\mathcal{P}_2(\X)$ is the set of probability distributions on $X$ with finite second moment. The reader may find a useful mathematical background \cref{sec:appendix_math_background}. In all the paper, we will rely on specific assumptions on the kernel which are given \cref{sec:assumptions_kernel}.
+
+\paragraph{Maximum Mean Discrepancy.}\label{subsec:MMD} Given a characteristic kernel $k$ defined on $\X$, we denote by $\kH$ its corresponding RKHS (see \cite{smola1998learning}). In all the paper, we will suppose that its gradient $\nabla k$ is Lipschitz with constant $L$. The space $\kH$ is a Hilbert space with inner product $\langle .,. \rangle_{\kH}$ and corresponding norm $\Vert . \Vert_{\kH}$.
 When the kernel has at most a quadratic growth, it is possible to define a distance on $\mathcal{P}_2(\X)$ called the Maximum Mean Discrepancy. It is given as the RKHS norm of the \textit{witness function} $f_{\mu,\nu}$ between $\mu$ and $\nu$ which is by definition the difference between the mean embeddings of $\nu$ and $\mu$:%\asnote{Put Equivalent definition as an IPM} 
 \begin{align}\label{eq:witness_function}
 MMD(\mu,\nu) = \Vert f_{\mu,\nu} \Vert_{\kH}, \qquad f_{\nu,\mu}(z) = \int k(x,z)\diff \nu(x) - \int k(x,z)\diff \mu(x)  \quad \forall z\in \X
 \end{align}
 Throughout all the paper, $\mu$ will be fixed and $\nu$ could vary, hence, we will only consider the dependence in $\nu$ and denote by $\F(\nu)= \frac{1}{2}MMD^2(\mu,\nu)$. 
-A direct computation shows, that for any finite signed measure $\chi$ such that $\nu + \epsilon \chi \in \cP_2(\X)$ for $\epsilon >0$ small enough, the following holds:
+A direct computation shows, that for any %finite signed measure 
+$\chi\in \mathcal{P}_2(\X)$ such that $\nu + \epsilon \chi \in \cP_2(\X)$ for $\epsilon >0$ small enough, the following holds:
 \begin{align}\label{prop:differential_mmd}
 		\lim_{\epsilon\rightarrow 0} \epsilon^{-1}(\F(\nu +\epsilon\chi) - \F(\nu)) = \int f_{\mu,\nu}(x)d\chi(x).
 	\end{align}
@@ -40,10 +41,11 @@ If $X$ and $Y$ \asnote{?}are two samples or particles following $\nu$, then $V$ 
 %\F(\nu) = \frac{1}{2} MMD^2(\mu,\nu) \qquad \forall \nu \in \mathcal{P}_2(\X).
 %\end{align}
 \paragraph{Gradient flow of the MMD.}\label{paragraph:flow_MMD}
-We consider now the problem of transporting mass from an initial distribution $\nu_0$ to a target distribution $\mu$ by finding a continuous path $\nu_t$ starting from $\nu_0$ that would ideally converge to $\mu$ while decreasing $\F(\nu_t)$. Such path should be physically plausible in that  teleportation phenomena are not allowed. For instance, the path $\nu_t = (1-e^{-t})\mu + e^{-t}\nu_0$ would constantly teleport mass between $\mu$ and $\nu_0$ although it decreases  $\F$ since $\F(\nu_t)=e^{-2t}\F(\nu_0)$ (see Corollary 1 in \cite{mroueh2018regularized}). The physicality of the path is better understood in terms of classical statistical physics: if $\nu_0$ is an initial configuration of $N$ particles, these can be moved towards a different configuration $\mu$ through successive small transformations without jumping from a location to another. There are practical situations in machine learning where this constraint will arise naturally as we will see in \cref{subsec:training_neural_networks}. 
+We consider now the problem of transporting mass from an initial distribution $\nu_0$ to a target distribution $\mu$, by finding a continuous path $\nu_t$ starting from $\nu_0$ that would ideally converge to $\mu$ while decreasing $\F(\nu_t)$. Such path should be physically plausible in that  teleportation phenomena are not allowed. For instance, the path $\nu_t = (1-e^{-t})\mu + e^{-t}\nu_0$ would constantly teleport mass between $\mu$ and $\nu_0$ although it decreases  $\F$ since $\F(\nu_t)=e^{-2t}\F(\nu_0)$ (see Corollary 1 in \cite{mroueh2018regularized}). The physicality of the path is better understood in terms of classical statistical physics: if $\nu_0$ is an initial configuration of $N$ particles, these can be moved towards a different configuration $\mu$ through successive small transformations without jumping from a location to another. %There are practical situations in machine learning where this constraint will arise naturally as we will see in \cref{subsec:training_neural_networks}. 
 
 The optimal transport theory provides a way to construct such a continuous path by means of the \textit{continuity equation}. Given a vector field $V_t$ on $\X$ and an initial condition $\nu_0$, the continuity equation is a partial differential equation which defines a path $\nu_t$ evolving under the action of the vector field $V_t$, and reads $\partial_t \nu_t = -div(\nu_t V_t)$ for all $t\geq0$.
-This equation expresses two facts, the first one is that $-div(\nu_t V_t)$ reflects the infinitesimal changes in $\nu_t$ as dictated by the vector field (also referred to as velocity field) $V_t$, the second fact is that the total mass of $\nu_t$ does not vary in time as a consequence of the divergence theorem. The reader can find more detailed discussions in \cite{Santambrogio:2015}. Following  \cite{ambrosio2008gradient}, a natural choice is to choose $V_t$ as the negative gradient of the differential of $\F(\nu_t)$ at $\nu_t$, since it corresponds to a gradient flow of $\F$ associated with the 2-Wasserstein metric (see the definition \cref{subsec:gradient_flows_functionals}). %The choice of $V_t$ determines the path $\nu_t$, therefore there must be a direct link between $V_t$ and $\F(\nu_t)$ if one wants to construct a gradient flow for of $\F$. 
+%This equation expresses two facts, the first one is that $-div(\nu_t V_t)$ reflects the infinitesimal changes in $\nu_t$ as dictated by the vector field (also referred to as velocity field) $V_t$, the second one is that the total mass of $\nu_t$ does not vary in time as a consequence of the divergence theorem. 
+The reader can find more detailed discussions in \cref{subsec:wasserstein_flow} or \cite{Santambrogio:2015}. Following  \cite{ambrosio2008gradient}, a natural choice is to choose $V_t$ as the negative gradient of the differential of $\F(\nu_t)$ at $\nu_t$, since it corresponds to a gradient flow of $\F$ associated with the $W_2$ metric (see \cref{subsec:gradient_flows_functionals}). %The choice of $V_t$ determines the path $\nu_t$, therefore there must be a direct link between $V_t$ and $\F(\nu_t)$ if one wants to construct a gradient flow for of $\F$. 
 %Following  \cite{ambrosio2008gradient}, such link is obtained by choosing $V_t$ to the negative gradient of the differential of $\F(\nu_t)$ at $\nu_t$.
 By \cref{prop:differential_mmd}, we know that the differential of $\F(\nu_t)$  at $\nu_t$ is given by $f_{\mu,\nu_t}$, hence $V_t(x) = -\nabla f_{\mu,\nu_t}(x)$. The
 gradient flow of $\F$ is then defined by the solution $(\nu_t)_{t\geq 0}$ of:
@@ -56,27 +58,29 @@ Equation \cref{eq:continuity_mmd} is non-linear in that the vector field depends
 \end{align}
 
 In fact,  \cref{eq:mcKean_Vlasov_process} defines a process $(X_t)_{t\geq 0}$ whose distribution $(\nu_t)_{t\geq 0}$ satisfies \cref{eq:continuity_mmd} as shown in \cref{prop:existence_uniqueness}. 
-$(X_t)_{t\geq 0}$ can be interpreted as  the trajectory of a single particle starting from an initial random position $X_0$ drawn from $\nu_0$. Its trajectory is then driven by a velocity field $-\nabla f_{\mu,\nu_t}$. Such particle interacts with other particles driven by the same velocity field, which affects its trajectory. This interaction is captured by the velocity field through the dependence on the current configuration of all particles $\nu_t$.
+$(X_t)_{t\geq 0}$ can be interpreted as  the trajectory of a single particle, starting from an initial random position $X_0$ drawn from $\nu_0$, whose trajectory is then driven by the velocity field $-\nabla f_{\mu,\nu_t}$. Such particle interacts with other particles driven by the same velocity field, which affects its trajectory. This interaction is captured by the velocity field through the dependence on the current configuration of all particles $\nu_t$.
 %Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under mild conditions on the kernel $k$ and are provided in \cref{thm:existence_uniqueness}:
 %\begin{theorem}\label{thm:existence_uniqueness}(Existence and uniqueness)
 %	Under \manote{some assumptions}, and given $\nu_0\in \mathcal{P}_2(\X)$ there exists a unique process $(\X_t)_{t\geq 0}$ with $X_0\sim \nu_0$ and satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process}. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} in a weak sense and hence defines a gradient flow of $\F$. 
 %\end{theorem}
 %A proof of \cref{thm:existence_uniqueness} is provided in \manote{proof} and relies on standard existence and uniqueness results of McKean-Vlasov processes under regularity of the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)$ \cite{Jourdain:2007}. Such regularity is ensured if the kernel $k$ has Lipschitz gradients for instance. Besides, the existence and uniqueness of the process itself, one would like the functional $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. While the latter is hard to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}, the first property is rather easy to get and is the object of \cref{prop:decay_mmd}:
-Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed, due to the Lipschitzness of $x \mapsto \nabla k(x,.)$ and thus of $(x,\nu) \mapsto \nabla f_{\mu, \nu_t}(x)$ (see \cref{proof:prop:existence_uniqueness} for a full proof).
+Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed in the next proposition, whose proof is given \cref{proof:prop:existence_uniqueness}.
 % is guaranteed using \cite{jourdain2007nonlinear}, \cite{ambrosio2008gradient} respectively (see \cref{proof:prop:existence_uniqueness} for a full proof).
-\begin{proposition}\label{prop:existence_uniqueness}(Existence and uniqueness)
+\begin{proposition}\label{prop:existence_uniqueness}
 	Let $\nu_0\in \mathcal{P}_2(\X)$. %Assume that $\nabla k$ is Lipschitz continuous. 
-	Then, there exists a unique process $(X_t)_{t\geq 0}$  satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process} such that $X_0 \sim \nu$. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} starting from $\nu_0$ and defines a gradient flow of $\F$. 
+	Then, under \cref{assump:lipschitz_gradient_k}, there exists a unique process $(X_t)_{t\geq 0}$  satisfying the McKean-Vlasov equation in \cref{eq:mcKean_Vlasov_process} such that $X_0 \sim \nu_0$. Moreover, the distribution $\nu_t$ of $X_t$ is the unique solution of \cref{eq:continuity_mmd} starting from $\nu_0$ and defines a gradient flow of $\F$. 
 \end{proposition}
-Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. The first property, stated in the next proposition, is rather easy to get and is the object of \cref{prop:decay_mmd} with a proof deffered to \cref{proof:prop:decay_mmd}: 
+Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ to decrease along the path $\nu_t$ and ideally to converge towards $0$. The first property, stated in the next proposition, is rather easy to get and is the object of \cref{prop:decay_mmd} with a proof deferred to \cref{proof:prop:decay_mmd}.
 \begin{proposition}\label{prop:decay_mmd}
-	Under the assumptions of \cref{prop:existence_uniqueness}, $\F(\nu_t)$ is decreasing in time and satisfies:
+	%Under the assumptions of \cref{prop:existence_uniqueness}, 
+	$\F(\nu_t)$ is decreasing in time and satisfies:
 	\begin{align}\label{eq:time_evolution_mmd}
 		\frac{d\F(\nu_t)}{dt}= - \int \Vert \nabla f_{\mu,\nu_t}(x) \Vert^2 \diff \nu_t(x)  
 	\end{align}
 \end{proposition}
-This property results from the expression of the differential of $\F$ \eqref{prop:differential_mmd} and the theory of $W_2$ gradient flows (see \cref{subsec:gradient_flows_functionals}). Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
-From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. The reader may refer to \cref{subsec:kl_flow} for a connection to other well-known gradient flows in Wassertein space. We know motivate the study of this flow by recent considerations and applications in Machine Learning.
+This property results from the expression of the differential of $\F$ \eqref{prop:differential_mmd} and the theory of $W_2$ gradient flows of free energies (see \cref{subsec:gradient_flows_functionals}). Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
+From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. The reader may refer to \cref{subsec:kl_flow} for a connection to other well-known gradient flows in Wassertein space. %We know motivate the study of this flow by recent considerations and applications in Machine Learning.
+We know provide a time discretization of the MMD flow.
 
 %We conclude this section with a remark referring to other well-known gradient flows in Wasserstein space.
 %\begin{remark}\label{remark:gradient_flow}
@@ -182,36 +186,33 @@ From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapounov functional fo
 
 %\section{Discretized Gradient flow of the MMD}
 \subsection{Euler scheme}
-The continuous-time gradient flow introduced in \cref{eq:continuity_mmd} allows to formally consider the notion of gradient descent on $\mathcal{P}_2(\X)$ with $\F$ as a cost function. This is done by considering a forward-Euler scheme of \cref{eq:continuity_mmd}. For any $T: \X \rightarrow \X$ a measurable map, and $\nu \in \mathcal{P}_2(\X)$, we denote the pushforward measure by $T_{\#}\nu$ (see the formal definition in \cref{subsec:wasserstein_flow}). Starting from an initial $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, it is possible to construct a sequence $\nu_n\in \mathcal{P}_2(\X)$ by iteratively applying:
+The continuous-time gradient flow introduced in \cref{eq:continuity_mmd} allows to formally consider the notion of gradient descent on $\mathcal{P}_2(\X)$ with $\F$ as a cost function. This is done by considering a forward-Euler scheme of \cref{eq:continuity_mmd}. For any $T: \X \rightarrow \X$ a measurable map, and $\nu \in \mathcal{P}_2(\X)$, we denote the pushforward measure by $T_{\#}\nu$ (see \cref{subsec:wasserstein_flow}). Starting from an initial $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, it is possible to construct a sequence $\nu_n\in \mathcal{P}_2(\X)$ by iteratively applying:
 \begin{align}\label{eq:euler_scheme}
 	\nu_{n+1} = (I - \gamma \nabla f_{\mu,\nu_n})_{\#}\nu_n
 \end{align} 
-Equation \cref{eq:euler_scheme} is the distribution of the stochastic process defined by:
+For all $n\ge 0$, equation \cref{eq:euler_scheme} is the distribution of the stochastic process defined by:
 \begin{align}\label{eq:euler_scheme_particles}
 	X_{n+1} = X_n - \gamma \nabla f_{\mu,\nu_n}(X_n) \qquad X_0\sim \nu_0.
 \end{align}
 The asymptotic behavior of \cref{eq:euler_scheme} as $n\rightarrow \infty$ %is easier to analyze than the continuous-time flow. \aknote{thought this was false? (since we have PL+the barrier in continuous time) but that the rates in discretized times are stronger} 
 %This 
-will be the object of \cref{sec:convergence_mmd_flow}. For now, we provide a guarantee that the sequence $(\nu_n)_{n\geq 0}$ approaches $(\nu_t)_{t\geq 0}$ as $\gamma\rightarrow 0$:
+will be the object of \cref{sec:convergence_mmd_flow}. For now, we provide a guarantee that the sequence $(\nu_n)_{n\geq 0}$ approaches $(\nu_t)_{t\geq 0}$ as the step-size $\gamma\rightarrow 0$.
 \begin{proposition}\label{prop:convergence_euler_scheme}
-	Consider the interpolation path $\rho_t^{\gamma}$ defined as:
-	\begin{align}
-		\rho_t^{\gamma} = (I-(t- n\gamma) \nabla f_{\mu,\nu_n})_{\#}\nu_n \qquad \forall t\in [n\gamma,(n+1)\gamma), \forall n\geq 0
-	\end{align}
-where $\nu_n$ is defined in \cref{eq:euler_scheme}. Then under \cref{assump:lipschitz_gradient_k} and for all $T>0$:%\manote{asumptions: Lipschitz gradient + bounded hessian} 
+	Let $n\ge0$. Consider $\nu_n$ defined in \cref{eq:euler_scheme}, and the interpolation path $\rho_t^{\gamma}$ defined as: $\rho_t^{\gamma} = (I-(t- n\gamma) \nabla f_{\mu,\nu_n})_{\#}\nu_n$, $\forall t\in [n\gamma,(n+1)\gamma)$. Then, under \cref{assump:lipschitz_gradient_k},  $\forall \;T>0$:%\manote{asumptions: Lipschitz gradient + bounded hessian} 
 	\begin{align}
 		W_2(\rho_t^{\gamma},\nu_t)\leq \gamma C(T) \quad \forall t\in [0,T]
 	\end{align}
+	where $C(T)$ is a constant that depends only on $T$.
 \end{proposition} 
  A proof of \cref{prop:convergence_euler_scheme} is provided in \cref{proof:prop:convergence_euler_scheme} and relies on standard techniques to control the discretization error of a forward-Euler scheme.
-\cref{prop:convergence_euler_scheme} means that $\nu_n$ can be linearly interpolated giving rise to a path $\rho_t^{\gamma}$ which gets arbitrarily close to $\nu_t$ on bounded intervals. Note that as $T \rightarrow \infty$ it is expected that the bound $C(T)$ would blow-up. However, this is enough to show that \cref{eq:euler_scheme} is indeed a discrete-time flow of $\F$. In fact, provided that $\gamma$ is small enough, $\F(\nu_n)$ is a decreasing sequence:
+\cref{prop:convergence_euler_scheme} means that $\nu_n$ can be linearly interpolated giving rise to a path $\rho_t^{\gamma}$ which gets arbitrarily close to $\nu_t$ on bounded intervals. Note that as $T \rightarrow \infty$ it is expected that the bound $C(T)$ would blow-up. However, this is enough to show that \cref{eq:euler_scheme} is indeed a discrete-time flow of $\F$. In fact, provided that $\gamma$ is small enough, $\F(\nu_n)$ is a decreasing sequence, as shown below.
 \begin{proposition}\label{prop:decreasing_functional}
 	%Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
  	Under \cref{assump:lipschitz_gradient_k}, the following inequality holds:
 	\begin{align*}
 	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{3\gamma}{2}L )\int \Vert \nabla f_{\mu, \nu_n}(X)\Vert^2 d\nu_n
 	\end{align*}
-	where $L$ is the Lipschitz constant of $\nabla k$.
+	%where $L$ is the Lipschitz constant of $\nabla k$.
 \end{proposition}
-\cref{prop:decreasing_functional} is a discrete analog of \cref{prop:decay_mmd}. The proofs and detailed assumptions are given in \cref{proof:prop:decreasing_functional}. 
-In fact, \cref{eq:euler_scheme} is intractable in general as it requires to evaluate $f_{\mu,\nu_n}$ exactly at each iteration. Nevertheless, we present in \cref{sec:sample_based} a practical algorithm using a finite number of samples which is provably convergent towards \cref{eq:euler_scheme} as the sample-size increases. We thus begin by studying the convergence properties of the time discretized MMD flow \eqref{eq:euler_scheme} in the next section. \asnote{Related works here?}
+\cref{prop:decreasing_functional}, whose proof is given \cref{proof:prop:decreasing_functional}, is a discrete analog of \cref{prop:decay_mmd}. %The proofs and detailed assumptions are given in \cref{proof:prop:decreasing_functional}. 
+In fact, \cref{eq:euler_scheme} is intractable in general as it requires the knowledge of $\nabla f_{\mu,\nu_n}$ (and thus of $\nu_n$) exactly at each iteration $n$. Nevertheless, we present in \cref{sec:sample_based} a practical algorithm using a finite number of samples which is provably convergent towards \cref{eq:euler_scheme} as the sample-size increases. We thus begin by studying the convergence properties of the time discretized MMD flow \eqref{eq:euler_scheme} in the next section. \asnote{Related works here?}

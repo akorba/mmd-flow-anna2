@@ -1,6 +1,6 @@
 
 
-This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} and  \cref{sec:appendix_algorithms} are dedicated to the development of the proofs of the paper. They rely on some auxiliary results which are given \cref{sec:auxiliary_results}.
+This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} and  \cref{sec:appendix_algorithms} are dedicated to the development of the proofs of the paper. They {\tiny }rely on some auxiliary results which are given \cref{sec:auxiliary_results}.
 
 
 \section{Mathematical background}\label{sec:appendix_math_background}
@@ -54,7 +54,7 @@ Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displace
 \begin{equation}\label{eq:continuity_equation}
 \partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
 \end{equation}
-Equation \cref{eq:continuity_equation} is well defined in the distribution sense even when $\rho_t$ does not have a density. At each time $t$, $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ so that the length $l((\rho_t)_{t\in[0,1]})$ of the curve $(\rho_t)_{t\in[0,1]}$ would be given by:
+This equation expresses two facts, the first one is that $-div(\rho_t v_t)$ reflects the infinitesimal changes in $\rho_t$ as dictated by the vector field (also referred to as velocity field) $v_t$, the second one is that the total mass of $\rho_t$ does not vary in time as a consequence of the divergence theorem. Equation \cref{eq:continuity_equation} is well defined in the distribution sense even when $\rho_t$ does not have a density. At each time $t$, $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ so that the length $l((\rho_t)_{t\in[0,1]})$ of the curve $(\rho_t)_{t\in[0,1]}$ would be given by:
 \begin{equation}
 l((\rho_t)_{t\in[0,1]})^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t \quad \text{ where } \quad 
 \Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)

@@ -16,12 +16,12 @@ Displacement convexity should not be confused with \textit{mixture convexity} wh
 		\begin{equation}
 	\F(\rho_{t})\leq(1-t)\F(\nu)+t\F(\nu')-\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s
 	\end{equation}
-for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{0\leq t\leq 1}$.
+for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{t\in[0,1]}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{0\leq t\leq 1}$.
 $\Lambda$ is defined for any pair $(\rho,v)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
 	\begin{align}\label{eq:lambda}
 		\Lambda(\rho,v) = \left\Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \right\Vert^2_{\mathcal{H}} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x) 
 	\end{align}
-and $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and	
+and $(s,t)\mapsto G(s,t)=  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$	is the one-dimensional Green function.
 	\end{proposition}
 \cref{prop:lambda_convexity} can be obtained by computing the second time-derivative of $\F(\rho_t)$ which is then lower-bounded by $\Lambda(\rho_t,v_t)$ (see \cref{proof:prop:lambda_convexity} for a full proof).
 In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s$ can become negative, hence displacement convexity does not hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $(\nu_n)_{n \in \mathbb{N}}$ are obtained using \cref{eq:euler_scheme}. Such an upper-bound depends on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,V_s^n)(1-s)\diff s$ where $(\rho_s^n)_{0\leq s\leq 1}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$, i.e. with velocity vectors $(v_s^n)_{0\leq s\leq 1}$ of a constant norm. \cref{th:rates_mmd} provides such bound:
