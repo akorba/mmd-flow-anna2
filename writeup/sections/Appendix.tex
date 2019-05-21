@@ -290,7 +290,7 @@ definition $\bar{\nu}_{0}^{\gamma}=\nu_{0}^{\gamma}$, we conclude that $a_{n}\le
 \begin{lemma}\label{lem:euler_error_2}
 For any $T>0$ and $n$ such that $n\gamma\leq T$
 \[
-W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})\leq\gamma\frac{C}{\sqrt{2}L}(e^{2TL}-1)^{2}
+W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})\leq\gamma\frac{C}{4L}(e^{4TL}-1)^{2}
 \]
 \end{lemma}
 \begin{proof}
@@ -302,13 +302,13 @@ Now, denoting by $b_{n}=W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})$, it is e
 we have:
 \begin{align*}
 b_{n+1} & \leq\mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})\Vert^{2}\right]^{\frac{1}{2}}\\
-&\leq (1+\gamma L)  \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}} + \gamma L W_2(\nu_n^{\gamma},\nu_{\gamma n}))\\
- & \leq (1+ 2\gamma L)b_n + \gamma L W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})
+&\leq (1+2\gamma L)  \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}} + 2\gamma L W_2(\nu_n^{\gamma},\nu_{\gamma n}))\\
+ & \leq (1+ 4\gamma L)b_n + \gamma L W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})
 \end{align*}
 The second line is obtained recalling that $\nabla f_{\mu,\nu}(x)$ is $L$-Lipschitz in both $x$
-and $\nu$.\manote{state assumption clearly} The third line follows by triangular inequality and recalling that $\mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}}= W_2(\nu_n^{\gamma},\bar{\nu}_n^{\gamma}) = b_n$ since $\pi$ is an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
+and $\nu$ by \cref{prop:grad_witness_function} since \cref{assump:lipschitz_gradient_k} holds. The third line follows by triangular inequality and recalling that $\mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^2\right]^{\frac{1}{2}}= W_2(\nu_n^{\gamma},\bar{\nu}_n^{\gamma}) = b_n$ since $\pi$ is an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
 and $\nu_{n}^{\gamma}$. 
-By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})\leq\gamma\frac{C}{L}(e^{n\gamma L}-1)$, hence, for any $n$ such that $n\gamma\leq T$ we get the recursive inequality: $b_{n+1}\leq(1+2\gamma L)b_{n}+C\gamma^{2}(e^{TL}-1)$. Finally, using again \cref{lem:Discrete-Gronwall-lemma}, it follows that $b_{n}\leq\gamma\frac{C}{2L}(e^{2TL}-1)^{2}$.
+By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma n})\leq\gamma\frac{C}{2L}(e^{2n\gamma L}-1)$, hence, for any $n$ such that $n\gamma\leq T$ we get the recursive inequality: $b_{n+1}\leq(1+4\gamma L)b_{n}+C\gamma^{2}(e^{2TL}-1)$. Finally, using again \cref{lem:Discrete-Gronwall-lemma}, it follows that $b_{n}\leq\gamma\frac{C}{4L}(e^{4TL}-1)^{2}$.
 \end{proof}
 %
 
@@ -643,7 +643,7 @@ W_2^2(\nu_j,\mu)-W_2^2(\nu_{j+1},\mu)-2\gamma K(\rho^j) \qquad \forall \; 0 \leq
 \subsection{Lojasiewicz type inequalities}
 
 \begin{proof}[Proof of \cref{prop:lojasiewicz}]\label{proof:prop:lojasiewicz}
-	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} f_{\mu, \nu_t}$, then $g\in W_0^{1,2}(\nu)$ \manote{this suggests an assumption on the kernel so that all those function satisfy a boundary condition} and $\Vert g \Vert_{\dot{H}(\nu_t)}= \Vert \nabla g \Vert_{L_2(\nu_t)}\leq 1$. Therefore, we directly have:
+	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert f_{\mu, \nu_t}\Vert^{-1}_{\dot{H}^1(\nu_t)} f_{\mu, \nu_t}$, then $g\in L_2(\nu)$ and $\Vert g \Vert_{\dot{H}(\nu_t)}= \leq 1$. Therefore, we directly have:
 	\begin{align}\label{eq:loja1}
 	\vert \int g \diff \nu_t - \int g \diff \mu  \vert \leq \Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)} 
 	\end{align}
@@ -651,25 +651,25 @@ W_2^2(\nu_j,\mu)-W_2^2(\nu_{j+1},\mu)-2\gamma K(\rho^j) \qquad \forall \; 0 \leq
 	\begin{equation}\label{eq:loja2}
 	\vert \int g \diff \nu_t - \int g \diff \mu  \vert = \Vert \nabla f_{\mu, \nu_t}\Vert^{-1}_{L_2(\nu_t)} \vert \int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu, \nu_t} \diff \mu \vert.
 	\end{equation}
-	But since $f_{\mu, \nu_t}$  is exactly the witness functions between $\nu_t$ and $\mu$, it follows that $\int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu,\nu_t}\diff \mu = \Vert f_{\mu, \nu_t}\Vert^2_{\kH}$. Combining \eqref{eq:loja1} and \eqref{eq:loja2} we thus get the desired Lojasiewicz inequality on $f_{\mu,\nu_t}$:
+	Moreover,  we have that $\int f_{\mu, \nu_t}\diff \nu_t-\int f_{\mu,\nu_t}\diff \mu = \Vert f_{\mu, \nu_t}\Vert^2_{\kH}$, since $f_{\mu, \nu_t}$  is the witness functions between $\nu_t$ and $\mu$. Combining \eqref{eq:loja1} and \eqref{eq:loja2} we thus get the desired Lojasiewicz inequality on $f_{\mu,\nu_t}$:
 	\begin{equation}
 	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
 	\end{equation}
-	where $\Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)}=\Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)}$ by definition. Then, by 
-	using \cref{prop:decay_mmd} and $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \le C$, we have that:  
-	\begin{align}
+	where $\Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)}=\Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)}$ by definition. Then, 
+	using \cref{prop:decay_mmd} and recalling by assumption that: $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \le C$, we have:  
+	\begin{align}\label{eq:PL_inequality}
 	\dot{\F}(\nu_t) = - \Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)} \leq -\frac{1}{C}\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}}= -\frac{4}{C}\F(\nu_t)^2	
 	\end{align}
 	It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
 
 \begin{proof}[Proof of \cref{prop:discrete_lojasiewicz}]\label{proof:prop:discrete_lojasiewicz}
-By replacing $t$ by $n$ in the previous proof and using Proposition~\cref{prop:} we have
+Using Proposition~\cref{prop:decreasing_functional} and \cref{eq:PL_inequality} where $\nu_t$ is replaced by $\nu_n$ it follows:
 $$
-\cF(\nu_{n+1}) - \cF(\nu_n) \leq -\gamma\left(1-\frac{L\gamma}{2}\right)\|\phi_n\|_{L_2(\nu_n)}^2 \leq -\frac{4}{C}\gamma\left(1-\frac{L\gamma}{2}\right)\cF(\nu_n)^2.
+\cF(\nu_{n+1}) - \cF(\nu_n) \leq -\gamma\left(1-\frac{L\gamma}{2}\right)\|\phi_n\|_{L_2(\nu_n)}^2 \leq -\frac{4}{C}\gamma\left(1-\frac{3}{2}\gamma L\right)\cF(\nu_n)^2.
 $$
-This implies that $0 \leq \cF(\nu_{n+1}) \leq \cF(\nu_n) $. Hence, $$\frac{1}{\cF(\nu_n)^2} \leq \frac{1}{\cF(\nu_n)\cF(\nu_{n+1})}$$ and $$ \frac{\cF(\nu_{n+1}) - \cF(\nu_{n})}{\cF(\nu_n)\cF(\nu_{n+1})} \leq \frac{\cF(\nu_{n+1}) - \cF(\nu_{n})}{\cF(\nu_n)^2}.$$ Finally, 
-$$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1-\frac{L\gamma}{2}\right)$$ and the proof is concluded by summing over $n$ and rearranging the terms.
+Dividing by both sides of the inequality by  $ \F(\nu_n)\F(\nu_{n+1})$ and recalling that $\F(\nu_{n+1})\leq \F(\nu_n)$ it follows directly that: 
+$$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1-\frac{3}{2}\gamma L\right).$$ The proof is concluded by summing over $n$ and rearranging the terms. 
 \end{proof}
 
 \manote{Add a discussion here about what Bruna does}
@@ -753,8 +753,8 @@ $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1
 \subsection{Noisy Gradient flow of the MMD}
 \begin{proof}[Proof of \cref{prop:decreasing_loss_iterations}]\label{proof:prop:decreasing_loss_iterations}
 To simplify notations, we write $V = \nabla f_{\mu,\nu_n}$ and $\mathcal{D}_{\beta_n}(\nu_n)  = \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff \nu_n \diff u $ where $g$ is the density of a standard gaussian. 
-	Recall that a sample $X_{n+1}$ from $\nu_{n+1}$ is obtained using  $X_{n+1} = X_n - \gamma V(X_n+ \beta_n U_n)$
-	where $X_n$ is a sample from $\nu_n$ and $U_n$ is a sample from a standard gaussian distribution that is independent from $X_n$. Moreover, $\beta_n$ is a non-negative scalar satisfying:
+	Recall that a sample $X_{n+1}$ from $\nu_{n+1}$ is obtained using  $x_{n+1} = x_n - \gamma V(x_n+ \beta_n u_n)$
+	where $x_n$ is a sample from $\nu_n$ and $u_n$ is a sample from a standard gaussian distribution that is independent from $x_n$. Moreover, $\beta_n$ is a non-negative scalar satisfying:
 	\begin{align}\label{eq:control_noise_level_bis}
 		8\lambda^2\beta_n^2 \F(\nu_n) \leq \mathcal{D}_{\beta_n}(\nu_n)  
 	\end{align}
@@ -807,40 +807,39 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 
 \subsection{sample-based approximate scheme}
 \begin{proof}[Proof of \cref{prop:convergence_euler_maruyama}]\label{proof:propagation_chaos}
-Let $(u_{k}^{i})_{1\leq i\leq N}$ be i.i.d standard gaussian variables and $(x_{0}^{i})_{1\leq i\leq N}$ i.i.d. samples from $\nu_0$. We consider $(x_k^i)_{1\leq i\leq N}$ the particles obtained using the approximate scheme \cref{eq:euler_maruyama}: $x_{k+1}^{i}=x_{k}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})$ starting from $(x_{0}^{i})_{1\leq i\leq N}$. Similarly, we denote by $(\bar{x}_{k}^{i})_{1\leq i\leq N}$ the particles obtained using the exact update equation \cref{eq:discretized_noisy_flow}: $\bar{x}_{k+1}^{i}=\bar{x}_{k}^{i}-\gamma\nabla f_{\mu,\nu_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})$ also starting from $(x_{0}^{i})_{1\leq i\leq N}$.
-By definition of $\nu_k$ we have that  $(\bar{x}_{k}^{i})_{1\leq i\leq N}$ are i.i.d. samples drawn from $\nu_k$ with empirical distribution denoted by $\bar{\nu}_{k}$.
-%Moreover, $(X_{k+1}^{i},\bar{X}_{k+1}^{i})$ are coupled through $U_{k}^{i}$ and $(X_{k}^{i},\bar{X}_{k}^{i})$, with a coupling denoted by $\pi_{k}$. 
-We will control the expected error $c_{k}$ defined as  $c^2_{k}= \frac{1}{N}\sum_{i=1}^N \mathbb{E}\left[\Vert x_{k}^{i}-\bar{x}_{k}^{i}\Vert^{2}\right]$. By recursion, we have:
+Let $(u_{n}^{i})_{1\leq i\leq N}$ be i.i.d standard gaussian variables and $(x_{0}^{i})_{1\leq i\leq N}$ i.i.d. samples from $\nu_0$. We consider $(x_n^i)_{1\leq i\leq N}$ the particles obtained using the approximate scheme \cref{eq:euler_maruyama}: $x_{n+1}^{i}=x_{n}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})$ starting from $(x_{0}^{i})_{1\leq i\leq N}$. Similarly, we denote by $(\bar{x}_{n}^{i})_{1\leq i\leq N}$ the particles obtained using the exact update equation \cref{eq:discretized_noisy_flow}: $\bar{x}_{n+1}^{i}=\bar{x}_{n}^{i}-\gamma\nabla f_{\mu,\nu_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})$ also starting from $(x_{0}^{i})_{1\leq i\leq N}$.
+By definition of $\nu_n$ we have that  $(\bar{x}_{n}^{i})_{1\leq i\leq N}$ are i.i.d. samples drawn from $\nu_n$ with empirical distribution denoted by $\bar{\nu}_{n}$.
+%Moreover, $(X_{n+1}^{i},\bar{X}_{n+1}^{i})$ are coupled through $U_{n}^{i}$ and $(X_{n}^{i},\bar{X}_{n}^{i})$, with a coupling denoted by $\pi_{n}$. 
+We will control the expected error $c_{n}$ defined as  $c^2_{n}= \frac{1}{N}\sum_{i=1}^N \mathbb{E}\left[\Vert x_{n}^{i}-\bar{x}_{n}^{i}\Vert^{2}\right]$. By recursion, we have:
 \begin{align*}
-c_{k+1} = & \frac{1}{\sqrt{N}}\left(\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{k}^{i}-\bar{x}_{k}^{i}-\gamma(\nabla f_{\hat{\mu},\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i}))\Vert^{2}\right]\right)^{\frac{1}{2}}\label{eq:main_inequality_c_k_1}\\
-\leq &  c_{k} +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})  \\
-& +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\bar{\nu}_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})\Vert^{2}])^{\frac{1}{2}}\\
-  \leq & c_{k}+\gamma L(c_{k}+\mathbb{E}[W_{2}(\hat{\nu}_{k},\bar{\nu}_{k})^{2}]^{\frac{1}{2}})+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})
+c_{n+1} = & \frac{1}{\sqrt{N}}\left(\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{n}^{i}-\bar{x}_{n}^{i}-\gamma(\nabla f_{\hat{\mu},\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})-\nabla f_{\mu,\nu_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i}))\Vert^{2}\right]\right)^{\frac{1}{2}}\label{eq:main_inequality_c_n_1}\\
+\leq &  c_{n} +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})  \\
+& +\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathbb{E}[\Vert\nabla f_{\mu,\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})-\nabla f_{\mu,\bar{\nu}_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})\Vert^{2}])^{\frac{1}{2}}\\
+  \leq & c_{n}+2\gamma L(c_{n}+\mathbb{E}[W_{2}(\hat{\nu}_{n},\bar{\nu}_{n})^{2}]^{\frac{1}{2}})+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})
 \end{align*}
 where the second line follows from a simple triangular inequality and the last line is obtained recalling that $\nabla f_{\mu,\nu}(x)$
-is jointly Lipschitz in $x$ and $\nu$.\manote{state this condition as assumption} Here, $\mathcal{E}_{i}$ represents the error between $\bar{\nu}_k$ and $\nu_k$ while $\mathcal{G}_{i}$  represents the error between $\hat{\mu}$ and $\mu$ and are given by: 
+is jointly Lipschitz in $x$ and $\nu$ by \cref{prop:grad_witness_function} since \cref{assump:lipschitz_gradient_n} holds. Here, $\mathcal{E}_{i}$ represents the error between $\bar{\nu}_n$ and $\nu_n$ while $\mathcal{G}_{i}$  represents the error between $\hat{\mu}$ and $\mu$ and are given by: 
 \begin{align*}
-\mathcal{E}_{i} & =\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\nu_{k}}(\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i})\Vert^{2}]\\
-\mathcal{G}_{i} & =\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})-\nabla f_{\mu,\hat{\nu}_{k}}(x_{k}^{i}+\beta_{k}u_{k}^{i})\Vert^{2}]
+\mathcal{E}_{i} & =\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})-\nabla f_{\mu,\nu_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})\Vert^{2}]\\
+\mathcal{G}_{i} & =\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})-\nabla f_{\mu,\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})\Vert^{2}]
 \end{align*}
 We will first control the error term $\mathcal{E}_i$. To simplify
-notations, we write $y^{i}=\bar{x}_{k}^{i}+\beta_{k}u_{k}^{i}$. Recalling the expression of $\nabla f_{\mu,\nu}$ \manote{from where??} and expanding the squared norm in $\mathcal{E}_i$, it follows:
+notations, we write $y^{i}=\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i}$. Recalling the expression of $\nabla f_{\mu,\nu}$ from \cref{prop:grad_witness_function} and expanding the squared norm in $\mathcal{E}_i$, it follows:
 \begin{align*}
 \mathcal{E}_{i} & =\mathbb{E}[\Vert\frac{1}{N}\sum_{j=1}^{N}\nabla k(y^{i},\bar{x}_{k}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}]\\
- & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(y^{i},\bar{x}_{k}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}\right]\\
- & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{x}_{k}^{j}-\int xd\nu_{k}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{k}).
+ & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(y^{i},\bar{x}_{n}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}\right]\\
+ & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{x}_{k}^{j}-\int xd\nu_{n}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{n}).
 \end{align*}
-The second line is obtained using the independence of the auxiliary samples $\bar{x}_{i}$ and recalling that they are distributed according to $\nu_{k}$. The last line uses the fact that $\nabla k(y,x)$ is $L$-Lipshitz in $x$. To control the variance $var(\nu_k)$ we use  \cref{lem:Control_variance} which implies that $var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}$ for all $k\leq\frac{T}{\gamma}$.
-\manote{state this assumption clearly}
-To control $\mathcal{G}_{i}$, it is sufficient to expend again the squared norm and recall that $\nabla k(y,x)$ is $L$-Lipschitz in $x$ which then implies that $\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)$. Finally, one can observe that  $W_{2}^{2}(\hat{\nu}_{k},\bar{\nu}_{k})\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert X_{k}^{i}-\bar{X}_{k}^{i}\Vert^{2}\right]=c_{k}^{2}$, hence $c_k$ satisfies the recursion:
+The second line is obtained using the independence of the auxiliary samples $\bar{x}_{i}$ and recalling that they are distributed according to $\nu_{n}$. The last line uses the fact that $\nabla k(y,x)$ is $L$-Lipshitz in $x$ by \cref{assump:lipschitz_gradient_k}. To control the variance $var(\nu_n)$ we use  \cref{lem:Control_variance} which implies that $var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}$ for all $n\leq\frac{2T}{\gamma}$.
+For $\mathcal{G}_{i}$, it is sufficient to expend again the squared norm and recall that $\nabla k(y,x)$ is $L$-Lipschitz in $x$ which then implies that $\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)$. Finally, one can observe that  $W_{2}^{2}(\hat{\nu}_{n},\bar{\nu}_{n})\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{n}^{i}-\bar{x}_{n}^{i}\Vert^{2}\right]=c_{n}^{2}$, hence $c_n$ satisfies the recursion:
 \[
-c_{k+1}\leq(1+2\gamma L)c_{k}+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{\gamma L}{\sqrt{M}}var(\mu)).
+c_{n+1}\leq(1+4\gamma L)c_{n}+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{\gamma L}{\sqrt{M}}var(\mu)).
 \]
 Using \cref{lem:Discrete-Gronwall-lemma} to solve the above inequality, it follows that:
 \[
-c_{k}\leq\frac{1}{2}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{LT}-1)
+c_{n}\leq\frac{1}{4}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{4LT}-1)
 \]
-Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})]\leq c_{k}^{2}$ which gives the desired upper-bound on $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})]$. 
+Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})]\leq c_{n}^{2}$ which gives the desired upper-bound on $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})]$. 
 \end{proof}
 
 
@@ -848,29 +847,28 @@ Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{k},\nu_{k})
 %
 \begin{lemma}\label{lem:Control_variance}
 Consider an initial distribution
-$\nu_{0}$ with finite variance, a sequence $(\beta_k)_{ k \geq 0}$ of non-negative numbers bounded by $B<\infty$ and define the sequence of probability distributions $\nu_k$ as in \cref{eq:discretized_noisy_flow}:
+$\nu_{0}$ with finite variance, a sequence $(\beta_n)_{ n \geq 0}$ of non-negative numbers bounded by $B<\infty$ and define the sequence of probability distributions $\nu_n$ as in \cref{eq:discretized_noisy_flow}:
 \[
-x_{k+1}=x_{k}-\gamma\nabla f_{\mu,\nu_{k}}(x_{k}+\beta_{k}u_{k}) \qquad x_0 \sim \nu_0
+x_{n+1}=x_{n}-\gamma\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n}) \qquad x_0 \sim \nu_0
 \]
-where $(u_k)_{k\geq 0}$ are standard gaussian variables. 
-\manote{add assumptions}
-Then for all $T>0$ and $k\leq\frac{T}{\gamma}$, the variance of
-$\nu_{k}$ satisfies:
+where $(u_n)_{n\geq 0}$ are standard gaussian variables. 
+Under \cref{assump:lipschitz_gradient_k},  the variance of
+$\nu_{n}$ satisfies for all $T>0$ and $n\leq\frac{T}{\gamma}$ the following inequality:
 \[
-var(\nu_{k})^{\frac{1}{2}}\leq(B+var(\nu_{0}))e^{TL}
+var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0}))e^{2TL}
 \]
 \end{lemma}
 %
 \begin{proof}
-The idea is to find a recursion from $var(\nu_{k})$ to $var(\nu_{k+1})$:
+The idea is to find a recursion from $var(\nu_{n})$ to $var(\nu_{n+1})$:
 \begin{align*}
-var(\nu_{k+1})^{\frac{1}{2}} 
- & =(\mathbb{E}[\Vert x_{k}-\gamma\nabla f_{\mu,\nu_{k}}(x_{k}+\beta_{k}u_{k})-\int xd\nu_{k}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]])^{\frac{1}{2}}\\
- & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{k}}(x_{k}+\beta_{k}u_{k})-\mathbb{E}[\nabla f_{\mu,\nu_{k}}(x+\beta_{k}u)]\Vert^{2}])^{\frac{1}{2}}\\
- & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L\mathbb{E}_{x,x'\sim\nu_{k}}[\Vert x+\beta_{k}u-x'+\beta_{k}u'\Vert^{2}]^{\frac{1}{2}}\\
- & \leq var(\nu_{k})^{\frac{1}{2}}+\gamma L(var(\nu_{k})+\beta_{k})
+var(\nu_{n+1})^{\frac{1}{2}} 
+ & =(\mathbb{E}[\Vert x_{n}-\gamma\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n})-\int xd\nu_{n}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{n}}(x+\beta_{n}u)]])^{\frac{1}{2}}\\
+ & \leq var(\nu_{n})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n})-\mathbb{E}[\nabla f_{\mu,\nu_{n}}(x+\beta_{n}u)]\Vert^{2}])^{\frac{1}{2}}\\
+ & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L\mathbb{E}_{x,x'\sim\nu_{n}}[\Vert x+\beta_{n}u-x'+\beta_{n}u'\Vert^{2}]^{\frac{1}{2}}\\
+ & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L(var(\nu_{n})+\beta_{n})
 \end{align*}
-The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_k}(x)$ is $L$-Lipschitz in $x$. \manote{again state this assumption clearly} Recalling that $\beta_{k}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
+The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_n}(x)$ is $2L$-Lipschitz in $x$ by  \cref{prop:grad_witness_function} since \cref{assump:lipschitz_gradient_k} holds. Recalling that $\beta_{n}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
 \end{proof}
 
 
@@ -993,7 +991,7 @@ Finally, each component of $\nabla f_{\mu,\nu}$ belongs to $\kH$.
 
 
 
-\begin{lemma}\label{lem:derivative_mmd_augmented}\manote{State assumption on bounded hessian}
+\begin{lemma}\label{lem:derivative_mmd_augmented}
 Let $U$ be an open set, $q$ a probability distribution in $\mathcal{P}_2(\X \times \mathcal{U})$ and $\psi$ and $\phi$ two measurable maps from  $\X \times\mathcal{U} $ to $\X$  which are square-integrable w.r.t $q$. Consider the path $\rho_t$ from  $(\psi)_{\#}q$ and $(\psi+\phi)_{\#}q$ given by: $\rho_t=  (\psi+t\phi)_{\#}q \qquad \forall t\in [0,1]$. Under \cref{assump:lipschitz_gradient_k}, $\mathcal{F}(\rho_t)$ is differentiable in $t$ with
 	\begin{align*}
 		\dot{\F}(\rho_t)&=\int \nabla f_{\mu,\rho_t}(\psi(x,u)+t\phi(x,u)) \phi(x,u)\diff q(x,u)

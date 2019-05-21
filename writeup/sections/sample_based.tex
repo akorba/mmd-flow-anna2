@@ -23,7 +23,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 \begin{theorem}\label{prop:convergence_euler_maruyama}
 	For any $\frac{T}{\gamma}\geq n\geq 0$:\aknote{check conditions}
 \[
-\mathbb{E}[W_{2}(\hat{\nu}_{n},\nu_{n})]\leq \frac{1}{2}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{LT}-1)
+\mathbb{E}[W_{2}(\hat{\nu}_{n},\nu_{n})]\leq \frac{1}{4}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{4LT}-1)
 \]
 \end{theorem}
 %Notice that since we do not have access to true samples of $\nu_n$ at each iteration $n$, we have adopted the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which considers the system of  $N$ interacting particles $(X_n^{1,N}, X_n^{2,N}, \dots, X_n^{N,N})$ and their empirical distribution in order to approximate $\nu_n$.
