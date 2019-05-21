@@ -11,7 +11,7 @@ where $U_{n}^{i}$ are i.i.d standard gaussians whereas $\hat{\mu}$ and $\hat{\nu
 \begin{align}
 	 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
 \end{align}
-where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. The overall computational cost of such algorithm is $O((M+N)N)$ and it uses $O(M+N)$ in memory. The computational cost becomes  $O(M+N)$ when the kernel is approximated using random features as is the case for regression with neural networks (\cref{subsec:training_neural_networks}). This is in contrast to the higher cost of other particle sampling algorithms based on other distances as the Negative Sobolev distance \cite{Mroueh:2019}  or the Sliced Wasserstein distance \cite{Simsekli:2018}.
+where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. The overall computational cost of such algorithm is $O((M+N)N)$ and it uses $O(M+N)$ in memory. The computational cost becomes  $O(M+N)$ when the kernel is approximated using random features as is the case for regression with neural networks (\cref{subsec:training_neural_networks}). This is in contrast to the higher cost of other particle sampling algorithms based on other distances as the Negative Sobolev distance \cite{Mroueh:2019}\aknote{Anna/Arthur: explain that mroueh needs at each iteration a computation which is cubic in the number of samples?}  or the Sliced Wasserstein distance \cite{csimcsekli2018sliced}.
 The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \cref{eq:discretized_noisy_flow}, so one would expect it to converge towards its population version  \cref{eq:discretized_noisy_flow} as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
 %\begin{theorem}\label{prop:convergence_euler_maruyama}
 %Under the same conditions as in \cref{prop:convergence_euler_scheme} and for any $\frac{T}{\gamma}\geq n\geq 0$:
@@ -48,7 +48,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 %
 %
 \textbf{Experiments}
-
+\aknote{if possible get a flat curve for the MMD flow, or precise it's in a log scale/very very slow convergence}
 
 \begin{figure}[ht]
 	\centering

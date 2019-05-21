@@ -7,7 +7,7 @@
 \label{subsection:barrier_optimization}
 One important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is the \textit{displacement convexity} of such a functional. The latter states that $t\mapsto \F(\rho_t)$ is a convex function whenever $t\mapsto\rho_t$ is a path of minimal length from two distributions $\mu$ and $\nu$ as explained in \cref{def:displacement_convexity} (see also \cite[Definition 16.5]{Villani:2004}). %The notion of path of minimal length depends on the choice of the metric. 
 %Such paths are called  \textit{constant speed displacement geodesics} when additionally their velocity vector has a constant norm. We refer to \cite{Bottou:2017} for a more in-depth discussion.
-Displacement convexity should not be confused with \textit{mixture convexity} which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is mixture convex in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and $\nu,\nu'\in\mathcal{P}_2(\X)$ (see \cref{lem:mixture_convexity}). Unfortunately, \textit{$\F$ is not displacement convex}. Instead, $\F$ only satisfies a weaker notion of displacement convexity called $\Lambda$-displacement convexity (\cite[Definition 16.5]{Villani:2009} and  \cref{def:lambda-convexity}): 
+Displacement convexity should not be confused with \textit{mixture convexity} which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is mixture convex in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and $\nu,\nu'\in\mathcal{P}_2(\X)$ (see \cref{lem:mixture_convexity}). Unfortunately, \textit{$\F$ is not displacement convex}. Instead, $\F$ only satisfies a weaker notion of displacement convexity called $\Lambda$-displacement convexity given \cref{def:lambda-convexity}(see also \cite[Definition 16.5]{Villani:2009}). 
 %This implies that the gradient flow of $\F$ might not converge to the optimal solution. 
 %This could happen if for instance \cref{eq:Lojasiewicz_inequality} doesn't hold. 
 %It can be shown, however, that $\F$ is guaranteed to reach some barrier. This is a consequence of the $\Lambda$-displacement convexity of $\F$ which is 
@@ -19,7 +19,7 @@ Displacement convexity should not be confused with \textit{mixture convexity} wh
 for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{1\leq t\leq 1}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{0\leq t\leq 1}$.
 The function $s,t\mapsto G(s,t)$ is the one-dimensional Green function: $G(s, t) =  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\Lambda$ is defined for any pair $(\rho,v)\in \mathcal{P}_2(\X)\times L_2(\rho)$  by:
 	\begin{align}\label{eq:lambda}
-		\Lambda(\rho,v) = \Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \Vert^2_{\mathcal{H}} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x) 
+		\Lambda(\rho,v) = \left\Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \right\Vert^2_{\mathcal{H}} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x) 
 	\end{align}
 	\end{proposition}
 \cref{prop:lambda_convexity} can be obtained by computing the second time-derivative of $\F(\rho_t)$ which is then lower-bounded by $\Lambda(\rho_t,v_t)$ (see \cref{proof:prop:lambda_convexity} for a full proof).

@@ -173,9 +173,10 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist}
 	\item \label{assump:lipschitz_gradient_k} $k$ is continuously differentiable on $\X$ with $L$-Lipschitz gradient: $\Vert  \nabla k(x,x') - \nabla k(y,y')\Vert \leq L(\Vert  x-y\Vert + \Vert x'-y' \Vert ) $ for all $x,x',y,y' \in \X$.
-	\item \label{assump:diff_kernel} $k$ is twice differentiable on $\X$. 
-	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.
+	\item \label{assump:diff_kernel} $k$ is twice differentiable on $\X$.
 	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \X$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.
+	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.
+
 \end{assumplist}
 
 
