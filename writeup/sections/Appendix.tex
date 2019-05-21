@@ -49,7 +49,7 @@ It is easy to see that \cref{eq:displacement_geodesic} satisfies the following b
 \begin{align}\label{eq:boundary_conditions}
 \rho_0 = \nu \qquad \rho_1 = \mu.
 \end{align}
-Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a \textit{velocity vector field} $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho_t$ satisfies the continuity equation:\aknote{add general geodesics+constant speed geodesics}
+Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displacement geodesics}. They can be seen as the shortest paths from $\nu$ to $\mu$ in terms of mass transport (\cite{Santambrogio:2015} Theorem 5.27). It can be shown that there exists a \textit{velocity vector field} $(t,x)\mapsto v_t(x)$ with values in $\R^d$ such that $\rho_t$ satisfies the continuity equation:
 \begin{equation}\label{eq:continuity_equation}
 \partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
 \end{equation}
@@ -61,9 +61,9 @@ l((\rho_t)_{t\in[0,1]})^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t \qu
 %\aknote{add constant speed geodesics}
 This perspective allows to provide a dynamical interpretation of the $W_2$ as the length  of the shortest path from $\nu$ to $\mu$ and is summarized by the celebrated Benamou-Brenier formula (\cite{benamou2000computational}):
 \begin{align}\label{eq:benamou-brenier-formula}
-W_2(\nu,\mu) = \inf_{(\rho,v)} l(\rho)
+W_2(\nu,\mu) = \inf_{(\rho_t,v_t)_{t\in[0,1]}} l((\rho_t)_{t\in[0,1]})
 \end{align}
-where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}.
+where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{eq:continuity_equation}  with boundary conditions given by \cref{eq:boundary_conditions}. If $(\rho_t,v_t)_{t\in[0,1]}$ satisfying  \cref{eq:continuity_equation} and \cref{eq:boundary_conditions} realizes the infimum in \eqref{eq:benamou-brenier-formula}, is simply called a geodesic between $\nu$ and $\mu$; moreover it is called a constant-speed geodesic if the norm of $v_t$ is constant for all $t\in[0,1]$. In consequence, \cref{eq:displacement_geodesic} is a constant-speed displacement geodesic. 
 
 \begin{remark}
 	Such paths should not be confused with another kind of paths called \textit{mixture geodesics}. The mixture geodesic $(m_t)_{t\in[0,1]}$ from $\nu$ to $\mu$ is obtained by first choosing either $\nu$ or $\mu$ according to a Bernoulli distribution of parameter $t$ and then sampling from the chosen distribution:
@@ -175,7 +175,7 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 	\item \label{assump:lipschitz_gradient_k} $k$ is continuously differentiable on $\X$ with $L$-Lipschitz gradient: $\Vert  \nabla k(x,x') - \nabla k(y,y')\Vert \leq L(\Vert  x-y\Vert + \Vert x'-y' \Vert ) $ for all $x,x',y,y' \in \X$.
 	\item \label{assump:diff_kernel} $k$ is twice differentiable on $\X$.
 	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \X$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.\aknote{$H_1(k)$?}
-	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.
+	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.\aknote{same $\lambda$?}
 
 \end{assumplist}
 
@@ -752,18 +752,21 @@ $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1
 
 \subsection{Noisy Gradient flow of the MMD}
 \begin{proof}[Proof of \cref{prop:decreasing_loss_iterations}]\label{proof:prop:decreasing_loss_iterations}
-To simplify notations, we write $V = \nabla f_{\mu,\nu_n}$ and $\mathcal{D}_{\beta_n}(\nu_n)  = \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff \nu_n \diff u $ where $g$ is the density of a standard gaussian. 
-	Recall that a sample $X_{n+1}$ from $\nu_{n+1}$ is obtained using  $x_{n+1} = x_n - \gamma V(x_n+ \beta_n u_n)$
-	where $x_n$ is a sample from $\nu_n$ and $u_n$ is a sample from a standard gaussian distribution that is independent from $x_n$. Moreover, $\beta_n$ is a non-negative scalar satisfying:
+To simplify notations, we write $V = \nabla f_{\mu,\nu_n}$ and $\mathcal{D}_{\beta_n}(\nu_n)  = \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff \nu_n \diff u $ where $g$ is the density of a standard gaussian. The symbol $\otimes$ denotes the standard convolution. Recall that a sample $x_{n+1}$ from $\nu_{n+1}$ is obtained using  $x_{n+1} = x_n - \gamma V(x_n+ \beta_n u_n)$
+	where $x_n$ is a sample from $\nu_n$ and $u_n$ is a sample from a standard gaussian distribution that is independent from $x_n$. Moreover, by assumption $\beta_n$ is a non-negative scalar satisfying:
 	\begin{align}\label{eq:control_noise_level_bis}
 		8\lambda^2\beta_n^2 \F(\nu_n) \leq \mathcal{D}_{\beta_n}(\nu_n)  
 	\end{align}
-	 Consider now the map $(x,u)\mapsto s_t(x)= x - \gamma tV(x+\beta_n u)$ for $0\leq t\leq 1$, then $\nu_{n+1}$ is obtained as a push-forward of $\nu_n\otimes g$ by $s_1$: $\nu_{n+1} = (s_1)_{\#}(\nu_n\otimes g)$. Moreover, the curve $\rho_t = (s_t)_{\#}(\nu_n\otimes g)$ is a path from $\nu_n$ to $\nu_{n+1}$. We know by \cref{prop:grad_witness_function} that $\nabla f_{\mu,\nu_n}$ is $2L$-Lipschitz, thus using $\phi(x,u) = -\gamma V(x+\beta_n u)$, $\psi(x,u) = x$ and $q = \nu_n\otimes g $ in \cref{lem:derivative_mmd_augmented} it follows that $\F(\rho_t)$ is differentiable. Moreover, $\dot{\F}(\rho_0)$ is given by $\dot{\F}(\rho_0)= -\gamma \int V(x).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u$ and the following estimate holds:
+	 Consider now the map $(x,u)\mapsto s_t(x)= x - \gamma tV(x+\beta_n u)$ for $0\leq t\leq 1$, then $\nu_{n+1}$ is obtained as a push-forward of $\nu_n\otimes g$ by $s_1$: $\nu_{n+1} = (s_1)_{\#}(\nu_n\otimes g)$. Moreover, the curve $\rho_t = (s_t)_{\#}(\nu_n\otimes g)$ is a path from $\nu_n$ to $\nu_{n+1}$. We know by \cref{prop:grad_witness_function} that $\nabla f_{\mu,\nu_n}$ is $2L$-Lipschitz, thus using $\phi(x,u) = -\gamma V(x+\beta_n u)$, $\psi(x,u) = x$ and $q = \nu_n\otimes g $ in \cref{lem:derivative_mmd_augmented} it follows that $\F(\rho_t)$ is differentiable in $t$ with:
+	 \begin{equation*}
+	 \dot{\F}(\rho_t)=\int \nabla f_{\mu,\rho_t}(s_t(x)).(-\gamma V(x+\beta_n u))g(u)\diff \nu_n(x)\diff u
+	 \end{equation*} 
+	 Moreover, $\dot{\F}(\rho_0)$ is given by $\dot{\F}(\rho_0)= -\gamma \int V(x).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u$ and the following estimate holds:
 	 \begin{align}\label{eq:estimate_gradient}
-	 	\vert \dot{\F} (\rho_u) -\dot{\F}(\rho_0)\vert \leq 3\gamma^2 Lu \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff\nu_n(x)\diff u = 3\gamma^2 Lu \mathcal{D}_{\beta_n}(\nu_n).
+	 	\vert \dot{\F} (\rho_t) -\dot{\F}(\rho_0)\vert \leq 3\gamma^2 L t \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff\nu_n(x)\diff u = 3\gamma^2 Lt \mathcal{D}_{\beta_n}(\nu_n).
 	 \end{align}
 	Using the absolute continuity of $\F(\rho_t)$, one has $\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})
-	=\dot{\F}(\rho_0)+ \int_0^1 \dot{\F} (\rho_u) -  \dot{\F} (\rho_0) \diff u $. Combining with  \cref{eq:estimate_gradient} and using the expression of $\dot{\F}(\rho_0)$, it follows that:
+	=\dot{\F}(\rho_0)+ \int_0^1 \dot{\F} (\rho_t) -  \dot{\F} (\rho_0) \diff t $. Combining with  \cref{eq:estimate_gradient} and using the expression of $\dot{\F}(\rho_0)$, it follows that:
 	\begin{align}\label{eq:taylor_expansion}
 	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n})
 	\leq -\gamma \int V(x).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u + \frac{3}{2}\gamma^2L \mathcal{D}_{\beta_n}(\nu_n).
@@ -776,7 +779,7 @@ Adding and subtracting  $\gamma \mathcal{D}_{\beta_n}(\nu_n)$ in \cref{eq:taylor
  &+ \gamma\int  (V(x+\beta_n u) -V(x)).V(x+\beta_n u) g(u)\diff\nu_n(x)\diff u	
 \end{split}
 \end{align}
-We shall control now the last term in \cref{eq:penultimate}. Recall now that  $ V_i(x) = \partial_i f_{\mu,\nu_n}(x) = \langle f_{\mu,\nu_n} , \partial_i k(x,.)\rangle $ where we used the reproducing property for the derivatives of $f_{\mu,\nu_n}$ in $\kH$ \manote{ref to this}. Therefore, it follows by Cauchy-Schwartz in $\kH$ and using \cref{assump:Lipschitz_grad_rkhs}:
+We shall control now the last term in \cref{eq:penultimate}. Recall now that for all $1\le i\le d$, $ V_i(x) = \partial_i f_{\mu,\nu_n}(x) = \langle f_{\mu,\nu_n} , \partial_i k(x,.)\rangle $ where we used the reproducing property for the derivatives of $f_{\mu,\nu_n}$ in $\kH$ (see \cref{sec:rkhs}). Therefore, it follows by Cauchy-Schwartz in $\kH$ and using \cref{assump:Lipschitz_grad_rkhs}:
 \begin{align*}
 \Vert V(x+\beta_n u) -V(x)\Vert^2
 &\leq 
@@ -805,9 +808,9 @@ It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n
 
 
 
-\subsection{sample-based approximate scheme}
+\subsection{Sample-based approximate scheme}
 \begin{proof}[Proof of \cref{prop:convergence_euler_maruyama}]\label{proof:propagation_chaos}
-Let $(u_{n}^{i})_{1\leq i\leq N}$ be i.i.d standard gaussian variables and $(x_{0}^{i})_{1\leq i\leq N}$ i.i.d. samples from $\nu_0$. We consider $(x_n^i)_{1\leq i\leq N}$ the particles obtained using the approximate scheme \cref{eq:euler_maruyama}: $x_{n+1}^{i}=x_{n}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})$ starting from $(x_{0}^{i})_{1\leq i\leq N}$. Similarly, we denote by $(\bar{x}_{n}^{i})_{1\leq i\leq N}$ the particles obtained using the exact update equation \cref{eq:discretized_noisy_flow}: $\bar{x}_{n+1}^{i}=\bar{x}_{n}^{i}-\gamma\nabla f_{\mu,\nu_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})$ also starting from $(x_{0}^{i})_{1\leq i\leq N}$.
+Let $(u_{n}^{i})_{1\leq i\leq N}$ be i.i.d standard gaussian variables and $(x_{0}^{i})_{1\leq i\leq N}$ i.i.d. samples from $\nu_0$. We consider $(x_n^i)_{1\leq i\leq N}$ the particles obtained using the approximate scheme \cref{eq:euler_maruyama}: $x_{n+1}^{i}=x_{n}^{i}-\gamma\nabla f_{\hat{\mu},\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})$ starting from $(x_{0}^{i})_{1\leq i\leq N}$, where $\hat{\nu_n}$ is the empirical distribution of these $N$ interacting particles. Similarly, we denote by $(\bar{x}_{n}^{i})_{1\leq i\leq N}$ the particles obtained using the exact update equation \cref{eq:discretized_noisy_flow}: $\bar{x}_{n+1}^{i}=\bar{x}_{n}^{i}-\gamma\nabla f_{\mu,\nu_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})$ also starting from $(x_{0}^{i})_{1\leq i\leq N}$.
 By definition of $\nu_n$ we have that  $(\bar{x}_{n}^{i})_{1\leq i\leq N}$ are i.i.d. samples drawn from $\nu_n$ with empirical distribution denoted by $\bar{\nu}_{n}$.
 %Moreover, $(X_{n+1}^{i},\bar{X}_{n+1}^{i})$ are coupled through $U_{n}^{i}$ and $(X_{n}^{i},\bar{X}_{n}^{i})$, with a coupling denoted by $\pi_{n}$. 
 We will control the expected error $c_{n}$ defined as  $c^2_{n}= \frac{1}{N}\sum_{i=1}^N \mathbb{E}\left[\Vert x_{n}^{i}-\bar{x}_{n}^{i}\Vert^{2}\right]$. By recursion, we have:
@@ -818,7 +821,7 @@ c_{n+1} = & \frac{1}{\sqrt{N}}\left(\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{n}^{i
   \leq & c_{n}+2\gamma L(c_{n}+\mathbb{E}[W_{2}(\hat{\nu}_{n},\bar{\nu}_{n})^{2}]^{\frac{1}{2}})+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{E}_{i})^{\frac{1}{2}}+\frac{\gamma}{\sqrt{N}}(\sum_{i=1}^{N}\mathcal{G}_{i})^{\frac{1}{2}})
 \end{align*}
 where the second line follows from a simple triangular inequality and the last line is obtained recalling that $\nabla f_{\mu,\nu}(x)$
-is jointly Lipschitz in $x$ and $\nu$ by \cref{prop:grad_witness_function} since \cref{assump:lipschitz_gradient_n} holds. Here, $\mathcal{E}_{i}$ represents the error between $\bar{\nu}_n$ and $\nu_n$ while $\mathcal{G}_{i}$  represents the error between $\hat{\mu}$ and $\mu$ and are given by: 
+is jointly $2L$ Lipschitz in $x$ and $\nu$ by \cref{prop:grad_witness_function}. Here, $\mathcal{E}_{i}$ represents the error between $\bar{\nu}_n$ and $\nu_n$ while $\mathcal{G}_{i}$  represents the error between $\hat{\mu}$ and $\mu$ and are given by: 
 \begin{align*}
 \mathcal{E}_{i} & =\mathbb{E}[\Vert\nabla f_{\mu,\bar{\nu}_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})-\nabla f_{\mu,\nu_{n}}(\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i})\Vert^{2}]\\
 \mathcal{G}_{i} & =\mathbb{E}[\Vert\nabla f_{\hat{\mu},\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})-\nabla f_{\mu,\hat{\nu}_{n}}(x_{n}^{i}+\beta_{n}u_{n}^{i})\Vert^{2}]
@@ -826,20 +829,20 @@ is jointly Lipschitz in $x$ and $\nu$ by \cref{prop:grad_witness_function} since
 We will first control the error term $\mathcal{E}_i$. To simplify
 notations, we write $y^{i}=\bar{x}_{n}^{i}+\beta_{n}u_{n}^{i}$. Recalling the expression of $\nabla f_{\mu,\nu}$ from \cref{prop:grad_witness_function} and expanding the squared norm in $\mathcal{E}_i$, it follows:
 \begin{align*}
-\mathcal{E}_{i} & =\mathbb{E}[\Vert\frac{1}{N}\sum_{j=1}^{N}\nabla k(y^{i},\bar{x}_{k}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}]\\
- & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(y^{i},\bar{x}_{n}^{j})-\int\nabla k(y^{i},x)d\nu_{k}(x)\Vert^{2}\right]\\
- & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{x}_{k}^{j}-\int xd\nu_{n}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{n}).
+\mathcal{E}_{i} & =\mathbb{E}[\Vert\frac{1}{N}\sum_{j=1}^{N}\nabla k(y^{i},\bar{x}_{n}^{j})-\int\nabla k(y^{i},x)d\nu_{n}(x)\Vert^{2}]\\
+ & =\frac{1}{N^{2}}\sum_{j=1}^{N}\mathbb{E}\left[\Vert\nabla k(y^{i},\bar{x}_{n}^{j})-\int\nabla k(y^{i},x)d\nu_{n}(x)\Vert^{2}\right]\\
+ & \leq\frac{L^{2}}{N^{2}}\sum_{j=1}^{N}\mathbb{E}[\Vert\bar{x}_{n}^{j}-\int xd\nu_{n}(x)\Vert^{2}]=\frac{L^{2}}{N}var(\nu_{n}).
 \end{align*}
-The second line is obtained using the independence of the auxiliary samples $\bar{x}_{i}$ and recalling that they are distributed according to $\nu_{n}$. The last line uses the fact that $\nabla k(y,x)$ is $L$-Lipshitz in $x$ by \cref{assump:lipschitz_gradient_k}. To control the variance $var(\nu_n)$ we use  \cref{lem:Control_variance} which implies that $var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}$ for all $n\leq\frac{2T}{\gamma}$.
-For $\mathcal{G}_{i}$, it is sufficient to expend again the squared norm and recall that $\nabla k(y,x)$ is $L$-Lipschitz in $x$ which then implies that $\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)$. Finally, one can observe that  $W_{2}^{2}(\hat{\nu}_{n},\bar{\nu}_{n})\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{n}^{i}-\bar{x}_{n}^{i}\Vert^{2}\right]=c_{n}^{2}$, hence $c_n$ satisfies the recursion:
+The second line is obtained using the independence of the auxiliary samples $(\bar{x}^{i}_n)_{1\le i\le N}$ and recalling that they are distributed according to $\nu_{n}$. The last line uses the fact that $\nabla k(y,x)$ is $L$-Lipshitz in $x$ by \cref{assump:lipschitz_gradient_k}. To control the variance $var(\nu_n)$ we use  \cref{lem:Control_variance} which implies that $var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{LT}$ for all $n\leq\frac{2T}{\gamma}$.
+For $\mathcal{G}_{i}$, it is sufficient to expand again the squared norm and recall that $\nabla k(y,x)$ is $L$-Lipschitz in $x$ which then implies that $\mathcal{G}_{i}\leq\frac{L^{2}}{M}var(\mu)$. Finally, one can observe that  $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\bar{\nu}_{n})]\leq\frac{1}{N}\sum_{i=1}^{N}\mathbb{E}\left[\Vert x_{n}^{i}-\bar{x}_{n}^{i}\Vert^{2}\right]=c_{n}^{2}$, hence $c_n$ satisfies the recursion:
 \[
-c_{n+1}\leq(1+4\gamma L)c_{n}+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{\gamma L}{\sqrt{M}}var(\mu)).
+c_{n+1}\leq(1+4\gamma L)c_{n}+\frac{\gamma L}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{\gamma L}{\sqrt{M}}var(\mu).
 \]
 Using \cref{lem:Discrete-Gronwall-lemma} to solve the above inequality, it follows that:
 \[
 c_{n}\leq\frac{1}{4}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{1}{\sqrt{M}}var(\mu))\right)(e^{4LT}-1)
 \]
-Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})]\leq c_{n}^{2}$ which gives the desired upper-bound on $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})]$. 
+%Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})]\leq c_{n}^{2}$ which gives the desired upper-bound on $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})]$. 
 \end{proof}
 
 
@@ -847,7 +850,7 @@ Finally, it remains to notice that: $\mathbb{E}[W_{2}^{2}(\hat{\nu}_{n},\nu_{n})
 %
 \begin{lemma}\label{lem:Control_variance}
 Consider an initial distribution
-$\nu_{0}$ with finite variance, a sequence $(\beta_n)_{ n \geq 0}$ of non-negative numbers bounded by $B<\infty$ and define the sequence of probability distributions $\nu_n$ as in \cref{eq:discretized_noisy_flow}:
+$\nu_{0}$ with finite variance, a sequence $(\beta_n)_{ n \geq 0}$ of non-negative numbers bounded by $B<\infty$ and define the sequence of probability distributions $\nu_n$ of the process \cref{eq:discretized_noisy_flow}:
 \[
 x_{n+1}=x_{n}-\gamma\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n}) \qquad x_0 \sim \nu_0
 \]
@@ -860,15 +863,15 @@ var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0}))e^{2TL}
 \end{lemma}
 %
 \begin{proof}
-The idea is to find a recursion from $var(\nu_{n})$ to $var(\nu_{n+1})$:
+Let $g$ be the density of a standard gaussian. The idea is to find a recursion from $var(\nu_{n})$ to $var(\nu_{n+1})$:
 \begin{align*}
 var(\nu_{n+1})^{\frac{1}{2}} 
  & =(\mathbb{E}[\Vert x_{n}-\gamma\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n})-\int xd\nu_{n}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{n}}(x+\beta_{n}u)]])^{\frac{1}{2}}\\
  & \leq var(\nu_{n})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n})-\mathbb{E}[\nabla f_{\mu,\nu_{n}}(x+\beta_{n}u)]\Vert^{2}])^{\frac{1}{2}}\\
- & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L\mathbb{E}_{x,x'\sim\nu_{n}}[\Vert x+\beta_{n}u-x'+\beta_{n}u'\Vert^{2}]^{\frac{1}{2}}\\
+ & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L\mathbb{E}_{\substack{x,x'\sim\nu_{n}\\ u,u'\sim g}}[\Vert x+\beta_{n}u-x'+\beta_{n}u'\Vert^{2}]^{\frac{1}{2}}\\
  & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L(var(\nu_{n})+\beta_{n})
 \end{align*}
-The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_n}(x)$ is $2L$-Lipschitz in $x$ by  \cref{prop:grad_witness_function} since \cref{assump:lipschitz_gradient_k} holds. Recalling that $\beta_{n}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
+The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_n}(x)$ is $2L$-Lipschitz in $x$ by  \cref{prop:grad_witness_function}. Recalling that $\beta_{n}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
 \end{proof}
 
 
@@ -929,7 +932,7 @@ where $z \mapsto \nabla_1 k(x,z)$ denotes the gradient of $z\mapsto k(x,z)$ for 
 Finally, each component of $\nabla f_{\mu,\nu}$ belongs to $\kH$.
 \end{proposition}
 \begin{proof}
-	The expression of the witness function is given in \eqref{eq:witness_function}. To establish \eqref{eq:gradient_witness}, we simply need to apply the differentiation lemma \cite[Theorem 6.28]{Klenke:2008}. Indeed by \cref{assump:lipschitz_gradient_k} it follows that $ (x,z)\mapsto \nabla_1 k(z,x)$ has at most a linear growth. Hence on any bounded neighborhood of $z$, $x\mapsto \Vert \nabla_1 k(z,x) \Vert $ is upper-bounded by an integrable function w.r.t. $\mu$ and $\nu$. Therefore, the differentiation lemma applies and  $\nabla f_{\mu,\nu}(z)$ is differentiable with gradient given by \cref{eq:gradient_witness}.
+	The expression of the witness function is given in \eqref{eq:witness_function}. To establish \eqref{eq:gradient_witness}, we simply need to apply the differentiation lemma \cite[Theorem 6.28]{Klenke:2008}. By \cref{assump:lipschitz_gradient_k}, it follows that $ (x,z)\mapsto \nabla_1 k(z,x)$ has at most a linear growth. Hence on any bounded neighborhood of $z$, $x\mapsto \Vert \nabla_1 k(z,x) \Vert $ is upper-bounded by an integrable function w.r.t. $\mu$ and $\nu$. Therefore, the differentiation lemma applies and  $\nabla f_{\mu,\nu}(z)$ is differentiable with gradient given by \cref{eq:gradient_witness}.
 	
 	To prove the second statement, we will consider two optimal couplings: $\pi_1$ with marginals $\mu$ and $\mu'$ and $\pi_2$ with marginals $\nu$ and $\nu'$.  We use \cref{eq:gradient_witness} to write:
 	\begin{align*}
@@ -992,7 +995,7 @@ Finally, each component of $\nabla f_{\mu,\nu}$ belongs to $\kH$.
 
 
 \begin{lemma}\label{lem:derivative_mmd_augmented}
-Let $U$ be an open set, $q$ a probability distribution in $\mathcal{P}_2(\X \times \mathcal{U})$ and $\psi$ and $\phi$ two measurable maps from  $\X \times\mathcal{U} $ to $\X$  which are square-integrable w.r.t $q$. Consider the path $\rho_t$ from  $(\psi)_{\#}q$ and $(\psi+\phi)_{\#}q$ given by: $\rho_t=  (\psi+t\phi)_{\#}q \qquad \forall t\in [0,1]$. Under \cref{assump:lipschitz_gradient_k}, $\mathcal{F}(\rho_t)$ is differentiable in $t$ with
+Let $U$ be an open set, $q$ a probability distribution in $\mathcal{P}_2(\X \times \mathcal{U})$ and $\psi$ and $\phi$ two measurable maps from  $\X \times\mathcal{U} $ to $\X$  which are square-integrable w.r.t $q$. Consider the path $\rho_t$ from  $(\psi)_{\#}q$ and $(\psi+\phi)_{\#}q$ given by: $\rho_t=  (\psi+t\phi)_{\#}q \quad \forall t\in [0,1]$. Under \cref{assump:lipschitz_gradient_k}, $\mathcal{F}(\rho_t)$ is differentiable in $t$ with
 	\begin{align*}
 		\dot{\F}(\rho_t)&=\int \nabla f_{\mu,\rho_t}(\psi(x,u)+t\phi(x,u)) \phi(x,u)\diff q(x,u)
 	\end{align*}
@@ -1005,7 +1008,7 @@ Moreover:
 \begin{proof}
 For simplicity, we write $f_t$ instead of $f_{\mu,\rho_t}$ and denote by $s_t(x,u)= \psi(x,u)+t\phi(x,u)$
 The function $h: t\mapsto k(s_t(x,u),s_t(x',u')) - k(s_t(x,u),z) - k(s_t(x',u'),z)$ is differentiable for all $(x,u)$,$(x',u')$ in $\X\times \mathcal{U}$ and $z\in \X$. 
-Moreover, by \cref{assump:lipschitz_gradient_k}, a simple computation shows that for all $0\leq t\leq 1$:
+Moreover, by \cref{assump:lipschitz_gradient_k}, a simple computation shows that for all $0\leq t\leq 1$:\aknote{I would add the computation}
 \[
 \vert \dot{h} \vert \leq L\left[ (\Vert z - \phi(x,u)\Vert + \Vert \psi(x,u)\Vert) \Vert \phi(x',u')\Vert +  
 (\Vert z - \phi(x',u')\Vert + \Vert \psi(x',u')\Vert )\Vert \phi(x,u)\Vert \right]
@@ -1027,48 +1030,49 @@ which gives the desired upper-bound.
 
 
 \begin{lemma}\label{lem:second_derivative_augmented_mmd}
-Let $q$ be a probability distribution in $\mathcal{P}_2(\X \times \X)$ and $\psi$ and $\phi$ two measurable maps from  $\X \times\X $ to $\X$  which are square-integrable w.r.t $q$. Consider the path $\rho_t$ from  $(\psi)_{\#}q$ and $(\psi+\phi)_{\#}q$ given by: $\rho_t=  (\psi+t\phi)_{\#}q \qquad \forall t\in [0,1]$. Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k}, $\mathcal{F}(\rho_t)$ is twice differentiable in $t$ with
+Let $q$ be a probability distribution in $\mathcal{P}_2(\X \times \X)$ and $\psi$ and $\phi$ two measurable maps from  $\X \times\X $ to $\X$  which are square-integrable w.r.t $q$. Consider the path $\rho_t$ from  $(\psi)_{\#}q$ and $(\psi+\phi)_{\#}q$ given by: $\rho_t=  (\psi+t\phi)_{\#}q \quad \forall t\in [0,1]$. Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k}, $\mathcal{F}(\rho_t)$ is twice differentiable in $t$ with
 	\begin{align*}
 		\ddot{\F}(\rho_t)=&\mathbb{E}\left[\phi(x,y)^T\nabla_1 \nabla_2 k(s_t(x,y),s_t(x',y')) \phi(x',y')\right] \\
 		&+ \mathbb{E}\left[\phi(x,y)^T (H_1k(s_t(x,y),y_t')-H_1k(s_t(x,y),z)) \phi(x,y)\right]
 	\end{align*}
-where $(x,y)$ and $(x',y')$ are independent samples from $q$, $z$ is a sample from $\mu$ and  $s_t(x,u)= \psi(x,u)+t\phi(x,u)$.
+where $(x,y)$ and $(x',y')$ are independent samples from $q$, $z$ is a sample from $\mu$ and  $s_t(x,y)= \psi(x,y)+t\phi(x,y)$.
 Moreover, if \cref{assump:bounded_fourth_oder} also holds then:
 \begin{align*}
 		\ddot{\F}(\rho_t) \geq \mathbb{E}\left[\phi(x,y)^T\nabla_1 \nabla_2 k(s_t(x,y),s_t(x',y')) \phi(x',y')\right] - \sqrt{2}\lambda d \F(\rho_t)^{\frac{1}{2}}\mathbb{E}[\Vert \phi(x,y) \Vert^2]  
 \end{align*}
+where we recall that $\X\subset \mathbb{R}^d$.
 \end{lemma}
 \begin{proof}
-The first part is similar to \cref{lem:derivative_mmd_augmented}. In fact we already know by \cref{lem:derivative_mmd_augmented} that $\dot{F}(\rho_t)$ exists and is given by:
+The first part is similar to \cref{lem:derivative_mmd_augmented}. In fact we already know by \cref{lem:derivative_mmd_augmented} that $\dot{\F}(\rho_t)$ exists and is given by:
 \[
-\dot{F}(\rho_t) = \mathbb{E}\left[(\nabla_1 k(s_t(x,u),s_t(x',y'))-\nabla_1 k(s_t(x,y),z)).\phi(x,u)\right]
+\dot{\F}(\rho_t) = \mathbb{E}\left[(\nabla_1 k(s_t(x,y),s_t(x',y'))-\nabla_1 k(s_t(x,y),z)).\phi(x,y)\right]
 \]
-Define now the function $\xi : t\mapsto (\nabla_1 k(s_t(x,u),s_t(x',u'))-\nabla_1 k(s_t(x,u),z)).\phi(x,u)$ which is differentiable for all $(x,u)$,$(x',u')$ in $\X\times \X$ and $z\in \X$ by \cref{assump:diff_kernel}. Moreover, its time derivative is given by:
+Define now the function $\xi : t\mapsto (\nabla_1 k(s_t(x,y),s_t(x',y'))-\nabla_1 k(s_t(x,y),z)).\phi(x,y)$ which is differentiable for all $(x,y)$,$(x',y')$ in $\X\times \X$ and $z\in \X$ by \cref{assump:diff_kernel}. Moreover, its time derivative is given by:
 \begin{align}
-	\dot{\xi} =& \phi(x',y')^T \nabla_2\nabla_1k(s_t(x,u),s_t(x',y'))\phi(x,y) \\
+	\dot{\xi} =& \phi(x',y')^T \nabla_2\nabla_1k(s_t(x,y),s_t(x',y'))\phi(x,y) \\
 	&+ \phi(x,y)^T(H_1k(s_t(x,y),s_t(x',y') ) - H_1k(s_t(x,y),z ))\phi(x,y)  
 \end{align}
-By \cref{assump:lipschitz_gradient_k} it follows in particular that $\nabla_2\nabla_1k$ and $H_1k$ are bounded hence $\vert \dot{\xi} \vert$  is upper-bounded by $ (\Vert \phi(x,y) \Vert + \Vert\phi(x',u') \Vert)\Vert \phi(x,y)\Vert$ which is integrable.
+where $H_1 k$ denotes the Hessian of $k$. By \cref{assump:lipschitz_gradient_k} it follows in particular that $\nabla_2\nabla_1k$ and $H_1k$ are bounded hence $\vert \dot{\xi} \vert$  is upper-bounded by $ (\Vert \phi(x,y) \Vert + \Vert\phi(x',u') \Vert)\Vert \phi(x,y)\Vert$ which is integrable.
 Therefore, by the differentiation lemma \cite[Theorem 6.28]{Klenke:2008} it follows that $\dot{\F}(\rho_t)$ is differentiable and $\ddot{\F}(\rho_t) = \mathbb{E}\left[\dot{\xi}\right].$
 We prove now the second statement. Bu the reproducing property, it is easy to see that the last term in the expression of $\dot{\xi}$ can be written as:
 \[
-\langle \phi(x,y)^TH_1 k(s_t(x,y),.)\phi(x,y), k(s_t(x',u'),.)-  k(z,.)\rangle_{\kH} 
+\langle \phi(x,y)^TH_1 k(s_t(x,y),.)\phi(x,y), k(s_t(x',y'),.)-  k(z,.)\rangle_{\kH} 
 \]
 Now, taking the expectation w.r.t $x'$  ,$y'$ and $z$ which can be exchanged with the inner-product in $\kH$ since  $(x',y',z)\mapsto k(s_t(x',y'),.)-  k(z,.)$ is Bochner integrable \cite[Definition 1, Theorem 6]{Retherford:1978} and recalling that such integral is given by $f_{\mu,\rho_t}$  one gets the following expression:
 \[
- \langle  \phi(x,y)^TH_1 k(s_t(x,u),.)\phi(x,y), f_{\mu,\rho_t} \rangle_{\kH}
+ \langle  \phi(x,y)^TH_1 k(s_t(x,y),.)\phi(x,y), f_{\mu,\rho_t} \rangle_{\kH}
 \]
 Using Cauchy-Schwartz and \cref{assump:bounded_fourth_oder} it follows that:
 \[
-\Vert \langle  \phi(x,y)^TH_1 k(s_t(x,y),.)\phi(x,y), f_{\mu,\rho_t} \rangle_{\kH}\vert \leq \lambda d\Vert \phi(x,y)\Vert^2 \Vert f_{\mu,\rho_t}\Vert 
+\vert \langle  \phi(x,y)^TH_1 k(s_t(x,y),.)\phi(x,y), f_{\mu,\rho_t} \rangle_{\kH}\vert \leq \lambda d\Vert \phi(x,y)\Vert^2 \Vert f_{\mu,\rho_t}\Vert 
 \]
 One then concludes using the expression of $\ddot{\F}(\rho_t)$ and recalling that $\F(\rho_t) = \frac{1}{2}\Vert f_{\mu,\rho_t} \Vert^2$.
 \end{proof}
 
 
 \begin{lemma}\label{lem:integral_lambda_convexity}
-Assume that for any geodesic $\rho_{t}$ between
-$\rho_{0}$ and $\rho_{1}$ in $\mathcal{P}(\X)$ with velocity vectors $(v_t)_{0\leq t\leq 1}$ the following holds:
+Assume that for any geodesic $(\rho_{t})_{t\in[0,1]}$ between
+$\rho_{0}$ and $\rho_{1}$ in $\mathcal{P}(\X)$ with velocity vectors $(v_t)_{t \in [0,1]}$ the following holds:
 \[
 \ddot{\F}(\rho_{t}) \geq \Lambda(\rho_t,v_t)
 \]
@@ -1102,7 +1106,7 @@ with $G(s,t)=s(1-t) \mathbbm{1}\{s\leq t\}
 	\end{align*}
 \end{lemma}
 \begin{proof}
-	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$. Expending the RKHS norm in $\F$ it follows directly that:
+	Let $\nu$ and $\nu'$ be two probability distributions and $0\leq \lambda\leq 1$. Expanding the RKHS norm in $\F$ it follows directly that:
 	\[
 		\mathcal{F}(\lambda \nu + (1-\lambda)\nu') -\lambda \mathcal{F}(\nu) -(1-\lambda)\mathcal{F}(\nu') = -\frac{1}{2}\lambda(1-\lambda)MMD(\nu,\nu')^2 \leq 0.
 	\]
