@@ -793,7 +793,7 @@ $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1
 
 
 \subsection{Noisy Gradient flow of the MMD}
-\begin{proof}[Proof of \cref{prop:decreasing_loss_iterations}]\label{proof:prop:decreasing_loss_iterations}
+\begin{proof}[Proof of \cref{thm:convergence_noisy_gradient}]\label{proof:thm:convergence_noisy_gradient}
 To simplify notations, we write $V = \nabla f_{\mu,\nu_n}$ and $\mathcal{D}_{\beta_n}(\nu_n)  = \int \Vert V(x+\beta_n u) \Vert^2 g(u)\diff \nu_n \diff u $ where $g$ is the density of a standard gaussian. The symbol $\otimes$ denotes the standard convolution. Recall that a sample $x_{n+1}$ from $\nu_{n+1}$ is obtained using  $x_{n+1} = x_n - \gamma V(x_n+ \beta_n u_n)$
 	where $x_n$ is a sample from $\nu_n$ and $u_n$ is a sample from a standard gaussian distribution that is independent from $x_n$. Moreover, by assumption $\beta_n$ is a non-negative scalar satisfying:
 	\begin{align}\label{eq:control_noise_level_bis}
@@ -842,9 +842,9 @@ Getting back to \cref{eq:penultimate} and applying Cauchy-Schwarz in $L_2(\nu_n\
 It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n)$ and that $\beta_n$ satisfies \cref{eq:control_noise_level_bis} to get the desired bound.
 \end{proof}
 
-\begin{proof}[Proof of \cref{thm:convergence_noisy_gradient}]\label{proof:thm:convergence_noisy_gradient}
-	\manote{write this proof}
-\end{proof}
+%\begin{proof}[Proof of \cref{thm:convergence_noisy_gradient}]\label{proof:thm:convergence_noisy_gradient}
+%	\manote{write this proof}
+%\end{proof}
 
 
 
