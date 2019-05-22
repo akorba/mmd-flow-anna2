@@ -77,7 +77,7 @@ Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ 
 		\frac{d\F(\nu_t)}{dt}= - \int \Vert \nabla f_{\mu,\nu_t}(x) \Vert^2 \diff \nu_t(x)  
 	\end{align}
 \end{proposition}
-This property results from the expression of the differential of $\F$ in \eqref{prop:differential_mmd} and the existence of a representation of the flow of \cref{eq:continuity_mmd} as in \cite[Lemma B.4]{chizat2018global} (see \cref{proof:prop:decay_mmd} for a full proof). Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
+This property results from \cref{eq:continuity_mmd} and the existence of a representation of the flow of \cref{eq:continuity_mmd} as in \cite[Lemma B.4]{chizat2018global} (see \cref{proof:prop:decay_mmd} for a full proof). Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
 From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. The reader may refer to \cref{subsec:kl_flow} for a connection to other well-known gradient flows in Wassertein space. %We know motivate the study of this flow by recent considerations and applications in Machine Learning.
 We know provide a time discretization of the MMD flow.
 
