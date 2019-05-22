@@ -253,7 +253,7 @@ We start by showing that \cref{eq:euler_scheme} decreases the functional $\F$. I
 	where $t\le 1$. Hence, the result follows directly by applying the above expression to \cref{eq:taylor_expansion_decreasing}.
 \end{proof}
 
-We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}. To explicit the dependence of the latter sequence on the (fixed) step-size $\gamma$, we will write it as : $\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma}$ (so $\nu_n^{gamma}=\nu_n$ for any $n \ge 0$). We start by introducing a sequence $\bar{\nu}_{n}^{\gamma}$ built by iteratively applying: 
+We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}. To explicit the dependence of the latter sequence on the (fixed) step-size $\gamma$, we will write it as : $\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma}$ (so $\nu_n^{\gamma}=\nu_n$ for any $n \ge 0$). We start by introducing a sequence $\bar{\nu}_{n}^{\gamma}$ built by iteratively applying: 
  \begin{equation}\label{eq:intermed_process_time}
  \bar{\nu}_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_{\gamma n}})_{\#}\bar{\nu}_{n}^{\gamma}
   \end{equation}
@@ -262,17 +262,17 @@ We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}.
 %\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma};\qquad
 %\bar{\nu}_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_{^{\gamma n}}})_{\#}\bar{\nu}_{n}^{\gamma}
 %\end{align}
- with $\bar{\nu}_{0}=\nu_{0}$. Notice that the latter sequence involves the continuous process $\nu_t$ of \eqref{eq:continuity_mmd} where $t=\gamma n$. Using $\nu_n^{\gamma}$, we also consider the interpolation path $\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}$ for all $t\in[n\gamma,(n+1)\gamma)$ and $n\in \mathbb{N}$, which is the same as in \cref{prop:convergence_euler_scheme}. 
+ with $\bar{\nu}_{0}=\nu_{0}$. Notice that the latter sequence involves the continuous process $\nu_t$ of \eqref{eq:continuity_mmd} where $t=\gamma n$. Using $\nu_n^{\gamma}$, we also consider the interpolation path $\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}$ for all $t\in[n\gamma,(n+1)\gamma)$ and $n\in \mathbb{N}$, which is the same as in \cref{prop:convergence_euler_scheme}.
 \begin{proof}[Proof of \cref{prop:convergence_euler_scheme}]\label{proof:prop:convergence_euler_scheme}
 Let $\pi$ be an optimal coupling between $\nu_{n}^{\gamma}$ and $\nu_{\gamma n}$,
-and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. Using \cref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y_{t},y,(t-n\gamma)):=y_{t}-y-(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ is uniformly bounded by $(t-n\gamma)^{2}C$ where $C$ is some positive constant. This allows to write:\aknote{first line not clear to me yet, guess we need lemma 15}
+and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)\diff u$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. We also introduce the approximation error $  E(t,n\gamma):=y_{t}-y+(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ for which we know by  \cref{lem:Taylor-expansion} that $\mathcal{E}(t,n\gamma):=\mathbb{E}[E(t,n\gamma)^2]^{\frac{1}{2}}$ is upper-bounded by $(t-n\gamma)^{2}C$ for some positive constant $C$ that depends only on $T$ and the Lipschitz constant $L$. This allows to write:
 \begin{align*}
-W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert y-x+(t-n\gamma)(\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(y))+\mathcal{E}(y_{t},y,(t-n\gamma))\Vert^{2}\right]^{\frac{1}{2}}\\
- & \leq W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-n\gamma)2LW_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-n\gamma)^{2}C\\
- & \leq(1+2\gamma L)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+\gamma^{2}C\\ &\leq(1+2\gamma L)( W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})+W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma}) )+\gamma^{2}C \\
- & \leq\gamma\left[(1+2\gamma L)M(T)+\gamma C\right]
+W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert y-x+(t-n\gamma)(\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(y))+E(t,n\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
+ & \leq W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+4L(t-n\gamma)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+\mathcal{E}(t,n\gamma)\\
+ & \leq(1+4\gamma L)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-\gamma n)^2C\\ &\leq(1+4\gamma L)( W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})+W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma}) )+\gamma^{2}C \\
+ & \leq\gamma\left[(1+4\gamma L)M(T)+\gamma C\right]
 \end{align*}
-The second line is obtained using that $\nabla f_{\mu,\nu_{\gamma n}}(x)$ is $2L$-Lipschitz in $x$ (see \cref{prop:grad_witness_function}) and by the fact that $W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n}) = \mathbb{E}_{\pi}[\Vert y-x\Vert^2]^{\frac12}$. The third one is obtained using $t-n \gamma\le \gamma$. For the last inequality, we used \cref{lem:euler_error_1,lem:euler_error_2}  where $M(T)$ a constant that depends only on $T$. Hence for $\gamma\leq\frac{1}{2L}$ we get $W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{2L}+2M(T)).$
+The second line is obtained using that $\nabla f_{\mu,\nu_{\gamma n}}(x)$ is jointly $2L$-Lipschitz in $x$  and $\nu$ (see \cref{prop:grad_witness_function}) and by the fact that $W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n}) = \mathbb{E}_{\pi}[\Vert y-x\Vert^2]^{\frac12}$. The third one is obtained using $t-n \gamma\le \gamma$. For the last inequality, we used \cref{lem:euler_error_1,lem:euler_error_2}  where $M(T)$ a constant that depends only on $T$. Hence for $\gamma\leq\frac{1}{4L}$ we get $W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{4L}+2M(T)).$
 \end{proof}
 
 \begin{lemma}\label{lem:euler_error_1}
@@ -284,9 +284,9 @@ W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})\le\gamma\frac{C}{2L}(e^{n\gamma 2L}
 \begin{proof}
 Let $\pi$ be an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
 and $\nu_{\gamma n}$ and  $(\bar{x}$, $x)$ a joint sample
-from $\pi$. Consider also the joint sample $(\bar{y},y)$ obtained from  $(\bar{x}$ ,$x)$ by applying the gradient flow of $\F$ in continuous time to get $y=x-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)d\nu_{s}(u)$ and by taking a discrete step from $\bar{x}$ to write $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$. It is easy to see that $y\sim\nu_{\gamma(n+1)}$ (i.e. a sample from the continous process \eqref{eq:continuity_mmd} at time $t=(n+1)\gamma$) and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$ (i.e. a sample from \eqref{eq:intermed_process_time}). Moreover, using \cref{lem:Taylor-expansion}, we know that the approximation error $\mathcal{E}(y,x,\gamma):=y-x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ is uniformly bounded by $\gamma^{2}C$ where $C$ is some positive constant that depends only on the choice of the kernel. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
+from $\pi$. Consider also the joint sample $(\bar{y},y)$ obtained from  $(\bar{x}$ ,$x)$ by applying the gradient flow of $\F$ in continuous time to get $y=x-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)\diff u$ and by taking a discrete step from $\bar{x}$ to write $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$. It is easy to see that $y\sim\nu_{\gamma(n+1)}$ (i.e. a sample from the continous process \eqref{eq:continuity_mmd} at time $t=(n+1)\gamma$) and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$ (i.e. a sample from \eqref{eq:intermed_process_time}). Moreover, we introduce the approximation error $E((n+1)\gamma,n\gamma):=y-x+\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ for which we know by \cref{lem:Taylor-expansion} that $\mathcal{E}((n+1)\gamma,n\gamma):=\mathbb{E}[E((n+1)\gamma,n\gamma)^2]^{\frac{1}{2}}$ is upper-bounded by $\gamma^{2}C$ for some positive constant $C$ that depends only on $T$ and the Lipschitz constant $L$. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
 \begin{align*}
-a_{n+1}\leq & \mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})+\mathcal{E}(y,x,\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
+a_{n+1}\leq & \mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})+E((n+1)\gamma,n\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
 \leq & \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x}))\Vert^{2}\right]^{\frac{1}{2}}+\gamma^{2}C
 \end{align*}
 Using that $\nabla f_{\mu,\nu_{\gamma n}}$ is $2L$-Lipschitz by \cref{prop:grad_witness_function} and
@@ -319,11 +319,65 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 \end{proof}
 %
 
-\begin{lemma}\aknote{check what is constat $C$ which depends on the kernel}
-\manote{write proof}
-\label{lem:Taylor-expansion}Taylor expansion
+\begin{lemma}\label{lem:Taylor-expansion}Taylor expansion
+	Consider the process $ \dot{x}_t = - \nabla f_{\mu,\nu_t}(x_t) $, and denote by $\mathcal{E}(t,s) = \mathbb{E}[ \Vert x_t - x_s +(t-s)\nabla f_{\mu,\nu_s}(x_s) \Vert ^2 ]^{\frac{1}{2}} $ for $0\leq s \leq t \leq T$. Then one has:
+	\begin{align}
+		\mathcal{E}(t,s)\leq 4L^2 r_0 e^{LT} \int_{s}^t \int_s^u \diff l \diff u = 2L^2 r_0 e^{LT}(t-s)^2
+	\end{align}
 \end{lemma}
+\begin{proof}
+	By definition of $x_t$ and $\mathcal{E}(t,s)$ one can write:
+	\begin{align*}
+		\mathcal{E}(t,s) 
+		&=
+		\mathbb{E}[\Vert \int_{s}^t (\nabla f_{\mu,\nu_s}(x_s) - \nabla f_{\mu,\nu_u}(x_u))\diff u  \Vert^2 ]^{\frac{1}{2}} \\
+		&\leq
+		\int_{s}^t  \mathbb{E}[\Vert (\nabla f_{\mu,\nu_s}(x_s) - \nabla f_{\mu,\nu_u}(x_u))  \Vert^2 ]^{\frac{1}{2}} \diff u\\
+		&\leq
+		2L\int_{s}^t  \mathbb{E}[(\Vert  x_s - x_u \Vert + W_2(\nu_s,\nu_u))^2 ]^{\frac{1}{2}} \diff u \leq 4L\int_{s}^t   \mathbb{E}[(\Vert  x_s - x_u \Vert^2]^{\frac{1}{2}}\diff u
+	\end{align*}
+	Where we used an integral expression for $x_t$ in the first line then applied a triangular inequality for the second line. The last line is obtained recalling that $\nabla f_{\mu,\nu}(x)$ is jointly $2L$-Lipschitz in $x$ and $\nu$ by \cref{prop:grad_witness_function} and that $W_2(\nu_s,\nu_u) \leq \mathbb{E}[(\Vert  x_s - x_u \Vert^2]^{\frac{1}{2}}$. Now we use again an integral expression for $x_u$ which further gives:
+	\begin{align*}
+		\mathcal{E}(t,s) \leq & 4L \int_{s}^t \mathbb{E}[\Vert \int_s^u  \nabla f_{\mu,\nu_l}(x_l) \diff l \Vert^2 ]^{\frac{1}{2}}\diff u\\
+		\leq & 4L \int_{s}^t \int_s^u  \mathbb{E}[ \Vert \mathbb{E}[ \nabla_1 k(x_l,x_l') - \nabla_1 k(x_l,z) ]   \Vert^2  ]^\frac{1}{2}\diff l\diff u\\
+		\leq &
+		4L^2 \int_{s}^t \int_s^u   \mathbb{E}[\Vert x_l' - z \Vert] \diff l \diff u
+	\end{align*}
+	Again, the second line is obtained using a triangular inequality and recalling the expression of $\nabla f_{\mu,\nu}(x)$ from \cref{prop:grad_witness_function}. The last line uses that $\nabla k$ is $L$-Lipschitz by \cref{assump:lipschitz_gradient_k}. Now we need to make sure that $\Vert x_l' - z \Vert$ remains bounded at finite times. For this we will first show that $ r_t = \mathbb{E}[\Vert x_t - z \Vert]$ satisfies an integro-differential inequality: 
+	\begin{align*}
+		r_t\leq & \mathbb{E}[\Vert x_0  - z -\int_0^t \nabla f_{\mu,\nu_s}(x_s) \diff s \Vert]\\
+		\leq &
+		r_0 +\int_0^t \mathbb{E}[\Vert \nabla_1 k{\nu_s}(x_s,x_s')- \nabla_1 k{\nu_s}(x_s,z) \Vert \diff s]\leq &
+		r_0  + L\int_0^t r_s \diff s
+	\end{align*}
+	Again, we used an integral expression for $x_t$ in the first line, then a triangular inequality recalling the expression of $\nabla f_{\mu,\nu_s}$. The last line uses again that $\nabla k$ is $L$-Lipschitz. By Gronwall's lemma it is easy to see that $r_t \leq r_0e^{Lt}$ at all times. Moreover, for all $t\leq T$ we have a fortiori  that $r_t \leq r_0 e^{LT}$.
+	Recalling back the upper-bound on $\mathcal{E}(s,t)$ it is easy to see that:
+	\[
+	\mathcal{E}(t,s)\leq 4L^2 r_0 e^{LT} \int_{s}^t \int_s^u \diff l \diff u = 2L^2 r_0 e^{LT}(t-s)^2
+	\] 
+\end{proof}
 
+
+
+%\begin{lemma}\label{lem:variance_control}
+%	fdf
+%\end{lemma}
+%\begin{proof}
+%	Let $x_t$ be the process given by $x_t = x_0 -\int_0^{t} \nabla f_{\mu,\nu_s}(x_s)\diff s $ with $x_0\sim \nu_0$. We will derive an estimate on  $\mathbb{E}[\Vert x_t \Vert^2]^{\frac{1}{2}}$ which we denote by $r_t$. By definition of $x_t$ one has:
+%	\begin{align}
+%		r_t =& \mathbb{E}[\Vert x_0 - \int_0^t \nabla f_{\mu,\nu_s}(x_s)\diff s  \Vert^2 ]^{\frac{1}{2}}\\
+%		\leq & 
+%		r_0 + \int_{0}^t \mathbb{E}[\Vert \nabla f_{\mu,\nu_s}(x_s) \diff s  \Vert^2]^{\frac{1}{2}}\\
+%		\leq & 
+%		r_0 + \int_{0}^t \mathbb{E}[\Vert \mathbb{E}[\nabla_1 k(x_s,x_s')-\nabla_1 k(x_s,z) ] \diff s  \Vert^2]^{\frac{1}{2}}\\
+%		\leq &
+%		r_0 + L\int_0^t \mathbb{E}[ \Vert x'_s - z \Vert^2]^{\frac{1}{2}} \leq r_0 + Lt\ L\int^t_0 r_s\diff s 
+%	\end{align}
+%	
+%	
+%	
+%\end{proof}
+%
 
 
 \subsection{Connection with Neural Networks}\label{subsec:training_neural_networks}
@@ -908,7 +962,7 @@ where $(u_n)_{n\geq 0}$ are standard gaussian variables.
 Under \cref{assump:lipschitz_gradient_k},  the variance of
 $\nu_{n}$ satisfies for all $T>0$ and $n\leq\frac{T}{\gamma}$ the following inequality:
 \[
-var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0}))e^{2TL}
+var(\nu_{n})^{\frac{1}{2}}\leq(B+var(\nu_{0})^{\frac{1}{2}})e^{2TL}
 \]
 \end{lemma}
 %
@@ -919,7 +973,7 @@ var(\nu_{n+1})^{\frac{1}{2}}
  & =(\mathbb{E}[\Vert x_{n}-\gamma\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n})-\int xd\nu_{n}(x)+\gamma\mathbb{E}[\nabla f_{\mu,\nu_{n}}(x+\beta_{n}u)]])^{\frac{1}{2}}\\
  & \leq var(\nu_{n})^{\frac{1}{2}}+\gamma(\mathbb{E}[\Vert\nabla f_{\mu,\nu_{n}}(x_{n}+\beta_{n}u_{n})-\mathbb{E}[\nabla f_{\mu,\nu_{n}}(x+\beta_{n}u)]\Vert^{2}])^{\frac{1}{2}}\\
  & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L\mathbb{E}_{\substack{x,x'\sim\nu_{n}\\ u,u'\sim g}}[\Vert x+\beta_{n}u-x'+\beta_{n}u'\Vert^{2}]^{\frac{1}{2}}\\
- & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L(var(\nu_{n})+\beta_{n})
+ & \leq var(\nu_{n})^{\frac{1}{2}}+2\gamma L(var(\nu_{n})^{\frac{1}{2}}+\beta_{n})
 \end{align*}
 The second and last lines are obtained using a triangular inequality while the third line uses that $\nabla f_{\mu,\nu_n}(x)$ is $2L$-Lipschitz in $x$ by  \cref{prop:grad_witness_function}. Recalling that $\beta_{n}$ is bounded by $B$ it is easy to conclude using \cref{lem:Discrete-Gronwall-lemma}. 
 \end{proof}
