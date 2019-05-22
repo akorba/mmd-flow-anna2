@@ -5,15 +5,16 @@
 The update equation \eqref{eq:discretized_noisy_flow} involves computing expectations of the gradient of the kernel $k$ w.r.t the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$. This suggests a simple approximate scheme, based on samples of the two latter distributions, that can be computed in practice. Specifically, we adopt the common approach (sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) which, at each iteration $n$, considers a system of $N$ interacting particles $(X_n^i)_{1\leq i\leq N}$  and their empirical distribution in order to approximate $\nu_n$. 
 More precisely, given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and a step-size $\gamma$, the approximate scheme iteratively updates the $i$-th particle using: 
 \begin{align}\label{eq:euler_maruyama}
-X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i);
+X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)
 \end{align}
-where $U_{n}^{i}$ are i.i.d standard gaussians whereas $\hat{\mu}$ and $\hat{\nu}_n$ denote the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. In \cref{eq:euler_maruyama}, $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily using only the available samples at iteration $n$:
-\begin{align}
-	 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y_m,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
-\end{align}
-where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. The overall computational cost of such algorithm is $O((M+N)N)$ and it uses $O(M+N)$ in memory. The computational cost becomes  $O(M+N)$ when the kernel is approximated using random features as is the case for regression with neural networks (\cref{subsec:training_neural_networks}). 
-This is in contrast to the cubic cost of the flow of the Kernelized Sobolev Discrepancy \cite{Mroueh:2019} which requires solving a linear system at each iteration.  
-Moreover, implementing \cref{eq:euler_maruyama} is straightforward as only requires evaluating the gradient of $k$ on the current particles and target samples. This can be compared the algorithm in  \cite{csimcsekli2018sliced} which involves computing empirical CDF and quantile functions of random projections of the particles.
+where $U_{n}^{i}$ are i.i.d standard gaussians whereas $\hat{\mu}$ and $\hat{\nu}_n$ denote the empirical distributions of $(Y^{m})_{1\leq m\leq M}$ and $(X^i_n)_{1\leq i\leq N}$. %In \cref{eq:euler_maruyama}, $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily using only the available samples at iteration $n$:
+Implementing \cref{eq:euler_maruyama} is straightforward as it only requires to evaluate the gradient of $k$ on the current particles and target samples.\aknote{add pseudocode}
+%\begin{align}
+%	 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Ym,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
+%\end{align}
+%where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. 
+The overall computational cost of such algorithm at each iteration is $O((M+N)N)$ and it uses $O(M+N)$ in memory. The computational cost becomes  $O(M+N)$ when the kernel is approximated using random features as it is the case for regression with neural networks (\cref{subsec:training_neural_networks}). 
+This is in contrast to the cubic cost of the flow of the Kernelized Sobolev Discrepancy \cite{Mroueh:2019} which requires solving a linear system at each iteration. This can also be compared to the algorithm in  \cite{csimcsekli2018sliced} which involves computing empirical CDF and quantile functions of random projections of the particles.
 The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \cref{eq:discretized_noisy_flow}, so one would expect it to converge towards its population version  \cref{eq:discretized_noisy_flow} as $M$ and $N$ goes to infinity. This is made more formal in the following theorem.
 %\begin{theorem}\label{prop:convergence_euler_maruyama}
 %Under the same conditions as in \cref{prop:convergence_euler_scheme} and for any $\frac{T}{\gamma}\geq n\geq 0$:
@@ -23,7 +24,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 %Where $M(\gamma k)$ is a constant that only depends on $\gamma n$ and the choice of the kernel $k$.
 %\end{theorem}
 \begin{theorem}\label{prop:convergence_euler_maruyama}
-	For any $\frac{T}{\gamma}\geq n\geq 0$:\aknote{check conditions}
+ Let $n\ge 0$ and $T>0$. Let $\nu_n$ and $\hat{\nu}_n$ defined by \eqref{eq:euler_scheme} and \eqref{eq:euler_maruyama} respectively. Suppose \cref{assump:lipschitz_gradient_k} holds and that $\beta_n<B$ for all $n$, for some $B>0$. Then for any $\frac{T}{\gamma}\geq n$:
 \[
 \mathbb{E}[W_{2}(\hat{\nu}_{n},\nu_{n})]\leq \frac{1}{4}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{1}{\sqrt{M}}var(\mu)^{\frac{1}{2}})\right)(e^{4LT}-1)
 \]
@@ -50,7 +51,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 %
 %
 \textbf{Experiments}
-\aknote{if possible get a flat curve for the MMD flow, or precise it's in a log scale/very very slow convergence}
+%\aknote{if possible get a flat curve for the MMD flow, or precise it's in a log scale/very very slow convergence}
 
 \begin{figure}[ht]
 	\centering
@@ -58,7 +59,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 	\caption{Gradient flow of the $MMD$ from a gaussian initial distributions $\nu_0\sim \mathcal{N}(10,0.5)$  towards a target distribution $\mu\sim \mathcal{N}(0,1)$ using $N=M=1000$ samples from $\mu$ and $\nu_0$ and a gaussian kernel with bandwidth $\sigma = 2 $. \cref{eq:euler_maruyama} is used 
 	%with noise  $\beta_k = 10$ in blue, 
 	without noise $\beta_k = 0$ in red and  with noise $\beta_k = 10$ up to $k=5000$ then $\beta_k = 0$ afterwards in blue. 
-	Left figure shows is the evolution of the $MMD$ at each iteration. Middle figure shows the initial samples (black for $\mu$) and right figure shows the final samples after $10^5$ iterations with step-size $\gamma = 0.1$.}
+	Left figure shows the evolution of the $MMD$ at each iteration. Middle figure shows the initial samples (black for $\mu$) and right figure shows the final samples after $10^5$ iterations with step-size $\gamma = 0.1$.}
 	\label{fig:experiments}
 \end{figure}
 \cref{fig:experiments} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, the MMD flow already fails to converge to the global optimum. Indeed, as shown in \cref{fig:experiments}(right), some of the final samples (in red) obtained using non-noisy gradient updates tend to get further away from the target samples (in black). In fact after, most of the samples collapsed to a unique point at the center near the origin. This can also be seen from \cref{fig:experiments}(left) where the training error fails to decrease beyond $10^{-3}$. On the other hand, adding noise to the gradient seems to leads to global convergence as seen visually from the samples. The training error decreases beyond $10^{-4}$ and oscillates between $10^{-8}$ and $10^{-4}$. The oscillation is due to the step-size which remained fixed while the noise was set to $0$ starting form iteration $5000$. It is worth noting that adding noise to the gradient slows the speed of convergence as one can see from \cref{fig:experiments}(left). This is expected since the algorithm doesn't follow the steepest descent. However, the noise helps escaping local optima as  illustrated in this experiment.
