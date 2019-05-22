@@ -226,7 +226,7 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $\nabla k$.% and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[Existence and uniqueness]
-Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (see \cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{lem:lambda_convexity_bis}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (see \cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
 \end{proof}
 
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
@@ -521,6 +521,24 @@ By Bochner integrability of $v(x)^T \nabla_1 k(x,.)$ it is possible to exchange 
 \[
 \Lambda(\nu,v) = \Vert \mathbb{E}_{\nu}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH} - \sqrt{2}\lambda d \F(\nu)^{\frac{1}{2}}\mathbb{E}_{\nu}[\Vert v(x)\Vert^2 ].
 \]
+\end{proof}
+
+We also provide a result showing $\Lambda$ convexity for $\F$ only under \cref{assump:lipschitz_gradient_k}:
+
+\begin{lemma}[$\Lambda$-discplacement convexity]\label{lem:lambda_convexity_bis}
+	Under \cref{assump:lipschitz_gradient_k}, for any $\nu,\nu'\mathcal{P}_2(\X)$ and any constant speed geodesic $\rho_t$ from $\nu$ to $\nu'$, $\F$ satisfies for all $0\leq t\leq 1$:
+	\[
+	\F(\rho_t) \leq (1-t)\F(\rho_0) + t\F(\rho_1) + 3L W_2^2(\nu,\nu') \qquad 
+	\]
+\end{lemma}
+
+\begin{proof}
+Let $\rho_t$ be a constant speed geodesic of the form $\rho_t = s_t_{\#}\pi$ where $\pi$ is an optimal coupling between $\nu$ and $\nu'$.
+Since \cref{assump:lipschitz_gradient_k} holds, one can apply \cref{lem:derivative_mmd_augmented} with $\psi(x,y) =x $, $\phi(x,y)= y-x$ and  $q = \pi$. Hence, one has that $\F(\rho_t)$ is differentiable and its differential satisfies:
+	\[
+	\vert \dot{\F}(\rho_t) - \dot{\F}(\rho_t) \vert  \leq 3L\vert t-s \vert \int \Vert y-x\Vert^2\diff \pi(x,y)   
+	\]
+	This implies that $\dot{\F}(\rho_t)$ is Lipschitz continuous and therefore is differentiable for almost all $t\in [0,1]$ by Rademacher theorem. Moreover $\ddot{\F}(\rho_t)$ satisfies $\ddot{\F}(\rho_t)\geq - 3L \int \Vert y-x\Vert^2\diff \pi(x,y) = -3LW_2^2(\nu,\nu')$ for almost all $t\in [0,1]$. Using \cref{lem:integral_lambda_convexity} it follows directly that $\F$ satisfies the desired inequality.
 \end{proof}
 
 
@@ -1202,7 +1220,6 @@ Using Cauchy-Schwartz and \cref{assump:bounded_fourth_oder} it follows that:
 \]
 One then concludes using the expression of $\ddot{\F}(\rho_t)$ and recalling that $\F(\rho_t) = \frac{1}{2}\Vert f_{\mu,\rho_t} \Vert^2$.
 \end{proof}
-
 
 \begin{lemma}\label{lem:integral_lambda_convexity}
 Assume that for any geodesic $(\rho_{t})_{t\in[0,1]}$ between
