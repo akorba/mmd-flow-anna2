@@ -226,7 +226,7 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $\nabla k$.% and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[Existence and uniqueness]
-Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, and stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (see \cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, as stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (\cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
 \end{proof}
 
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
@@ -418,39 +418,36 @@ Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means t
 \end{proposition}
 \begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. Equipped with these notations, by definition of $\F$ \eqref{eq:mmd_as_free_energy} we have:
 	\begin{align*}
-	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x')\\
-	&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff}- \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
-	&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-	&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
-	 	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-	 &\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
+	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
+	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
+	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
 	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
 	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
 	\end{align*}
 	We can thus expand $\mathcal{L}(\nu)$:
 \begin{align*}
  \mathcal{L}(\nu)&=\frac12 \int \Vert y- \phi(z,\nu)\Vert^2 \diff p(y,z)\\
- &=\frac12 \int \Vert y- \phi(z,\mu)\Vert^2\diff p(y,z)+\frac12 \int \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2 \diff s(z)\\
- &\phantom{{}=\frac12 \int \Vert y- } + \int \ps{y-\phi(z,\mu), y-\phi(z,\nu)}\diff p(y,z)\notag\\
+ &=\frac12 \int \Vert y- \phi(z,\mu)\Vert^2\diff p(y,z)+\frac12 \int \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2 \diff s(z)+ \int \ps{y-\phi(z,\mu), y-\phi(z,\nu)}\diff p(y,z)\notag\\
  &=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
 \end{align*}
-where we have denoted $m(z)=\int y \diff p(y|z)$. However because $\mu$ is a global solution of \eqref{eq:lifted_regression} (see \cite{chizat2018global}).\aknote{not clear}
+where we have denoted $m(z)=\int y \diff p(y|z)$. However since $\mu$ is a global solution of \eqref{eq:lifted_regression}, we have:% (see \cite{chizat2018global}).
 \begin{equation*}
-\ps{\phi(z,\mu)-m(z),\phi(z,\mu)}=0\text{ and }\ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\ge0
+\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)}\diff s(z)=0\text{ and }\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge0.
 \end{equation*}
-Hence 
+Hence we can lower-bound $\L(\nu)$ by:
 \begin{equation*}
 \mathcal{L}(\nu)=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge \mathcal{L}(\mu)+ \mathcal{F}(\nu)
 \end{equation*}
-which proves the first half of the framing by substracting $var(y)$ on each side of the inequality. Then, we also have by Cauchy-Schwartz inequality:
+which proves the first half of the framing by substracting $var(y)$ on each side of the inequality. Then, we also have by the Cauchy-Schwartz inequality:
 \begin{align*}
 \int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)- \phi(z,\nu)}\diff s(z)&\le\int \Vert \phi(z,\mu)-m(z)\Vert^2 \diff s(z)\int \Vert \phi(z,\nu)-\phi(z,\mu)\Vert^2 \diff s(z)\\
 &=2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
 \end{align*}
 which proves the second half of the framing since:
 \begin{align*}
-\bar{\mathcal{L}}(\nu)&\le \bar{\mathcal{L}}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)^{\frac12}\\
-&\le(\bar{\mathcal{L}}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
+\bar{\mathcal{L}}(\nu)\le \bar{\mathcal{L}}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)^{\frac12}\le(\bar{\mathcal{L}}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
 \end{align*}
 \end{proof}
 
@@ -586,7 +583,7 @@ To provide a proof of \cref{th:rates_mmd}, we need the following preliminary res
 	\leq
 	-2\gamma\left(\F(\nu_n)- \F(\mu) +K(\rho^n)\right)
 	\end{align}
-	where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,\dot{\rho^n}_s)(1-s)ds$. %\aknote{as Adil said, we should try to quantify this}. 
+	where $(\rho^n_t)_{0\leq t \leq 1}$ is a constant-speed geodesic from $\nu_n$ to $\mu$ and $K(\rho^n):=\int_0^1 \Lambda(\rho^n_s,v^n_s)(1-s)ds$. %\aknote{as Adil said, we should try to quantify this}. 
 	Note that when $K(\rho^n)\leq 0$ it falls back to the convex setting.
 	Therefore, the following inequality holds:
 	\begin{align}
