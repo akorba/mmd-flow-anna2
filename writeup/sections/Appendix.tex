@@ -839,10 +839,15 @@ Getting back to \cref{eq:penultimate} and applying Cauchy-Schwarz in $L_2(\nu_n\
 \begin{align}
 	\mathcal{F}(\nu_{n+1})-\mathcal{F}(\nu_{n} )\leq &   -\gamma (1-\frac{3}{2}\gamma L )\mathcal{D}_{\beta_n}(\nu_n) +\gamma \lambda\beta_n\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}\mathcal{D}^{\frac{1}{2}}_{\beta_n}(\nu_n)
 \end{align}
-It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n)$ and that $\beta_n$ satisfies \cref{eq:control_noise_level_bis} to get the desired bound.
-
-
-
+It remains to notice that $\Vert f_{\mu,\nu_n} \Vert_{\mathcal{H}}^2 = 2\F(\nu_n)$ and that $\beta_n$ satisfies \cref{eq:control_noise_level_bis} to get:
+\[
+\F(\nu_{n+1}) -\F(\nu_n) \leq -\frac{\gamma}{2}(1-\frac{3}{2}\gamma L)\mathcal{D}_{\beta_n}(\nu_n).
+\]
+We introduce now $\Gamma = 4\gamma(1-\frac{3}{2}\gamma L)\lambda^2$ to simplify notation and prove the second inequality. Using \cref{eq:control_noise_level_bis} again in the above inequality we directly have: $\F(\nu_{n+1}) -\F(\nu_n) \leq - \Gamma\beta_n^2 \F(\nu_n)$. One can already deduce that $\Gamma\beta_n^2$ is necessarily smaller than $1$. Hence, taking $\F(\nu_n)$ to the r.h. side and iterating over $n$ it follows that: 
+\[
+\F(\nu_{n}) \leq \F(\nu_0)\prod_{i=0}^{n-1}(1- \Gamma\beta_n^2)
+\]
+Simply using that $1-\Gamma\beta_n^2\leq e^{-\Gamma\beta_n^2}$ leads to the desired upper-bound $\F(\nu_{n}) \leq \F(\nu_0)e^{-\Gamma \sum_{i=0}^{n-1} \beta_n^2}$.
 \end{proof}
 
 %\begin{proof}[Proof of \cref{thm:convergence_noisy_gradient}]\label{proof:thm:convergence_noisy_gradient}
