@@ -1,33 +1,71 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% http://bibdesk.sourceforge.net/
 
-%% Created for Michael N. Arbel at 2019-05-21 20:47:48 +0100 
+%% Created for Michael N. Arbel at 2019-05-22 02:32:17 +0100 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
-@article{carrillo2006contractions,
-	title={Contractions in the 2-Wasserstein length space and thermalization of granular media},
-	author={Carrillo, Jos{\'e} A and McCann, Robert J and Villani, C{\'e}dric},
-	journal={Archive for Rational Mechanics and Analysis},
-	volume={179},
-	number={2},
-	pages={217--263},
-	year={2006},
-	publisher={Springer}
-}
 
-@article{benamou2000computational,
-	title={A computational fluid mechanics solution to the Monge-Kantorovich mass transfer problem},
-	author={Benamou, Jean-David and Brenier, Yann},
-	journal={Numerische Mathematik},
-	volume={84},
-	number={3},
-	pages={375--393},
-	year={2000},
-	publisher={Springer}
-}
 
+@article{Sirignano:2018,
+	Abstract = {Machine learning, and in particular neural network models, have revolutionized fields such as image, text, and speech recognition. Today, many important real-world applications in these areas are driven by neural networks. There are also growing applications in engineering, robotics, medicine, and finance. Despite their immense success in practice, there is limited mathematical understanding of neural networks. This paper illustrates how neural networks can be studied via stochastic analysis, and develops approaches for addressing some of the technical challenges which arise. We analyze one-layer neural networks in the asymptotic regime of simultaneously (A) large network sizes and (B) large numbers of stochastic gradient descent training iterations. We rigorously prove that the empirical distribution of the neural network parameters converges to the solution of a nonlinear partial differential equation. This result can be considered a law of large numbers for neural networks. In addition, a consequence of our analysis is that the trained parameters of the neural network asymptotically become independent, a property which is commonly called "propagation of chaos".},
+	Author = {Sirignano, Justin and Spiliopoulos, Konstantinos},
+	Date-Added = {2019-05-21 23:57:16 +0000},
+	Date-Modified = {2019-05-21 23:57:16 +0000},
+	Journal = {arXiv:1805.01053 [math]},
+	Keywords = {Mathematics - Probability},
+	Month = may,
+	Note = {arXiv: 1805.01053},
+	Title = {Mean {Field} {Analysis} of {Neural} {Networks}},
+	Url = {http://arxiv.org/abs/1805.01053},
+	Urldate = {2019-05-21},
+	Year = {2018},
+	Bdsk-Url-1 = {http://arxiv.org/abs/1805.01053}}
+
+@article{Dziugaite:2015a,
+	Abstract = {We consider training a deep neural network to generate samples from an unknown distribution given i.i.d. data. We frame learning as an optimization minimizing a two-sample test statistic---informally speaking, a good generator network produces samples that cause a two-sample test to fail to reject the null hypothesis. As our two-sample test statistic, we use an unbiased estimate of the maximum mean discrepancy, which is the centerpiece of the nonparametric kernel two-sample test proposed by Gretton et al. (2012). We compare to the adversarial nets framework introduced by Goodfellow et al. (2014), in which learning is a two-player game between a generator network and an adversarial discriminator network, both trained to outwit the other. From this perspective, the MMD statistic plays the role of the discriminator. In addition to empirical comparisons, we prove bounds on the generalization error incurred by optimizing the empirical MMD.},
+	Annote = {Comment: 10 pages, to appear in Uncertainty in Artificial Intelligence (UAI) 2015},
+	Author = {Dziugaite, Gintare Karolina and Roy, Daniel M. and Ghahramani, Zoubin},
+	Date-Added = {2019-05-21 23:56:45 +0000},
+	Date-Modified = {2019-05-21 23:56:45 +0000},
+	Journal = {arXiv:1505.03906 [cs, stat]},
+	Keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+	Month = may,
+	Note = {arXiv: 1505.03906},
+	Title = {Training generative neural networks via {Maximum} {Mean} {Discrepancy} optimization},
+	Url = {http://arxiv.org/abs/1505.03906},
+	Urldate = {2019-05-21},
+	Year = {2015},
+	Bdsk-Url-1 = {http://arxiv.org/abs/1505.03906}}
+
+@article{Uppal:2019,
+	Abstract = {We study the problem of estimating a nonparametric probability distribution under a family of losses called Besov IPMs. This family is quite large, including, for example, \$L{\textasciicircum}p\$ distances, total variation distance, and generalizations of both Wasserstein (earthmover's) and Kolmogorov-Smirnov distances. For a wide variety of settings, we provide both lower and upper bounds, identifying precisely how the choice of loss function and assumptions on the data distribution interact to determine the mini-max optimal convergence rate. We also show that, in many cases, linear distribution estimates, such as the empirical distribution or kernel density estimator, cannot converge at the optimal rate. These bounds generalize, unify, or improve on several recent and classical results. Moreover, IPMs can be used to formalize a statistical model of generative adversarial networks (GANs). Thus, we show how our results imply bounds on the statistical error of a GAN, showing, for example, that, in many cases, GANs can strictly outperform the best linear estimator.},
+	Author = {Uppal, Ananya and Singh, Shashank and P{\'o}czos, Barnab{\'a}s},
+	Date-Added = {2019-05-21 22:38:30 +0000},
+	Date-Modified = {2019-05-21 22:38:30 +0000},
+	Journal = {arXiv:1902.03511 [cs, math, stat]},
+	Keywords = {Computer Science - Information Theory, Computer Science - Machine Learning, Mathematics - Statistics Theory, Statistics - Machine Learning},
+	Month = feb,
+	Note = {arXiv: 1902.03511},
+	Title = {Nonparametric {Density} {Estimation} under {Besov} {IPM} {Losses}},
+	Url = {http://arxiv.org/abs/1902.03511},
+	Urldate = {2019-04-01},
+	Year = {2019},
+	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QMi4uLy4uLy4uL2xpdHRlcmF0dXJlL1VwcGFsKDIwMTlhKU5vbnBhcmFtZXRyaWMucGRm0hcLGBlXTlMuZGF0YU8RAhAAAAAAAhAAAgAADE1hY2ludG9zaCBIRAAAAAAAAAAAAAAAAAAAAMwxIQJIKwAABVZbtB1VcHBhbCgyMDE5YSlOb25wYXJhbWV0cmljLnBkZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIV2FJ2Md94AAAAAAAAAAAAAMAAgAACSAAAAAAAAAAAAAAAAAAAAALbGl0dGVyYXR1cmUAABAACAAAzDES8gAAABEACAAA2Mdv0AAAAAEAGAVWW7QFVlt+BVZbHAM6WYADOll/AAIN+QACAGlNYWNpbnRvc2ggSEQ6VXNlcnM6AE1pY2hhZWxBcmJlbDoARG9jdW1lbnRzOgBHYXRzYnk6AFJlc2VhcmNoOgBsaXR0ZXJhdHVyZToAVXBwYWwoMjAxOWEpTm9ucGFyYW1ldHJpYy5wZGYAAA4APAAdAFUAcABwAGEAbAAoADIAMAAxADkAYQApAE4AbwBuAHAAYQByAGEAbQBlAHQAcgBpAGMALgBwAGQAZgAPABoADABNAGEAYwBpAG4AdABvAHMAaAAgAEgARAASAFZVc2Vycy9NaWNoYWVsQXJiZWwvRG9jdW1lbnRzL0dhdHNieS9SZXNlYXJjaC9saXR0ZXJhdHVyZS9VcHBhbCgyMDE5YSlOb25wYXJhbWV0cmljLnBkZgATAAEvAAAVAAIAE///AACABtIbHB0eWiRjbGFzc25hbWVYJGNsYXNzZXNdTlNNdXRhYmxlRGF0YaMdHyBWTlNEYXRhWE5TT2JqZWN00hscIiNcTlNEaWN0aW9uYXJ5oiIgXxAPTlNLZXllZEFyY2hpdmVy0SYnVHJvb3SAAQAIABEAGgAjAC0AMgA3AEAARgBNAFUAYABnAGoAbABuAHEAcwB1AHcAhACOAMMAyADQAuQC5gLrAvYC/wMNAxEDGAMhAyYDMwM2A0gDSwNQAAAAAAAAAgEAAAAAAAAAKAAAAAAAAAAAAAAAAAAAA1I=}}
+
+@article{Li:2015,
+	Abstract = {We consider the problem of learning deep generative models from data. We formulate a method that generates an independent sample via a single feedforward pass through a multilayer perceptron, as in the recently proposed generative adversarial networks (Goodfellow et al., 2014). Training a generative adversarial network, however, requires careful optimization of a difficult minimax program. Instead, we utilize a technique from statistical hypothesis testing known as maximum mean discrepancy (MMD), which leads to a simple objective that can be interpreted as matching all orders of statistics between a dataset and samples from the model, and can be trained by backpropagation. We further boost the performance of this approach by combining our generative network with an auto-encoder network, using MMD to learn to generate codes that can then be decoded to produce samples. We show that the combination of these techniques yields excellent generative models compared to baseline approaches as measured on MNIST and the Toronto Face Database.},
+	Author = {Yujia Li and Kevin Swersky and Richard Zemel},
+	Date-Added = {2019-05-21 22:19:33 +0000},
+	Date-Modified = {2019-05-21 22:19:33 +0000},
+	Eprint = {1502.02761},
+	Month = {02},
+	Title = {Generative Moment Matching Networks},
+	Url = {https://arxiv.org/abs/1502.02761},
+	Year = {2015},
+	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QLC4uLy4uLy4uL2xpdHRlcmF0dXJlL0xpKDIwMTVhKUdlbmVyYXRpdmUucGRm0hcLGBlXTlMuZGF0YU8RAfgAAAAAAfgAAgAADE1hY2ludG9zaCBIRAAAAAAAAAAAAAAAAAAAAMwxIQJIKwAABVZbtBdMaSgyMDE1YSlHZW5lcmF0aXZlLnBkZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGVmld1bi14gAAAAAAAAAAAAMAAgAACSAAAAAAAAAAAAAAAAAAAAALbGl0dGVyYXR1cmUAABAACAAAzDES8gAAABEACAAA1bin0gAAAAEAGAVWW7QFVlt+BVZbHAM6WYADOll/AAIN+QACAGNNYWNpbnRvc2ggSEQ6VXNlcnM6AE1pY2hhZWxBcmJlbDoARG9jdW1lbnRzOgBHYXRzYnk6AFJlc2VhcmNoOgBsaXR0ZXJhdHVyZToATGkoMjAxNWEpR2VuZXJhdGl2ZS5wZGYAAA4AMAAXAEwAaQAoADIAMAAxADUAYQApAEcAZQBuAGUAcgBhAHQAaQB2AGUALgBwAGQAZgAPABoADABNAGEAYwBpAG4AdABvAHMAaAAgAEgARAASAFBVc2Vycy9NaWNoYWVsQXJiZWwvRG9jdW1lbnRzL0dhdHNieS9SZXNlYXJjaC9saXR0ZXJhdHVyZS9MaSgyMDE1YSlHZW5lcmF0aXZlLnBkZgATAAEvAAAVAAIAE///AACABtIbHB0eWiRjbGFzc25hbWVYJGNsYXNzZXNdTlNNdXRhYmxlRGF0YaMdHyBWTlNEYXRhWE5TT2JqZWN00hscIiNcTlNEaWN0aW9uYXJ5oiIgXxAPTlNLZXllZEFyY2hpdmVy0SYnVHJvb3SAAQAIABEAGgAjAC0AMgA3AEAARgBNAFUAYABnAGoAbABuAHEAcwB1AHcAhACOAL0AwgDKAsYCyALNAtgC4QLvAvMC+gMDAwgDFQMYAyoDLQMyAAAAAAAAAgEAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAzQ=},
+	Bdsk-Url-1 = {https://arxiv.org/abs/1502.02761}}
 
 @article{Li:2017a,
 	Abstract = {Generative moment matching network (GMMN) is a deep generative model that differs from Generative Adversarial Network (GAN) by replacing the discriminator in GAN with a two-sample test based on kernel maximum mean discrepancy (MMD). Although some theoretical guarantees of MMD have been studied, the empirical performance of GMMN is still not as competitive as that of GAN on challenging and large benchmark datasets. The computational efficiency of GMMN is also less desirable in comparison with GAN, partially due to its requirement for a rather large batch size during the training. In this paper, we propose to improve both the model expressiveness of GMMN and its computational efficiency by introducing adversarial kernel learning techniques, as the replacement of a fixed Gaussian kernel in the original GMMN. The new approach combines the key ideas in both GMMN and GAN, hence we name it MMD GAN. The new distance measure in MMD GAN is a meaningful loss that enjoys the advantage of weak topology and can be optimized via gradient descent with relatively small batch sizes. In our evaluation on multiple benchmark datasets, including MNIST, CIFAR- 10, CelebA and LSUN, the performance of MMD-GAN significantly outperforms GMMN, and is competitive with other representative GAN works.},
