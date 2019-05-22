@@ -843,6 +843,36 @@ $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1
 
 \section{Algorithms}\label{sec:appendix_algorithms}
 
+\subsection{Pseudocode for the algorithm of \cref{sec:sample_based}}\label{subsec:pseudocode}
+
+\begin{algorithm}
+	\setstretch{1.35}
+	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
+	\begin{algorithmic}[1]
+		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
+		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
+		\Statex \textit{Initialize the particles}
+		\State $X_{0}^{i}\mysim \nu_0$
+		\Statex \textit{Initialize the level of noise}
+		\State $\beta=\beta_0$
+		\For{$n=0,\dots, n_{iter}$}
+		\Statex \textit{Update the level of noise}
+		\State $\beta_n=h(\beta, n)$
+		\Statex \textit{Compute the current empirical distribution of the particles}
+		\State $\widehat{\nu}_N=\frac{1}{N}\sum_{i=1}^N \delta_{X^{i}_n}$
+		\Statex \textit{Compute the current vector field}
+		\State $\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,.)-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,.)$
+		\For{$i=1,\dots,N$}
+		\State $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
+		\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I}\left\{n\le 0.5*n_{iter}\right\}$.
+
+
+
 
 
 
@@ -1299,10 +1329,6 @@ a_{n}\leq\frac{b}{\gamma A}(e^{n\gamma A}-1).
 %\input{sections/proofs_continuous_flow}
 
 %\input{sections/proofs_discretized_flow}
-
-
-
-
 
 
 

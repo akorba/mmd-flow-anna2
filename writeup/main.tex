@@ -30,6 +30,20 @@
 \usepackage{subcaption}
 
 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{setspace}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\makeatletter
+\newcommand*{\skipnumber}[2][1]{%
+	{\renewcommand*{\alglinenumber}[1]{}\State #2}%
+	\addtocounter{ALG@line}{-#1}}
+\makeatother
+\newcommand\mysim{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny i.i.d}}}{\sim}}}
 
 
 \usepackage[textwidth=2cm, textsize=footnotesize]{todonotes}  
