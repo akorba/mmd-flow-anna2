@@ -1,6 +1,6 @@
 
 
-This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} and  \cref{sec:appendix_algorithms} are dedicated to the development of the proofs of the paper. They {\tiny }rely on some auxiliary results which are given \cref{sec:auxiliary_results}.
+This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} is dedicated to the continuous time gradient flow of the MMD: proofs of \cref{sec:appendix_gradient_flow} as well as additional discussions (on the link with the optimization of neural networks or with the Kullback-Leibler gradient flow w.r.t. $W_2$). \cref{sec:appendix_algorithms} is dedicated to the algorithm proposed in the paper: a pseudocode is provided and proofs of convergence are developed. The proofs of many results rely on some preliminary results which are given \cref{sec:auxiliary_results}.
 
 
 \section{Mathematical background}\label{sec:appendix_math_background}
@@ -319,7 +319,7 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 \end{proof}
 %
 
-\begin{lemma}\label{lem:Taylor-expansion}Taylor expansion
+\begin{lemma}\label{lem:Taylor-expansion}[Taylor expansion]
 	Consider the process $ \dot{x}_t = - \nabla f_{\mu,\nu_t}(x_t) $, and denote by $\mathcal{E}(t,s) = \mathbb{E}[ \Vert x_t - x_s +(t-s)\nabla f_{\mu,\nu_s}(x_s) \Vert ^2 ]^{\frac{1}{2}} $ for $0\leq s \leq t \leq T$. Then one has:
 	\begin{align}
 		\mathcal{E}(t,s)\leq 4L^2 r_0 e^{LT} \int_{s}^t \int_s^u \diff l \diff u = 2L^2 r_0 e^{LT}(t-s)^2
@@ -347,11 +347,11 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 	\begin{align*}
 		r_t\leq & \mathbb{E}[\Vert x_0  - z -\int_0^t \nabla f_{\mu,\nu_s}(x_s) \diff s \Vert]\\
 		\leq &
-		r_0 +\int_0^t \mathbb{E}[\Vert \nabla_1 k{\nu_s}(x_s,x_s')- \nabla_1 k{\nu_s}(x_s,z) \Vert \diff s]\leq &
+		r_0 +\int_0^t \mathbb{E}[\Vert \nabla_1 k(x_s,x_s')- \nabla_1 k(x_s,z) \Vert \diff s]\leq 
 		r_0  + L\int_0^t r_s \diff s
 	\end{align*}
 	Again, we used an integral expression for $x_t$ in the first line, then a triangular inequality recalling the expression of $\nabla f_{\mu,\nu_s}$. The last line uses again that $\nabla k$ is $L$-Lipschitz. By Gronwall's lemma it is easy to see that $r_t \leq r_0e^{Lt}$ at all times. Moreover, for all $t\leq T$ we have a fortiori  that $r_t \leq r_0 e^{LT}$.
-	Recalling back the upper-bound on $\mathcal{E}(s,t)$ it is easy to see that:
+	Recalling back the upper-bound on $\mathcal{E}(t,s)$ we have finally:
 	\[
 	\mathcal{E}(t,s)\leq 4L^2 r_0 e^{LT} \int_{s}^t \int_s^u \diff l \diff u = 2L^2 r_0 e^{LT}(t-s)^2
 	\] 
@@ -382,7 +382,7 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 
 \subsection{Connection with Neural Networks}\label{subsec:training_neural_networks}
 
-\subsection{Training neural networks as flow of the MMD}
+%\subsection{Training neural networks as flow of the MMD}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
 The MMD was successfully used to train generative networks \cite{Arbel:2018,Binkowski:2018}\manote{cite others}\aknote{Arthur's note: Cramer gan, MMD gan, Zoubin Gan +?}, where it is used as a loss functional between the data distribution and a parametric model distribution.
 Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{rotskoff2018neural}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
