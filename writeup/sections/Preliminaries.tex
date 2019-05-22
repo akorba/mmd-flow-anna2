@@ -204,12 +204,12 @@ will be the object of \cref{sec:convergence_mmd_flow}. For now, we provide a gua
 	where $C(T)$ is a constant that depends only on $T$.
 \end{proposition} 
  A proof of \cref{prop:convergence_euler_scheme} is provided in \cref{proof:prop:convergence_euler_scheme} and relies on standard techniques to control the discretization error of a forward-Euler scheme.
-\cref{prop:convergence_euler_scheme} means that $\nu_n$ can be linearly interpolated giving rise to a path $\rho_t^{\gamma}$ which gets arbitrarily close to $\nu_t$ on bounded intervals. Note that as $T \rightarrow \infty$ it is expected that the bound $C(T)$ would blow-up. However, this is enough to show that \cref{eq:euler_scheme} is indeed a discrete-time flow of $\F$. In fact, provided that $\gamma$ is small enough, $\F(\nu_n)$ is a decreasing sequence, as shown below.
+\cref{prop:convergence_euler_scheme} means that $\nu_n$ can be linearly interpolated giving rise to a path $\rho_t^{\gamma}$ which gets arbitrarily close to $\nu_t$ on bounded intervals. Note that as $T \rightarrow \infty$ it is expected that the bound $C(T)$ would blow-up. However, this is enough to show that \cref{eq:euler_scheme} is indeed a discrete-time flow of $\F$. In fact, provided that $\gamma$ is small enough, $\F(\nu_n)$ is a decreasing sequence, as shown in \cref{prop:decreasing_functional}.
 \begin{proposition}\label{prop:decreasing_functional}
 	%Under \cref{assump:bounded_trace,assump:bounded_hessian}, the following inequality holds:
- 	Under \cref{assump:lipschitz_gradient_k}, the following inequality holds:
+ 	Under \cref{assump:lipschitz_gradient_k}, and for $\gamma \leq 2/3L$, the sequence $\F(\nu_n)$ is decreasing and:
 	\begin{align*}
-	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{3\gamma}{2}L )\int \Vert \nabla f_{\mu, \nu_n}(X)\Vert^2 d\nu_n
+	\F(\nu_{n+1})-\F(\nu_n)\leq -\gamma (1-\frac{3\gamma}{2}L )\int \Vert \nabla f_{\mu, \nu_n}(X)\Vert^2 \diff \nu_n, \quad\forall n\geq 0
 	\end{align*}
 	%where $L$ is the Lipschitz constant of $\nabla k$.
 \end{proposition}
