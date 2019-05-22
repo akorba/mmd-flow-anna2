@@ -1,8 +1,9 @@
 
 
-%\section{Appendix}\label{sec:appendix}
+This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} and  \cref{sec:appendix_algorithms} are dedicated to the development of the proofs of the paper. They {\tiny }rely on some auxiliary results which are given \cref{sec:auxiliary_results}.
 
-\section{Mathematical background}
+
+\section{Mathematical background}\label{sec:appendix_math_background}
 
 \subsection{Maximum Mean Discrepancy and Reproducing Kernel Hilbert Spaces}\label{sec:rkhs}
 We recall here fundamental definitions and properties of reproducing kernel Hilbert spaces (RKHS) (see \cite{smola1998learning}) and Maximum Mean Discrepancies (MMD). 
@@ -53,7 +54,7 @@ Paths of the form of \cref{eq:displacement_geodesic} are called \textit{displace
 \begin{equation}\label{eq:continuity_equation}
 \partial_t \rho_t + div(\rho_t v_t ) = 0 \qquad \forall t\in[0,1].
 \end{equation}
-Equation \cref{eq:continuity_equation} is well defined in the distribution sense even when $\rho_t$ does not have a density. At each time $t$, $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ so that the length $l((\rho_t)_{t\in[0,1]})$ of the curve $(\rho_t)_{t\in[0,1]}$ would be given by:
+This equation expresses two facts, the first one is that $-div(\rho_t v_t)$ reflects the infinitesimal changes in $\rho_t$ as dictated by the vector field (also referred to as velocity field) $v_t$, the second one is that the total mass of $\rho_t$ does not vary in time as a consequence of the divergence theorem. Equation \cref{eq:continuity_equation} is well defined in the distribution sense even when $\rho_t$ does not have a density. At each time $t$, $v_t$ can be interpreted as a tangent vector to the curve $(\rho_t)_{t\in[0,1]}$ so that the length $l((\rho_t)_{t\in[0,1]})$ of the curve $(\rho_t)_{t\in[0,1]}$ would be given by:
 \begin{equation}
 l((\rho_t)_{t\in[0,1]})^2 = \int_0^1 \Vert v_t \Vert^2_{L_2(\rho_t)} \diff t \quad \text{ where } \quad 
 \Vert v_t \Vert^2_{L_2(\rho_t)} =  \int \Vert v_t(x) \Vert^2 \diff \rho_t(x)
@@ -128,7 +129,8 @@ Standard considerations from fluid mechanics tell us that the continuity equatio
 
 
 \subsection{Displacement convexity}\label{subsec:lambda_convexity}
-Just as for Euclidian spaces, an  important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is given by displacement convexity:
+Just as for Euclidian spaces, an  important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is given by displacement convexity (see\cite[Definition 16.5]{Villani:2004})):
+
 \begin{definition}\label{def:displacement_convexity}[Displacement convexity] 
 We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is displacement convex
 	if for any $\nu$ and $\nu'$ and a constant speed geodesic $(\text{\ensuremath{\rho_{t}}})_{t \in [0,1]}$
@@ -139,7 +141,7 @@ We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is displacement convex
 	\end{equation}
  %Moreover, we say that $\mathcal{F}$ is displacement convex in a neighborhood of $\mu$ if there exists a radius $r>0$ such that the above property holds for any $\nu$ with $W_{2}(\mu,\nu)\leq r$.
 \end{definition}
-\cref{def:displacement_convexity} can be relaxed to a more general notion of convexity called $\Lambda$-displacement convexity. We first define an admissible functional $\Lambda$:
+\cref{def:displacement_convexity} can be relaxed to a more general notion of convexity called $\Lambda$-displacement convexity (see \cite[Definition 16.5]{Villani:2009}). We first define an admissible functional $\Lambda$:
 \begin{definition}\label{def:conditions_lambda}[Admissible $\Lambda$ functional]
 	A functional $(\rho,v)\mapsto \Lambda(\rho,v) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and any square integrable vectors field $v\in L_2(\X,\X,\rho)$ is admissible, if it satisfies:
 	\begin{itemize}
@@ -166,9 +168,9 @@ We can now define the notion of $\Lambda$-convexity:
 \end{definition}
 \cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
 
-\section{Construction of the gradient flow of the MMD}
 
-\subsection{Main assumptions on the kernel needed}
+\section{Main assumptions on the kernel needed}\label{sec:assumptions_kernel}
+
 We state here all the assumptions on the kernel $k$ used to prove all the results:% \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
 \begin{assumplist}
@@ -178,6 +180,8 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.\aknote{same $\lambda$?}
 
 \end{assumplist}
+
+\section{Construction of the gradient flow of the MMD}\label{sec:appendix_gradient_flow}
 
 
 \subsection{Continuous time flow}
@@ -643,7 +647,7 @@ We can now give the proof of the \cref{th:rates_mmd}.
 \subsection{Lojasiewicz type inequalities}
 
 \begin{proof}[Proof of \cref{prop:lojasiewicz}]\label{proof:prop:lojasiewicz}
-	This proof follows simply from the definition of the negative Sobolev distance. Consider $g = \Vert f_{\mu, \nu_t}\Vert^{-1}_{\dot{H}^1(\nu_t)} f_{\mu, \nu_t}$, then $g\in L_2(\nu)$ and $\Vert g \Vert_{\dot{H}(\nu_t)}= \leq 1$. Therefore, we directly have:
+	This proof follows simply from the definition of the negative Sobolev distance. Under \cref{assump:lipschitz_gradient_k}, the kernel has at most quadratic growth hence, for any $\mu,\nu \in \mathcal{P}_2(\X)^2$, $f_{\mu,\nu}\in L_2(\nu)$. Consider $g = \Vert f_{\mu, \nu_t}\Vert^{-1}_{\dot{H}^1(\nu_t)} f_{\mu, \nu_t}$, then $g\in L_2(\nu_t)$ and $\Vert g \Vert_{\dot{H}(\nu_t)}\leq 1$. Therefore, we directly have:
 	\begin{align}\label{eq:loja1}
 	\vert \int g \diff \nu_t - \int g \diff \mu  \vert \leq \Vert \nu_t - \mu\Vert_{\dot{H}^{-1}(\nu_t)} 
 	\end{align}
@@ -745,7 +749,7 @@ $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1
 
 
 
-\section{Algorithms}
+\section{Algorithms}\label{sec:appendix_algorithms}
 
 
 
@@ -917,7 +921,7 @@ The second and last lines are obtained using a triangular inequality while the t
 
 
 
-\section{Auxiliary results}
+\section{Auxiliary results}\label{sec:auxiliary_results}
 
 \begin{proposition}\label{prop:grad_witness_function}
 Under \cref{assump:lipschitz_gradient_k}, the witness function $f_{\mu,\nu}$ between any probability distributions $\mu$ and $\nu$ in $\mathcal{P}_2(\X)$ is differentiable and satisfies:
