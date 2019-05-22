@@ -20,7 +20,7 @@ and provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bound
 %\end{align} 
 It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This result is given in \cref{prop:lojasiewicz}:
 \begin{proposition}\label{prop:lojasiewicz}
-	Assume \cref{assump:lipschitz_gradient_k} is satisfied and that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$, for all $t\geq 0$. Then $\F(\nu_t)$ converges to $0$ and:
+	Under \cref{assump:lipschitz_gradient_k} and  when $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$, for all $t\geq 0$. Then:
 	\begin{align}
 	\mathcal{F}(\nu_t)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4t}
 	\end{align}
@@ -29,9 +29,9 @@ The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein
 The only difference comes from the different linearization that arises from that choice of metric. For instance, in \cite{Rotskoff:2019}, a gradient flow of functionals similar to $\F$ is considered under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that the chi-square divergence $\chi^2(\mu\Vert \nu_t)$ is bounded%, which turns out to approximate $KL(\mu\Vert \nu_t)$ when $\mu$ and $\nu_t$ are close as shown in 
 \manote{add some details in appendix section}.
 
-Under similar conditions as in \cref{prop:lojasiewicz}, convergence of the discrete-time flow can be obtained:
+Under similar conditions as in \cref{prop:lojasiewicz}, convergence of $(\nu_n)$ defined in \cref{eq:euler_scheme} can be obtained:
 \begin{proposition}\label{prop:discrete_lojasiewicz}
-	Assume \cref{assump:lipschitz_gradient_k} and that $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$, where $\nu_n$ are defined in \cref{eq:euler_scheme} and $L$ is the Lispchitz constant of $\nabla k$. Then $\F(\nu_n)$ converges to $0$ and satisfies:
+	Under \cref{assump:lipschitz_gradient_k} and when $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$. Then:
 	\begin{align}
 	\mathcal{F}(\nu_n)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4\gamma(1-\frac{3}{2}\gamma L) n}
 	\end{align}
