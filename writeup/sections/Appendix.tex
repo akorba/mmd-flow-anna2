@@ -227,6 +227,52 @@ To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optima
 taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
 \end{proof}
 
+\subsection{Equilibrium condition}\label{subsec:equilibrium_condition}
+We discuss here the equilibrium condition \cref{eq:equilibrium_condition} and relate it to \cite[Assumption A]{Mroueh:2019}. Recall that \cref{eq:equilibrium_condition} is given by:
+\[
+\int \Vert \nabla f_{\mu,\nu^{*}}(x) \Vert^2 \diff \nu^{*}(x) = 0
+\]
+
+Under some mild  assumptions on the kernel which are states in \cite[Appendix C.1]{Mroueh:2019} it is possible to write \cref{eq:equilibrium_condition} as:
+\[
+\int \Vert \nabla f_{\mu,\nu^{*}}(x) \Vert^2 \diff \nu^{*}(x) = \langle f_{\mu,\nu^{*}} ,   D_{\nu^{*}}  f_{\mu,\nu^{*}}\rangle_{\kH}  = 0
+\]
+where $D_{\nu^{*}}$ is a Hilbert-Schmidt operator given by: %that often appears in the context of unnormalized density estimation with score-matching \cite{ambrosio2008gradient}
+\[
+D_{\nu^{*}} = \int \sum_{i=1}^d \partial_i k(x,.)\otimes \partial_i k(x,.) \diff \nu^{*}(x)
+\]
+Hence \cref{eq:equilibrium_condition} is equivalent to say that $f_{\mu,\nu^{*}}$ belongs to the null space of $D_{\nu^{*}}$. In \cite[Theorem 2]{Mroueh:2019}, a similar equilibrium condition is derived by considering the time derivative of the MMD along the KSD gradient flow:
+\[
+\frac{1}{2} \frac{d}{dt} MMD^2(\mu,\nu_t) = - \lambda \langle f_{\mu,\nu_t}, (\frac{1}{\lambda}I - (D_{\nu_t} +\lambda I )^{-1})f_{\mu,\nu_t} \rangle_{\kH} 
+\] 
+The r.h.s is shown to be always negative and thus the MMD decreases in time. Hence, as $t$ approaches $\infty$, the r.h.s tends to $0$ since the MMD converges to some limit value $l$. This provides the equilibrium condition:
+\[
+\lambda \langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH} = 0
+\] 
+It is further shown in  \cite[Lemma 2]{Mroueh:2019} that the above equation is also equivalent to having $f_{\mu,\nu^{*}}$ in the null space of $D_{\nu^{*}}$ in the case when $D_{\nu^{*}}$ has finite dimensions. We generalize this statement to infinite dimension in \cref{prop:null_space_diff_operator}. 
+In \cite[Assumption A]{Mroueh:2019}, it is simply assumed that if $f_{\mu,\nu^{*}} \neq0$ then  $f_{\mu,\nu^{*}}\notin D_{\nu^{*}}$ which exactly amounts to assuming that local optima which are not global don't exist.
+ 
+\begin{proposition}\label{prop:null_space_diff_operator}
+	 \[\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH} = 0 \iff f_{\mu,\nu^{*}} \in null(D_{\nu^{*}})
+	 \]
+\end{proposition}
+\begin{proof}
+	This follows simply by recalling $D_{\nu^{*}}$ is a symmetric non-negative Hilbert-Schmidt operator it has therefore an eigen-decomposition of the form:
+	\[
+	D_{\nu^{*}}  = \sum_{i=1}^{\infty} \lambda_i e_i \otimes e_i
+ 	\]
+ 	where $e_i$ is an ortho-norrmal basis of $\kH$ and $\lambda_i$ are non-negative. Moreover, $f_{\mu,\nu^{*}}$ can be decomposed in $(e_i)_{1\leq i}$ in the form:
+ 	\[
+ 	f_{\mu,\nu^{*}} = sum_{i=0}^{\infty} \alpha_i e_i
+ 	\]
+ 	where $\alpha_i$ is a squared integrable sequence. It follows that $\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH}$ can be written as:
+ 	\[
+ 	\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH} = \sum_{i=1}^{\infty} \frac{\lambda_i}{\lambda_i+\lambda} \alpha_i^2
+ 	\]
+ 	Hence, if $f_{\mu,\nu^{*}}\in null(D_{\nu^{*}})$ then $\langle f_{\mu,\nu^{*}}, D_{\nu^{*}}f_{\mu,\nu^{*}}\rangle_{\kH}= 0$, so that $\sum_{i=1}^{\infty} \lambda_i \alpha_i^2 = 0$. Since $\lambda_i$ are non-negative, this implies that $\lambda_i \alpha_i^2= 0$ for all $i$. Therefore, it must be that $\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH}  = 0$.
+ 	Similarly, if $\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH}  =0 $ then $\frac{\lambda_i\alpha_i^2}{\lambda_i + \lambda} = 0$ hence $\langle f_{\mu,\nu{*}}, D_{\nu^{*}} f_{\mu,\nu{*}} \rangle_{\kH} = 0$. This means that $f_{\mu,\nu{*}}$ belongs to $null(D_{\nu^*})$.
+\end{proof}
+
 
 \subsection{Lojasiewicz-type inequalities for $\F$ under different metrics}\label{subsec:Lojasiewicz_different_metrics}
 
