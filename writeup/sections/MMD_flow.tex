@@ -1,8 +1,28 @@
 
 
 \section{Convergence properties of the MMD flow}\label{sec:convergence_mmd_flow}
-We are interested in analyzing the asymptotic properties of the gradient flow of $\F$. The main challenge is the lack of convexity of this functional w.r.t. the Wasserstein metric structure. In  \cref{subsection:barrier_optimization}, we show that $\F$ is only $\Lambda$-convex and that standard optimization techniques can only provide a lose bound on its asymptotic value.
-In \cref{sec:Lojasiewicz_inequality}, we exploit a Lojasiewicz type inequality to prove the convergence to the global optimum provided that some quantity remains bounded at all times. %provided that some energy functional remains bounded 
+We are interested in analyzing the asymptotic properties of the gradient flow of $\F$. The main challenge is the lack of convexity of this functional w.r.t. the Wasserstein metric. In  \cref{subsection:barrier_optimization}, we show that $\F$ is only $\Lambda$-convex and that standard optimization techniques can only provide a lose bound on its asymptotic value.
+In \cref{sec:Lojasiewicz_inequality}, we exploit a Lojasiewicz type inequality to prove the convergence to the global optimum provided that some quantity remains bounded at all times. 
+
+
+
+From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial to analyze the convergence towards the global minimum in \cref{sec:Lojasiewicz_inequality}.
+Although $\F(\nu_t)$ decreases in time, it can very well
+remain stuck in local minima. One way to see it, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}. Indeed, as a non-negative and non-increasing function, $t \mapsto \F(\nu_t)$  is guaranteed to converge towards a finite non-negative limit $l$, which implies in turn that the r.h.s. of \cref{eq:time_evolution_mmd} converges to $0$. If $\nu_t$ happens to converge towards some distribution $\nu^{*}$\footnote{There are cases when $\nu_t$ does not converge to any $\nu^*$. This would happen if the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
+it is possible to show that the equilibrium condition condition \cref{eq:equilibrium_condition} must hold (\cite[Proposition 2]{mei2018mean}
+):
+\begin{align}\label{eq:equilibrium_condition}
+\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
+\end{align}
+Condition \cref{eq:equilibrium_condition} does not necessarily implies that $\nu^{*}$ is a global optimum (\cite[Theorem 6]{mei2018mean} and \cite{rotskoff2019global}). 
+We remark on a claim that  KSD flow converges globally, (recall that KSD is related to MMD) \cite[Proposition 3, Appendix B.1]{Mroueh:2019}. This  requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming that equilibria satisfying \cref{eq:equilibrium_condition} do not exist \manote{ref to appendix}.
+Actually, convergence of the flow is harder to obtain and will be discussed at length in this section.
+
+
+
+
+
+%provided that some energy functional remains bounded 
 %
 %Interestingly, for a fixed target distribution $\mu$, it appears that the $MMD^2$ can be written
 %as a free energy \cref{eq:lyapunov}, by choosing the potential energy $V$ and interaction energy $W$ as follows:
