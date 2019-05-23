@@ -1,36 +1,78 @@
 \section{Introduction}
 
-The Maximum Mean Discrepancy (MMD) \cite{gretton2012kernel} was successfully used to learn Implicit Generative Models (IGMs) in a parametric setting \cite{gen-mmd,Li:2015,Li:2017a,cramer-gan,Binkowski:2018,Arbel:2018}. It is defined in terms of an optimal \textit{witness function} which belongs to a Reproducing Kernel Hilbert Space. The MMD is then given by the difference in the expected \textit{witness function} under a
- proposal distribution $\nu$ and a target $\mu$. Its closed form estimator given in terms of empirical expectations of a positive semi-definite kernel $k$ allows to efficiently train IGMs using both samples from the IGM and the data. In this setting, a gradient descent algorithm is used to learn the parameters of the IGM using the MMD as a loss function.
 
-In \cite{Li:2017a,Binkowski:2018,Arbel:2018}, the kernel is parametrized by a deep network and an alternating optimization between the kernel parameters and the IGM parameters is performed leading impressive results on image generation tasks. In \cite{gen-mmd,Li:2015} the same kernel $k$ is fixed during training. While the first approach leads to better performance,  the latter can be seen as a time discretized gradient flow of the MMD defined on the space of possible parameters. Analyzing the convergence properties of such flow to the global optimum is crucial to characterize the generalization properties of the learned models. 
+%%%%% definitions and relation to fokker planck and Sobolev
+
+%% AG: I used \nu, not \nu_0 as the starting distribution, to try to keep things simple in the intro, but we could revert to \nu_0
+
+We address the problem of defining a gradient flow  on the space of probability distributions endowed with the Wasserstein metric, which transports probability mass from a starting distribtion $\nu$ to a target distribution $\mu$.   Our flow is defined on the maximum mean discrepancy (MMD) \cite{gretton2012kernel}, an integral probability metric \cite{Mueller97} which uses the unit ball in a characteristic RKHS \cite{sriperumbudur2010hilbert} as its witness function class.
+Specifically, we choose the function in the witness class that has the largest difference in expectation under $\nu$ and $\mu$: this difference constitutes the MMD.
+The idea of descending a gradient flow over the space of distributions can be traced to the seminal work of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. Its time-discretization leads to the celebrated Langevin Monte Carlo algorithm, which comes with strong convergence guarantees  (see \cite{durmus2018analysis}), but requires the knowledge of an analytical form of the target $\mu$.  More recent sampling algorithms based on the theory of gradient flows with analytical $\mu$ include \cite{liu2017stein, csimcsekli2018sliced}.\agnote{also true for sliced?}
+
+
+%% AG: they claim to have shown convergence, so if we are going to criticise this, we should be specific.
+%% otherwise we might just annoy the authors.
+%Their relevance is demonstrated empirically but guarantees of convergence remain an open question.
+
+
+%: given distributions $\nu$ and $\mu$, the MMD finds the witness function in the unit ball of a reproducing kernel Hilbert space that has the largest difference in expectation under $\nu$ and $\mu$. The difference in expectations then constitutes the MMD, which is a metric for characteristic kernels \cite{sriperumbudur2010hilbert}. 
+
+
+%%%% connections in machine learning
+
+The study of particle flows defined on the MMD relates to two important topics in modern machine learning. The first is in training Implicit Generative Models, notably generative adversarial networks \cite{gans}.  Integral probability metrics have been used extensively as critic functions in this setting: these include Wasserstein distances \cite{towards-principled-gans,wgan-gp,sinkhorn-igm} and maximum mean discrepancies \cite{gen-mmd,Li:2015,Li:2017a,cramer-gan,Binkowski:2018,Arbel:2018}.  In \cite[Section 3.3]{Mroueh:2019}, a connection between IGMs and Particle Transport is proposed, where it is shown that gradient flow on the witness function of an integral probability metric takes a similar form to the generator update in a GAN. The critic IPM in this case is the Kernel Sobolev Discrepancy (KSD), which has an additional gradient norm constraint on the witness function compared with the MMD, and is intended as an approximation to the negative Sobolev distance from the optimal transport literature \cite{Otto:2000,Villani:2009,Peyre:2011}.  There remain certain differences between gradient flow and GAN training, however.  First, and most obviously, gradient flow can be approximated by representing $\nu$ as a set of particles, whereas in a GAN $\nu$ is the output of a generator network. The requirement that this generator network be a smooth function of its parameters causes a departure from pure particle flow. Second, in modern implementations \cite{Li:2017a,Binkowski:2018,Arbel:2018}, the kernel used in computing the witness function for a GAN critic is parametrized by a deep network, and an alternating optimization between the kernel parameters and the IGM parameters is performed. Despite these differences, we anticipate that the theoretical study of MMD flow convergence will provide helpful insights into conditions for GAN convergence, and ultimately, improvements to GAN training algorithms.
+
+Regarding the second topic, we note that the properties of gradient descent for large neural networks
+have been modeled using the convergence towards a global optimum of particle transport in the population limit, when the number of particles goes to infinity  \cite{rotskoff2018neural,chizat2018global,mei2018mean,sirignano2018mean}. 
+In particular, \cite{rotskoff2019global} show that gradient descent on the parameters of the network can also be seen as a particle transport problem, which has as its population limit a gradient flow of a  functional defined for probability distributions over the parameters of the network. 
+This functional is in general non-convex, which makes the convergence analysis challenging.
+The particular structure of the MMD allows to relate its gradient flow to neural networks optimization in a well-specified regression setting similar to \cite{rotskoff2019global} (we make this connection explicit in Appendix \ref{subsec:training_neural_networks}).
+
+%%AG: Here I refer to the appendix, but maybe it's better to have this appendix reference somewhere in the main body?  Right now I don't see it, though I agree that the connection details should be kept to the appendix.
+ 
+
+
+%%%% what we show, and why we show it
+
+Our main contribution in this work is to establish conditions for convergence of MMD gradient flow to its {\em global optimum}.
+%, both in the continuous-time popultion setting, and following time discretisation and sample approximation.
+We give detailed descriptions of  MMD flow in both its continuous-time and discrete versions in \cref{sec:gradient_flow}.
+In particular, the MMD flow may employ a sample approximation for the target $\mu$: unlike e.g. Langevin Monte Carlo,
+it does not require  $\mu$ in analytical form.
+Global convergence is especially challenging to prove: while functionals  that are \textit{displacement convex} can be shown to converge towards a global optimum \cite{Villani:2004}, non-convex functionals, like the MMD,  require different tools to analyze the behavior of their gradient flow.
+Moreover, global optimality is not a useful property if the flow is meaningless, for instance requiring infinite velocity: \cite{rotskoff2019global} propose a modified gradient flow that exhibits non-local behavior (particle teleportation) yet reaches global optimality. 
+This teleportation behaviour was also shown for the Sobolev Discrepancy absent a kernel regualriser \cite[Theorem 4, Appendix D]{Mroueh:2019}.
+Note that the regularised Kernel Sobolev Discrepancy does not exhibit teleportation, however the global convergence claim of \cite[Proposition 3, Appendix B.1]{Mroueh:2019} requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming displacement convexity\agnote{can we add appendix ref here?}.
+
+Our approach takes  inspiration in particular from \cite{Bottou:2017}, where it is shown that although the $1$-Wasserstein distance is non-convex, it can be optimized up to some barrier that depends on the diameter of the target distribution.
+Similarly to \cite{Bottou:2017}, we provide in \cref{sec:convergence_mmd_flow} a barrier on the gradient flow of the MMD.
+% a tighter bound remains challenging.
+We further obtain a condition on the evolution of the flow to ensure global optimality, and give rates of convergence in that case, however
+the condition is a strong one: it implies that the Negative Sobolev distance between the target and the current particles remains bounded at all time.
+
+This second  condition proves useful however, since it leads to a new and modified gradient flow based on noise injection (Section \ref{sec:discretized_flow}), with more tractable
+conditions for convergence. Encouragingly, the
+noise injection is shown in practice to ensure convergence in a simple illustrative case where the original MMD flow fails.
+Finally, while our emphasis has been on establishing conditions for convergence, we note that MMD gradient flow has a remarkably simple
+$O(M+N)$ implementation for $N$ $\nu$-samples and $M$ $\mu$-samples, and requires only evaluating the gradient of the kernel $k$ on the given samples.
+
+
+%% AG: not sure what to do with these two references, or how they fit in with our discussion
+%In alternative approaches, \cite{chizat2018global} show that non-convex functionals with homogeneity structure can only converge towards global optima, and \cite{mei2018mean} provide global convergence guarantees for a regularized class of functionals using entropic regularization. 
+ 
+
+ 
 %Generalization bounds for IGMs are often provided under the assumption that the global optimum is reached \cite{Uppal:2019}.
 %In practice, it is hard to guarantee global convergence as the optimization problem is non-convex. Furthermore, the parametric setting introduces additional sources of non-convexity which makes such analysis hard to perform.
 
-In \cite{Mroueh:2019}, a connection between IGMs and Particle Transport is established where the latter is seen as a non-parametric analog of IGMs. Particles are transported from a source distribution $\nu_0$ to a target distribution $\mu$ by iteratively minimizing the Kernel Sobolev Discrepancy (KSD) between those particles and samples form $\mu$. The resulting algorithm is shown to decrease the MMD at each iteration while the loss itself is interpreted as an approximation to the Negative Sobolev distance that arises in the Optimal transport literature \cite{Otto:2000,Villani:2009,Peyre:2011}.
 %Each iteration involves solving a linear system which provides an estimate of the KDS and its gradient.  
 %In \cite{liu2017stein} a kernelized gradient flow of the Kullback-Liebler divergence is proposed in the setting where the score of the target distribution is accessible.  
-This idea of descending a gradient flow over the space of distributions can be traced to the seminal work of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. Its time-discretization leads to the celebrated Langevin Monte Carlo algorithm which comes with strong guarantees regarding convergence (see \cite{durmus2018analysis}), but requires the knowledge of an analytical form of the target $\mu$. 
-%The idea of descending a gradient flow for optimization or sampling can be traced to the seminal work of \cite{jordan1998variational} who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. This leads to the famous Langevin Monte Carlo algorithm (see \cite{durmus2018analysis}), which requires the knowledge of an analytical form of the target $\mu$. 
-%flow equation for the relative entropy functional
-%More recently, \cite{csimcsekli2018sliced} propose the gradient flow of the Sliced Wasserstein distance as a sampling algorithm. 
-%which is approximated using empirical CDFs and quantile functions of random one-dimensional projections of the particles. Such approximation is then shown to be consistent with the exact gradient update. 
-Hence, recently a range of sampling algorithms were developed based on the theory of gradient flows (see \cite{liu2017stein, csimcsekli2018sliced}). Their relevance is demonstrated empirically but guarantees of convergence remain an open question.
  %Experimental evidence shows the convergence properties of such algorithms towards the target $\mu$ although guarantees remain an open question.
 
-In a different context, convergence towards a global optimum of such particle transport problems is addressed in the population limit when the number of particles goes to infinity  \cite{rotskoff2018neural,chizat2018global,mei2018mean,sirignano2018mean}. Such analyses are motivated by the properties of gradient descent for large neural networks. \cite{rotskoff2019global} show that gradient descent on the parameters of the network can also be seen as a particle transport problem. In the population limit when the number of parameters goes to infinity, this corresponds to a gradient flow of a some functional defined for probability distributions over the parameters of the network. %In the case of a regression with a quadratic cost, the functional that arises from this formal limit consists in a sum of an external potential term and an interaction potential term defined through a positive semi-definite kernel. 
-Such functional is in general non-convex which makes the convergence analysis harder to obtain.
 
-Indeed,  functionals  that are \textit{displacement convex} can be shown to converge towards a global optimum \cite{Villani:2004}. Non-convex functional require different tools to analyze the behavior of their gradient flow. In \cite{Bottou:2017}, it is shown that although the $1$-Wasserstein distance is non-convex, it can be optimized up to some barrier that depends on the diameter of the target distribution.    
-\cite{chizat2018global} show that non-convex functionals with homogeneity structure can only converge towards global optima. Moreover, \cite{rotskoff2019global} propose a modified gradient flow that exhibits non-local behavior (particles teleportation) and is also shown to reach global optimality. Finally, \cite{mei2018mean} provide global convergence guarantees for a regularized class of functionals using entropic regularization. 
 
-In this work we introduce the gradient flow of the MMD in a non-parametric setting and investigate its convergence properties towards a global optimum. Such flow is defined on a set of probability distributions endowed with the Wasserstein metric and leads to a simple algorithm that only requires evaluating the gradient of the kernel $k$ on the given samples.
-The particular structure of the MMD allows to relate its gradient flow to neural networks optimization in a well-specified regression setting similar to \cite{rotskoff2019global}.
-Similarly to \cite{Bottou:2017}, a barrier on the gradient flow of the MMD can be provided although providing a tighter bound remains challenging.
-We further provide a condition on the evolution of the flow to ensure global optimality and provide rates of convergence in that case. Such condition implies that the Negative Sobolev distance between the target and the current particles remains bounded at all time.
-Moreover, from this analysis we derive a modified gradient flow based on noise injection that it shown to help convergence in practice.
 
-\cref{sec:gradient_flow} is devoted to deriving the MMD flow in both its continuous-time and discrete versions. \cref{sec:convergence_mmd_flow} investigates the convergence towards a global optimum of the MMD flow. Finally, \cref{sec:discretized_flow} proposes a new algorithm based on noise injection to help improve convergence and provide consistency guarantees for such algorithm with its particle version.  
+
 %	\manote{maybe say something about convergence up to a barrier : Bottou}
 
 
