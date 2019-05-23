@@ -21,12 +21,12 @@
 %If $\nu^*$ turns out to have a positive density, then $f_{\mu,\nu^{*}}(x)$ would be constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS does not contain constant functions, as for a gaussian kernel. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. 
 %In \cite{mroueh2018regularized}, it is assumed that the only distribution $\nu^*$ satisfying the equilibrium condition is equal to $\mu$\aknote{true?}.  However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. This suggests that the gradient flow could converge to a suboptimal solution $\nu^*$ for which
 We showed in \cref{subsection:barrier_optimization} that $\F$ was a non-convex functional, then derived a condition in \cref{sec:Lojasiewicz_inequality} to reach the global optimum. Now, we would like to address the case when such condition does not necessarily hold and then provide a regularization of the gradient flow to help achieve global optimality. Our starting point will be the equilibrium condition in \cref{eq:equilibrium_condition}. If an equilibrium $\nu^*$ that satisfies \cref{eq:equilibrium_condition} happens to have a positive density, then $f_{\mu,\nu^{*}}$ would be constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS does not contain constant functions, as for a gaussian kernel. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. However, the limit distribution $\nu^*$  might be very singular, it can even be a dirac distribution \cite[Theorem 6]{mei2018mean}. Although, the gradient $\nabla f_{\mu,\nu^{*}}$ is not identically $0$ in that case,  \cref{eq:equilibrium_condition} only evaluate it on the support $\nu^{*}$ on which $\nabla f_{\mu,\nu^{*}}=0$ holds. Hence a possible fix would be to make sure that such gradient is also evaluated at points outside of the support of $\nu^{*}$. 
-Here, we propose to regularize the flow by injecting noise into the gradient during updates of \cref{eq:euler_scheme_particles}: \aknote{abrupt. would be great to have a continuous analog}  
+Here, we propose to regularize the flow by injecting noise into the gradient during updates of \cref{eq:euler_scheme_particles}: %\aknote{abrupt. would be great to have a continuous analog}  
 \begin{align}\label{eq:discretized_noisy_flow}
 	X_{n+1} = X_{n} -\gamma \nabla f_{\mu,\nu_n}(X_n+ \beta_n U_n) \qquad n\geq 0
 \end{align}
 where $U_n$ is a standard gaussian variables and $\beta_n$ is the noise level at $n$. Compared to \cref{eq:euler_scheme}, here the sample is blurred first before evaluating the gradient.
-Intuitively, if $\nu_n$ approaches a local optimum $\nu^{*}$, $ \nabla f_{\mu,\nu_n}$ would be small on the support of $\nu_n$ but it might be much larger outside of it, hence evaluating $\nabla f_{\mu,\nu_n}$ outside the support of $\nu_n$ might help escaping the local minimum. The stochastic process \cref{eq:discretized_noisy_flow} is different from adding a diffusion term to \cref{eq:continuity_mmd}\manote{add this in the appendix}. Indeed, in the later case, %the update equation would be:
+Intuitively, if $\nu_n$ approaches a local optimum $\nu^{*}$, $ \nabla f_{\mu,\nu_n}$ would be small on the support of $\nu_n$ but it might be much larger outside of it, hence evaluating $\nabla f_{\mu,\nu_n}$ outside the support of $\nu_n$ might help escaping the local minimum. The stochastic process \cref{eq:discretized_noisy_flow} is different from adding a diffusion term to \cref{eq:continuity_mmd}. Indeed, in the latter case, %the update equation would be:
 %\begin{align}\label{eq:diffusion}
 %	X_{n+1} = X_{n} -\gamma \nabla f_{\mu,\nu_n}(X_n)+ \beta_n U_n \qquad n\geq 0.
 %\end{align}
@@ -100,7 +100,7 @@ We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy
  %\end{theorem}
 % A proof of \cref{thm:convergence_noisy_gradient} is provided in
 A proof of \cref{thm:convergence_noisy_gradient} is provided in \cref{proof:thm:convergence_noisy_gradient} and relies on \cref{eq:control_level_noise} to get a Lojasiewicz inequality which then controls the decay of $\F(\nu_n)$. A particular case when $\sum_{i=0}^n \beta_i^2 \rightarrow \infty$ holds is when $\beta_n$ decays as $1/\sqrt{n}$ while still having \cref{eq:control_level_noise}. In this case, one gets polynomial convergence.
-In \cref{sec:sample_based} we provide a practical algorithm for \cref{eq:discretized_noisy_flow}, involving a discretization in space, and provide guarantees for this algorithm.
+In \cref{sec:sample_based} we provide a practical algorithm for \cref{eq:discretized_noisy_flow} which involves a discretization in space.
  
  
  
