@@ -7,7 +7,7 @@
 
 We address the problem of defining a gradient flow  on the space of probability distributions endowed with the Wasserstein metric, which transports probability mass from a starting distribtion $\nu$ to a target distribution $\mu$.   Our flow is defined on the maximum mean discrepancy (MMD) \cite{gretton2012kernel}, an integral probability metric \cite{Mueller97} which uses the unit ball in a characteristic RKHS \cite{sriperumbudur2010hilbert} as its witness function class.
 Specifically, we choose the function in the witness class that has the largest difference in expectation under $\nu$ and $\mu$: this difference constitutes the MMD.
-The idea of descending a gradient flow over the space of distributions can be traced to the seminal work of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. Its time-discretization leads to the celebrated Langevin Monte Carlo algorithm, which comes with strong convergence guarantees  (see \cite{durmus2018analysis}), but requires the knowledge of an analytical form of the target $\mu$.  More recent sampling algorithms based on the theory of gradient flows with analytical $\mu$ include \cite{liu2017stein, csimcsekli2018sliced}.\agnote{also true for sliced?}
+The idea of descending a gradient flow over the space of distributions can be traced to the seminal work of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. Its time-discretization leads to the celebrated Langevin Monte Carlo algorithm, which comes with strong convergence guarantees  (see \cite{durmus2018analysis}), but requires the knowledge of an analytical form of the target $\mu$.  A more recent sampling algorithm based on the theory of gradient flows with analytical $\mu$ includes \cite{liu2017stein}.
 
 
 %% AG: they claim to have shown convergence, so if we are going to criticise this, we should be specific.
@@ -42,7 +42,9 @@ it does not require  $\mu$ in analytical form.
 Global convergence is especially challenging to prove: while functionals  that are \textit{displacement convex} can be shown to converge towards a global optimum \cite{Villani:2004}, non-convex functionals, like the MMD,  require different tools to analyze the behavior of their gradient flow.
 Moreover, global optimality is not a useful property if the flow is meaningless, for instance requiring infinite velocity: \cite{rotskoff2019global} propose a modified gradient flow that exhibits non-local behavior (particle teleportation) yet reaches global optimality. 
 This teleportation behaviour was also shown for the Sobolev Discrepancy absent a kernel regualriser \cite[Theorem 4, Appendix D]{Mroueh:2019}.
-Note that the regularised Kernel Sobolev Discrepancy does not exhibit teleportation, however the global convergence claim of \cite[Proposition 3, Appendix B.1]{Mroueh:2019} requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming displacement convexity\agnote{can we add appendix ref here?}.
+Note that the regularised Kernel Sobolev Discrepancy does not exhibit teleportation, however the global convergence claim of \cite[Proposition 3, Appendix B.1]{Mroueh:2019} requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming that the algorithm is not in a local minimum.\agnote{add a short appendix section.}
+
+%displacement convexity\agnote{can we add appendix ref here?}.
 
 Our approach takes  inspiration in particular from \cite{Bottou:2017}, where it is shown that although the $1$-Wasserstein distance is non-convex, it can be optimized up to some barrier that depends on the diameter of the target distribution.
 Similarly to \cite{Bottou:2017}, we provide in \cref{sec:convergence_mmd_flow} a barrier on the gradient flow of the MMD.
