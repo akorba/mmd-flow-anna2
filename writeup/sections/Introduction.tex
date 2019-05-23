@@ -7,8 +7,8 @@
 
 We address the problem of defining a gradient flow  on the space of probability distributions endowed with the Wasserstein metric, which transports probability mass from a starting distribtion $\nu$ to a target distribution $\mu$.   Our flow is defined on the maximum mean discrepancy (MMD) \cite{gretton2012kernel}, an integral probability metric \cite{Mueller97} which uses the unit ball in a characteristic RKHS \cite{sriperumbudur2010hilbert} as its witness function class.
 Specifically, we choose the function in the witness class that has the largest difference in expectation under $\nu$ and $\mu$: this difference constitutes the MMD.
-The idea of descending a gradient flow over the space of distributions can be traced back to the seminal work of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. Its time-discretization leads to the celebrated Langevin Monte Carlo algorithm, which comes with strong convergence guarantees  (see \cite{durmus2018analysis,dalalyan2019user}, but requires the knowledge of an analytical form of the target $\mu$.
-A recent gradient flow approach, Stein Variational Gradient Descent (SVGD) \cite{liu2017stein}, also  leverages this analytical $\mu$.
+The idea of descending a gradient flow over the space of distributions can be traced back to the seminal work of \cite{jordan1998variational}, who revealed that the Fokker-Planck equation is a gradient flow of the Kullback-Leibler divergence. Its time-discretization leads to the celebrated Langevin Monte Carlo algorithm, which comes with strong convergence guarantees  (see \cite{durmus2018analysis,dalalyan2019user}), but requires the knowledge of an analytical form of the target $\mu$.
+A more recent gradient flow approach, Stein Variational Gradient Descent (SVGD) \cite{liu2017stein}, also  leverages this analytical $\mu$.
 
 
 
