@@ -1,6 +1,6 @@
 
 
-This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} is dedicated to the continuous time gradient flow of the MMD: proofs of \cref{sec:appendix_gradient_flow} as well as additional discussions (on the link with the optimization of neural networks or with the Kullback-Leibler gradient flow w.r.t. $W_2$). \cref{sec:appendix_algorithms} is dedicated to the algorithm proposed in the paper: a pseudocode is provided and proofs of convergence are developed. The proofs of many results rely on some preliminary results which are given \cref{sec:auxiliary_results}.
+This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:related_work}, we discuss connexions with other gradient flows in the literature. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} is dedicated to the construction of the gradient flow of the MMD. \cref{sec:appendix_convergence} is dedicated to the proofs of the convergence results provided in \cref{sec:convergence_mmd_flow}. \cref{sec:appendix_algorithms} is dedicated to the modified gradient flow based on noise injection. Proofs of convergence are developed and a pseudocode is provided. The proofs of many results rely on some preliminary results which are given \cref{sec:auxiliary_results}.
 
 
 \section{Mathematical background}\label{sec:appendix_math_background}
@@ -168,7 +168,7 @@ We can now define the notion of $\Lambda$-convexity:
 \end{definition}
 \cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
 
-\section{Related Work}
+\section{Related Work}\label{sec:related_work}
 \subsection{Connection with Neural Networks}\label{subsec:training_neural_networks}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons based on the formulation in \cite{rotskoff2018neural}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
  Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
