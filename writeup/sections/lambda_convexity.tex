@@ -5,38 +5,39 @@
 %\subsection{Lambda displacement convexity of the MMD}
 \subsection{Optimization in a ($W_2$) non-convex setting}
 \label{subsection:barrier_optimization}
-One important criterion to characterize the convergence of the Wasserstein gradient flow of a functional $\F$ is the \textit{displacement convexity} of such a functional. The latter states that $t\mapsto \F(\rho_t)$ is a convex function whenever $(\rho_t)_{t\in[0,1]}$ is a path of minimal length from two distributions $\mu$ and $\nu$ (see \cref{def:displacement_convexity}). %The notion of path of minimal length depends on the choice of the metric. 
+The \textit{displacement convexity} of a functional $\F$ is an important criterion in characterizing the convergence of its Wasserstein gradient flow.
+Displacement convexity states that $t\mapsto \F(\rho_t)$ is a convex function whenever $(\rho_t)_{t\in[0,1]}$ is a path of minimal length between two distributions $\mu$ and $\nu$ (see \cref{def:displacement_convexity}). %The notion of path of minimal length depends on the choice of the metric. 
 %Such paths are called  \textit{constant speed displacement geodesics} when additionally their velocity vector has a constant norm. We refer to \cite{Bottou:2017} for a more in-depth discussion.
-Displacement convexity should not be confused with \textit{mixture convexity} which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is mixture convex in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and $\nu,\nu'\in\mathcal{P}_2(\X)$ (see \cref{lem:mixture_convexity}). Unfortunately, \textit{$\F$ is not displacement convex}. Instead, $\F$ only satisfies a weaker notion of displacement convexity called $\Lambda$-displacement convexity, given in \cref{def:lambda-convexity}. 
+Displacement convexity should not be confused with \textit{mixture convexity}, which corresponds to the usual notion of convexity. As a matter of fact, $\F$ is mixture convex in that it satisfies: $\F(t\nu +(1-t)\nu')\leq t\F(\nu)+(1-t)\F(\nu')$ for all $t\in [0,1]$ and $\nu,\nu'\in\mathcal{P}_2(\X)$ (see \cref{lem:mixture_convexity}). Unfortunately, \textit{$\F$ is not displacement convex}. Instead, $\F$ only satisfies a weaker notion of displacement convexity called $\Lambda$-displacement convexity, given in \cref{def:lambda-convexity}. 
 %This implies that the gradient flow of $\F$ might not converge to the optimal solution. 
 %This could happen if for instance \cref{eq:Lojasiewicz_inequality} doesn't hold. 
 %It can be shown, however, that $\F$ is guaranteed to reach some barrier. This is a consequence of the $\Lambda$-displacement convexity of $\F$ which is 
 \begin{proposition}
-	\label{prop:lambda_convexity} Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k,assump:bounded_fourth_oder}, $\F$ is $\Lambda$-displacement convex and satisfies:
+	\label{prop:lambda_convexity} Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k,assump:bounded_fourth_oder}, $\F$ is $\Lambda$-displacement convex, and satisfies
 		\begin{equation}
 	\F(\rho_{t})\leq(1-t)\F(\nu)+t\F(\nu')-\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s
 	\end{equation}
-for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{t\in[0,1]}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{t \in[0,1]}$. The functional $\Lambda$ is defined for any pair $(\rho,v)$ with $\rho\in \mathcal{P}_2(\X)$ and $\Vert v\Vert \in L_2(\rho)$:   
+for all $\nu, \nu'\in \mathcal{P}_2(\X)$ and any \textit{displacement geodesic} $(\rho_t)_{t\in[0,1]}$ from $\nu$ to $\nu'$ with velocity vectors $(v_t)_{t \in[0,1]}$. The functional $\Lambda$ is defined for any pair $(\rho,v)$ with $\rho\in \mathcal{P}_2(\X)$ and $\Vert v\Vert \in L_2(\rho)$,   
 	\begin{align}\label{eq:lambda}
-		\Lambda(\rho,v) = \left\Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \right\Vert^2_{\mathcal{H}} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x) 
+		\Lambda(\rho,v) = \left\Vert \int v(x).\nabla_x k(x,.) \diff \rho(x) \right\Vert^2_{\mathcal{H}} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}  \int \Vert  v(x) \Vert^2 \diff \rho(x),
 	\end{align}
 where $(s,t)\mapsto G(s,t)=  s(1-t) \mathbbm{1}\{s\leq t\}+ t(1-s) \mathbbm{1}\{s\geq t\}$ and $\lambda$ is defined in \cref{assump:bounded_fourth_oder}.%is the one-dimensional Green function
 	\end{proposition}
-\cref{prop:lambda_convexity} can be obtained by computing the second time-derivative of $\F(\rho_t)$ which is then lower-bounded by $\Lambda(\rho_t,v_t)$ (see \cref{proof:prop:lambda_convexity}).
-In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms thus $\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s$ can become negative, hence displacement convexity does not hold in general. However, it is still possible to provide an upper-bound on the asymptotic value of $\F(\nu_n)$ when $(\nu_n)_{n \in \mathbb{N}}$ are obtained using \cref{eq:euler_scheme}. Such upper-bound is given in \cref{th:rates_mmd} and depends on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,v_s^n)(1-s)\diff s$ where $(\rho_s^n)_{s\in[0,1]}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$, with velocity vectors $(v_s^n)_{s \in [0,1]}$ of a constant norm.  
+\cref{prop:lambda_convexity} can be obtained by computing the second time derivative of $\F(\rho_t)$, which is then lower-bounded by $\Lambda(\rho_t,v_t)$ (see \cref{proof:prop:lambda_convexity}).
+In \cref{eq:lambda}, the map $\Lambda$ is a difference of two non-negative terms: thus $\int_0^1 \Lambda(\rho_s, v_s ) G(s,t)\diff s$ can become negative, and displacement convexity does not hold in general. However, it is still possible to provide an upper bound on the asymptotic value of $\F(\nu_n)$ when $(\nu_n)_{n \in \mathbb{N}}$ are obtained using \cref{eq:euler_scheme}. This bound is given in \cref{th:rates_mmd}, and depends on a scalar $ K(\rho^n) :=  \int_0^1\Lambda(\rho_s^n,v_s^n)(1-s)\diff s$, where $(\rho_s^n)_{s\in[0,1]}$ is a \textit{constant speed displacement geodesic} from $\nu_n$ to the optimal value $\mu$, with velocity vectors $(v_s^n)_{s \in [0,1]}$ of  constant norm.  
 \begin{theorem}\label{th:rates_mmd}
 	Let $\bar{K}$ be the average of $(K(\rho^j))_{0\leq j \leq n}$. %\aknote{show that $\bar{K}$ is bounded!!}
-	 Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k,assump:bounded_fourth_oder} and if $\gamma \leq 2/3L$:%, where $L$ is the Lipschitz constant of $\nabla k$, then:
+	 Under \cref{assump:diff_kernel,assump:lipschitz_gradient_k,assump:bounded_fourth_oder} and if $\gamma \leq 2/3L$,%, where $L$ is the Lipschitz constant of $\nabla k$, then:
 \begin{align}
 \F(\nu_n) \leq  \frac{W_2^2(\nu_0,\mu)}{2 \gamma n} -\bar{K}.
 \end{align}
 \end{theorem}
-\cref{th:rates_mmd} is obtained using techniques from optimal transport and optimization. It relies on \cref{prop:lambda_convexity} and \cref{prop:decreasing_functional} to prove an \textit{extended variational inequality} (see \cref{prop:evi}) and concludes using a suitable Lyapunov function. A full proof is given in \cref{proof:th:rates_mmd}.
-When $\bar{K}$ is non-negative, one recovers the usual convergence rate as $O(\frac{1}{n})$ for the gradient descent algorithm. However, $\bar{K}$ can be negative in general and would therefore act as a barrier on the optimal value that $\F(\nu_n)$ can achieve when $n\rightarrow \infty$. In that sense, the above result is similar to \cite[Theorem 6.9]{Bottou:2017}.
+\cref{th:rates_mmd} is obtained using techniques from optimal transport and optimization. It relies on \cref{prop:lambda_convexity} and \cref{prop:decreasing_functional} to prove an \textit{extended variational inequality} (see \cref{prop:evi}), and concludes using a suitable Lyapunov function. A full proof is given in \cref{proof:th:rates_mmd}.
+When $\bar{K}$ is non-negative, one recovers the usual convergence rate as $O(\frac{1}{n})$ for the gradient descent algorithm. However, $\bar{K}$ can be negative in general, and would therefore act as a barrier on the optimal value that $\F(\nu_n)$ can achieve when $n\rightarrow \infty$. In that sense, the above result is similar to \cite[Theorem 6.9]{Bottou:2017}.
 %% AG: I commented this out since Michael has a better discussion earlier
 %Finally, we remark on a claim that  KSD flow converges globally, with no barrier (recall that KSD is related to MMD) \cite[Proposition 3, Appendix B.1]{Mroueh:2019}. This  requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming the algorithm is not in a local minimum, however.\agnote{maybe add  appendix -  not urgent.}
 %
- \cref{th:rates_mmd} only provides a loose bound. In \cref{sec:Lojasiewicz_inequality} we show global convergence, under the boundedness at all times $t$ of a specific distance between $\nu_t$ and $\mu$.
+ \cref{th:rates_mmd} only provides a loose bound, however. In \cref{sec:Lojasiewicz_inequality} we show global convergence, under the boundedness at all times $t$ of a specific distance between $\nu_t$ and $\mu$.
 %However, it will be sufficient to show that the flow of $\F$ can decrease until it reaches a barrier. %The size of the barrier depends on a relaxed notion of convexity called $\Lambda$-displacement convexity:
 
 %It can be shown that $\F$ is $\text{\ensuremath{\Lambda}}$-displacement convex under mild assumptions on the kernel $k$:
