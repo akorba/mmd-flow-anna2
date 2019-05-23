@@ -250,7 +250,7 @@ The r.h.s is shown to be always negative and thus the MMD decreases in time. Hen
 \lambda \langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH} = 0
 \] 
 It is further shown in  \cite[Lemma 2]{Mroueh:2019} that the above equation is also equivalent to having $f_{\mu,\nu^{*}}$ in the null space of $D_{\nu^{*}}$ in the case when $D_{\nu^{*}}$ has finite dimensions. We generalize this statement to infinite dimension in \cref{prop:null_space_diff_operator}. 
-In \cite[Assumption A]{Mroueh:2019}, it is simply assumed that if $f_{\mu,\nu^{*}} \neq0$ then  $f_{\mu,\nu^{*}}\notin D_{\nu^{*}}$ which exactly amounts to assuming that local optima which are not global don't exist.
+In \cite[Assumption A]{Mroueh:2019}, it is simply assumed that if $f_{\mu,\nu^{*}} \neq0$ then  $D_{\nu^{*}} f_{\mu,\nu^{*}} \neq 0 $ which exactly amounts to assuming that local optima which are not global don't exist.
  
 \begin{proposition}\label{prop:null_space_diff_operator}
 	 \[\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH} = 0 \iff f_{\mu,\nu^{*}} \in null(D_{\nu^{*}})
@@ -263,7 +263,7 @@ In \cite[Assumption A]{Mroueh:2019}, it is simply assumed that if $f_{\mu,\nu^{*
  	\]
  	where $e_i$ is an ortho-norrmal basis of $\kH$ and $\lambda_i$ are non-negative. Moreover, $f_{\mu,\nu^{*}}$ can be decomposed in $(e_i)_{1\leq i}$ in the form:
  	\[
- 	f_{\mu,\nu^{*}} = sum_{i=0}^{\infty} \alpha_i e_i
+ 	f_{\mu,\nu^{*}} = \sum_{i=0}^{\infty} \alpha_i e_i
  	\]
  	where $\alpha_i$ is a squared integrable sequence. It follows that $\langle f_{\mu,\nu^{*}}, (\frac{1}{\lambda}I - (D_{\nu^{*}} +\lambda I )^{-1})f_{\mu,\nu{*}} \rangle_{\kH}$ can be written as:
  	\[
@@ -287,7 +287,7 @@ In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\
 \]
 Under such dynamics, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
 \begin{align}\label{eq:birth_death}
-\dot{\F}(\nu_t) = -\beta\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \vert f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\vert^2\diff \nu_t(x) 
+\dot{\F}(\nu_t) = -\beta\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \left | f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\right |^2\diff \nu_t(x) 
 \end{align}
 We would like to apply the same approach as in \cref{sec:Lojasiewicz_inequality} to provide a condition on the convergence of \cref{eq:birth_death}. 
 Hence we first introduce an analogue to the Negative Sobolev distance in \cref{def:neg_sobolev} by duality:
