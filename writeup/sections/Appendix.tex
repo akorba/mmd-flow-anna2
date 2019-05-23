@@ -168,8 +168,116 @@ We can now define the notion of $\Lambda$-convexity:
 \end{definition}
 \cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
 
+\section{Related Work}
+\subsection{Connection with Neural Networks}\label{subsec:training_neural_networks}
+In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons based on the formulation in \cite{rotskoff2018neural}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
+ Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
+\begin{align}\label{eq:regression_network}
+	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim p  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
+\end{align}
+where $(y,z) \sim p$ are samples from the data distribution and the regression function is an average of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
+\begin{align}\label{eq:lifted_regression}
+	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
+\end{align} 
+For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$:
+\cref{prop:inequality_mmd_loss} is shown in \cref{proof:prop:inequality_mmd_loss} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
+The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general.\aknote{not clear to me..} One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the MMD is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture (see \cite{rotskoff2019global})\manote{some references}. In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide\aknote{same, globally we should rewrite this paragraph}. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
+\begin{align}\label{eq:particle_dynamics}
+	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
+\end{align}  
+As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
+\begin{proposition}\label{prop:inequality_mmd_loss}
+	Assuming a global minimizer of \cref{eq:lifted_regression} is achieved by some $\mu\in \mathcal{P}_2(\X)$, the following inequality holds for any $\nu \in \mathcal{P}_2(\X)$:
+	\begin{align}\label{eq:inequality_mmd_nn}
+		\left(\bar{\mathcal{L}}(\mu)^{\frac{1}{2}} + \F^{\frac{1}{2}}(\nu)\right)^2
+		\geq 
+		\bar{\mathcal{L}}(\nu)
+		\geq
+		\mathcal{F}(\nu) + \bar{\mathcal{L}}(\mu)
+	\end{align}
+	where $\F(\nu)$ is defined by \cref{eq:mmd_as_free_energy} with  a kernel $k$  constructed from the data as an expected product of networks:
+\begin{align}\label{eq:kernel_NN}
+	k(x,x') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,x)^T\psi(z,x')]
+\end{align}
+Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
+\end{proposition}
+\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. It is easy to see that $\F(\nu) = \frac{1}{2} \int \Vert \phi(z,\nu) -\phi(z,\mu)  \Vert^2 \diff s(z) $. Indeed expanding the square in the l.h.s and exchanging the order of integrations w.r.t $s$ and $(\mu\otimes \nu)$ one get $\F(\nu)$.
+%	\begin{align*}
+%	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
+%	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+%	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
+%	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+%	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
+%	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
+%	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
+%	\end{align*}
+	Now, introducing $\phi(z,\mu)$ in the expression of $\mathcal{L}(\nu)$, it follows by a simple calculation that:
+\begin{align}\label{eq:main_eq_nn}
+ \mathcal{L}(\nu)&= \mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\end{align}
+where $m(z)$ is the conditional mean of $y$, i.e.: $m(z)=\int y \diff p(y|z)$. On the other hand we have that $2\mathcal{L}(\mu) = var(y) + \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z)$, so that $ \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z) = 2\bar{\mathcal{L}}(\mu)$. Hence, using Cauchy-Schwartz for the last term in \cref{eq:main_eq_nn}, one gets the upper-bound:
+\[
+ \mathcal{L}(\nu)\leq \mathcal{L}(\mu)+ \mathcal{F}(\nu) + 2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
+\]
+which gives an upper-bound on $\bar{\mathcal{L}}(\nu)$ after subtracting $1/2 var(y)$ on both sides of the inequality.
+To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optimality condition of $\mu$ for $\mathcal{L}$ from \cite[Porposition 3.1]{chizat2018global}. Indeed, for any $0<\epsilon\leq 1$ it is easy to see that:
+\[
+\frac{1}{\epsilon}\mathcal{L}(\mu +\epsilon(\nu-\mu))-\mathcal{L}(\mu) = \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\]
+taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
+\end{proof}
 
-\section{Main assumptions on the kernel needed}\label{sec:assumptions_kernel}
+
+\subsection{Lojasiewicz-type inequalities and different metrics}
+
+The Wasserstein gradient flow of $\F$ can be seen as the continuous-time limit of the so called minimizing movement scheme \cite{ambrosio2008gradient}. Such proximal scheme is defined using an initial distribution $\nu_0$, a step-size $\tau$, and an iterative update equation:
+\begin{align}\label{eq:minimizing_movement_scheme}
+	\nu_{n+1} \in \arg \min _{\nu} \F(\nu) + \frac{1}{2\tau} W_2^2(\nu,\nu_n).
+\end{align}
+\cite{ambrosio2008gradient} show that the continuity equation \cref{eq:continuity_mmd} can be obtained as the limit when $\tau \rightarrow 0$ of \cref{eq:minimizing_movement_scheme} using suitable interpolations between the elements $\nu_n$.
+In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\nu,\nu_n)$ is replaced by $W_2^2(\nu,\nu_n) + \alpha KL(\nu\Vert \nu_n)$. It is shown at least formally that such scheme corresponds to a transport equation with a birth-death dynamics:
+\[
+\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t}) + \alpha(f_{\mu,\nu_t} - \int f_{\mu,\nu_t}(x)\diff \nu_t(x) )\nu_t
+\]
+Under such dynamic, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
+\[
+\dot{\F}(\nu_t) = -\int \vert \nabla f_{\mu,\nu_t}\vert^2 \diff \nu_t(x) -\alpha \int \vert f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\vert^2\diff \nu_t(x) 
+\]
+In fact it is possible to consider a suitable energy functional 
+
+
+\subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
+
+
+%	A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is the KL divergence between the target distribution $\mu$ and a current distribution $\nu_t$: $KL(\nu_t\Vert \mu ) =  \int \log (\nu_t(x))\diff \nu_t(x) -\int \log(\mu(x))\diff \nu_t(x)$.\aknote{add that KL=U+V} In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $d X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$ and $W_t$ is a Brownian motion.
+%\begin{remark} \label{rem:KL_Lyapunov}
+
+\textit{Continuity equation and McKean Vlasov process.}	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\nu, \mu \in \mathcal{P}(\X)$ by
+	$KL(\nu,\mu)=\int log(\frac{\nu(x)}{\mu(x)})\nu(x)dx$. Indeed, $KL(\nu, \mu)=\int U(\nu(x))dx + \int V(x) \nu(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \nu}= \nabla \log(\nu) + \nabla V=  \nabla \log(\frac{\nu}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
+	\begin{equation}\label{eq:Fokker-Planck}
+	\frac{\partial{\nu}}{\partial t}= div(\nu \nabla V )+ \Delta \nu
+	\end{equation}
+	where $\Delta$ is the Laplacian operator. It is well-known (see for instance \cite{jordan1998variational}) that the distribution of the Langevin diffusion:
+	\begin{equation}\label{eq:langevin_diffusion}
+	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
+	\end{equation}
+	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}. While the entropy term in the $KL$ functional prevents the particles from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$ defined in \cref{eq:potentials}. Indeed, consider for instance the gaussian kernel $k(x,x')=e^{-\|x-x'\|^2}$. It is convex thus attractive at long distances ($\|x-x'\|>1$) but not at small distances (so repulsive). %\aknote{not very precise yet but i think the interpretation could be interesting}
+	
+\textit{Convergence to a global minimum.} The solution to the Fokker-Planck equation describing the gradient flow of the $KL$ can be shown to converge towards $\mu$ under mild assumptions. This follows from the displacement convexity of the $KL$ along the Wasserstein geodesics. Unfortunately the $MMD^2$ is not displacement convex in general as it is shown in \cref{subsection:barrier_optimization} or \cref{subsec:appendix_lambda_convexity}. This makes the task of proving the convergence of the gradient flow of the $MMD^2$ to the global optimum $\mu$ much harder. Moreover, we show in \cref{sec:Lojasiewicz_inequality} that local minima which are not global exist and that it is rather easy to reach them. Interestingly, it was shown for some free energies \eqref{eq:lyapunov} that when the external potential $V$ is not convex, the diffusion may admit several local minima, i.e. there exists several invariant measures to \eqref{eq:continuity_equation}, under specific assumptions on $V$ (see \cite{herrmann2010non,tugaut2014phase}). Such assumptions do not apply to the confinement potential $V$ \eqref{eq:potentials} here, but the study of invariant measures of $\eqref{eq:continuity_mmd}$ is left for future work.
+
+%\end{remark}
+\textit{Sampling algorithms derived from gradient flows}. Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
+	The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of the Langevin diffusion, seems much more suitable for first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_{\mu, \nu_n}$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient},\cite{li2018gradient},\cite{shi2018spectral}). In contrast, the discretized flow (in time and space) of the $MMD^2$ presented \cref{sec:sample_based} seems naturally adapted to the sample-based setting. Indeed, given samples $(X_{n}^{i})_{1\le i\le N}$ of $\nu_n$ and samples $(Y^m)_{1 \le m \le M}$ of $\mu$, $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily by:
+	\begin{align}
+		 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
+	\end{align}
+	where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. 
+%\end{remark}
+
+
+
+
+\section{Main assumptions}\label{sec:assumptions_kernel}
 
 We state here all the assumptions on the kernel $k$ used to prove all the results:% \aknote{beware of the right use of the constants in the main paper+proofs! Also make the needed lemmas go before the proofs}
 %Then, to show the $\Lambda$-convexity of the functional defined in \cref{sec:gradient_flow} we first make the following assumptions on the kernel:
@@ -382,99 +490,6 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 %	
 %\end{proof}
 %
-
-
-\subsection{Connection with Neural Networks}\label{subsec:training_neural_networks}
-
-%\subsection{Training neural networks as flow of the MMD}
-In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons.
-The MMD was successfully used to train generative networks \cite{Arbel:2018,Binkowski:2018}\manote{cite others}\aknote{Arthur's note: Cramer gan, MMD gan, Zoubin Gan +?}, where it is used as a loss functional between the data distribution and a parametric model distribution.
-Here we consider a different problem which arises naturally from optimizing neural networks using gradient descent. We show that this problem can be lifted to a non-parametric problem with the MMD as a cost function in a similar way as in \cite{rotskoff2018neural}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
- Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
-\begin{align}\label{eq:regression_network}
-	\min_{(x_1,...,x_m )\in \X} \frac{1}{2}\mathbb{E}_{(y,z)\sim p  } \left[ \Big\Vert y - \frac{1}{m}\sum_{i=1}^m\psi(z,x_i) \Big\Vert^2 \right ]
-\end{align}
-where $(y,z) \sim p$ are samples from the data distribution and the regression function is an average of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
-\begin{align}\label{eq:lifted_regression}
-	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
-\end{align} 
-For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$:
-\cref{prop:inequality_mmd_loss} is shown in \cref{proof:prop:inequality_mmd_loss} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
-The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general.\aknote{not clear to me..} One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the MMD is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture (see \cite{rotskoff2019global})\manote{some references}. In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide\aknote{same, globally we should rewrite this paragraph}. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
-\begin{align}\label{eq:particle_dynamics}
-	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
-\end{align}  
-As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
-\begin{proposition}\label{prop:inequality_mmd_loss}
-	Assuming a global minimizer of \cref{eq:lifted_regression} is achieved by some $\mu\in \mathcal{P}_2(\X)$, the following inequality holds for any $\nu \in \mathcal{P}_2(\X)$:
-	\begin{align}\label{eq:inequality_mmd_nn}
-		\left(\bar{\mathcal{L}}(\mu)^{\frac{1}{2}} + \F^{\frac{1}{2}}(\nu)\right)^2
-		\geq 
-		\bar{\mathcal{L}}(\nu)
-		\geq
-		\mathcal{F}(\nu) + \bar{\mathcal{L}}(\mu)
-	\end{align}
-	where $\F(\nu)$ is defined by \cref{eq:mmd_as_free_energy} with  a kernel $k$  constructed from the data as an expected product of networks:
-\begin{align}\label{eq:kernel_NN}
-	k(x,x') = \mathbb{E}_{z\sim \mathbb{P}} [\psi(z,x)^T\psi(z,x')]
-\end{align}
-Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
-\end{proposition}
-\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. It is easy to see that $\F(\nu) = \frac{1}{2} \int \Vert \phi(z,\nu) -\phi(z,\mu)  \Vert^2 \diff s(z) $. Indeed expanding the square in the l.h.s and exchanging the order of integrations w.r.t $s$ and $(\mu\otimes \nu)$ one get $\F(\nu)$.
-%	\begin{align*}
-%	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
-%	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-%	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
-%	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-%	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
-%	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
-%	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
-%	\end{align*}
-	Now, introducing $\phi(z,\mu)$ in the expression of $\mathcal{L}(\nu)$, it follows by a simple calculation that:
-\begin{align}\label{eq:main_eq_nn}
- \mathcal{L}(\nu)&= \mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
-\end{align}
-where $m(z)$ is the conditional mean of $y$, i.e.: $m(z)=\int y \diff p(y|z)$. On the other hand we have that $2\mathcal{L}(\mu) = var(y) + \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z)$, so that $ \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z) = 2\bar{\mathcal{L}}(\mu)$. Hence, using Cauchy-Schwartz for the last term in \cref{eq:main_eq_nn}, one gets the upper-bound:
-\[
- \mathcal{L}(\nu)\leq \mathcal{L}(\mu)+ \mathcal{F}(\nu) + 2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
-\]
-which gives an upper-bound on $\bar{\mathcal{L}}(\nu)$ after subtracting $1/2 var(y)$ on both sides of the inequality.
-To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optimality condition of $\mu$ for $\mathcal{L}$ from \cite[Porposition 3.1]{chizat2018global}. Indeed, for any $0<\epsilon\leq 1$ it is easy to see that:
-\[
-\frac{1}{\epsilon}\mathcal{L}(\mu +\epsilon(\nu-\mu))-\mathcal{L}(\mu) = \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
-\]
-taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
-\end{proof}
-
-\subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
-
-
-%	A different choice for $\F$  leads to a different continuity equation. A celebrated example is the case where $\F$ is the KL divergence between the target distribution $\mu$ and a current distribution $\nu_t$: $KL(\nu_t\Vert \mu ) =  \int \log (\nu_t(x))\diff \nu_t(x) -\int \log(\mu(x))\diff \nu_t(x)$.\aknote{add that KL=U+V} In \cite{jordan1998variational}, it was shown, under mild conditions on $\mu$ and $\nu_0$, that the gradient flow associated to the $KL$ leads to the so-called Fokker-Planck equation: $ \partial_t \nu_t = - div(\nu_t \nabla \log(\mu(x))) + \Delta \nu_t $ with Langevin diffusion as its corresponding process: $d X_t = \nabla \log(\mu(x))\diff t + \sqrt{2} \diff W_t $ with $X_0\sim \nu_0$ and $W_t$ is a Brownian motion.
-%\begin{remark} \label{rem:KL_Lyapunov}
-
-\textit{Continuity equation and McKean Vlasov process.}	A famous example of a free energy \eqref{eq:lyapunov} is the Kullback-Leibler divergence, defined for $\nu, \mu \in \mathcal{P}(\X)$ by
-	$KL(\nu,\mu)=\int log(\frac{\nu(x)}{\mu(x)})\nu(x)dx$. Indeed, $KL(\nu, \mu)=\int U(\nu(x))dx + \int V(x) \nu(x)dx$ with $U(s)=s\log(s)$ the entropy function and $V(x)=-log(\mu(x))$. In this case, $\nabla \frac{\partial \F}{\partial \nu}= \nabla \log(\nu) + \nabla V=  \nabla \log(\frac{\nu}{\mu})$ and equation \eqref{eq:continuity_equation1} leads to the classical Fokker-Planck equation:
-	\begin{equation}\label{eq:Fokker-Planck}
-	\frac{\partial{\nu}}{\partial t}= div(\nu \nabla V )+ \Delta \nu
-	\end{equation}
-	where $\Delta$ is the Laplacian operator. It is well-known (see for instance \cite{jordan1998variational}) that the distribution of the Langevin diffusion:
-	\begin{equation}\label{eq:langevin_diffusion}
-	dX_t= -\nabla \log \mu (X_t)dt+\sqrt{2}dB_t
-	\end{equation}
-	where $(B_t)_{t\ge0}$ is a $d$-dimensional Brownian motion, satisfies \eqref{eq:Fokker-Planck}. While the entropy term in the $KL$ functional prevents the particles from "crashing" onto the mode of $\mu$, this role could be played by the interaction energy $W$ for $MMD^2$ defined in \cref{eq:potentials}. Indeed, consider for instance the gaussian kernel $k(x,x')=e^{-\|x-x'\|^2}$. It is convex thus attractive at long distances ($\|x-x'\|>1$) but not at small distances (so repulsive). %\aknote{not very precise yet but i think the interpretation could be interesting}
-	
-	
-\textit{Convergence to a global minimum.} The solution to the Fokker-Planck equation describing the gradient flow of the $KL$ can be shown to converge towards $\mu$ under mild assumptions. This follows from the displacement convexity of the $KL$ along the Wasserstein geodesics. Unfortunately the $MMD^2$ is not displacement convex in general as it is shown in \cref{subsection:barrier_optimization} or \cref{subsec:appendix_lambda_convexity}. This makes the task of proving the convergence of the gradient flow of the $MMD^2$ to the global optimum $\mu$ much harder. Moreover, we show in \cref{sec:Lojasiewicz_inequality} that local minima which are not global exist and that it is rather easy to reach them. Interestingly, it was shown for some free energies \eqref{eq:lyapunov} that when the external potential $V$ is not convex, the diffusion may admit several local minima, i.e. there exists several invariant measures to \eqref{eq:continuity_equation}, under specific assumptions on $V$ (see \cite{herrmann2010non,tugaut2014phase}). Such assumptions do not apply to the confinement potential $V$ \eqref{eq:potentials} here, but the study of invariant measures of $\eqref{eq:continuity_mmd}$ is left for future work.
-
-%\end{remark}
-\textit{Sampling algorithms derived from gradient flows}. Two settings are usually encountered in the sampling literature: \textit{density-based}, i.e. the target $\mu$ is known up to a constant, or \textit{sample-based}, i.e. we only have access to a set of samples $X \sim \mu$.
-	The Unadjusted Langevin Algorithm (ULA), which involves a time-discretized version of the Langevin diffusion, seems much more suitable for first setting, since it only requires the knowledge of $\nabla \log \mu$, whereas our algorithm requires the knowledge of $\mu$ (since $\nabla f_{\mu, \nu_n}$ involves an integration over $\mu$). However, in the sample-based setting, it may be difficult to adapt the ULA algorithm, since it would require firstly to estimate $\nabla \log(\mu)$ based on a set of samples of $\mu$, before plugging this estimate in the update of the algorithm. This problem, sometimes referred to as \textit{score estimation} in the literature, has been the subject of a lot of work but remains hard especially in high dimensions (see \cite{sutherland2017efficient},\cite{li2018gradient},\cite{shi2018spectral}). In contrast, the discretized flow (in time and space) of the $MMD^2$ presented \cref{sec:sample_based} seems naturally adapted to the sample-based setting. Indeed, given samples $(X_{n}^{i})_{1\le i\le N}$ of $\nu_n$ and samples $(Y^m)_{1 \le m \le M}$ of $\mu$, $\nabla f_{\hat{\mu},\hat{\nu}_n}(.)$ can be evaluated easily by:
-	\begin{align}
-		 \nabla f_{\hat{\mu},\hat{\nu}_n}(z) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,z)-\frac{1}{N}\sum\limits_{j=1}^N \nabla_2 k(X_n^j,z) \qquad \forall z\in\X
-	\end{align}
-	where $\nabla_2 k(x,z)$ denotes the gradient of $k$ w.r.t. $z$. 
-%\end{remark}
-
 
 
 
