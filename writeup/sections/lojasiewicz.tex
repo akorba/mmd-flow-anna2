@@ -10,7 +10,8 @@ According to \cref{prop:decay_mmd}, the absolute value of the time derivative of
 \end{align}	
 with possibly infinite values.
 \end{definition}
-Equation \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport. Indeed, when $q$ is equal to $\nu$, it linearizes the $W_2(p,\nu)$ as $p$ becomes arbitrarily close to $\nu$ \cite{Villani:2009,Otto:2000,Peyre:2011}. It can also be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $q$ (see \cite{mroueh2018regularized}). Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite it is shown in \cref{proof:prop:lojasiewicz}) that:
+Equation \cref{eq:neg_sobolev} plays a fundamental role in dynamic optimal transport. %Indeed, when $q$ is equal to $\nu$, it linearizes the $W_2(p,\nu)$ as $p$ becomes arbitrarily close to $\nu$ \cite{Villani:2009,Otto:2000,Peyre:2011}. 
+It can be seen as the minimum kinetic energy needed to advect the mass $\nu$ to $q$ (see \cite{mroueh2018regularized}). Whenever $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ is finite it is shown in \cref{proof:prop:lojasiewicz}) that:
 \begin{align}\label{eq:inequality_neg_sobolev}
 	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
 \end{align}
@@ -25,7 +26,7 @@ It is then possible to use the general strategy explained earlier to prove the c
 	\mathcal{F}(\nu_t)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4t}
 	\end{align}
 \end{proposition}
-The fact that \cref{eq:neg_sobolev} appears in the context of Wasserstein flows is not a coincidence. Indeed, \cref{eq:neg_sobolev} is a linearization of the Wasserstein distance \cite{Peyre:2011,Otto:2000}. In fact, gradient flows of $\F$ defined under different metrics, would involves other kinds of distances instead of \cref{eq:neg_sobolev}. 
+The fact that \cref{eq:neg_sobolev} appears in the context of Wasserstein flows is not a coincidence. Indeed, \cref{eq:neg_sobolev} is a linearization of the Wasserstein distance (see \cite{Peyre:2011,Otto:2000} and \cref{subsec:wasserstein_flow}). In fact, gradient flows of $\F$ defined under different metrics, would involve other kinds of distances instead of \cref{eq:neg_sobolev}. 
  %\cref{eq:Lojasiewicz_inequality}. 
 For instance, \cite{rotskoff2019global} consider gradient flows under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that the chi-square divergence $\chi^2(\mu\Vert \nu_t)$ remains bounded. As shown in \cref{subsec:Lojasiewicz_different_metrics}, $\chi^2(\mu\Vert \nu_t)^{\frac{1}{2}}$ turns out to linearize $KL(\mu\Vert \nu_t)^{\frac{1}{2}}$ when $\mu$ and $\nu_t$ are close. 
 
