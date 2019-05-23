@@ -6,14 +6,14 @@ Although we know from Prop. \ref{prop:decay_mmd} and Prop. \ref{prop:decreasing_
 it is possible to show that the equilibrium condition \cref{eq:equilibrium_condition} must hold (\cite[Prop. 2]{mei2018mean}
 ),
 \begin{align}\label{eq:equilibrium_condition}
-\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
+\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0.  
 \end{align}
-Condition \cref{eq:equilibrium_condition} does not necessarily imply that $\nu^{*}$ is a global optimum (\cite[Th. 6]{mei2018mean} and \cite{rotskoff2019global}), however. 
-For instance, the claim that KSD flow converges globally,  \cite[Prop. 3, Appendix B.1]{Mroueh:2019} requires an assumption \cite[Assump. A]{Mroueh:2019} that excludes local minima which are not global (see \cref{subsec:equilibrium_condition}; recall  KSD is related to MMD).
+Condition \cref{eq:equilibrium_condition} does not necessarily imply that $\nu^{*}$ is a global optimum, however (\cite[Th. 6]{mei2018mean} and \cite{rotskoff2019global}). 
+For instance, the claim that KSD flow converges globally,  \cite[Prop. 3, Appendix B.1]{Mroueh:2019}, requires an assumption \cite[Assump. A]{Mroueh:2019} that excludes local minima which are not global (see \cref{subsec:equilibrium_condition}; recall  KSD is related to MMD).
 Global convergence of the flow is harder to obtain, and will be the topic of this section. The main challenge is the lack of convexity of $\F$ w.r.t. the Wassertein metric. %In  \cref{subsection:barrier_optimization},
 We show that $\F$ is merely $\Lambda$-convex, and that standard optimization techniques  only provide a loose bound on its asymptotic value.
 %In \cref{sec:Lojasiewicz_inequality},
-We next exploit a Lojasiewicz type inequality to prove the convergence to the global optimum provided that a particular quantity remains bounded at all times. 
+We next exploit a Lojasiewicz type inequality to prove  convergence to the global optimum provided that a particular quantity remains bounded at all times. 
 
 %%AG: sorry to remove section references, trying to save space.
 
