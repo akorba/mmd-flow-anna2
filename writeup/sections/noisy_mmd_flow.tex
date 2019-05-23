@@ -25,7 +25,7 @@ Here, we propose to regularize the flow by injecting noise into the gradient dur
 \begin{align}\label{eq:discretized_noisy_flow}
 	X_{n+1} = X_{n} -\gamma \nabla f_{\mu,\nu_n}(X_n+ \beta_n U_n) \qquad n\geq 0
 \end{align}
-where $U_n$ is a standard gaussian variables and $\beta_n$ is the noise level at $n$. Compared to \cref{eq:euler_scheme}, here the sample is blurred first before evaluating the gradient.
+where $U_n$ is a standard gaussian variable and $\beta_n$ is the noise level at $n$. Compared to \cref{eq:euler_scheme}, here the sample is blurred first before evaluating the gradient.
 Intuitively, if $\nu_n$ approaches a local optimum $\nu^{*}$, $ \nabla f_{\mu,\nu_n}$ would be small on the support of $\nu_n$ but it might be much larger outside of it, hence evaluating $\nabla f_{\mu,\nu_n}$ outside the support of $\nu_n$ might help escaping the local minimum. The stochastic process \cref{eq:discretized_noisy_flow} is different from adding a diffusion term to \cref{eq:continuity_mmd}. Indeed, in the latter case, %the update equation would be:
 %\begin{align}\label{eq:diffusion}
 %	X_{n+1} = X_{n} -\gamma \nabla f_{\mu,\nu_n}(X_n)+ \beta_n U_n \qquad n\geq 0.
@@ -54,7 +54,7 @@ it would correspond to regularizing $\F$ using an entropic term as in \cite{mei2
 %This is not the case for \cref{eq:discretized_noisy_flow} where the global optimum of $\F$ is a fixed point, as it will be shown in this section. 
  %As shown in \manote{add this in the appendix}, \cref{eq:discretized_noisy_flow} is associated to an augmented continuous-time dynamics  which decreases $\F$ under a condition on the noise level $\beta_k$:
 In fact \cref{eq:discretized_noisy_flow} is  closely related to the \textit{continuation methods} \cite{Gulcehre:2016a,Gulcehre:2016,Chaudhari:2017}  and \textit{graduated optimization} \cite{Hazan:2015} used for non-convex optimization in Euclidian spaces, which inject noise \textit{into} the gradient as well at each iteration. %Indeed given a non-convex cost function $F$, the graduated descent would lead to updates of the form: $X_{n+1} = X_n - \gamma \nabla F(X_n+\beta U_n )$. The main difference with \cref{eq:discretized_noisy_flow} is the dependence of $f_{\mu, \nu_n}$ on $\nu_n$ which is inherently due to functional optimization.
-We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy_flow} attains the global minimum of $\F$ provided the level of the noise is well controlled.
+We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy_flow} attains the global minimum of $\F$ provided the level of the noise is well controlled with a proof provided in \cref{proof:thm:convergence_noisy_gradient}.
 %\begin{proposition}\label{thm:convergence_noisy_gradient}
 %	Let $(\nu_n)_{n\geq 0}$ be defined by \cref{eq:discretized_noisy_flow} with an initial $\nu_0$. Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs}, and for a choice of $\beta_n$ such that:
 %	\begin{equation}\label{eq:control_level_noise}
@@ -82,15 +82,14 @@ We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy
 	\F(\nu_n)\leq \F(\nu_0) e^{-4\lambda^2\gamma(1-3\gamma L)\sum_{i=0}^n \beta^2_i}
 	\end{equation}
 \end{proposition}
-
-
-
-\begin{remark}
+A particular case when $\sum_{i=0}^n \beta_i^2 \rightarrow \infty$ holds is when $\beta_n$ decays as $1/\sqrt{n}$ while still having \cref{eq:control_level_noise}. In this case, convergence happens in polynomial time.
+At each iteration, the level of the noise needs to be adjusted such that the gradient is not too much blurred. This ensures that each step decreases the loss functional. However, $\beta_n$ does not need to decrease at each iteration: it could increase adaptively whenever needed, i.e. when  the sequence gets closer to a local optimum, it is helpful to increase the level of the noise to probe the gradient in regions where its value is not flat.
+	Notice that for $\beta_n = 0$  in \cref{eq:decreasing_loss_iterations} , we recover a similar bound as in \cref{prop:decreasing_functional}.
+%\begin{remark}
 	  %This allows the algorithm to use non-local information on the loss landscape by probing the gradient in regions outside of the support of $\nu_k$. Thus this algorithm could potentially escape local optima. 
-	At each iteration, the level of the noise needs to be adjusted such that the gradient is not too much blurred. This ensures that each step would decrease the loss functional. However, $\beta_n$ does not need to decrease at each iteration: it could increase adaptively whenever needed, i.e. when  the sequence gets closer to a local optimum, it is helpful to increase the level of the noise to probe the gradient in regions where its value is not flat.
-	Notice that for $\beta_n = 0$  in \cref{eq:decreasing_loss_iterations} , we recover a similar bound as in \cref{prop:decreasing_functional}. %However, the interesting cases are when $\beta_n>0$.
+	 %However, the interesting cases are when $\beta_n>0$.
 	%The second crucial point, is the dependence of the level of the noise on the value of the loss functional itself in \cref{eq:control_level_noise}. This allows some tolerance for high levels of noise when the loss functional is already small. In fact this precise condition provides a Lojasiewicz type inequality for free, which will then be used in  to provide convergence rates in  \cref{sec:Lojasiewicz_inequality}.
- \end{remark}
+% \end{remark}
 %The natural question is whether \cref{eq:discretized_noisy_flow} converges towards to global optimum of $\F$. The answer will depend on how much noise is allowed to be injected while still decreasing $\F$. The higher the $\beta_n$ is, the faster it will converge. This is made more precise in \cref{thm:convergence_noisy_gradient}: 
  %\begin{theorem}\label{thm:convergence_noisy_gradient}
  %Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs} and if \cref{eq:control_level_noise} is satisfied for a sequence $(\beta_n)_{n\geq0}$ such that $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ then:
@@ -99,7 +98,6 @@ We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy
  %\end{align}
  %\end{theorem}
 % A proof of \cref{thm:convergence_noisy_gradient} is provided in
-A proof of \cref{thm:convergence_noisy_gradient} is provided in \cref{proof:thm:convergence_noisy_gradient} and relies on \cref{eq:control_level_noise} to get a Lojasiewicz inequality which then controls the decay of $\F(\nu_n)$. A particular case when $\sum_{i=0}^n \beta_i^2 \rightarrow \infty$ holds is when $\beta_n$ decays as $1/\sqrt{n}$ while still having \cref{eq:control_level_noise}. In this case, one gets polynomial convergence.
 In \cref{sec:sample_based} we provide a practical algorithm for \cref{eq:discretized_noisy_flow} which involves a discretization in space.
  
  
