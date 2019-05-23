@@ -287,7 +287,7 @@ The MMD is an integral probability metric defined for a reproducing kernel Hilbe
 
 \fi
 
-
+\iffalse
 \begin{abstract}
   In this work, we construct a Wasserstein gradient flow of the maximum mean discrepancy (MMD) and study its convergence properties.
   The MMD is an integral probability metric defined for a reproducing kernel Hilbert space (RKHS), and serves as a metric on probability measures for a sufficiently rich RKHS. The practical implementation of the flow is straightforward, since both the MMD and its gradient have simple closed-form expressions.Moreover, it can be easily estimated with samples. We exhibit conditions for convergence of the gradient flow towards a global optimum, that can be related to particle transport when optimizing neural networks.
@@ -295,6 +295,17 @@ The MMD is an integral probability metric defined for a reproducing kernel Hilbe
   We also propose a way to regularize the MMD flow, based on an injection of noise in the gradient. This simple algorithmic fix comes with theoretical and empirical evidence.
 \end{abstract}
 
+\fi
+
+\begin{abstract}
+  We construct a Wasserstein gradient flow of the maximum mean discrepancy (MMD) and study its convergence properties.
+  The MMD is an integral probability metric defined for a reproducing kernel Hilbert space (RKHS), and serves as a metric on probability measures for a sufficiently rich RKHS.  We obtain conditions for convergence of the gradient flow towards a global optimum, that can be related to particle transport when optimizing neural networks.
+  %The proposed algorithm is based on a space-time discretization of the theoretical gradient flow of the MMD, and aims at finding a  distribution of particles that is as  close as possible to a target distribution, where the target may itself be represented by a sample.
+  We also propose a way to regularize this MMD flow, based on an injection of noise in the gradient. This algorithmic fix comes with theoretical and empirical evidence.
+The practical implementation of the flow is straightforward, since both the MMD and its gradient have simple closed-form expressions, which can be easily estimated with samples.
+  
+  
+\end{abstract}
 
 \input{sections/Introduction}
 
