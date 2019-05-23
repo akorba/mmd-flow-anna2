@@ -240,10 +240,14 @@ In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\
 \partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t}) + \alpha(f_{\mu,\nu_t} - \int f_{\mu,\nu_t}(x)\diff \nu_t(x) )\nu_t
 \]
 Under such dynamic, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
-\[
-\dot{\F}(\nu_t) = -\int \vert \nabla f_{\mu,\nu_t}\vert^2 \diff \nu_t(x) -\alpha \int \vert f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\vert^2\diff \nu_t(x) 
-\]
-In fact it is possible to consider a suitable energy functional 
+\begin{align}\label{eq:birth_death}
+\dot{\F}(\nu_t) = -\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \vert f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\vert^2\diff \nu_t(x) 
+\end{align}
+We would like to apply the same approach as in \cref{sec:Lojasiewicz_inequality} to provide a condition on the convergence of \cref{eq:birth_death}. We propose to first compute a linearization of the divergence $D_{\alpha}(\nu,\nu') =W_2^2(\nu,\nu') + \alpha KL(\nu\Vert \nu')$. As seen in \cref{sec:Lojasiewicz_inequality}, the Negative Sobolev distance linearizes $W_2(\nu,\nu')$. We only need to provide a linearization to $KL(\nu\Vert \nu()^{\frac{1}{2}}$. For $0<\epsilon\leq 1$ and $\nu$ absolutely continuous w.r.t to $\nu'$:
+\begin{align}
+	\frac{1}{\epsilon}(KL(\nu \Vert (\nu'+\epsilon ) )^{\frac{1}{2}} - KL(\nu \Vert )^{\frac{1}{2}})
+\end{align}
+By duality, one can introduce a divergence which  
 
 
 \subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
