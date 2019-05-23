@@ -210,7 +210,7 @@ From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for
 %\section{Discretized Gradient flow of the MMD}
 \subsection{Euler scheme}
 %The continuous-time gradient flow introduced in \cref{eq:continuity_mmd} allows to formally consider the notion of gradient descent on $\mathcal{P}_2(\X)$ with $\F$ as a cost function. 
-We consider here a forward-Euler scheme of \cref{eq:continuity_mmd}. For any $T: \X \rightarrow \X$ a measurable map, and $\nu \in \mathcal{P}_2(\X)$, we denote the pushforward measure by $T_{\#}\nu$ (see \cref{subsec:wasserstein_flow}). Starting from an initial $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, it is possible to construct a sequence $\nu_n\in \mathcal{P}_2(\X)$ by iteratively applying:
+We consider here a forward-Euler scheme of \cref{eq:continuity_mmd}. For any $T: \X \rightarrow \X$ a measurable map, and $\nu \in \mathcal{P}_2(\X)$, we denote the pushforward measure by $T_{\#}\nu$ (see \cref{subsec:wasserstein_flow}). Starting from $\nu_0\in \mathcal{P}_2(\X)$ and using a step-size $\gamma>0$, a sequence $\nu_n\in \mathcal{P}_2(\X)$ is given by iteratively applying:
 \begin{align}\label{eq:euler_scheme}
 	\nu_{n+1} = (I - \gamma \nabla f_{\mu,\nu_n})_{\#}\nu_n
 \end{align} 
