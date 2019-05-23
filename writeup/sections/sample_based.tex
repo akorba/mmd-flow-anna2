@@ -6,7 +6,7 @@
 We now provide a practical algorithm to implement % \cref{eq:discretized_noisy_flow},
 the noisy updates in the previous section,
 which employs a discretization in space.
-The update \eqref{eq:discretized_noisy_flow} involves computing expectations of the gradient of the kernel $k$ w.r.t the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$. This suggests a simple approximate scheme, based on samples from these two distributions, where % we adopt the common approach %(sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) 
+The update \cref{eq:discretized_noisy_flow} involves computing expectations of the gradient of the kernel $k$ w.r.t the target distribution $\mu$ and the current distribution $\nu_n$ at each iteration $n$. This suggests a simple approximate scheme, based on samples from these two distributions, where % we adopt the common approach %(sometimes referred to as \textit{mean-field interaction} in mathematical physics and stochastic analysis) 
 %which,
 at each iteration $n$, we model a system of $N$ interacting particles $(X_n^i)_{1\leq i\leq N}$  and their empirical distribution in order to approximate $\nu_n$. 
 More precisely, given i.i.d. samples $(X^i_0)_{1\leq i\leq N}$ and $(Y^{m})_{1\leq m\leq M}$ from $\nu_0$ and $\mu$ and a step-size $\gamma$, the approximate scheme iteratively updates the $i$-th particle as
@@ -31,7 +31,7 @@ The approximation scheme in \cref{eq:euler_maruyama} is a particle version of \c
 %Where $M(\gamma k)$ is a constant that only depends on $\gamma n$ and the choice of the kernel $k$.
 %\end{theorem}
 \begin{theorem}\label{prop:convergence_euler_maruyama}
- Let $n\ge 0$ and $T>0$. Let $\nu_n$ and $\hat{\nu}_n$ defined by \eqref{eq:euler_scheme} and \eqref{eq:euler_maruyama} respectively. Suppose \cref{assump:lipschitz_gradient_k} holds and that $\beta_n<B$ for all $n$, for some $B>0$. Then for any $\frac{T}{\gamma}\geq n$:
+ Let $n\ge 0$ and $T>0$. Let $\nu_n$ and $\hat{\nu}_n$ defined by \cref{eq:euler_scheme} and \cref{eq:euler_maruyama} respectively. Suppose \cref{assump:lipschitz_gradient_k} holds and that $\beta_n<B$ for all $n$, for some $B>0$. Then for any $\frac{T}{\gamma}\geq n$:
 \[
 \mathbb{E}[W_{2}(\hat{\nu}_{n},\nu_{n})]\leq \frac{1}{4}\left(\frac{1}{\sqrt{N}}(B+var(\nu_{0})^{\frac{1}{2}})e^{2LT}+\frac{1}{\sqrt{M}}var(\mu)^{\frac{1}{2}})\right)(e^{4LT}-1)
 \]
