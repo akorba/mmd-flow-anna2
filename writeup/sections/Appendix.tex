@@ -1,6 +1,6 @@
 
 
-This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} is dedicated to the continuous time gradient flow of the MMD: proofs of \cref{sec:appendix_gradient_flow} as well as additional discussions (on the link with the optimization of neural networks or with the Kullback-Leibler gradient flow w.r.t. $W_2$). \cref{sec:appendix_algorithms} is dedicated to the algorithm proposed in the paper: a pseudocode is provided and proofs of convergence are developed. The proofs of many results rely on some preliminary results which are given \cref{sec:auxiliary_results}.
+This appendix is organized as follows. In \cref{sec:appendix_math_background}, the mathematical background needed for this paper is given and mainly concerns kernel and optimal transport theory. In \cref{sec:related_work}, we discuss connexions with other gradient flows in the literature. In \cref{sec:assumptions_kernel}, we state the assumptions on the kernel on which we rely for the proofs. \cref{sec:appendix_gradient_flow} is dedicated to the construction of the gradient flow of the MMD. \cref{sec:appendix_convergence} is dedicated to the proofs of the convergence results provided in \cref{sec:convergence_mmd_flow}. \cref{sec:appendix_algorithms} is dedicated to the modified gradient flow based on noise injection. Proofs of convergence are developed and a pseudocode is provided. The proofs of many results rely on some preliminary results which are given \cref{sec:auxiliary_results}.
 
 
 \section{Mathematical background}\label{sec:appendix_math_background}
@@ -76,11 +76,7 @@ where the infimum is taken  over all couples  $\rho$ and $v$ satisfying  \cref{e
 \end{remark}
 
 
-\paragraph{Linearization of the $W_2$.} Given a probability distribution $\nu$, the \textit{weighted Sobolev semi-norm} is defined for all squared integrable functions $f$ in $L_2(\nu)$ as $ \Vert f \Vert_{\dot{H}(\nu)} = \left(\int \Vert \nabla f(x) \Vert^2 \diff \nu(x) \right)^{\frac{1}{2}}$ with the convention $\Vert f \Vert_{\dot{H}(\nu)} = +\infty$ if $f$ does not have a square integrable gradient. Interestingly, we have that the weighted negative Sobolev norm defined \cref{def:neg_sobolev} linearizes the $W_2$ distance (see \cite{Villani:2009}). Indeed, for any finite signed measure $\chi\in\mathcal{P}_2(\X)$ such that $\nu + \epsilon \chi \in \cP_2(\X)$ for $\epsilon >0$ small enough (see \cite{Villani:2009}), we have:
-\begin{equation}
-W_2(\nu, \nu+ \epsilon \chi) = \epsilon \Vert \chi \Vert_{\dot{H}^{-1}(\nu)}+ o(\epsilon)
-\end{equation}
-
+\paragraph{Linearization of the $W_2$.} Given a probability distribution $\nu$, the \textit{weighted Sobolev semi-norm} is defined for all squared integrable functions $f$ in $L_2(\nu)$ as $ \Vert f \Vert_{\dot{H}(\nu)} = \left(\int \Vert \nabla f(x) \Vert^2 \diff \nu(x) \right)^{\frac{1}{2}}$ with the convention $\Vert f \Vert_{\dot{H}(\nu)} = +\infty$ if $f$ does not have a square integrable gradient. The \textit{Negative weighted Soboelv distance} $ \Vert . \Vert_{\dot{H}^{-1}(\nu)} $ is then defined on distributions as the dual norm of $ \Vert .\Vert_{\dot{H}(\nu)} $. Interestingly, $\Vert . \Vert_{\dot{H}^{-1}(\nu)}$ linearizes the $W_2$ distance (see \cite[Theorem 7.26]{Villani:2003}).
 %\manote{write up a section about linearizing $W_2$ and maybe relate it to other distances}
 
 
@@ -168,7 +164,7 @@ We can now define the notion of $\Lambda$-convexity:
 \end{definition}
 \cref{def:displacement_convexity} is a particular case of \cref{def:lambda-convexity}, where in \cref{eq:semi-convexity} one has $\lambda =0$.
 
-\section{Related Work}
+\section{Related Work}\label{sec:related_work}
 \subsection{Connection with Neural Networks}\label{subsec:training_neural_networks}
 In this sub-section we establish a formal connection between the MMD gradient flow defined in \cref{eq:continuity_mmd} and neural networks optimization in the limit of infinitely many neurons based on the formulation in \cite{rotskoff2018neural}. To remain consistent with the rest of the paper, the parameters of a network will be denoted by $x\in \X$ while the input and outputs will be denoted as $z$ and $y$.
  Given a neural network or any parametric function $(z,x)\mapsto \psi(z,x)$ with parameter $x \in \X $ and input data $z$ we consider the supervised learning problem:
@@ -274,57 +270,6 @@ In \cite[Assumption A]{Mroueh:2019}, it is simply assumed that if $f_{\mu,\nu^{*
 \end{proof}
 
 
-\subsection{Lojasiewicz-type inequalities for $\F$ under different metrics}\label{subsec:Lojasiewicz_different_metrics}
-
-The Wasserstein gradient flow of $\F$ can be seen as the continuous-time limit of the so called minimizing movement scheme \cite{ambrosio2008gradient}. Such proximal scheme is defined using an initial distribution $\nu_0$, a step-size $\tau$, and an iterative update equation:
-\begin{align}\label{eq:minimizing_movement_scheme}
-	\nu_{n+1} \in \arg \min _{\nu} \F(\nu) + \frac{1}{2\tau} W_2^2(\nu,\nu_n).
-\end{align}
-In \cite{ambrosio2008gradient}, it is shown that the continuity equation \cref{eq:continuity_mmd} can be obtained as the limit when $\tau \rightarrow 0$ of \cref{eq:minimizing_movement_scheme} using suitable interpolations between the elements $\nu_n$.
-In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\nu,\nu_n)$ is replaced by $\beta W_2^2(\nu,\nu_n) + \alpha KL(\nu\Vert \nu_n)$ with $\beta=1$. Here, we keep $\beta>0$ for more generality. It is shown at least formally that such scheme corresponds to a transport equation with a birth-death dynamics:
-\[
-\partial_t \nu_t = \beta div(\nu_t \nabla f_{\mu,\nu_t}) + \alpha(f_{\mu,\nu_t} - \int f_{\mu,\nu_t}(x)\diff \nu_t(x) )\nu_t
-\]
-Under such dynamics, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
-\begin{align}\label{eq:birth_death}
-\dot{\F}(\nu_t) = -\beta\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \left | f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\right |^2\diff \nu_t(x) 
-\end{align}
-We would like to apply the same approach as in \cref{sec:Lojasiewicz_inequality} to provide a condition on the convergence of \cref{eq:birth_death}. 
-Hence we first introduce an analogue to the Negative Sobolev distance in \cref{def:neg_sobolev} by duality:
-\begin{align}
-	D_{\nu}(p,q) =\sup_{\substack{g\in L_2(\nu)\\ \beta \Vert \nabla g \Vert^2_{L_2(\nu)} +\alpha  \Vert g- \bar{g}  \Vert^2_{L_2(\nu)}  \leq 1 }} \vert \int g(x)\diff p(x) - \int g(x) \diff q(x)\vert 
-\end{align}
-where $\bar{g}$ is simply the expectation of $g$ under $\nu$.
-Such quantity defines a distance, since it is the dual of a semi-norm. Now using the particular structure of the MMD, we recall that $f_{\mu,\nu}\in L_2(\nu)$ and that $\beta \Vert \nabla f \Vert^2_{L_2(\nu)} +\alpha  \Vert f- \bar{f}  \Vert^2_{L_2(\nu)}<\infty$. Hence for a particular $g$ of the form:
-\[
-g = \frac{f_{\mu,\nu}}{(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} +\alpha  \Vert f_{\mu,\nu}- \bar{f}_{\mu,\nu}  \Vert^2_{L_2(\nu)} )^\frac{1}{2}}
-\]
-the following inequality holds:
-\[
-D_{\nu}(\mu,\nu) \geq \frac{\vert \int f_{\mu,\nu} \diff \nu(x) -   \int f_{\mu,\nu} \diff\mu(x)\vert }{(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} +\alpha  \Vert f_{\mu,\nu}- \bar{f}_{\mu,\nu}  \Vert^2_{L_2(\nu)})^{\frac{1}{2}} }.
-\]
-But since $f_{\mu,\nu}$ is the witness function between $\mu$ and $\nu$ we have that $2\F(\nu) = \vert \int f_{\mu,\nu} \diff \nu(x) - \int f_{\mu,\nu} \diff \mu(x)\vert $. Hence one can write that:
-\begin{align}
-	D^2_{\nu}(\mu,\nu)(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} ) \geq 4\F^2(\nu)
-\end{align}
-Now provided that $D^2_{\nu}(\mu,\nu_t)$ remains bounded at all time $t$ by some constant $C>0$ one can easily deduce a rate of convergence for $\F(\nu_t)$ just as in \cref{prop:lojasiewicz}. In fact, in the case when $\beta = 1$ and $\alpha =0$ one recovers \cref{prop:lojasiewicz}. Another interesting case is when $\beta =0$ and $\alpha=1$. In this case, $D_{\nu}(p,q)$ is defined for $p$ and $q$ such that the difference $p-q$ is absolutely continuous w.r.t. $\nu$. Moreover, $D_{\nu}(p,q)$ has the simple expression:
-\[
-D_{\nu}(p,q) = \int (\frac{p-q }{\nu }(x))^2 \diff \nu(x)
-\] 
-where $\frac{ p-q }{ \nu }$ denotes the radon nikodym density of $p-q$ w.r.t. 
-$\nu$. More importantly, $D^2_{\nu}(\mu,\nu)$ is exactly equal to $\chi^2(\mu\Vert \nu)^{\frac{1}{2}}$. 
-As we will show now, $(\chi^2)^{\frac{1}{2}}$ turns out to be a linearization of $\sqrt{2} KL^{\frac{1}{2}}$.
-For $0<\epsilon< 1$ and $\mu$ absolutely continuous w.r.t to $\nu$ set $G(\epsilon) = KL(\nu \Vert (\nu+\epsilon(\mu-\nu) )$. Exchanging the derivatives and the integral, $\dot{G}(\epsilon)$ and $\ddot{G}(\epsilon)$ are both given by:
-\begin{align*}
-	\dot{G}(\epsilon) = -\int \frac{\mu-\nu}{\nu +\epsilon(\mu-\nu)}\diff \nu\\
-	\ddot{G}(\epsilon) = \int \frac{(\nu-\mu)^2}{(\nu+\epsilon(\mu-\nu))^2} \diff \nu
-\end{align*}
-Hence, we have for $\epsilon=0$:  $\dot{G}(0) = 0$ and $\ddot{G}(0) = \chi^2(\mu\Vert \nu)$. Therefore, using a Taylor expansion of the second order in $\epsilon$ it follows:
-$G(\epsilon) =\frac{1}{2} \chi^2(\mu\Vert \nu) \epsilon^2 + o(\epsilon^2)$, which means that  
-\begin{align}
-	\lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon}(2KL(\nu' \Vert (\nu'+\epsilon(\nu-\nu') ) )^{\frac{1}{2}}   = \chi^2(\nu\Vert \nu')^\frac{1}{2}.
-\end{align}
-Whereas the Negative Sobolev Distance is  a linearization of $W_2$ and its boundedness alongs the Wasserstein flow of $\F$ guarantees convergence towards the global optimum.  The square-root of the $\chi^2$ divergence is  a linearization of $KL^{\frac{1}{2}}$ and its boundedness along the birth-death dynamics of $\F$ also guarantees convergence towards the global optimum.  
 
 \subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
 
@@ -420,7 +365,7 @@ Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
 
 \begin{proof}[Proof of \cref{prop:decay_mmd}]\label{proof:prop:decay_mmd}[Decay of the MMD]
-By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$. Finally, since, $\F$ is $-3L$-convex by \cref{lem:lambda_convexity_bis} it follows by the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient}  that for all $0\leq s\leq t$:
+By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$. Finally, since, $\F$ is $3L$-convex by \cref{lem:lambda_convexity_bis} it follows by the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient}  that for all $0\leq s\leq t$:
 \[
 \int_s^t \int \Vert \nabla f_{\mu,\nu_u}(x) \Vert^2\diff \nu_u(x)\diff u = \F(\nu_s)-\F(\nu_t).
 \]
@@ -940,44 +885,62 @@ $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1
 %\]
 
 
+\subsection{Lojasiewicz-type inequalities for $\F$ under different metrics}\label{subsec:Lojasiewicz_different_metrics}
 
+The Wasserstein gradient flow of $\F$ can be seen as the continuous-time limit of the so called minimizing movement scheme \cite{ambrosio2008gradient}. Such proximal scheme is defined using an initial distribution $\nu_0$, a step-size $\tau$, and an iterative update equation:
+\begin{align}\label{eq:minimizing_movement_scheme}
+	\nu_{n+1} \in \arg \min _{\nu} \F(\nu) + \frac{1}{2\tau} W_2^2(\nu,\nu_n).
+\end{align}
+In \cite{ambrosio2008gradient}, it is shown that the continuity equation \cref{eq:continuity_mmd} can be obtained as the limit when $\tau \rightarrow 0$ of \cref{eq:minimizing_movement_scheme} using suitable interpolations between the elements $\nu_n$.
+In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\nu,\nu_n)$ is replaced by $\beta W_2^2(\nu,\nu_n) + \alpha KL(\nu\Vert \nu_n)$ with $\beta=1$. Here, we keep $\beta>0$ for more generality. It is shown at least formally that such scheme corresponds to a transport equation with a birth-death dynamics:
+\[
+\partial_t \nu_t = \beta div(\nu_t \nabla f_{\mu,\nu_t}) + \alpha(f_{\mu,\nu_t} - \int f_{\mu,\nu_t}(x)\diff \nu_t(x) )\nu_t
+\]
+Under such dynamics, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
+\begin{align}\label{eq:birth_death}
+\dot{\F}(\nu_t) = -\beta\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \left | f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\right |^2\diff \nu_t(x) 
+\end{align}
+We would like to apply the same approach as in \cref{sec:Lojasiewicz_inequality} to provide a condition on the convergence of \cref{eq:birth_death}. 
+Hence we first introduce an analogue to the Negative Sobolev distance in \cref{def:neg_sobolev} by duality:
+\begin{align}
+	D_{\nu}(p,q) =\sup_{\substack{g\in L_2(\nu)\\ \beta \Vert \nabla g \Vert^2_{L_2(\nu)} +\alpha  \Vert g- \bar{g}  \Vert^2_{L_2(\nu)}  \leq 1 }} \vert \int g(x)\diff p(x) - \int g(x) \diff q(x)\vert 
+\end{align}
+where $\bar{g}$ is simply the expectation of $g$ under $\nu$.
+Such quantity defines a distance, since it is the dual of a semi-norm. Now using the particular structure of the MMD, we recall that $f_{\mu,\nu}\in L_2(\nu)$ and that $\beta \Vert \nabla f \Vert^2_{L_2(\nu)} +\alpha  \Vert f- \bar{f}  \Vert^2_{L_2(\nu)}<\infty$. Hence for a particular $g$ of the form:
+\[
+g = \frac{f_{\mu,\nu}}{(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} +\alpha  \Vert f_{\mu,\nu}- \bar{f}_{\mu,\nu}  \Vert^2_{L_2(\nu)} )^\frac{1}{2}}
+\]
+the following inequality holds:
+\[
+D_{\nu}(\mu,\nu) \geq \frac{\vert \int f_{\mu,\nu} \diff \nu(x) -   \int f_{\mu,\nu} \diff\mu(x)\vert }{(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} +\alpha  \Vert f_{\mu,\nu}- \bar{f}_{\mu,\nu}  \Vert^2_{L_2(\nu)})^{\frac{1}{2}} }.
+\]
+But since $f_{\mu,\nu}$ is the witness function between $\mu$ and $\nu$ we have that $2\F(\nu) = \vert \int f_{\mu,\nu} \diff \nu(x) - \int f_{\mu,\nu} \diff \mu(x)\vert $. Hence one can write that:
+\begin{align}
+	D^2_{\nu}(\mu,\nu)(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} ) \geq 4\F^2(\nu)
+\end{align}
+Now provided that $D^2_{\nu}(\mu,\nu_t)$ remains bounded at all time $t$ by some constant $C>0$ one can easily deduce a rate of convergence for $\F(\nu_t)$ just as in \cref{prop:lojasiewicz}. In fact, in the case when $\beta = 1$ and $\alpha =0$ one recovers \cref{prop:lojasiewicz}. Another interesting case is when $\beta =0$ and $\alpha=1$. In this case, $D_{\nu}(p,q)$ is defined for $p$ and $q$ such that the difference $p-q$ is absolutely continuous w.r.t. $\nu$. Moreover, $D_{\nu}(p,q)$ has the simple expression:
+\[
+D_{\nu}(p,q) = \int (\frac{p-q }{\nu }(x))^2 \diff \nu(x)
+\] 
+where $\frac{ p-q }{ \nu }$ denotes the radon nikodym density of $p-q$ w.r.t. 
+$\nu$. More importantly, $D^2_{\nu}(\mu,\nu)$ is exactly equal to $\chi^2(\mu\Vert \nu)^{\frac{1}{2}}$. 
+As we will show now, $(\chi^2)^{\frac{1}{2}}$ turns out to be a linearization of $\sqrt{2} KL^{\frac{1}{2}}$.
+For $0<\epsilon< 1$ and $\mu$ absolutely continuous w.r.t to $\nu$ set $G(\epsilon) = KL(\nu \Vert (\nu+\epsilon(\mu-\nu) )$. Exchanging the derivatives and the integral, $\dot{G}(\epsilon)$ and $\ddot{G}(\epsilon)$ are both given by:
+\begin{align*}
+	\dot{G}(\epsilon) = -\int \frac{\mu-\nu}{\nu +\epsilon(\mu-\nu)}\diff \nu\\
+	\ddot{G}(\epsilon) = \int \frac{(\nu-\mu)^2}{(\nu+\epsilon(\mu-\nu))^2} \diff \nu
+\end{align*}
+Hence, we have for $\epsilon=0$:  $\dot{G}(0) = 0$ and $\ddot{G}(0) = \chi^2(\mu\Vert \nu)$. Therefore, using a Taylor expansion of the second order in $\epsilon$ it follows:
+$G(\epsilon) =\frac{1}{2} \chi^2(\mu\Vert \nu) \epsilon^2 + o(\epsilon^2)$, which means that  
+\begin{align}
+	\lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon}(2KL(\nu' \Vert (\nu'+\epsilon(\nu-\nu') ) )^{\frac{1}{2}}   = \chi^2(\nu\Vert \nu')^\frac{1}{2}.
+\end{align}
+Whereas the Negative Sobolev Distance is  a linearization of $W_2$ and its boundedness alongs the Wasserstein flow of $\F$ guarantees convergence towards the global optimum.  The square-root of the $\chi^2$ divergence is  a linearization of $KL^{\frac{1}{2}}$ and its boundedness along the birth-death dynamics of $\F$ also guarantees convergence towards the global optimum.  
 
 
 
 
 \section{Algorithms}\label{sec:appendix_algorithms}
-
-\subsection{Pseudocode for the algorithm of \cref{sec:sample_based}}\label{subsec:pseudocode}
-
-\begin{algorithm}
-	\setstretch{1.35}
-	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
-	\begin{algorithmic}[1]
-		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
-		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
-		\Statex \textit{Initialize the particles}
-		\State $X_{0}^{i}\mysim \nu_0$
-		\Statex \textit{Initialize the level of noise}
-		\State $\beta=\beta_0$
-		\For{$n=0,\dots, n_{iter}$}
-		\Statex \textit{Update the level of noise}
-		\State $\beta_n=h(\beta, n)$
-		\Statex \textit{Compute the current empirical distribution of the particles}
-		\State $\widehat{\nu}_N=\frac{1}{N}\sum_{i=1}^N \delta_{X^{i}_n}$
-		\Statex \textit{Compute the current vector field}
-		\State $\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,.)-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,.)$
-		\For{$i=1,\dots,N$}
-		\State $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
-		\EndFor
-		\EndFor
-	\end{algorithmic}
-\end{algorithm}
-
-In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I}\left\{n\le 0.5*n_{iter}\right\}$.
-
-
-
-
 
 
 \subsection{Noisy Gradient flow of the MMD}
@@ -1148,10 +1111,33 @@ The second and last lines are obtained using a triangular inequality while the t
 %\end{proof}
 
 
+\subsection{Pseudocode for the algorithm of \cref{sec:sample_based}}\label{subsec:pseudocode}
 
+\begin{algorithm}
+	\setstretch{1.35}
+	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
+	\begin{algorithmic}[1]
+		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
+		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
+		\Statex \textit{Initialize the particles}
+		\State $X_{0}^{i}\mysim \nu_0$
+		\Statex \textit{Initialize the level of noise}
+		\State $\beta=\beta_0$
+		\For{$n=0,\dots, n_{iter}$}
+		\Statex \textit{Update the level of noise}
+		\State $\beta_n=h(\beta, n)$
+		\Statex \textit{Compute the current empirical distribution of the particles}
+		\State $\widehat{\nu}_N=\frac{1}{N}\sum_{i=1}^N \delta_{X^{i}_n}$
+		\Statex \textit{Compute the current vector field}
+		\State $\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,.)-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,.)$
+		\For{$i=1,\dots,N$}
+		\State $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
+		\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
 
-
-
+In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I}\left\{n\le 0.5*n_{iter}\right\}$.
 
 
 
