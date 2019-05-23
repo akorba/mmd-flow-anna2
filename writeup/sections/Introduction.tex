@@ -66,8 +66,8 @@ the condition is a strong one: it implies that the negative Sobolev distance bet
 %This second condition proves useful however, since it leads to a new and modified gradient flow  based on noise injection (Section \ref{sec:discretized_flow}), with more tractable conditions for convergence.
 We thus propose a way to regularize the MMD flow, based on a noise injection (Section \ref{sec:discretized_flow}) in the gradient, with more tractable theoretical conditions for convergence. Encouragingly, the
 noise injection is shown in practice to ensure convergence in a simple illustrative case where the original MMD flow fails.
-Finally, while our emphasis has been on establishing conditions for convergence, we note that MMD gradient flow has a remarkably simple
-$O((M+N)N)$ implementation for $N$ $\nu$-samples and $M$ $\mu$-samples, and requires only evaluating the gradient of the kernel $k$ on the given samples.
+Finally, while our emphasis has been on establishing conditions for convergence, we note that MMD gradient flow has a  simple
+$O(MN+N^2)$ implementation for $N$ $\nu$-samples and $M$ $\mu$-samples, and requires only evaluating the gradient of the kernel $k$ on the given samples.
 
 
 %% AG: not sure what to do with these two references, or how they fit in with our discussion
