@@ -78,7 +78,7 @@ Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ 
 		\frac{d\F(\nu_t)}{dt}= - \int \Vert \nabla f_{\mu,\nu_t}(x) \Vert^2 \diff \nu_t(x)  
 	\end{align}
 \end{proposition}
-This property results from \cref{eq:continuity_mmd} and the existence of a representation of the flow of \cref{eq:continuity_mmd} as in \cite[Lemma B.4]{chizat2018global} (see \cref{proof:prop:decay_mmd} for a full proof). %Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
+This property results from \cref{eq:continuity_mmd} and the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient} (see \cref{proof:prop:decay_mmd} for a full proof). %Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
 From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. Although the MMD flow in $W_2$ decreases in time, it can very well
 remain stuck in local minima. This can happen for instance when the negative Sobolev norm in \eqref{eq:inequality_neg_sobolev} diverges. One way to see this, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
 %\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
