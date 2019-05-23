@@ -143,7 +143,7 @@ We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is displacement convex
 \end{definition}
 \cref{def:displacement_convexity} can be relaxed to a more general notion of convexity called $\Lambda$-displacement convexity (see \cite[Definition 16.5]{Villani:2009}). We first define an admissible functional $\Lambda$:
 \begin{definition}\label{def:conditions_lambda}[Admissible $\Lambda$ functional]
-	A functional $(\rho,v)\mapsto \Lambda(\rho,v) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and any square integrable vectors field $v\in L_2(\X,\X,\rho)$ is admissible, if it satisfies:
+	A functional $(\rho,v)\mapsto \Lambda(\rho,v) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and $v$ any square integrable vector field in $L_2(\rho)$ is admissible, if it satisfies:
 	\begin{itemize}
 	\item For any $\rho \in \mathcal{P}_2(\X)$,  $v\mapsto \Lambda(\rho,v)$ is a quadratic form on $L_2(\X,\X,\rho)$.
 	\item For any minimizing geodesic $(\rho_t)_{0\leq t\leq 1}$ between two distributions $\nu$ and $\nu'$ with corresponding vector fields $(v_t)_{t \in [0,1]}$ it holds that $\inf_{0\leq t\leq 1}\Lambda(\rho_t,v_t)/\Vert v_t\Vert_{L_{2}(\rho_t)}^{2}>-\infty$ 
@@ -226,13 +226,17 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $\nabla k$.% and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[Existence and uniqueness]
-Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which will be proven \cref{prop:lambda_convexity}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, as stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (\cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \eqref{eq:mcKean_Vlasov_process} is solution of \eqref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which is given by \cref{lem:lambda_convexity_bis}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, as stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (\cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
 \end{proof}
 
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
 
 \begin{proof}[Proof of \cref{prop:decay_mmd}]\label{proof:prop:decay_mmd}[Decay of the MMD]
-By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$, and by \eqref{eq:dissipation_energy} in \cref{subsec:gradient_flows_functionals} we get the time decreasing of $\F$.
+By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$. Finally, since, $\F$ is $-3L$-convex by \cref{lem:lambda_convexity_bis} it follows by the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient}  that for all $0\leq s\leq t$:
+\[
+\int_s^t \int \Vert \nabla f_{\mu,\nu_u}(x) \Vert^2\diff \nu_u(x)\diff u = \F(\nu_s)-\F(\nu_t).
+\]
+The result follows by dividing by $t-s$ and taking the limit when $s$ got to $t$.
 \end{proof}
 
 
@@ -416,39 +420,30 @@ As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \c
 \end{align}
 Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
 \end{proposition}
-\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. Equipped with these notations, by definition of $\F$ \eqref{eq:mmd_as_free_energy} we have:
-	\begin{align*}
-	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
-	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
-	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
-	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
-	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
-	\end{align*}
-	We can thus expand $\mathcal{L}(\nu)$:
-\begin{align*}
- \mathcal{L}(\nu)&=\frac12 \int \Vert y- \phi(z,\nu)\Vert^2 \diff p(y,z)\\
- &=\frac12 \int \Vert y- \phi(z,\mu)\Vert^2\diff p(y,z)+\frac12 \int \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2 \diff s(z)+ \int \ps{y-\phi(z,\mu), y-\phi(z,\nu)}\diff p(y,z)\notag\\
- &=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
-\end{align*}
-where we have denoted $m(z)=\int y \diff p(y|z)$. However since $\mu$ is a global solution of \eqref{eq:lifted_regression}, we have:% (see \cite{chizat2018global}).
-\begin{equation*}
-\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)}\diff s(z)=0\text{ and }\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge0.
-\end{equation*}
-Hence we can lower-bound $\L(\nu)$ by:
-\begin{equation*}
-\mathcal{L}(\nu)=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge \mathcal{L}(\mu)+ \mathcal{F}(\nu)
-\end{equation*}
-which proves the first half of the framing by substracting $var(y)$ on each side of the inequality. Then, we also have by the Cauchy-Schwartz inequality:
-\begin{align*}
-\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)- \phi(z,\nu)}\diff s(z)&\le\int \Vert \phi(z,\mu)-m(z)\Vert^2 \diff s(z)\int \Vert \phi(z,\nu)-\phi(z,\mu)\Vert^2 \diff s(z)\\
-&=2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
-\end{align*}
-which proves the second half of the framing since:
-\begin{align*}
-\bar{\mathcal{L}}(\nu)\le \bar{\mathcal{L}}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)^{\frac12}\le(\bar{\mathcal{L}}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
-\end{align*}
+\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. It is easy to see that $\F(\nu) = \frac{1}{2} \int \Vert \phi(z,\nu) -\phi(z,\mu)  \Vert^2 \diff s(z) $. Indeed expanding the square in the l.h.s and exchanging the order of integrations w.r.t $s$ and $(\mu\otimes \nu)$ one get $\F(\nu)$.
+%	\begin{align*}
+%	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
+%	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+%	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
+%	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+%	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
+%	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
+%	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
+%	\end{align*}
+	Now, introducing $\phi(z,\mu)$ in the expression of $\mathcal{L}(\nu)$, it follows by a simple calculation that:
+\begin{align}\label{eq:main_eq_nn}
+ \mathcal{L}(\nu)&= \mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\end{align}
+where $m(z)$ is the conditional mean of $y$, i.e.: $m(z)=\int y \diff p(y|z)$. On the other hand we have that $2\mathcal{L}(\mu) = var(y) + \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z)$, so that $ \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z) = 2\bar{\mathcal{L}}(\mu)$. Hence, using Cauchy-Schwartz for the last term in \cref{eq:main_eq_nn}, one gets the upper-bound:
+\[
+ \mathcal{L}(\nu)\leq \mathcal{L}(\mu)+ \mathcal{F}(\nu) + 2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
+\]
+which gives an upper-bound on $\bar{\mathcal{L}}(\nu)$ after subtracting $1/2 var(y)$ on both sides of the inequality.
+To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optimality condition of $\mu$ for $\mathcal{L}$ from \cite[Porposition 3.1]{chizat2018global}. Indeed, for any $0<\epsilon\leq 1$ it is easy to see that:
+\[
+\frac{1}{\epsilon}\mathcal{L}(\mu +\epsilon(\nu-\mu))-\mathcal{L}(\mu) = \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\]
+taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
 \end{proof}
 
 \subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
@@ -507,17 +502,35 @@ Recall now that $(\rho_t)_{t \in [0,1]}$ is a constant speed geodesic with veloc
 \[
 \ddot{\F}(\rho_t) \geq\int\left[ v_t^T(x)\nabla_1 \nabla_2 k(x,x')v_t(x')\right]\diff \rho_t(x) - \sqrt{2}\lambda d\F(\rho_t) \int \Vert v_t(x) \Vert^2 \diff \rho_t(x).
 \]
-Now we can introduce the function $\Lambda(\nu,v) = \langle v ,( C_{\nu} -\sqrt{2}\lambda d \F(\nu)^{\frac{1}{2}} I) v \rangle_{L_2(\nu)}$
-which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\nu)$ and where $C_{\nu}$ is a non-negative operator given by  $(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')$ for any $x \in \X$.
+Now we can introduce the function $\Lambda(\rho,v) = \langle v ,( C_{\rho} -\sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}} I) v \rangle_{L_2(\rho)}$
+which is defined for any pair $(\rho,v)$ with  $\rho\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\rho)$ and where $C_{\rho}$ is a non-negative operator given by  $(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')$ for any $x \in \X$.
 This allows to write $\ddot{\F}(\rho_t) \geq \Lambda(\rho_t,v_t)$.
-It is clear that $\Lambda(\nu,.)$  is a quadratic form on $L_2(\nu)$ and satisfies the requirement in \cref{def:conditions_lambda}.
-Finally, using \cref{lem:integral_lambda_convexity} and \cref{def:lambda-convexity} we conclude that $\F$ is $\Lambda$-convex. Moreover, by the reproducing property we also know that for all $\nu \in \mathcal{P}_2(\X)$:
-\[ \mathbb{E}_{\nu}[ v(x)^T \nabla_1 \nabla_2 k(x,x') v(x') ]   = \mathbb{E}_{\nu}[\langle  v(x)^T \nabla_1 k(x,.),  v(x')^T \nabla_1k(x',.) \rangle_{\kH}].
+It is clear that $\Lambda(\rho,.)$  is a quadratic form on $L_2(\rho)$ and satisfies the requirement in \cref{def:conditions_lambda}.
+Finally, using \cref{lem:integral_lambda_convexity} and \cref{def:lambda-convexity} we conclude that $\F$ is $\Lambda$-convex. Moreover, by the reproducing property we also know that for all $\rho \in \mathcal{P}_2(\X)$:
+\[ \mathbb{E}_{\rho}[ v(x)^T \nabla_1 \nabla_2 k(x,x') v(x') ]   = \mathbb{E}_{\rho}[\langle  v(x)^T \nabla_1 k(x,.),  v(x')^T \nabla_1k(x',.) \rangle_{\kH}].
 \] 
-By Bochner integrability of $v(x)^T \nabla_1 k(x,.)$ it is possible to exchange the order of the integral and the inner-product \cite[Theorem 6]{Retherford:1978}. This leads to the expression $\Vert \mathbb{E}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH}$. Hence $\Lambda(\nu,v)$ has a second expression of the form:
+By Bochner integrability of $v(x)^T \nabla_1 k(x,.)$ it is possible to exchange the order of the integral and the inner-product \cite[Theorem 6]{Retherford:1978}. This leads to the expression $\Vert \mathbb{E}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH}$. Hence $\Lambda(\rho,v)$ has a second expression of the form:
 \[
-\Lambda(\nu,v) = \Vert \mathbb{E}_{\nu}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH} - \sqrt{2}\lambda d \F(\nu)^{\frac{1}{2}}\mathbb{E}_{\nu}[\Vert v(x)\Vert^2 ].
+\Lambda(\rho,v) = \Vert \mathbb{E}_{\rho}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}\mathbb{E}_{\rho}[\Vert v(x)\Vert^2 ].
 \]
+\end{proof}
+
+We also provide a result showing $\Lambda$ convexity for $\F$ only under \cref{assump:lipschitz_gradient_k}:
+
+\begin{lemma}[$\Lambda$-discplacement convexity]\label{lem:lambda_convexity_bis}
+	Under \cref{assump:lipschitz_gradient_k}, for any $\nu,\nu'\mathcal{P}_2(\X)$ and any constant speed geodesic $\rho_t$ from $\nu$ to $\nu'$, $\F$ satisfies for all $0\leq t\leq 1$:
+	\[
+	\F(\rho_t) \leq (1-t)\F(\rho_0) + t\F(\rho_1) + 3L W_2^2(\nu,\nu') \qquad 
+	\]
+\end{lemma}
+
+\begin{proof}
+Let $\rho_t$ be a constant speed geodesic of the form $\rho_t = s_t{\#}\pi$ where $\pi$ is an optimal coupling between $\nu$ and $\nu'$ and $s_t(x,y) = x + t(y-x)$.
+Since \cref{assump:lipschitz_gradient_k} holds, one can apply \cref{lem:derivative_mmd_augmented} with $\psi(x,y) =x $, $\phi(x,y)= y-x$ and  $q = \pi$. Hence, one has that $\F(\rho_t)$ is differentiable and its differential satisfies:
+	\[
+	\vert \dot{\F}(\rho_t) - \dot{\F}(\rho_t) \vert  \leq 3L\vert t-s \vert \int \Vert y-x\Vert^2\diff \pi(x,y)   
+	\]
+	This implies that $\dot{\F}(\rho_t)$ is Lipschitz continuous and therefore is differentiable for almost all $t\in [0,1]$ by Rademacher theorem. Moreover $\ddot{\F}(\rho_t)$ satisfies $\ddot{\F}(\rho_t)\geq - 3L \int \Vert y-x\Vert^2\diff \pi(x,y) = -3LW_2^2(\nu,\nu')$ for almost all $t\in [0,1]$. Using \cref{lem:integral_lambda_convexity} it follows directly that $\F$ satisfies the desired inequality.
 \end{proof}
 
 
@@ -1199,7 +1212,6 @@ Using Cauchy-Schwartz and \cref{assump:bounded_fourth_oder} it follows that:
 \]
 One then concludes using the expression of $\ddot{\F}(\rho_t)$ and recalling that $\F(\rho_t) = \frac{1}{2}\Vert f_{\mu,\rho_t} \Vert^2$.
 \end{proof}
-
 
 \begin{lemma}\label{lem:integral_lambda_convexity}
 Assume that for any geodesic $(\rho_{t})_{t\in[0,1]}$ between

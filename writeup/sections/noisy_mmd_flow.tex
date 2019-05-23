@@ -2,16 +2,16 @@
 
 \subsection{A noisy update as a regularization}\label{sec:noisy_flow}
 
-Although the MMD flow in $W_2$ decreases in time, it can very well
- remain stuck in local minima. This can happen for instance when the negative Sobolev norm in \eqref{eq:inequality_neg_sobolev} diverges. One way to see this, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
-%\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
-Indeed $t \mapsto \F(\nu_t)$ is a non-negative decreasing function, it must therefore converge to some limit, which implies in turn that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$
-\footnote{There are cases when $\nu_t$ does not converge to any $\nu^*$. This would happen if the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
-one can show under simple regularity conditions \aknote{which ones?} that the equilibrium condition:
-\begin{align}\label{eq:equilibrium_condition}
-	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
-\end{align}
-must hold. If $\nu^*$ turns out to have a positive density, then $f_{\mu,\nu^{*}}(x)$ would be constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS does not contain constant functions, as for a gaussian kernel. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. \manote{here a figure would be nice}  This suggests that the gradient flow could converge to a suboptimal solution $\nu^*$ for which \cref{eq:equilibrium_condition} is true. 
+%Although the MMD flow in $W_2$ decreases in time, it can very well
+% remain stuck in local minima. This can happen for instance when the negative Sobolev norm in \eqref{eq:inequality_neg_sobolev} diverges. One way to see this, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
+%%\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
+%Indeed $t \mapsto \F(\nu_t)$ is a non-negative decreasing function, it must therefore converge to some limit, which implies in turn that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$
+%\footnote{There are cases when $\nu_t$ does not converge to any $\nu^*$. This would happen if the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
+%one can show under simple regularity conditions \aknote{which ones?} that the equilibrium condition:
+%\begin{align}\label{eq:equilibrium_condition}
+%	\int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
+%\end{align}
+%must hold. If $\nu^*$ turns out to have a positive density, then $f_{\mu,\nu^{*}}(x)$ would be constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS does not contain constant functions, as for a gaussian kernel. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. \manote{here a figure would be nice}  This suggests that the gradient flow could converge to a suboptimal solution $\nu^*$ for which \cref{eq:equilibrium_condition} is true. 
 Since \cref{eq:equilibrium_condition} seems to be the main obstruction to reach global optimality, we propose an approximate gradient descent algorithm, which aims at avoiding local minima by injecting noise \textit{into} the gradient at each iteration:\aknote{abrupt. would be great to have a continuous analog}  
 \begin{align}\label{eq:discretized_noisy_flow}
 	X_{n+1} = X_{n} -\gamma \nabla f_{\mu,\nu_n}(X_n+ \beta_n U_n) \qquad n\geq 0
