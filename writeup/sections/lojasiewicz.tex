@@ -20,18 +20,18 @@ and provided that $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} $ remains bound
 %\end{align} 
 It is then possible to use the general strategy explained earlier to prove the convergence of the flow to a global optimum. This result is given in \cref{prop:lojasiewicz}:
 \begin{proposition}\label{prop:lojasiewicz}
-	Under \cref{assump:lipschitz_gradient_k} and  when $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \leq C$, for all $t\geq 0$. Then:
+	Under \cref{assump:lipschitz_gradient_k} and  when $\Vert \mu - \nu_t \Vert^2_{\dot{H}^{-1}(\nu_t)} \leq C$, for all $t\geq 0$. Then:
 	\begin{align}
 	\mathcal{F}(\nu_t)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4t}
 	\end{align}
 \end{proposition}
-The fact that \cref{eq:neg_sobolev}, which is a linearization of the Wasserstein distance appears in the context of Wasserstein flows is not a coincidence. In fact, other gradient flows of the same functional $\F$ under a different metric, would lead to an inequality similar to the Lojasiewicz inequality obtained for $\F$ in \cref{proof:prop:lojasiewicz}.  %\cref{eq:Lojasiewicz_inequality}. 
-The only difference comes from the different linearization that arises from that choice of metric. For instance, in \cite{rotskoff2019global}, a gradient flow of functionals similar to $\F$ is considered under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that the chi-square divergence $\chi^2(\mu\Vert \nu_t)$ is bounded%, which turns out to approximate $KL(\mu\Vert \nu_t)$ when $\mu$ and $\nu_t$ are close as shown in 
-\manote{add some details in appendix section}.
+The fact that \cref{eq:neg_sobolev} appears in the context of Wasserstein flows is not a coincidence. Indeed, \cref{eq:neg_sobolev} is a linearization of the Wasserstein distance \cite{Peyre:2011,Otto:2000}. In fact, gradient flows of $\F$ defined under different metrics, would involves other kinds of distances instead of \cref{eq:neg_sobolev}. 
+ %\cref{eq:Lojasiewicz_inequality}. 
+For instance, \cite{rotskoff2019global} consider gradient flows under a hybrid metric (a mixture between the Wasserstein distance and KL divergence). Convergence rates can then be obtained provided that the chi-square divergence $\chi^2(\mu\Vert \nu_t)$ remains bounded. As shown in \cref{subsec:Lojasiewicz_different_metrics}, $\chi^2(\mu\Vert \nu_t)^{\frac{1}{2}}$ turns out to linearize $KL(\mu\Vert \nu_t)^{\frac{1}{2}}$ when $\mu$ and $\nu_t$ are close. 
 
 Under similar conditions as in \cref{prop:lojasiewicz}, convergence of $(\nu_n)$ defined in \cref{eq:euler_scheme} can be obtained:
 \begin{proposition}\label{prop:discrete_lojasiewicz}
-	Under \cref{assump:lipschitz_gradient_k} and when $\Vert \mu - \nu_n \Vert_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$. Then:
+	Under \cref{assump:lipschitz_gradient_k} and when $\Vert \mu - \nu_n \Vert^2_{\dot{H}^{-1}(\nu_n)} \leq C$ for all $n\geq 0$. Then:
 	\begin{align}
 	\mathcal{F}(\nu_n)\leq \frac{C}{C\mathcal{F}(\nu_0)^{-1} + 4\gamma(1-\frac{3}{2}\gamma L) n}
 	\end{align}

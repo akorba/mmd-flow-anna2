@@ -228,27 +228,57 @@ taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always 
 \end{proof}
 
 
-\subsection{Lojasiewicz-type inequalities and different metrics}
+\subsection{Lojasiewicz-type inequalities for $\F$ under different metrics}\label{subsec:Lojasiewicz_different_metrics}
 
 The Wasserstein gradient flow of $\F$ can be seen as the continuous-time limit of the so called minimizing movement scheme \cite{ambrosio2008gradient}. Such proximal scheme is defined using an initial distribution $\nu_0$, a step-size $\tau$, and an iterative update equation:
 \begin{align}\label{eq:minimizing_movement_scheme}
 	\nu_{n+1} \in \arg \min _{\nu} \F(\nu) + \frac{1}{2\tau} W_2^2(\nu,\nu_n).
 \end{align}
-\cite{ambrosio2008gradient} show that the continuity equation \cref{eq:continuity_mmd} can be obtained as the limit when $\tau \rightarrow 0$ of \cref{eq:minimizing_movement_scheme} using suitable interpolations between the elements $\nu_n$.
-In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\nu,\nu_n)$ is replaced by $W_2^2(\nu,\nu_n) + \alpha KL(\nu\Vert \nu_n)$. It is shown at least formally that such scheme corresponds to a transport equation with a birth-death dynamics:
+In \cite{ambrosio2008gradient}, it is shown that the continuity equation \cref{eq:continuity_mmd} can be obtained as the limit when $\tau \rightarrow 0$ of \cref{eq:minimizing_movement_scheme} using suitable interpolations between the elements $\nu_n$.
+In \cite{rotskoff2019global}, a different proximal scheme is used where $W_2^2(\nu,\nu_n)$ is replaced by $\beta W_2^2(\nu,\nu_n) + \alpha KL(\nu\Vert \nu_n)$ with $\beta=1$. Here, we keep $\beta>0$ for more generality. It is shown at least formally that such scheme corresponds to a transport equation with a birth-death dynamics:
 \[
-\partial_t \nu_t = div(\nu_t \nabla f_{\mu,\nu_t}) + \alpha(f_{\mu,\nu_t} - \int f_{\mu,\nu_t}(x)\diff \nu_t(x) )\nu_t
+\partial_t \nu_t = \beta div(\nu_t \nabla f_{\mu,\nu_t}) + \alpha(f_{\mu,\nu_t} - \int f_{\mu,\nu_t}(x)\diff \nu_t(x) )\nu_t
 \]
-Under such dynamic, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
+Under such dynamics, \cite[Proposition 3.1]{rotskoff2019global} states that the time evolution of $\F$ can be written as:
 \begin{align}\label{eq:birth_death}
-\dot{\F}(\nu_t) = -\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \vert f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\vert^2\diff \nu_t(x) 
+\dot{\F}(\nu_t) = -\beta\int \Vert \nabla f_{\mu,\nu_t}\Vert^2 \diff \nu_t(x) -\alpha \int \vert f_{\mu,\nu_t}(x)-\int f_{\mu,\nu_t}(x')\diff \nu_t(x')\vert^2\diff \nu_t(x) 
 \end{align}
-We would like to apply the same approach as in \cref{sec:Lojasiewicz_inequality} to provide a condition on the convergence of \cref{eq:birth_death}. We propose to first compute a linearization of the divergence $D_{\alpha}(\nu,\nu') =W_2^2(\nu,\nu') + \alpha KL(\nu\Vert \nu')$. As seen in \cref{sec:Lojasiewicz_inequality}, the Negative Sobolev distance linearizes $W_2(\nu,\nu')$. We only need to provide a linearization to $KL(\nu\Vert \nu()^{\frac{1}{2}}$. For $0<\epsilon\leq 1$ and $\nu$ absolutely continuous w.r.t to $\nu'$:
+We would like to apply the same approach as in \cref{sec:Lojasiewicz_inequality} to provide a condition on the convergence of \cref{eq:birth_death}. 
+Hence we first introduce an analogue to the Negative Sobolev distance in \cref{def:neg_sobolev} by duality:
 \begin{align}
-	\frac{1}{\epsilon}(KL(\nu \Vert (\nu'+\epsilon ) )^{\frac{1}{2}} - KL(\nu \Vert )^{\frac{1}{2}})
+	D_{\nu}(p,q) =\sup_{\substack{g\in L_2(\nu)\\ \beta \Vert \nabla g \Vert^2_{L_2(\nu)} +\alpha  \Vert g- \bar{g}  \Vert^2_{L_2(\nu)}  \leq 1 }} \vert \int g(x)\diff p(x) - \int g(x) \diff q(x)\vert 
 \end{align}
-By duality, one can introduce a divergence which  
-
+where $\bar{g}$ is simply the expectation of $g$ under $\nu$.
+Such quantity defines a distance, since it is the dual of a semi-norm. Now using the particular structure of the MMD, we recall that $f_{\mu,\nu}\in L_2(\nu)$ and that $\beta \Vert \nabla f \Vert^2_{L_2(\nu)} +\alpha  \Vert f- \bar{f}  \Vert^2_{L_2(\nu)}<\infty$. Hence for a particular $g$ of the form:
+\[
+g = \frac{f_{\mu,\nu}}{(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} +\alpha  \Vert f_{\mu,\nu}- \bar{f}_{\mu,\nu}  \Vert^2_{L_2(\nu)} )^\frac{1}{2}}
+\]
+the following inequality holds:
+\[
+D_{\nu}(\mu,\nu) \geq \frac{\vert \int f_{\mu,\nu} \diff \nu(x) -   \int f_{\mu,\nu} \diff\mu(x)\vert }{(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} +\alpha  \Vert f_{\mu,\nu}- \bar{f}_{\mu,\nu}  \Vert^2_{L_2(\nu)})^{\frac{1}{2}} }.
+\]
+But since $f_{\mu,\nu}$ is the witness function between $\mu$ and $\nu$ we have that $2\F(\nu) = \vert \int f_{\mu,\nu} \diff \nu(x) - \int f_{\mu,\nu} \diff \mu(x)\vert $. Hence one can write that:
+\begin{align}
+	D^2_{\nu}(\mu,\nu)(\beta \Vert \nabla f_{\mu,\nu} \Vert^2_{L_2(\nu)} ) \geq 4\F^2(\nu)
+\end{align}
+Now provided that $D^2_{\nu}(\mu,\nu_t)$ remains bounded at all time $t$ by some constant $C>0$ one can easily deduce a rate of convergence for $\F(\nu_t)$ just as in \cref{prop:lojasiewicz}. In fact, in the case when $\beta = 1$ and $\alpha =0$ one recovers \cref{prop:lojasiewicz}. Another interesting case is when $\beta =0$ and $\alpha=1$. In this case, $D_{\nu}(p,q)$ is defined for $p$ and $q$ such that the difference $p-q$ is absolutely continuous w.r.t. $\nu$. Moreover, $D_{\nu}(p,q)$ has the simple expression:
+\[
+D_{\nu}(p,q) = \int (\frac{p-q }{\nu }(x))^2 \diff \nu(x)
+\] 
+where $\frac{ p-q }{ \nu }$ denotes the radon nikodym density of $p-q$ w.r.t. 
+$\nu$. More importantly, $D^2_{\nu}(\mu,\nu)$ is exactly equal to $\chi^2(\mu\Vert \nu)^{\frac{1}{2}}$. 
+As we will show now, $(\chi^2)^{\frac{1}{2}}$ turns out to be a linearization of $\sqrt{2} KL^{\frac{1}{2}}$.
+For $0<\epsilon< 1$ and $\mu$ absolutely continuous w.r.t to $\nu$ set $G(\epsilon) = KL(\nu \Vert (\nu+\epsilon(\mu-\nu) )$. Exchanging the derivatives and the integral, $\dot{G}(\epsilon)$ and $\ddot{G}(\epsilon)$ are both given by:
+\begin{align*}
+	\dot{G}(\epsilon) = -\int \frac{\mu-\nu}{\nu +\epsilon(\mu-\nu)}\diff \nu\\
+	\ddot{G}(\epsilon) = \int \frac{(\nu-\mu)^2}{(\nu+\epsilon(\mu-\nu))^2} \diff \nu
+\end{align*}
+Hence, we have for $\epsilon=0$:  $\dot{G}(0) = 0$ and $\ddot{G}(0) = \chi^2(\mu\Vert \nu)$. Therefore, using a Taylor expansion of the second order in $\epsilon$ it follows:
+$G(\epsilon) =\frac{1}{2} \chi^2(\mu\Vert \nu) \epsilon^2 + o(\epsilon^2)$, which means that  
+\begin{align}
+	\lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon}(2KL(\nu' \Vert (\nu'+\epsilon(\nu-\nu') ) )^{\frac{1}{2}}   = \chi^2(\nu\Vert \nu')^\frac{1}{2}.
+\end{align}
+Whereas the Negative Sobolev Distance is  a linearization of $W_2$ and its boundedness alongs the Wasserstein flow of $\F$ guarantees convergence towards the global optimum.  The square-root of the $\chi^2$ divergence is  a linearization of $KL^{\frac{1}{2}}$ and its boundedness along the birth-death dynamics of $\F$ also guarantees convergence towards the global optimum.  
 
 \subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
 
@@ -781,7 +811,7 @@ We can now give the proof of the \cref{th:rates_mmd}.
 	\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}} \leq \Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)} \Vert  \mu -\nu_t\Vert_{\dot{H}^{-1}(\nu_t)}  
 	\end{equation}
 	where $\Vert f_{\mu,\nu_t} \Vert_{\dot{H}(\nu_t)}=\Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)}$ by definition. Then, 
-	using \cref{prop:decay_mmd} and recalling by assumption that: $\Vert \mu - \nu_t \Vert_{\dot{H}^{-1}(\nu_t)} \le C$, we have:  
+	using \cref{prop:decay_mmd} and recalling by assumption that: $\Vert \mu - \nu_t \Vert^2_{\dot{H}^{-1}(\nu_t)} \le C$, we have:  
 	\begin{align}\label{eq:PL_inequality}
 	\dot{\F}(\nu_t) = - \Vert \nabla f_{\mu, \nu_t} \Vert^2_{L_2(\nu_t)} \leq -\frac{1}{C}\Vert f_{\mu,\nu_t} \Vert^2_{\mathcal{H}}= -\frac{4}{C}\F(\nu_t)^2	
 	\end{align}
