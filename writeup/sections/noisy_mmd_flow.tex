@@ -54,23 +54,36 @@ it would correspond to regularizing $\F$ using an entropic term as in \cite{mei2
 %This is not the case for \cref{eq:discretized_noisy_flow} where the global optimum of $\F$ is a fixed point, as it will be shown in this section. 
  %As shown in \manote{add this in the appendix}, \cref{eq:discretized_noisy_flow} is associated to an augmented continuous-time dynamics  which decreases $\F$ under a condition on the noise level $\beta_k$:
 In fact \cref{eq:discretized_noisy_flow} is  closely related to the \textit{continuation methods} \cite{Gulcehre:2016a,Gulcehre:2016,Chaudhari:2017}  and \textit{graduated optimization} \cite{Hazan:2015} used for non-convex optimization in Euclidian spaces, which inject noise \textit{into} the gradient as well at each iteration. %Indeed given a non-convex cost function $F$, the graduated descent would lead to updates of the form: $X_{n+1} = X_n - \gamma \nabla F(X_n+\beta U_n )$. The main difference with \cref{eq:discretized_noisy_flow} is the dependence of $f_{\mu, \nu_n}$ on $\nu_n$ which is inherently due to functional optimization.
-We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy_flow} attains the global minimum of $\F$ provided the level of the noise is well controlled. %\cref{eq:discretized_noisy_flow} decreases the loss functional at every iteration provided that the level of the noise is well controlled.
+We show in \cref{thm:convergence_noisy_gradient} that \cref{eq:discretized_noisy_flow} attains the global minimum of $\F$ provided the level of the noise is well controlled.
+%\begin{proposition}\label{thm:convergence_noisy_gradient}
+%	Let $(\nu_n)_{n\geq 0}$ be defined by \cref{eq:discretized_noisy_flow} with an initial $\nu_0$. Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs}, and for a choice of $\beta_n$ such that:
+%	\begin{equation}\label{eq:control_level_noise}
+%		8\lambda^2\beta_n^2 \F(\nu_n) \leq \int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff \nu_n(x)\diff u   
+%	\end{equation}
+%	 the following inequality holds:
+%	\begin{equation}\label{eq:decreasing_loss_iterations}
+%		\F(\nu_{n+1}) - \F(\nu_n  ) \leq -\frac{\gamma}{2}(1-3\gamma L)\int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff\nu_n(x) \diff u.
+%	\end{equation}
+%$\lambda$ and $L$ are defined in \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs} and depend only on the choice of the kernel, and $g$ is the density of the standard gaussian distribution. Moreover, if  $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ then:
+%\begin{equation}
+%\F(\nu_n)\leq \F(\nu_0) e^{-4\lambda^2\gamma(1-3\gamma L)\sum_{i=0}^n \beta^2_i}
+%\end{equation}
+%\end{proposition}
 \begin{proposition}\label{thm:convergence_noisy_gradient}
-	Let $(\nu_n)_{n\geq 0}$ be the sequence of distributions defined by \cref{eq:discretized_noisy_flow} with an initial condition $\nu_0$. Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs}, and for a choice of $\beta_n$ such that:
+	Let $(\nu_n)_{n\in \mathbb{N}}$ be defined by \cref{eq:discretized_noisy_flow} with an initial $\nu_0$. Denote $\mathcal{D}_{\beta_n}(\nu_n)=\mathbb{E}_{x\sim \nu_n, u\sim g}[\Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2]$ with $g$ the density of the standard gaussian distribution.	Under \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs}, and for a choice of $\beta_n$ such that:
 	\begin{equation}\label{eq:control_level_noise}
-		8\lambda^2\beta_n^2 \F(\nu_n) \leq \int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff \nu_n(x)\diff u   
+	8\lambda^2\beta_n^2 \F(\nu_n) \leq \mathcal{D}_{\beta_n}(\nu_n),
 	\end{equation}
-	 the following inequality holds:
-	\begin{equation}\label{eq:decreasing_loss_iterations}
-		\F(\nu_{n+1}) - \F(\nu_n  ) \leq -\frac{\gamma}{2}(1-3\gamma L)\int \Vert \nabla f_{\mu,\nu_n}(x+\beta_n u) \Vert^2 g(u) \diff\nu_n(x) \diff u.
+	\begin{flalign}\label{eq:decreasing_loss_iterations}
+\text{The following inequality holds: }\quad\quad	\F(\nu_{n+1}) - \F(\nu_n  ) \leq -\frac{\gamma}{2}(1-3\gamma L)\mathcal{D}_{\beta_n}(\nu_n), &&
+	\end{flalign}
+	where $\lambda$ and $L$ are defined in \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs} and depend only on the choice of the kernel. Moreover, if  $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ then:
+	\begin{equation}
+	\F(\nu_n)\leq \F(\nu_0) e^{-4\lambda^2\gamma(1-3\gamma L)\sum_{i=0}^n \beta^2_i}
 	\end{equation}
-$\lambda$ and $L$ are defined in \cref{assump:lipschitz_gradient_k,assump:Lipschitz_grad_rkhs} and depend only on the choice of the kernel, and $g$ is the density of the standard gaussian distribution. Moreover, if  $\sum_{i=0}^n \beta_i^2 \rightarrow \infty $ then:
-\begin{equation}
-\F(\nu_n)\leq \F(\nu_0) e^{-4\lambda^2\gamma(1-3\gamma L)\sum_{i=0}^n \beta^2_i}
-\end{equation}
-%Thus $\F(\nu_n)\rightarrow 0$ for $\gamma\le 1/3L$.
 \end{proposition}
-%A proof of \cref{prop:decreasing_loss_iterations} is provided in \cref{eq:proof_decreasing_noisy_loss}.
+
+
 
 \begin{remark}
 	  %This allows the algorithm to use non-local information on the loss landscape by probing the gradient in regions outside of the support of $\nu_k$. Thus this algorithm could potentially escape local optima. 
