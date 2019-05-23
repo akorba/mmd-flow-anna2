@@ -232,7 +232,11 @@ Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
 
 \begin{proof}[Proof of \cref{prop:decay_mmd}]\label{proof:prop:decay_mmd}[Decay of the MMD]
-By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$, and by \eqref{eq:dissipation_energy} in \cref{subsec:gradient_flows_functionals} we get the time decreasing of $\F$.
+By \eqref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$. Finally, since, $\F$ is $-3L$-convex by \cref{lem:lambda_convexity_bis} it follows by the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient}  that for all $0\leq s\leq t$:
+\[
+\int_s^t \int \Vert \nabla f_{\mu,\nu_u}(x) \Vert^2\diff \nu_u(x)\diff u = \F(\nu_s)-\F(\nu_t).
+\]
+The result follows by dividing by $t-s$ and taking the limit when $s$ got to $t$.
 \end{proof}
 
 
@@ -416,39 +420,30 @@ As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \c
 \end{align}
 Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
 \end{proposition}
-\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. Equipped with these notations, by definition of $\F$ \eqref{eq:mmd_as_free_energy} we have:
-	\begin{align*}
-	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
-	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
-	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
-	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
-	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
-	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
-	\end{align*}
-	We can thus expand $\mathcal{L}(\nu)$:
-\begin{align*}
- \mathcal{L}(\nu)&=\frac12 \int \Vert y- \phi(z,\nu)\Vert^2 \diff p(y,z)\\
- &=\frac12 \int \Vert y- \phi(z,\mu)\Vert^2\diff p(y,z)+\frac12 \int \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2 \diff s(z)+ \int \ps{y-\phi(z,\mu), y-\phi(z,\nu)}\diff p(y,z)\notag\\
- &=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
-\end{align*}
-where we have denoted $m(z)=\int y \diff p(y|z)$. However since $\mu$ is a global solution of \eqref{eq:lifted_regression}, we have:% (see \cite{chizat2018global}).
-\begin{equation*}
-\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)}\diff s(z)=0\text{ and }\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge0.
-\end{equation*}
-Hence we can lower-bound $\L(\nu)$ by:
-\begin{equation*}
-\mathcal{L}(\nu)=\mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)}\diff s(z)\ge \mathcal{L}(\mu)+ \mathcal{F}(\nu)
-\end{equation*}
-which proves the first half of the framing by substracting $var(y)$ on each side of the inequality. Then, we also have by the Cauchy-Schwartz inequality:
-\begin{align*}
-\int \ps{\phi(z,\mu)-m(z),\phi(z,\mu)- \phi(z,\nu)}\diff s(z)&\le\int \Vert \phi(z,\mu)-m(z)\Vert^2 \diff s(z)\int \Vert \phi(z,\nu)-\phi(z,\mu)\Vert^2 \diff s(z)\\
-&=2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
-\end{align*}
-which proves the second half of the framing since:
-\begin{align*}
-\bar{\mathcal{L}}(\nu)\le \bar{\mathcal{L}}(\mu)+\mathcal{F}(\nu)+2\mathcal{L}(\mu)^{\frac12}\mathcal{F}(\nu)^{\frac12}\le(\bar{\mathcal{L}}(\nu))^{\frac12}+\mathcal{F}(\nu)^{\frac12})^2
-\end{align*}
+\begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. It is easy to see that $\F(\nu) = \frac{1}{2} \int \Vert \phi(z,\nu) -\phi(z,\mu)  \Vert^2 \diff s(z) $. Indeed expanding the square in the l.h.s and exchanging the order of integrations w.r.t $s$ and $(\mu\otimes \nu)$ one get $\F(\nu)$.
+%	\begin{align*}
+%	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
+%	%&=\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+%	%&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{x,x'} \int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\notag\\
+%	 %	&=\frac12  \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\mu(x')+\frac12 \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \nu(x)\diff\nu(x')\\
+%	 %&\phantom{{}=\frac12 \int_{x,x'} k(x,x')\diff} - \int_{z}\int_{x,x'}\psi(z,x)^T\psi(z,x')\diff s(z)\diff \mu(x)\diff\nu(x')\\
+%	 &=\frac12 \int_{z}(\phi(z,\mu)^T \phi(z,\mu) + \phi(z,\nu)^T \phi(z,\nu) -2 \phi(z,\mu)^T \phi(z,\nu))\\
+%	&=\frac12 \int_{z} \Vert \phi(z,\nu)- \phi(z,\mu)\Vert^2\diff s(z)
+%	\end{align*}
+	Now, introducing $\phi(z,\mu)$ in the expression of $\mathcal{L}(\nu)$, it follows by a simple calculation that:
+\begin{align}\label{eq:main_eq_nn}
+ \mathcal{L}(\nu)&= \mathcal{L}(\mu)+ \mathcal{F}(\nu)+ \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\end{align}
+where $m(z)$ is the conditional mean of $y$, i.e.: $m(z)=\int y \diff p(y|z)$. On the other hand we have that $2\mathcal{L}(\mu) = var(y) + \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z)$, so that $ \int \Vert \phi(z,\mu)-m(z)\Vert^2\diff s(z) = 2\bar{\mathcal{L}}(\mu)$. Hence, using Cauchy-Schwartz for the last term in \cref{eq:eq:main_eq_nn}, one gets the upper-bound:
+\[
+ \mathcal{L}(\nu)\leq \mathcal{L}(\mu)+ \mathcal{F}(\nu) + 2 \bar{\mathcal{L}}(\mu)^{\frac12}\mathcal{F(\nu)}^{\frac12}
+\]
+which gives an upper-bound on $\bar{\mathcal{L}}(\nu)$ after subtracting $1/2 var(y)$ on both sides of the inequality.
+To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optimality condition of $\mu$ for $\mathcal{L}$ from \cite[Porposition 3.1]{chizat2018global}. Indeed, for any $0<\epsilon\leq 1$ it is easy to see that:
+\[
+\frac{1}{\epsilon}\mathcal{L}(\mu +\epsilon(\nu-\mu))-\mathcal{L}(\mu) = \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\]
+taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
 \end{proof}
 
 \subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
