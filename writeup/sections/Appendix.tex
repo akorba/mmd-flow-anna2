@@ -213,7 +213,7 @@ where $m(z)$ is the conditional mean of $y$, i.e.: $m(z)=\int y \diff p(y|z)$. O
 which gives an upper-bound on $\bar{\mathcal{L}}(\nu)$ after subtracting $1/2 var(y)$ on both sides of the inequality.
 To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optimality condition of $\mu$ for $\mathcal{L}$ from \cite[Porposition 3.1]{chizat2018global}. Indeed, for any $0<\epsilon\leq 1$ it is easy to see that:
 \[
-\frac{1}{\epsilon}\mathcal{L}(\mu +\epsilon(\nu-\mu))-\mathcal{L}(\mu) = \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
+\lim_{\epsilon \rightarrow 0} \epsilon^{-1}( \mathcal{L}(\mu +\epsilon(\nu-\mu))-\mathcal{L}(\mu)) = \int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)
 \]
 taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
 \end{proof}
