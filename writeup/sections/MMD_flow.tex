@@ -9,7 +9,7 @@ it is possible to show that the equilibrium condition \cref{eq:equilibrium_condi
 \int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
 \end{align}
 Condition \cref{eq:equilibrium_condition} does not necessarily implies that $\nu^{*}$ is a global optimum (\cite[Th. 6]{mei2018mean} and \cite{rotskoff2019global}). 
-We remark on a claim that  KSD flow converges globally, (recall that KSD is related to MMD) \cite[Prop. 3, Appendix B.1]{Mroueh:2019}. This  requires an assumption \cite[Assump. A]{Mroueh:2019} that amounts to assuming that equilibria satisfying \cref{eq:equilibrium_condition} do not exist \aknote{ref to appendix}.\aknote{sentence not correct}
+We remark on a claim that  KSD flow converges globally, (recall that KSD is related to MMD) \cite[Prop. 3, Appendix B.1]{Mroueh:2019}. This  requires an assumption \cite[Assump. A]{Mroueh:2019} that excludes local minima which are not global (see \cref{subsec:equilibrium_condition}).
 Actually, convergence of the flow is harder to obtain and will be discussed at length in this section. The main challenge is the lack of convexity of $\F$ w.r.t. the Wassertein metric. In  \cref{subsection:barrier_optimization}, we show that $\F$ is only $\Lambda$-convex and that standard optimization techniques can only provide a lose bound on its asymptotic value.
 In \cref{sec:Lojasiewicz_inequality}, we exploit a Lojasiewicz type inequality to prove the convergence to the global optimum provided that some quantity remains bounded at all times. 
 
