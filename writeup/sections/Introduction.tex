@@ -39,7 +39,7 @@ Our main contribution in this work is to establish conditions for convergence of
 We give detailed descriptions of  MMD flow in both its continuous-time and discrete versions in \cref{sec:gradient_flow}.
 In particular, the MMD flow may employ a sample approximation for the target $\mu$: unlike e.g. Langevin Monte Carlo,
 it does not require  $\mu$ in analytical form.
-Global convergence is especially challenging to prove: while functionals  that are \textit{displacement convex} can be shown to converge towards a global optimum \cite{Villani:2004}, non-convex functionals, like the MMD,  require different tools to analyze the behavior of their gradient flow.
+Global convergence is especially challenging to prove: while functionals  that are \textit{displacement convex} can be shown to converge towards a global optimum \cite{ambrosio2008gradient}, non-convex functionals, like the MMD,  require different tools to analyze the behavior of their gradient flow.
  A modified gradient flow is proposed in \cite{rotskoff2019global} that uses particle birth and death to reach global optimality.
 Global optimality may also be achieved simply by teleporting particles from $\nu$ to $\mu$, as occurs for the Sobolev Discrepancy absent a kernel regualriser \cite[Theorem 4, Appendix D]{Mroueh:2019}.
 Note that the regularised Kernel Sobolev Discrepancy does not exhibit teleportation, however the global convergence claim of \cite[Proposition 3, Appendix B.1]{Mroueh:2019} requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming that the algorithm is not in a local minimum.\agnote{add a short appendix section.}
