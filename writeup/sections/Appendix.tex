@@ -179,13 +179,8 @@ where $(y,z) \sim p$ are samples from the data distribution and the regression f
 \begin{align}\label{eq:lifted_regression}
 	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
 \end{align} 
-For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$:
-\cref{prop:inequality_mmd_loss} is shown in \cref{proof:prop:inequality_mmd_loss} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
-The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general.\aknote{not clear to me..} One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the MMD is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture (see \cite{rotskoff2019global})\manote{some references}. In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide\aknote{same, globally we should rewrite this paragraph}. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
-\begin{align}\label{eq:particle_dynamics}
-	\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
-\end{align}  
-As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
+For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$.
+%:\cref{prop:inequality_mmd_loss} is shown in \cref{proof:prop:inequality_mmd_loss} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
 \begin{proposition}\label{prop:inequality_mmd_loss}
 	Assuming a global minimizer of \cref{eq:lifted_regression} is achieved by some $\mu\in \mathcal{P}_2(\X)$, the following inequality holds for any $\nu \in \mathcal{P}_2(\X)$:
 	\begin{align}\label{eq:inequality_mmd_nn}
@@ -226,6 +221,11 @@ To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optima
 \]
 taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
 \end{proof}
+The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general. One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the MMD is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture (see \cite{rotskoff2019global}). In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
+\begin{align}\label{eq:particle_dynamics}
+\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
+\end{align}  
+As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. %A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
 
 \subsection{Equilibrium condition}\label{subsec:equilibrium_condition}
 We discuss here the equilibrium condition \cref{eq:equilibrium_condition} and relate it to \cite[Assumption A]{Mroueh:2019}. Recall that \cref{eq:equilibrium_condition} is given by:
@@ -364,8 +364,8 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 \begin{assumplist}
 	\item \label{assump:lipschitz_gradient_k} $k$ is continuously differentiable on $\X$ with $L$-Lipschitz gradient: $\Vert  \nabla k(x,x') - \nabla k(y,y')\Vert \leq L(\Vert  x-y\Vert + \Vert x'-y' \Vert ) $ for all $x,x',y,y' \in \X$.
 	\item \label{assump:diff_kernel} $k$ is twice differentiable on $\X$.
-	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \X$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.\aknote{$H_1(k)$?}
-	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.\aknote{same $\lambda$?}
+	\item \label{assump:bounded_fourth_oder} $\Vert Dk(x,y) \Vert\leq \lambda  $ for all $x,y\in \X$, where $Dk(x,y)$ is an $\mathbb{R}^{d^2}\times \mathbb{R}^{d^2}$ matrix with entries given by $\partial_{x_{i}}\partial_{x_{j}}\partial_{x'_{i}}\partial_{x_{j}'}k(x,y)$.%\aknote{$H_1(k)$?}
+	\item \label{assump:Lipschitz_grad_rkhs} $ \sum_{i=1}^d\Vert  \partial_i k(x,.) - \partial_i k(y,.)\Vert^2_{\kH} \leq \lambda^2 \Vert  x-y\Vert^2 $ for all $x,y\in \X$.%\aknote{same $\lambda$?}
 
 \end{assumplist}
 
@@ -593,7 +593,7 @@ Moreover, \cref{assump:bounded_fourth_oder} also holds which means by \cref{lem:
 \[
 \ddot{\F}(\rho_t) =\mathbb{E}\left[ (y-x)^T\nabla_1 \nabla_2 k(s_t(x,y),s_t(x',y'))(y'-x')\right] - \sqrt{2}\lambda d\F(\rho_t) \mathbb{E}[ \Vert y-x \Vert^2]
 \]
-Recall now that $(\rho_t)_{t \in [0,1]}$ is a constant speed geodesic with velocity vector $(v_t)_{t\in [0,1]}$ thus by a change of variable, one further has:\aknote{I would help with that/detail a bit}
+Recall now that $(\rho_t)_{t \in [0,1]}$ is a constant speed geodesic with velocity vector $(v_t)_{t\in [0,1]}$ thus by a change of variable, one further has:%\aknote{I would help with that/detail a bit}
 \[
 \ddot{\F}(\rho_t) \geq\int\left[ v_t^T(x)\nabla_1 \nabla_2 k(x,x')v_t(x')\right]\diff \rho_t(x) - \sqrt{2}\lambda d\F(\rho_t) \int \Vert v_t(x) \Vert^2 \diff \rho_t(x).
 \]
@@ -632,7 +632,7 @@ Since \cref{assump:lipschitz_gradient_k} holds, one can apply \cref{lem:derivati
 \subsection{Descent up to a barrier}
 
 To provide a proof of \cref{th:rates_mmd}, we need the following preliminary results. Firstly, an upper-bound on a scalar product involving $\nabla f_{\mu, \nu}$ for any $\mu, \nu \in \mathcal{P}_2(\X)$ in terms of the loss functional $\F$, is obtained using the $\Lambda$-displacement convexity $\F$ in \cref{lem:grad_flow_lambda_version}. Then, an EVI (Evolution Variational Inequality) is obtained in \cref{prop:evi} on the gradient flow of $\F$ in $W_2$. The proof of the theorem is given afterwards.
-\aknote{Very important: we have to clarify the boundedness of the $K(\rho_j)$ and $\bar{K}$!}
+%\aknote{Very important: we have to clarify the boundedness of the $K(\rho_j)$ and $\bar{K}$!}
 
 
 \begin{lemma}	\label{lem:grad_flow_lambda_version}
@@ -864,8 +864,8 @@ We can now give the proof of the \cref{th:rates_mmd}.
 	It is clear that if $\mathcal{F}(\nu_0)>0$ then $\F(\nu_t)>0$ at all times by uniqueness of the solution. Hence, one can divide by $\F(\nu_t)^2$ and integrate the inequality from $0$ to some time $t$. The desired inequality is obtained by simple calculations.
 \end{proof}
 
-\begin{proof}[Proof of \cref{prop:discrete_lojasiewicz}]\label{proof:prop:discrete_lojasiewicz}
-Using Proposition~\cref{prop:decreasing_functional} and \cref{eq:PL_inequality} where $\nu_t$ is replaced by $\nu_n$ it follows:
+%\begin{proof}[Proof of \cref{prop:discrete_lojasiewicz}]\label{proof:prop:discrete_lojasiewicz}
+Then, using Proposition~\cref{prop:decreasing_functional} and \cref{eq:PL_inequality} where $\nu_t$ is replaced by $\nu_n$ it follows:
 $$
 \cF(\nu_{n+1}) - \cF(\nu_n) \leq -\gamma\left(1-\frac{3}{2} L\gamma\right)\|\phi_n\|_{L_2(\nu_n)}^2 \leq -\frac{4}{C}\gamma\left(1-\frac{3}{2}\gamma L\right)\cF(\nu_n)^2.
 $$
@@ -873,7 +873,6 @@ Dividing by both sides of the inequality by  $ \F(\nu_n)\F(\nu_{n+1})$ and recal
 $$\frac{1}{\cF(\nu_n)} - \frac{1}{\cF(\nu_{n+1})} \leq -\frac{4}{C}\gamma\left(1-\frac{3}{2}\gamma L\right).$$ The proof is concluded by summing over $n$ and rearranging the terms. 
 \end{proof}
 
-\manote{Add a discussion here about what Bruna does}
 
 
 
@@ -1247,7 +1246,7 @@ Moreover:
 \begin{proof}
 For simplicity, we write $f_t$ instead of $f_{\mu,\rho_t}$ and denote by $s_t(x,u)= \psi(x,u)+t\phi(x,u)$
 The function $h: t\mapsto k(s_t(x,u),s_t(x',u')) - k(s_t(x,u),z) - k(s_t(x',u'),z)$ is differentiable for all $(x,u)$,$(x',u')$ in $\X\times \mathcal{U}$ and $z\in \X$. 
-Moreover, by \cref{assump:lipschitz_gradient_k}, a simple computation shows that for all $0\leq t\leq 1$:\aknote{I would add the computation}
+Moreover, by \cref{assump:lipschitz_gradient_k}, a simple computation shows that for all $0\leq t\leq 1$:%\aknote{I would add the computation}
 \[
 \vert \dot{h} \vert \leq L\left[ (\Vert z - \phi(x,u)\Vert + \Vert \psi(x,u)\Vert) \Vert \phi(x',u')\Vert +  
 (\Vert z - \phi(x',u')\Vert + \Vert \psi(x',u')\Vert )\Vert \phi(x,u)\Vert \right]
