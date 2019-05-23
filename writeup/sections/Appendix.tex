@@ -143,7 +143,7 @@ We say that a functional $\nu\mapsto\mathcal{F}(\nu)$ is displacement convex
 \end{definition}
 \cref{def:displacement_convexity} can be relaxed to a more general notion of convexity called $\Lambda$-displacement convexity (see \cite[Definition 16.5]{Villani:2009}). We first define an admissible functional $\Lambda$:
 \begin{definition}\label{def:conditions_lambda}[Admissible $\Lambda$ functional]
-	A functional $(\rho,v)\mapsto \Lambda(\rho,v) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and any square integrable vectors field $v\in L_2(\X,\X,\rho)$ is admissible, if it satisfies:
+	A functional $(\rho,v)\mapsto \Lambda(\rho,v) \in \R$  defined for any probability distribution $\rho\in \mathcal{P}_2(\X)$ and $v$ any square integrable vector field in $L_2(\rho)$ is admissible, if it satisfies:
 	\begin{itemize}
 	\item For any $\rho \in \mathcal{P}_2(\X)$,  $v\mapsto \Lambda(\rho,v)$ is a quadratic form on $L_2(\X,\X,\rho)$.
 	\item For any minimizing geodesic $(\rho_t)_{0\leq t\leq 1}$ between two distributions $\nu$ and $\nu'$ with corresponding vector fields $(v_t)_{t \in [0,1]}$ it holds that $\inf_{0\leq t\leq 1}\Lambda(\rho_t,v_t)/\Vert v_t\Vert_{L_{2}(\rho_t)}^{2}>-\infty$ 
@@ -502,16 +502,16 @@ Recall now that $(\rho_t)_{t \in [0,1]}$ is a constant speed geodesic with veloc
 \[
 \ddot{\F}(\rho_t) \geq\int\left[ v_t^T(x)\nabla_1 \nabla_2 k(x,x')v_t(x')\right]\diff \rho_t(x) - \sqrt{2}\lambda d\F(\rho_t) \int \Vert v_t(x) \Vert^2 \diff \rho_t(x).
 \]
-Now we can introduce the function $\Lambda(\nu,v) = \langle v ,( C_{\nu} -\sqrt{2}\lambda d \F(\nu)^{\frac{1}{2}} I) v \rangle_{L_2(\nu)}$
-which is defined for any pair $(\nu,v)$ with  $\nu\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\nu)$ and where $C_{\nu}$ is a non-negative operator given by  $(C_{\nu}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\nu(x')$ for any $x \in \X$.
+Now we can introduce the function $\Lambda(\rho,v) = \langle v ,( C_{\rho} -\sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}} I) v \rangle_{L_2(\rho)}$
+which is defined for any pair $(\rho,v)$ with  $\rho\in \mathcal{P}_2(\X)$ and $v$ a square integrable vector field in $L_2(\rho)$ and where $C_{\rho}$ is a non-negative operator given by  $(C_{\rho}v)(x)=\int\nabla_{x}\nabla_{x'}k(x,x')v(x')d\rho(x')$ for any $x \in \X$.
 This allows to write $\ddot{\F}(\rho_t) \geq \Lambda(\rho_t,v_t)$.
-It is clear that $\Lambda(\nu,.)$  is a quadratic form on $L_2(\nu)$ and satisfies the requirement in \cref{def:conditions_lambda}.
-Finally, using \cref{lem:integral_lambda_convexity} and \cref{def:lambda-convexity} we conclude that $\F$ is $\Lambda$-convex. Moreover, by the reproducing property we also know that for all $\nu \in \mathcal{P}_2(\X)$:
-\[ \mathbb{E}_{\nu}[ v(x)^T \nabla_1 \nabla_2 k(x,x') v(x') ]   = \mathbb{E}_{\nu}[\langle  v(x)^T \nabla_1 k(x,.),  v(x')^T \nabla_1k(x',.) \rangle_{\kH}].
+It is clear that $\Lambda(\rho,.)$  is a quadratic form on $L_2(\rho)$ and satisfies the requirement in \cref{def:conditions_lambda}.
+Finally, using \cref{lem:integral_lambda_convexity} and \cref{def:lambda-convexity} we conclude that $\F$ is $\Lambda$-convex. Moreover, by the reproducing property we also know that for all $\rho \in \mathcal{P}_2(\X)$:
+\[ \mathbb{E}_{\rho}[ v(x)^T \nabla_1 \nabla_2 k(x,x') v(x') ]   = \mathbb{E}_{\rho}[\langle  v(x)^T \nabla_1 k(x,.),  v(x')^T \nabla_1k(x',.) \rangle_{\kH}].
 \] 
-By Bochner integrability of $v(x)^T \nabla_1 k(x,.)$ it is possible to exchange the order of the integral and the inner-product \cite[Theorem 6]{Retherford:1978}. This leads to the expression $\Vert \mathbb{E}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH}$. Hence $\Lambda(\nu,v)$ has a second expression of the form:
+By Bochner integrability of $v(x)^T \nabla_1 k(x,.)$ it is possible to exchange the order of the integral and the inner-product \cite[Theorem 6]{Retherford:1978}. This leads to the expression $\Vert \mathbb{E}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH}$. Hence $\Lambda(\rho,v)$ has a second expression of the form:
 \[
-\Lambda(\nu,v) = \Vert \mathbb{E}_{\nu}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH} - \sqrt{2}\lambda d \F(\nu)^{\frac{1}{2}}\mathbb{E}_{\nu}[\Vert v(x)\Vert^2 ].
+\Lambda(\rho,v) = \Vert \mathbb{E}_{\rho}[v(x)^T \nabla_1 k(x,.)]\Vert^2_{\kH} - \sqrt{2}\lambda d \F(\rho)^{\frac{1}{2}}\mathbb{E}_{\rho}[\Vert v(x)\Vert^2 ].
 \]
 \end{proof}
 
