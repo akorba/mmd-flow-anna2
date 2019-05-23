@@ -40,17 +40,18 @@ We give detailed descriptions of  MMD flow in both its continuous-time and discr
 In particular, the MMD flow may employ a sample approximation for the target $\mu$: unlike e.g. Langevin Monte Carlo,
 it does not require  $\mu$ in analytical form.
 Global convergence is especially challenging to prove: while functionals  that are \textit{displacement convex} can be shown to converge towards a global optimum \cite{Villani:2004}, non-convex functionals, like the MMD,  require different tools to analyze the behavior of their gradient flow.
-Moreover, global optimality is not a useful property if the flow is meaningless, for instance requiring infinite velocity: \cite{rotskoff2019global} propose a modified gradient flow that exhibits non-local behavior (particle teleportation) yet reaches global optimality. 
-This teleportation behaviour was also shown for the Sobolev Discrepancy absent a kernel regualriser \cite[Theorem 4, Appendix D]{Mroueh:2019}.
+ A modified gradient flow is proposed in \cite{rotskoff2019global} that uses particle birth and death to reach global optimality.
+Global optimality may also be achieved simply by teleporting particles from $\nu$ to $\mu$, as occurs for the Sobolev Discrepancy absent a kernel regualriser \cite[Theorem 4, Appendix D]{Mroueh:2019}.
 Note that the regularised Kernel Sobolev Discrepancy does not exhibit teleportation, however the global convergence claim of \cite[Proposition 3, Appendix B.1]{Mroueh:2019} requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming that the algorithm is not in a local minimum.\agnote{add a short appendix section.}
 
 %displacement convexity\agnote{can we add appendix ref here?}.
 
 Our approach takes  inspiration in particular from \cite{Bottou:2017}, where it is shown that although the $1$-Wasserstein distance is non-convex, it can be optimized up to some barrier that depends on the diameter of the target distribution.
-Similarly to \cite{Bottou:2017}, we provide in \cref{sec:convergence_mmd_flow} a barrier on the gradient flow of the MMD.
+Similarly to \cite{Bottou:2017}, we provide in \cref{sec:convergence_mmd_flow} a barrier on the gradient flow of the MMD, however
+the tightness of this barrier in terms of the target diameter is not established.
 % a tighter bound remains challenging.
-We further obtain a condition on the evolution of the flow to ensure global optimality, and give rates of convergence in that case, however
-the condition is a strong one: it implies that the Negative Sobolev distance between the target and the current particles remains bounded at all time.
+We  obtain a further condition on the evolution of the flow to ensure global optimality, and give rates of convergence in that case, however
+the condition is a strong one: it implies that the negative Sobolev distance between the target and the current particles remains bounded at all time.
 
 This second  condition proves useful however, since it leads to a new and modified gradient flow based on noise injection (Section \ref{sec:discretized_flow}), with more tractable
 conditions for convergence. Encouragingly, the
