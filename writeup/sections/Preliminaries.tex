@@ -78,19 +78,30 @@ Besides existence and uniqueness of the gradient flow of $\F$, one expects $\F$ 
 		\frac{d\F(\nu_t)}{dt}= - \int \Vert \nabla f_{\mu,\nu_t}(x) \Vert^2 \diff \nu_t(x)  
 	\end{align}
 \end{proposition}
-This property results from \cref{eq:continuity_mmd} and the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient} (see \cref{proof:prop:decay_mmd} for a full proof). %Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
-From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial in the analysis of \cref{sec:Lojasiewicz_inequality} and ensures that $\F(\nu_t)$  converges to some non-negative limit $l$ since it is a lower-bounded and non-increasing function of time. Although the MMD flow in $W_2$ decreases in time, it can very well
-remain stuck in local minima. This can happen for instance when the negative Sobolev norm in \eqref{eq:inequality_neg_sobolev} diverges. One way to see this, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}.
-%\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
-Indeed $t \mapsto \F(\nu_t)$ is a non-negative decreasing function, it must therefore converge to some limit, which implies in turn that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$
-\footnote{There are cases when $\nu_t$ does not converge to any $\nu^*$. This would happen if the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
-one can show under simple regularity conditions \aknote{which ones?} that the equilibrium condition:
+This property results from \cref{eq:continuity_mmd} and the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient} and is proved in \cref{proof:prop:decay_mmd}. %Convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
+From \cref{eq:time_evolution_mmd}, $\F$ can be seen as a Lyapunov functional for the dynamics defined by \cref{eq:continuity_mmd}. This property will be crucial to analyze the convergence towards the global minimum in \cref{sec:Lojasiewicz_inequality}.
+Although $\F(\nu_t)$ decreases in time, it can very well
+remain stuck in local minima. One way to see it, is by looking at the equilibrium condition for \cref{eq:time_evolution_mmd}. Indeed, as a non-negative and non-increasing function, $t \mapsto \F(\nu_t)$  is guaranteed to converge towards a finite non-negative limit $l$, which implies in turn that the r.h.s. of \cref{eq:time_evolution_mmd} converges to $0$. If $\nu_t$ happens to converge towards some distribution $\nu^{*}$\footnote{There are cases when $\nu_t$ does not converge to any $\nu^*$. This would happen if the sequence $(\nu_t)_{t\geq 0}$ is not tight.} 
+it is possible to show that the equilibrium condition condition \cref{eq:equilibrium_condition} must hold (\cite[Proposition 2]{mei2018mean}
+):
 \begin{align}\label{eq:equilibrium_condition}
 \int \Vert \nabla f_{\mu,\nu^{*}}(x)\Vert^2 \diff \nu^{*}(x) =0  
 \end{align}
-must hold. If $\nu^*$ turns out to have a positive density, then $f_{\mu,\nu^{*}}(x)$ would be constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS does not contain constant functions, as for a gaussian kernel. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. In \cite{mroueh2018regularized}, it is assumed that the only distribution $\nu^*$ satisfying the equilibrium condition is equal to $\mu$\aknote{true?}.  However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. This suggests that the gradient flow could converge to a suboptimal solution $\nu^*$ for which \cref{eq:equilibrium_condition} is true. Actually, convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
+\cref{eq:equilibrium_condition} doesn't necessarily implies that $\nu^{*}$ is a global optimum (\cite[Theorem 6]{mei2018mean} and \cite{rotskoff2019global}). 
+We remark on a claim that  KSD flow converges globally, (recall that KSD is related to MMD) \cite[Proposition 3, Appendix B.1]{Mroueh:2019}. This  requires an assumption \cite[Assumption A]{Mroueh:2019} that amounts to assuming that equilibria satisfying \cref{eq:equilibrium_condition} don't exist \manote{ref to appendix}.
+Actually, convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
+Meanwhile, we provide a time discretization of the MMD flow.
+
+%This can happen for instance when the negative Sobolev norm in \eqref{eq:inequality_neg_sobolev} diverges. 
+%\asnote{I think that the same problem happens with the dynamics of SVGD. Because KSD = 0 doesn't imply p = q unless absolute continuity + other requirements} 
+%Indeed $t \mapsto \F(\nu_t)$ is a non-negative decreasing function, it must therefore converge to some limit, which implies in turn that its time derivative would also converge to $0$. Assuming that $\nu_t$ also converged to some limit distribution $\nu^{*}$
+%In \cite[Proposition 3]{Mroueh:2019} such equilibria are excluded by assumption \cite[Assumption A]{Mroueh:2019} to provide convergence towards a global minimizer for the KSD. 
+%In \cref{sec:Lojasiewicz_inequality} we show global convergence, under the boundedness at all times $t$ of a specific distance between $\nu_t$ and $\mu$.
+%If $\nu^*$ turns out to have a positive density, then $f_{\mu,\nu^{*}}(x)$ would be constant everywhere. This in turn would mean that $f_{\mu,\nu^{*}}=0$ when the RKHS does not contain constant functions, as for a gaussian kernel. Hence, $\nu^*$ would be a global optimum since $\F(\nu^{*})=0$. 
+%In \cite{mroueh2018regularized}, it is assumed that the only distribution $\nu^*$ satisfying the equilibrium condition is equal to $\mu$\aknote{true?}.  However, the limit distribution $\nu^*$  might be very singular, it could even be a dirac distribution. This suggests that the gradient flow could converge to a suboptimal solution $\nu^*$ for which
+
+%\cref{eq:equilibrium_condition} is true. Actually, convergence of the flow is harder to obtain and will be discussed in \cref{sec:Lojasiewicz_inequality}.
  %We know motivate the study of this flow by recent considerations and applications in Machine Learning.
-Meanwhile, we now provide a time discretization of the MMD flow.
 
 %We conclude this section with a remark referring to other well-known gradient flows in Wasserstein space.
 %\begin{remark}\label{remark:gradient_flow}
