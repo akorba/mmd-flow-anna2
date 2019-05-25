@@ -1109,49 +1109,47 @@ The second and last lines are obtained using a triangular inequality while the t
 %	Then, for the second term at the r.h.s. of  \eqref{eq:decomposition}, we can apply the rates of convergence for the time continuous flow, applied to the process $\widetilde{X_t}$. Hence, if $\Vert \widetilde{\rho}_t  - \widehat{\mu} \Vert_{\dot{H}^{-1}(\widetilde{\rho}_t)} \leq C \; \forall t\geq 0$, by \cref{prop:lojasiewicz} we have $MMD^2(\widehat{ \mu},\widehat{\rho}_t)\le C_3/t$. 
 %\end{proof}
 
+%
+%\subsection{Pseudocode for the algorithm of \cref{sec:sample_based}}\label{subsec:pseudocode}
+%
+%\begin{algorithm}
+%	\setstretch{1.35}
+%	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
+%	\begin{algorithmic}[1]
+%		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
+%		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
+%		\Statex \textit{Initialize the particles}
+%		\State $X_{0}^{i}\mysim \nu_0$
+%		\Statex \textit{Initialize the level of noise}
+%		\State $\beta=\beta_0$
+%		\For{$n=0,\dots, n_{iter}$}
+%		\Statex \textit{Update the level of noise}
+%		\State $\beta_n=h(\beta, n)$
+%		\Statex \textit{Compute the current empirical distribution of the particles}
+%		\State $\widehat{\nu}_N=\frac{1}{N}\sum_{i=1}^N \delta_{X^{i}_n}$
+%		\Statex \textit{Compute the current vector field}
+%		\State $\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,.)-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,.)$
+%		\For{$i=1,\dots,N$}
+%		\State $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
+%		\EndFor
+%		\EndFor
+%	\end{algorithmic}
+%\end{algorithm}
+%
+%In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I}\left\{n\le 0.5*n_{iter}\right\}$.
 
-\subsection{Pseudocode for the algorithm of \cref{sec:sample_based}}\label{subsec:pseudocode}
-
-\begin{algorithm}
-	\setstretch{1.35}
-	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
-	\begin{algorithmic}[1]
-		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
-		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
-		\Statex \textit{Initialize the particles}
-		\State $X_{0}^{i}\mysim \nu_0$
-		\Statex \textit{Initialize the level of noise}
-		\State $\beta=\beta_0$
-		\For{$n=0,\dots, n_{iter}$}
-		\Statex \textit{Update the level of noise}
-		\State $\beta_n=h(\beta, n)$
-		\Statex \textit{Compute the current empirical distribution of the particles}
-		\State $\widehat{\nu}_N=\frac{1}{N}\sum_{i=1}^N \delta_{X^{i}_n}$
-		\Statex \textit{Compute the current vector field}
-		\State $\nabla f_{\hat{\mu},\hat{\nu}_n}(.) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,.)-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,.)$
-		\For{$i=1,\dots,N$}
-		\State $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
-		\EndFor
-		\EndFor
-	\end{algorithmic}
-\end{algorithm}
-
-In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I}\left\{n\le 0.5*n_{iter}\right\}$.
-
-\section{Numerical Experiments}\label{sec:experiments}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.8\linewidth]{figures/student_teacher_final}
-	\caption{Gradient flow of the $MMD$ for training a student-teacher ReLU network with a gaussian output non-linearity. \cref{eq:euler_maruyama} is used without noise $\beta_n=0$ in red  and with noise $\beta_n>0$ in blue, with $\beta_0=1$ and $\beta_n$ is decreased by half after every $1000$ epochs. Training is done for $10^5$ epochs with a batch size of $10^2$ using $10^3$ samples and a step-size $\gamma = 0.01$. Details for the student-teacher setting are provided in \cref{sec:experiments}.   
-	}
-	\label{fig:experiments_student_teacher}
-\end{figure}
-
-\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
-
-
-We consider an student-teacher network setting similar to \cite{Chizat:2018a}. More precisely, $f(\Theta,z)$  is a neural network of the form: $f((\theta_1,...\theta_N),z) = \frac{1}{N} \sum_{i=1}^N g(\theta_i,z) $ where $\Theta= (\theta_1,...,\theta_N)$ are the parameters and $z$ is the input vector in $\R^{p}$.  Each parameter $\theta_i$ is viewed as a particle so that the network $f$ is as an average of $N$ sub-networks $g$ with parameters $\theta_i$ where $g$ is given by:
+\section{Numerical Experiments}
+\subsection{Student-Teacher networks}\label{sec:experiments}
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics[width=0.8\linewidth]{figures/student_teacher_final}
+%	\caption{Gradient flow of the $MMD$ for training a student-teacher ReLU network with a gaussian output non-linearity. \cref{eq:euler_maruyama} is used without noise $\beta_n=0$ in red  and with noise $\beta_n>0$ in blue, with $\beta_0=1$ and $\beta_n$ is decreased by half after every $1000$ epochs. Training is done for $10^5$ epochs with a batch size of $10^2$ using $10^3$ samples and a step-size $\gamma = 0.01$. Details for the student-teacher setting are provided in \cref{sec:experiments}.   
+%	}
+%	\label{fig:experiments_student_teacher}
+%\end{figure}
+%
+%\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
+We consider a student-teacher network setting similar to \cite{Chizat:2018a}. More precisely, $f(\Theta,z)$  is a neural network of the form: $f((\theta_1,...\theta_N),z) = \frac{1}{N} \sum_{i=1}^N g(\theta_i,z) $ where $\Theta= (\theta_1,...,\theta_N)$ are the parameters and $z$ is the input vector in $\R^{p}$.  Each parameter $\theta_i$ is viewed as a particle so that the network $f$ is as an average of $N$ sub-networks $g$ with parameters $\theta_i$ where $g$ is given by:
 \begin{align}
 	g(\theta,z) = h(b^{1}+W^{1}\sigma(W^{0}z+b^{0})).
 \end{align}
@@ -1167,11 +1165,31 @@ When $h$ is simply the identity function and no bias is used, one recovers the s
 As shown in \cref{subsec:training_neural_networks}, performing gradient descent to minimize \cref{eq:student_teacher_problem} can be seen as a particle version of the $MMD$ flow with a kernel given by  $k(\theta,\theta') = \mathbb{E}_{z\sim\mathbb{S}}[g(\theta,z)g(\theta',z)] $. Hence one can use \cref{eq:euler_maruyama} to train the parameters of the student network. 
 
 \cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
+%\begin{algorithm}\label{subsec:pseudocode_student_teacher}
+%	\setstretch{1.35}
+%	\caption{Noisy particle approximation of the MMD flow}\label{euclid_student_teacher}
+%	\begin{algorithmic}[1]
+%		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
+%		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
+%		\State \textit{Initialize the particles} : $X_{0}^{i}\mysim \nu_0$
+%		\State \textit{Initialize the noise level}: $\beta=\beta_0$
+%		\For{$n=0,\dots, n_{iter}$}
+%		\State \textit{Update the noise level}: $\beta_n=h(\beta, n)$
+%		\For{$i=1,\dots,N$}
+%		\State \textit{Sample from a gaussian }: $U_n^{i}$
+%		\State \textit{Compute the noisy values}: $Z_n^{i} = X_n^i+\beta_n U_n^i$
+%		\State \textit{Evaluate  vector field}:
+%		$\nabla f_{\hat{\mu},\hat{\nu}_n}(Z_n^{i}) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,Z_n^{i})-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,Z_n^{i})$
+%		\State \textit{Update the particles}: $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
+%		\EndFor
+%		\EndFor
+%	\end{algorithmic}
+%\end{algorithm}
 
 
 
 
-
+\subsection{Learning gaussians}\label{sec:experiments_gaussian}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/Gaussians_error_4}
@@ -1183,7 +1201,26 @@ As shown in \cref{subsec:training_neural_networks}, performing gradient descent 
 \end{figure}
 \cref{fig:experiments} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting, and compares it with the gradient flow of the MMD without noise injection. In this setting, the MMD flow  fails to converge to the global optimum. Indeed, as shown in \cref{fig:experiments}(right), some of the final samples (in red) obtained using noise-free gradient updates tend to get further away from the target samples (in black). Most of the remaining samples collapse to a unique point at the center near the origin. This can also be seen from \cref{fig:experiments}(left) where the training error fails to decrease below $10^{-3}$. On the other hand, adding noise to the gradient seems to lead to global convergence, as seen visually from the samples. The training error decreases below $10^{-4}$ and oscillates between $10^{-8}$ and $10^{-4}$. The oscillation is due to the step-size, which remained fixed while the noise was set to $0$ starting from iteration $5000$. It is worth noting that adding noise to the gradient slows the speed of convergence, as one can see from \cref{fig:experiments}(left). This is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as  illustrated here.
 
-
+\begin{algorithm}\label{subsec:pseudocode}
+	\setstretch{1.35}
+	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
+	\begin{algorithmic}[1]
+		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
+		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
+		\State \textit{Initialize the particles} : $X_{0}^{i}\mysim \nu_0$
+		\State \textit{Initialize the noise level}: $\beta=\beta_0$
+		\For{$n=0,\dots, n_{iter}$}
+		\State \textit{Update the noise level}: $\beta_n=h(\beta, n)$
+		\For{$i=1,\dots,N$}
+		\State \textit{Sample from a gaussian }: $U_n^{i}$
+		\State \textit{Compute the noisy values}: $Z_n^{i} = X_n^i+\beta_n U_n^i$
+		\State \textit{Evaluate  vector field}:
+		$\nabla f_{\hat{\mu},\hat{\nu}_n}(Z_n^{i}) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,Z_n^{i})-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,Z_n^{i})$
+		\State \textit{Update the particles}: $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
+		\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
 
 
 \section{Auxiliary results}\label{sec:auxiliary_results}
