@@ -1138,7 +1138,32 @@ The second and last lines are obtained using a triangular inequality while the t
 
 In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I}\left\{n\le 0.5*n_{iter}\right\}$.
 
+\section{Numerical Experiments}\label{sec:experiments}
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/student_teacher_final}
+	\caption{Gradient flow of the $MMD$ for training a student-teacher ReLU network with a gaussian output non-linearity. \cref{eq:euler_maruyama} is used without noise $\beta_n=0$ in red  and with noise $\beta_n>0$ in blue, with $\beta_0=1$ and $\beta_n$ is decreased by half after every $1000$ epochs. Training is done for $10^5$ epochs with a batch size of $10^2$ using $10^3$ samples and a step-size $\gamma = 0.01$. Details for the student-teacher setting are provided in \cref{sec:experiments}.   
+	}
+	\label{fig:experiments_student_teacher}
+\end{figure}
+
+We consider an student-teacher network setting similar to \cite{Chizat:2018a}. More precisely, $f(\Theta,z)$  is a neural network of the form: $f((\theta_1,...\theta_N),z) = \frac{1}{N} \sum_{i=1}^N g(\theta_i,z) $ where $\Theta= (\theta_1,...,\theta_N)$ are the parameters and $z$ is the input vector in $\R^{p}$.  Each parameter $\theta_i$ is viewed as a particle so that the network $f$ is as an average of $N$ sub-networks $g$ with parameters $\theta_i$ where $g$ is given by:
+\begin{align}
+	g(\theta,z) = h(b^{1}+W^{1}\sigma(W^{0}z+b^{0})).
+\end{align}
+Here, $\theta = (b^{1},W^{1},b^{0},W^{0}) \in \R^1\times \R^{H}\times \R^{H} \times (\R^{H}\times\R^{p})$ and $\sigma$ is the ReLU non-linearity while $h$ is a fixed function and is defined later.
+The teacher network $f_{T}(\Theta_T,z)$ has only one particle $N=1$ which is drawn  according to a normal distribution $\mathcal{N}(0,1.)$, while the student network $f_{S}(\Theta,z)$ has $N=1000$ particles that are initialized according to a normal distribution $\mathcal{N}(0.001,1.)$.  The inputs are drawn from a uniform distribution $\mathbb{S}$ on the sphere in $\R^p$ as in \cite{Chizat:2018a} with $p=50$. The number of hidden layers $H$ is set to $3$ and the output dimension is $1$.   
+The parameters $\Theta$ of the student networks are trained to minimize the risk:
+\begin{align}\label{eq:student_teacher_problem}
+	\min_{\Theta} \mathbb{E}_{z\sim \mathbb{S} }[(f_T(\Theta_T,z )- f_S(\Theta,z))^2]
+\end{align}
+using SGD with mini-batches of size $100$ and a fixed step-size $\gamma=0.01$.
+
+When $h$ is simply the identity function and no bias is used, one recovers the setting in \cite{Chizat:2018a}. In that case the network is partially $1$-homogeneous and \cite[Theorem 3.5]{Chizat:2018a} applies ensuring global optimality. Here, we are interested in the case when global optimality is not guaranteed by the homogeneity structure, hence we choose $h$ to be a gaussian with fixed bandwidth $\sigma=2.$. 
+As shown in \cref{subsec:training_neural_networks}, performing gradient descent to minimize \cref{eq:student_teacher_problem} can be seen as a particle version of the $MMD$ flow with a kernel given by  $k(\theta,\theta') = \mathbb{E}_{z\sim\mathbb{S}}[g(\theta,z)g(\theta',z)] $. Hence one can use \cref{eq:euler_maruyama} to train the parameters of the student network. 
+
+\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, to a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. In this setting, the MMD flow  fails to converge towards the global optimum. Indeed, both training and validation errors fail to decrease beyond $0.177$. On the other,  On the other hand, adding noise to the gradient seems to lead to global convergence in terms of global error. The training error decreases below $10^{-4}$ while much better validation error is attained. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
 
 \section{Auxiliary results}\label{sec:auxiliary_results}
 
