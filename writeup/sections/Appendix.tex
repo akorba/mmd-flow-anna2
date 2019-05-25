@@ -1148,6 +1148,9 @@ In the experiments, we choose the update function as $h(\beta,n)=\beta \mathbb{I
 	\label{fig:experiments_student_teacher}
 \end{figure}
 
+\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
+
+
 We consider an student-teacher network setting similar to \cite{Chizat:2018a}. More precisely, $f(\Theta,z)$  is a neural network of the form: $f((\theta_1,...\theta_N),z) = \frac{1}{N} \sum_{i=1}^N g(\theta_i,z) $ where $\Theta= (\theta_1,...,\theta_N)$ are the parameters and $z$ is the input vector in $\R^{p}$.  Each parameter $\theta_i$ is viewed as a particle so that the network $f$ is as an average of $N$ sub-networks $g$ with parameters $\theta_i$ where $g$ is given by:
 \begin{align}
 	g(\theta,z) = h(b^{1}+W^{1}\sigma(W^{0}z+b^{0})).
@@ -1163,7 +1166,25 @@ using SGD with mini-batches of size $100$ and a fixed step-size $\gamma=0.01$.
 When $h$ is simply the identity function and no bias is used, one recovers the setting in \cite{Chizat:2018a}. In that case the network is partially $1$-homogeneous and \cite[Theorem 3.5]{Chizat:2018a} applies ensuring global optimality. Here, we are interested in the case when global optimality is not guaranteed by the homogeneity structure, hence we choose $h$ to be a gaussian with fixed bandwidth $\sigma=2.$. 
 As shown in \cref{subsec:training_neural_networks}, performing gradient descent to minimize \cref{eq:student_teacher_problem} can be seen as a particle version of the $MMD$ flow with a kernel given by  $k(\theta,\theta') = \mathbb{E}_{z\sim\mathbb{S}}[g(\theta,z)g(\theta',z)] $. Hence one can use \cref{eq:euler_maruyama} to train the parameters of the student network. 
 
-\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, to a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. In this setting, the MMD flow  fails to converge towards the global optimum. Indeed, both training and validation errors fail to decrease beyond $0.177$. On the other,  On the other hand, adding noise to the gradient seems to lead to global convergence in terms of global error. The training error decreases below $10^{-4}$ while much better validation error is attained. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
+\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
+
+
+
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/Gaussians_error_4}
+	\caption{Gradient flow of the $MMD$ from a gaussian initial distributions $\nu_0\sim \mathcal{N}(10,0.5)$  towards a target distribution $\mu\sim \mathcal{N}(0,1)$ using $N=M=1000$ samples from $\mu$ and $\nu_0$ and a gaussian kernel with bandwidth $\sigma = 2 $. \cref{eq:euler_maruyama} is used 
+	%with noise  $\beta_k = 10$ in blue, 
+	without noise $\beta_n = 0$ in red and  with noise $\beta_n = 10$ up to $n=5000$, then $\beta_n = 0$ afterwards in blue. 
+	The left figure shows the evolution of the $MMD$ at each iteration. The middle figure shows the initial samples (black for $\mu$), and the right figure shows the final samples after $10^5$ iterations with step-size $\gamma = 0.1$.}
+	\label{fig:experiments}
+\end{figure}
+\cref{fig:experiments} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting, and compares it with the gradient flow of the MMD without noise injection. In this setting, the MMD flow  fails to converge to the global optimum. Indeed, as shown in \cref{fig:experiments}(right), some of the final samples (in red) obtained using noise-free gradient updates tend to get further away from the target samples (in black). Most of the remaining samples collapse to a unique point at the center near the origin. This can also be seen from \cref{fig:experiments}(left) where the training error fails to decrease below $10^{-3}$. On the other hand, adding noise to the gradient seems to lead to global convergence, as seen visually from the samples. The training error decreases below $10^{-4}$ and oscillates between $10^{-8}$ and $10^{-4}$. The oscillation is due to the step-size, which remained fixed while the noise was set to $0$ starting from iteration $5000$. It is worth noting that adding noise to the gradient slows the speed of convergence, as one can see from \cref{fig:experiments}(left). This is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as  illustrated here.
+
+
+
 
 \section{Auxiliary results}\label{sec:auxiliary_results}
 
