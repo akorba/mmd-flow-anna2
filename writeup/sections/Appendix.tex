@@ -173,7 +173,7 @@ In this sub-section we establish a formal connection between the MMD gradient fl
 \end{align}
 where $(y,z) \sim p$ are samples from the data distribution and the regression function is an average of $m$ different networks. The formulation in \cref{eq:regression_network} includes any type of networks. Indeed, the averaged function can itself be seen as one network with augmented parameters $(x_1,...,x_m)$ and any network can be written as an average of sub-networks with potentially shared weights. In the limit $m\rightarrow \infty$, the average can be seen as an expectation over the parameters under some probability distribution $\nu$. This leads to an expected network $\Psi(z,\nu) =  \int \psi(z,x) \diff \nu(x) $ and the optimization problem in \cref{eq:regression_network} can be lifted to an optimization problem in $\mathcal{P}_2(\X)$ the space of probability distributions:
 \begin{align}\label{eq:lifted_regression}
-	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
+	\min_{\nu \in \mathcal{P}_2(\X)}  \mathcal{L}(\nu) :=  \frac{1}{2}\mathbb{E}_{(y,z)\sim p} \left [ \big\Vert y - \int \psi(z,x) \diff \nu(x) \big\Vert^2 \right ]
 \end{align} 
 For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by subtracting the variance of $y$ from $\mathcal{L}(\nu)$, i.e.: $\bar{\mathcal{L}}(\nu) = \mathcal{L}(\nu) - var(y) $. When the model is well specified, there exists $\mu \in \mathcal{P}_2(\X) $ such that $\mathbb{E}_{y\sim \mathbb{P}(.|z)}[y] =  \int \psi(z,x) \diff \mu(x)$. In that case, the cost function $\bar{\mathcal{L}}$ matches  the functional $\F$ defined in \cref{eq:mmd_as_free_energy}  for a particular choice of the kernel $k$. More generally, as soon as a global minimizer for  \cref{eq:lifted_regression} exists,  \cref{prop:inequality_mmd_loss} relates the two losses $\bar{\mathcal{L}}$ and $\mathcal{F}$.
 %:\cref{prop:inequality_mmd_loss} is shown in \cref{proof:prop:inequality_mmd_loss} and is a consequence of the optimality of $\mu$ after rearranging the terms obtained by expanding $\bar{\mathcal{L}}(\nu)$.
@@ -192,6 +192,36 @@ For convenience, we consider $\bar{\mathcal{L}}(\nu)$ the function obtained by s
 \end{align}
 Moreover, $\bar{\mathcal{L}} = \F$ iif $\bar{\mathcal{L}}(\mu)=0$, which means that the model is well-specified. 
 \end{proposition}
+The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\mathcal{L}$ and vice-versa. 
+Moreover, in the well specified case, optimizing  $\mathcal{F}$ is equivalent to optimizing $\mathcal{L}$. Hence one can use the gradient flow of the MMD defined in \cref{eq:continuity_mmd} to solve \cref{eq:lifted_regression}.
+One particular setting when \cref{eq:lifted_regression} is well-specified is the student-teacher problem as in \cite{Chizat:2018a}. In this case, a teacher network of the form $\Psi_T(z,\mu)$ produces a deterministic output $y = \Psi_T(z,\mu)$ given an input $z$ while a student network $\Psi_S(z,\nu)$ tries to learn the mapping $z\mapsto \Psi_T(z,\mu)$ by minimizing \cref{eq:lifted_regression}. In practice $\mu$ and $\nu$ are given as empirical distributions on some particles $\Xi = (\xi^1,...,\xi^M)$ and $X=(x^1,...,x^N)$ with $\mu = \frac{1}{M} \sum_{j=1}^M \delta_{\xi^j}$  and $\nu= \frac{1}{N} \sum_{i=1}^N\delta_{x^i}$. The particles $(x^i)_{1\leq i \leq N}$ are then optimized using gradient descent which leads to the update equation:
+\begin{align}\label{eq:update_equation_student_teacher}
+	x^i_{n+1} = x^i_n - \gamma \mathbb{E}_{z\sim p }[ (\frac{1}{N}\sum_{j=1}^N \psi(z,x_n^{j})-\frac{1}{M}\sum_{j=1}^M \psi(z,\xi_n^{j}))\nabla_{x_n^{i}}\psi(z,x_n^{i})],
+\end{align}
+ where $(x_n^{i})_{1\leq i\leq N}$ are the particles at iteration $n$ with empirical distribution $\nu_n$. Here, the gradient was rescaled by the number of particles $N$.
+Re-arranging terms and recalling that $k(x,x') = \mathbb{E}_{z\sim p}[\psi(z,x)^T\psi(z,x')]$, the equation \cref{eq:update_equation_student_teacher} becomes:
+\[
+x^i_{n+1} = x^i_n - \gamma \nabla f_{\mu,\nu_n}(x_n^i).
+\]
+with $f_{\mu,\nu_n}(x_n^i) = \left(\frac{1}{N}\sum_{j=1}^N \nabla_2 k(x_n^{j},x_n^{i})-\frac{1}{M}\sum_{j=1}^M \nabla_2 k(\xi^{j},x_n^{i})\right)$.
+The above equation is a discretized version of the gradient flow of the MMD defined in \cref{eq:continuity_mmd}. Such discretization is obtained from \cref{eq:euler_maruyama} by setting the noise level  $\beta_n$ to $0$.
+Hence, in the limit when $N\rightarrow \infty$ and $\gamma\rightarrow 0$, one recovers the gradient flow defined in \cref{eq:continuity_mmd}.
+In general the kernel $k$ is intractable and can be approximated using  $n_b$ samples $(z_1,...,z_{n_b})$ from the data distribution: $\hat{k}(x,x') = \frac{1}{n_b} \sum_{b=1}^{n_b} \psi(z_b,x)^T \psi(z_b,x')$. This finally leads to an approximate update:
+\[
+x^i_{n+1} = x^i_n - \gamma \nabla \hat{f}_{\mu,\nu_n}(x_n^i).
+\]
+where $\hat{f}(\mu,\nu_n)$ is given by:
+\[
+\hat{f}_{\mu,\nu_n}(x_n^i) = \frac{1}{n_b} \sum_{b=1}^{n_b} (\frac{1}{N}\sum_{j=1}^N \psi(z_b,x_n^{j})-\frac{1}{M}\sum_{j=1}^M \psi(z_b,\xi_n^{j}))\nabla_{x_n^{i}}\psi(z_b,x_n^{i}))
+\]
+ %This can be performed using a gradient flow of the MMD defined in \cref{eq:continuity_mmd}.
+%
+%\cref{eq:lifted_regression} corresponds exactly to minimizing the MMD is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture (see \cite{rotskoff2019global}). In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
+%\begin{align}\label{eq:particle_dynamics}
+%\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
+%\end{align}  
+%As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. %A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
+We provide now a proof for \cref{prop:inequality_mmd_loss}:
 \begin{proof}[Proof of \cref{prop:inequality_mmd_loss}]\label{proof:prop:inequality_mmd_loss}Let $\phi(z,\nu)$=$\int \psi(z,x)\diff \nu(x)$ through the computations. By definition \eqref{eq:kernel_NN}, we have: $k(x,x') =\int_{z}\psi(z,x)^T\psi(z,x')\diff s(z)$ where $s$ denotes the distribution of $z$. It is easy to see that $\F(\nu) = \frac{1}{2} \int \Vert \phi(z,\nu) -\phi(z,\mu)  \Vert^2 \diff s(z) $. Indeed expanding the square in the l.h.s and exchanging the order of integrations w.r.t $s$ and $(\mu\otimes \nu)$ one get $\F(\nu)$.
 %	\begin{align*}
 %	\F(\nu)&=\frac12 \int_{x,x'} k(x,x')\diff \mu(x)\diff\mu(x')+\frac12 \int_{x,x'} k(x,x')\diff \nu(x)\diff\nu(x') - \int_{x,x'} k(x,x')\diff \mu(x)\diff\nu(x')\\
@@ -217,12 +247,6 @@ To get the lower bound on $\bar{\mathcal{L}}$ one needs to use the global optima
 \]
 taking the limit $\epsilon\rightarrow 0$ and recalling that the l.h.s is always non-negative by optimality of $\mu$ is follows that $\int \ps{\phi(z,\mu)-m(z),\phi(z,\nu)-\phi(z,\mu)}\diff s(z)$ must also be non-negative. Therefore, from \cref{eq:main_eq_nn} one get that $\mathcal{L}(\nu) \geq  \mathcal{L}(\mu)+ \mathcal{F}(\nu)$. The final bound is obtained by again subtracting $1/2 var(y)$ form both sides of the inequality.
 \end{proof}
-The framing \cref{eq:inequality_mmd_nn} implies that optimizing $\mathcal{F}$ can decrease  $\bar{\mathcal{L}}$ and vice-versa. However, the two functionals do not generally share the same local minima although they share the same global optima in general. One interesting class of problems where \cref{eq:lifted_regression} corresponds exactly to minimizing the MMD is the student-teacher problem or the problem of distilling a pre-trained network into another network with the same architecture (see \cite{rotskoff2019global}). In this case the gradient flow of the MMD defined in \cref{eq:continuity_mmd} corresponds to the population limit of the usual gradient flow of \cref{eq:regression_network} when the final layer becomes infinitely wide. Indeed, solving \cref{eq:regression_network} is usually done using gradient descent. When the step-size approaches $0$, the parameters $(x_1,...,x_m)$ satisfy the continuous-time system of equations:
-\begin{align}\label{eq:particle_dynamics}
-\dot{x}_i(t)= -\nabla \mathcal{L}(x_1(t),...,x_m(t)) \text{ for } i=1, \dots, m
-\end{align}  
-As pointed out in \cite{chizat2018global,rotskoff2018neural}, the dynamics in \cref{eq:particle_dynamics} can be analyzed in the "mean-field" limit when $m\rightarrow \infty$. For \cref{eq:particle_dynamics}, this leads to the continuity equation \cref{eq:continuity_mmd}. %A formal statement that relates the finite population dynamics to the mean-field limit is provided in \manote{statement here}. 
-
 
 \subsection{Comparison with the Kullback Leilber divergence flow}\label{subsec:kl_flow}
 
@@ -1149,45 +1173,38 @@ The second and last lines are obtained using a triangular inequality while the t
 %\end{figure}
 %
 %\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
-We consider a student-teacher network setting similar to \cite{Chizat:2018a}. More precisely, $f(\Theta,z)$  is a neural network of the form: $f((\theta_1,...\theta_N),z) = \frac{1}{N} \sum_{i=1}^N g(\theta_i,z) $ where $\Theta= (\theta_1,...,\theta_N)$ are the parameters and $z$ is the input vector in $\R^{p}$.  Each parameter $\theta_i$ is viewed as a particle so that the network $f$ is as an average of $N$ sub-networks $g$ with parameters $\theta_i$ where $g$ is given by:
+We consider a student-teacher network setting similar to \cite{Chizat:2018a}. More precisely, using the notation from \cref{subsec:training_neural_networks}, we denote by $\Psi(z,\nu)$  the neural network of the form: $\Psi (z,\nu) = \int  \psi(z,x)\diff \nu(x) $ where $z$ is an input vector in $\R^{p}$ and  $\nu$ is a probability distribution over the parameters $x$. Hence $\Psi$ is as an expectation over sub-networks $\psi(z,x)$ with parameters $x$. Here, we choose $\psi$ of the form:
 \begin{align}
-	g(\theta,z) = h(b^{1}+W^{1}\sigma(W^{0}z+b^{0})).
+	\psi(z,x) = G(b^{1}+W^{1}\sigma(W^{0}z+b^{0})).
 \end{align}
-Here, $\theta = (b^{1},W^{1},b^{0},W^{0}) \in \R^1\times \R^{H}\times \R^{H} \times (\R^{H}\times\R^{p})$ and $\sigma$ is the ReLU non-linearity while $h$ is a fixed function and is defined later.
-The teacher network $f_{T}(\Theta_T,z)$ has only one particle $N=1$ which is drawn  according to a normal distribution $\mathcal{N}(0,1.)$, while the student network $f_{S}(\Theta,z)$ has $N=1000$ particles that are initialized according to a normal distribution $\mathcal{N}(0.001,1.)$.  The inputs are drawn from a uniform distribution $\mathbb{S}$ on the sphere in $\R^p$ as in \cite{Chizat:2018a} with $p=50$. The number of hidden layers $H$ is set to $3$ and the output dimension is $1$.   
-The parameters $\Theta$ of the student networks are trained to minimize the risk:
+where $x$ is obtained as the concatenation of the parameters $(b^{1},W^{1},b^{0},W^{0})\in \X$, $\sigma$ is the ReLU non-linearity while $G$ is a fixed function and is defined later.
+Note that using $x$ to denote the parameters of a neural network is unusual, however, we prefer to keep a notation which is consistent with the rest of the paper.
+We will only consider the case when $\nu$ is given by an empirical distribution of $N$ particles  $X  = (x^{1},...x^{N})$ for some $N\in\mathbb{N}$. In that case, we denote by  $\nu_{X}$ such distribution to stress the dependence on the particles $X$, i.e.: $ \nu := \nu_{X}= \frac{1}{N} \sum_{i=1}^N \delta_{x^{i}}$. 
+The teacher network $\Psi_{T}(z,\nu_{\Xi})$ is given by $M$ particles $\Xi = (\xi_1,...,\xi_M)$ which are fixed during training and are initially drawn  according to a normal distribution $\mathcal{N}(0,1)$. Similarly, the student network $\Psi_{S}(z,\nu_{X})$ has $N$ particles $X = (x^{1},...,x^{N})$ that are initialized according to a normal distribution $\mathcal{N}(10^{-3},1)$. 
+Here we choose $M=1$ and $N=1000$.
+  The inputs $z$ are drawn from a uniform distribution $\mathbb{S}$ on the sphere in $\R^p$ as in \cite{Chizat:2018a} with $p=50$. The number of hidden layers $H$ is set to $3$ and the output dimension is $1$.   
+The parameters of the student networks are trained to minimize the risk in \cref{eq:student_teacher_problem} using SGD with mini-batches of size $n_b  = 10^2$ and a fixed step-size $\gamma=10^{-2}$.
 \begin{align}\label{eq:student_teacher_problem}
-	\min_{\Theta} \mathbb{E}_{z\sim \mathbb{S} }[(f_T(\Theta_T,z )- f_S(\Theta,z))^2]
+	\min_{X} \mathbb{E}_{z\sim \mathbb{S} }[(\Psi_T(z,\nu_{\Xi} )- \Psi_S(z,\nu_{X}))^2]
 \end{align}
-using SGD with mini-batches of size $100$ and a fixed step-size $\gamma=0.01$.
-
-When $h$ is simply the identity function and no bias is used, one recovers the setting in \cite{Chizat:2018a}. In that case the network is partially $1$-homogeneous and \cite[Theorem 3.5]{Chizat:2018a} applies ensuring global optimality. Here, we are interested in the case when global optimality is not guaranteed by the homogeneity structure, hence we choose $h$ to be a gaussian with fixed bandwidth $\sigma=2.$. 
-As shown in \cref{subsec:training_neural_networks}, performing gradient descent to minimize \cref{eq:student_teacher_problem} can be seen as a particle version of the $MMD$ flow with a kernel given by  $k(\theta,\theta') = \mathbb{E}_{z\sim\mathbb{S}}[g(\theta,z)g(\theta',z)] $. Hence one can use \cref{eq:euler_maruyama} to train the parameters of the student network. 
-
-\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
-%\begin{algorithm}\label{subsec:pseudocode_student_teacher}
-%	\setstretch{1.35}
-%	\caption{Noisy particle approximation of the MMD flow}\label{euclid_student_teacher}
-%	\begin{algorithmic}[1]
-%		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
-%		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
-%		\State \textit{Initialize the particles} : $X_{0}^{i}\mysim \nu_0$
-%		\State \textit{Initialize the noise level}: $\beta=\beta_0$
-%		\For{$n=0,\dots, n_{iter}$}
-%		\State \textit{Update the noise level}: $\beta_n=h(\beta, n)$
-%		\For{$i=1,\dots,N$}
-%		\State \textit{Sample from a gaussian }: $U_n^{i}$
-%		\State \textit{Compute the noisy values}: $Z_n^{i} = X_n^i+\beta_n U_n^i$
-%		\State \textit{Evaluate  vector field}:
-%		$\nabla f_{\hat{\mu},\hat{\nu}_n}(Z_n^{i}) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,Z_n^{i})-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,Z_n^{i})$
-%		\State \textit{Update the particles}: $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
-%		\EndFor
-%		\EndFor
-%	\end{algorithmic}
-%\end{algorithm}
-
-
-
+When $G$ is simply the identity function and no bias is used, one recovers the setting in \cite{chizat2018global}. In that case the network is partially $1$-homogeneous and \cite[Theorem 3.5]{chizat2018global} applies ensuring global optimality. Here, we are interested in the case when global optimality is not guaranteed by the homogeneity structure, hence we choose $G$ to be a gaussian with fixed bandwidth $\sigma=2$. 
+As shown in \cref{subsec:training_neural_networks}, performing gradient descent to minimize \cref{eq:student_teacher_problem} can be seen as a particle version of the gradient flow of the MMD with a kernel given by  $k(x,x') = \mathbb{E}_{z\sim\mathbb{S}}[\psi(z,x)\psi(z,x')]$  and target distribution $\mu$ given by $\mu= \nu_{\Xi}$. Hence one can use \cref{eq:euler_maruyama} to train the parameters of the student network. In this case, $k$ is approximated using $n_{b}$ data samples  $\{z_{1},...,z_{B}\}$:
+\[
+	\hat{k}(x,x') = \frac{1}{n_b} \sum_{b=1}^{n_b} \psi(z_b,x)\psi(z_b,x').
+\]
+Such approximation of the kernel leads to a simple expression for the gradient of the witness function between  $\nu_{\Xi}$ and $\nu_{X}$:
+\begin{align}\label{eq:approximate_gradient_witness_student_teacher}
+	\nabla \hat{f}_{\nu_{\Xi},\nu_{X}}(x) = \frac{1}{n_b}\sum_{b=1}^{n_b}\left( \frac{1}{M}\sum_{j=1}^M\psi(z_b,\xi^j) -  \frac{1}{N}\sum_{i=1}^N\psi(z_b , x^i)\right)\nabla_{x}\psi(z_b,x), \qquad \forall x \in \X.
+\end{align}
+\cref{euclid_student_teacher}, provides the main steps to train the parameters of the student network using the noisy gradient flow of the MMD proposed in \cref{eq:euler_maruyama}. It can be easily implemented using automatic differentiation packages like \verb+PyTorch+. Indeed, one only needs to compute an auxiliary loss function $\F_{aux}$ instead of the actual MMD loss $\F$ and perform gradient descent using $\F_{aux}$. Such function is given by:
+\[
+\F_{aux} = \frac{1}{n_b}\sum_{i=1}^N\sum_{b=1}^{n_b} \left(\verb+NoGrad+(y_S^b) - y_T^b \right)\psi(z^b,\widetilde{x}_n^{i})
+\]
+To compute $\F_{aux}$, two forward passes on the student network are required.
+A first forward pass using the current parameter values  $X_n = (x_n^1,...,x_n^{N})$ of the student network is used to compute the predictions $y_S^b$ given an input $z^b$. For such forward pass, the gradient w.r.t to the parameters $X_n$ is not used, this is enforced here formally by calling the function \verb+NoGrad+.  
+ The second forward pass is performed using the noisy parameters $\widetilde{x}_n^{i} = x_n^i + \beta_n u_n^{i}$  and  requires implementing special layers which can inject noise to the weights. This second forward pass will be used to provide a gradient to update the particles using back-propagation. Indeed, it is easy to see that $\nabla_{x_n^{i}} \F_{aux}$ gives exactly the gradient $\nabla \hat{f}_{\nu_{\Xi},\nu_X}(\widetilde{x}_n^i)$ used in  \cref{euclid_student_teacher}.
+%
+%\cref{fig:experiments_student_teacher} illustrates the behavior of the proposed algorithm \cref{eq:euler_maruyama} in a simple setting and compares it with the gradient flow of the MMD without noise injection. In this setting, a student network is trained to produce the outputs of a teacher network using gradient descent. As discussed in \cref{subsec:training_neural_networks} such setting can be seen as a particle version of an MMD flow with a suitable kernel. More details on the experiment are provided in \cref{sec:experiments}. Here, the MMD flow  fails to converge towards the global optimum and both training and validation error remain at value of $0.177$. On the other hand, adding noise to the gradient seems to lead to global convergence in terms of training error. The training error decreases below $10^{-5}$ while the validation error reaches $0.021$. It is worth noting that adding noise to the gradient slows the speed of convergence at the beginning of training. Such behavior is expected since the algorithm doesn't follow the path of steepest descent. The noise helps in escaping local optima, however, as illustrated here.
 
 \subsection{Learning gaussians}\label{sec:experiments_gaussian}
 \begin{figure}[ht]
@@ -1203,24 +1220,51 @@ As shown in \cref{subsec:training_neural_networks}, performing gradient descent 
 
 \begin{algorithm}\label{subsec:pseudocode}
 	\setstretch{1.35}
-	\caption{Noisy particle approximation of the MMD flow}\label{euclid}
+	\caption{Noisy gradient flow of the MMD}\label{euclid}
 	\begin{algorithmic}[1]
-		\State \textbf{Input} $\nu_0$, $N$, $n_{iter}$, $h$, $(Y^m)_{1 \le m \le M}$, $\beta_0$, $\gamma$
-		\State \textbf{Output} $(X^{i}_{n_{iter}})_{1\le i\le N}$
-		\State \textit{Initialize the particles} : $X_{0}^{i}\mysim \nu_0$
+		\State \textbf{Input} $N$, $n_{iter}$, $\beta_0$, $\gamma$
+		\State \textbf{Output} $(x^{i}_{n_{iter}})_{1\le i\le N}$
+		\State \textit{Initialize $N$ particles from initial distribution $\nu_0$} : $x_{0}^{i}\mysim \nu_0$
 		\State \textit{Initialize the noise level}: $\beta=\beta_0$
 		\For{$n=0,\dots, n_{iter}$}
-		\State \textit{Update the noise level}: $\beta_n=h(\beta, n)$
+		\State \textit{Sample $M$ points from the target $\mu$}: $\{y^1,...,y^M\}$.
+		\State \textit{Sample $N$ gaussians }: $\{u_n^{1},...,u_n^N\}$
 		\For{$i=1,\dots,N$}
-		\State \textit{Sample from a gaussian }: $U_n^{i}$
-		\State \textit{Compute the noisy values}: $Z_n^{i} = X_n^i+\beta_n U_n^i$
-		\State \textit{Evaluate  vector field}:
-		$\nabla f_{\hat{\mu},\hat{\nu}_n}(Z_n^{i}) = \frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(Y^m,Z_n^{i})-\frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(X_n^i,Z_n^{i})$
-		\State \textit{Update the particles}: $X_{n+1}^{i} = X_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(X_n^i+\beta_n U_n^i)$
+		\State \textit{Compute the noisy values}: $\widetilde{x}_n^{i} = x_n^i+\beta_n u_n^i$
+		\State \textit{Evaluate  vector field}:$\nabla f_{\hat{\mu},\hat{\nu}_n}(\widetilde{x}_n^i) = \frac{1}{N}\sum\limits_{i=1}^N \nabla_2 k(x_n^i,\widetilde{x}_n^{i})-\frac{1}{M}\sum\limits_{m=1}^M \nabla_2 k(y^m,\widetilde{x}_n^{i})$
+		\State \textit{Update the particles}: $x_{n+1}^{i} = x_n^i -\gamma \nabla f_{\hat{\mu},\hat{\nu}_n}(\widetilde{x}_n^i)$
 		\EndFor
+		\State \textit{Update the noise level using an update rule $h$}: $\beta_{n+1}=h(\beta_{n}, n)$.
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
+
+
+\begin{algorithm}\label{subsec:pseudocode_student_teacher}
+	\setstretch{1.35}
+	\caption{Noisy gradient flow of the MMD for student-teacher learning}\label{euclid_student_teacher}
+	\begin{algorithmic}[1]
+		\State \textbf{Input} $N$, $n_{iter}$, $\beta_0$, $\gamma$, $n_{b}$, $\Xi = (\xi^j)_{1\leq j\leq M}$.
+		\State \textbf{Output} $(x^{i}_{n_{iter}})_{1\le i\le N}$.
+		\State \textit{Initialize $N$ particles from initial distribution $\nu_0$} : $x_{0}^{i}\mysim \nu_0$.
+		\State \textit{Initialize the noise level}: $\beta=\beta_0$.
+		\For{$n=0,...,n_{iter}$}
+		\State \textit{Sample minibatch of $n_{b}$ data points}: $\{z^1,...,z^{n_{b}}\}$.
+		\For{$b=1,...,n_{b}$} 
+		\State \textit{Compute teacher's output}: $y_{T}^b = \frac{1}{M}\sum_{j=1}^M \psi(z^b,\xi^{j})$.
+		\State \textit{Compute students's output}: $y_{S}^b = \frac{1}{N}\sum_{i=1}^N \psi(z^b,x_n^i)$.
+		\EndFor
+		\State \textit{Sample $N$ gaussians }: $\{u_n^{1},...,u_n^{N}\}$.
+		\For{$i=1,...,N$}
+		\State \textit{Compute noisy particles}: $\widetilde{x}_n^{i} = x_n^i +\beta_n u_n^{i}$ 
+		\State \textit{Evaluate vector field}: $  \nabla \hat{f}_{\nu_{\Xi},\nu_{X_n}}(\widetilde{x}_n^{i}) =  \frac{1}{n_{b}}\sum_{b=1}^{n_{b}} ( y_{S}^b - y_{T}^b ) \nabla_{x_n^{i}} \psi(z^b,\widetilde{x}_n^{i})$
+		\State \textit{Update particle $i$}: $x_{n+1}^{i} = x_{n}^{i} -\gamma \nabla \hat{f}_{\nu_{\Xi},\nu_{X_n}}(\widetilde{x}_n^{i})$
+		\EndFor
+		\State \textit{Update the noise level using an update rule $h$}: $\beta_{n+1}=h(\beta_{n}, n)$.
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
 
 
 \section{Auxiliary results}\label{sec:auxiliary_results}
