@@ -323,38 +323,35 @@ We state here all the assumptions on the kernel $k$ used to prove all the result
 
 Existence and uniqueness of a solution to \cref{eq:continuity_mmd,eq:mcKean_Vlasov_process} is guaranteed under Lipschitz regularity of $\nabla k$.% and is a consequence of \cite{chizat2018global}:\manote{write-up this proof} 
 \begin{proof}[Proof of \cref{prop:existence_uniqueness}]\label{proof:prop:existence_uniqueness}[Existence and uniqueness]
-Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \cref{eq:mcKean_Vlasov_process} is solution of \cref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ which is given by \cref{lem:lambda_convexity_bis}, and then from Theorem 11.1.4 of \cite{ambrosio2008gradient}. The existence derive from the fact that the subdifferential of $\F$ is single-valued, as stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$ (\cite{gretton2012kernel}). The existence then results from Theorem 11.1.6 and Corollary 11.1.8 from \cite{ambrosio2008gradient}.
+Under \cref{assump:lipschitz_gradient_k}, the map $(x,\nu)\mapsto \nabla f_{\mu,\nu}(x)=\int \nabla k(x,.)d \nu - \int \nabla k(x,.) d \mu$ is Lipschitz continuous on $\X \times \mathcal{P}_2(\X)$ (endowed with the product of the canonical metric on $\X$ and $W_2$ on $\mathcal{P}_2(\X)$), see \cref{prop:grad_witness_function}. Hence, we benefit from standard existence and uniqueness results of McKean-Vlasov processes (see \cite{jourdain2007nonlinear}). Then, it is straightforward to verify that the distribution of \cref{eq:mcKean_Vlasov_process} is solution of \cref{eq:continuity_mmd} by Itô's formula (see \cite{ito1951stochastic}). The uniqueness of the gradient flow, given a starting distribution $\nu_0$, results from the $\lambda$-convexity of $\F$ (for $\lambda=3L$) which is given by \cref{lem:lambda_convexity_bis}, and  \cite[Theorem 11.1.4]{ambrosio2008gradient}. The existence derive from the fact that the sub-differential of $\F$ is single-valued, as stated by \cref{prop:differential_mmd}, and that any $\nu_0$ in $\mathcal{P}_2(\X)$ is in the domain of $\F$. One can then apply \cite[Theorem 11.1.6 and Corollary 11.1.8]{ambrosio2008gradient}.
 \end{proof}
 
 %We provide a now a proof for \cref{prop:decay_mmd} and \cref{prop:decreasing_functional}:
 
 \begin{proof}[Proof of \cref{prop:decay_mmd}]\label{proof:prop:decay_mmd}[Decay of the MMD]
-By \cref{prop:differential_mmd}, we have that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$. Finally, since, $\F$ is $3L$-convex by \cref{lem:lambda_convexity_bis} it follows by the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient}  that for all $0\leq s\leq t$:
+By \cref{prop:differential_mmd}, we know that the differential of $\F(\nu)$ is given by $f_{\mu,\nu}$. The strong subdifferential of $\F$ associated with the $W_2$ metric is thus $\nabla f_{\mu, \nu}$. Finally, since, $\F$ is $3L$-convex by \cref{lem:lambda_convexity_bis} it follows by the energy identity in \cite[Theorem 11.3.2]{ambrosio2008gradient}  that for all $0\leq s\leq t$:
 \[
 \int_s^t \int \Vert \nabla f_{\mu,\nu_u}(x) \Vert^2\diff \nu_u(x)\diff u = \F(\nu_s)-\F(\nu_t).
 \]
-The result follows by dividing by $t-s$ and taking the limit when $s$ got to $t$.
+The result follows after dividing by $t-s$ and taking the limit when $s$ got to $t$.
 \end{proof}
-
-
-
 
 \subsection{Time-discretized flow}\label{appendix:subsec:convegence_time_discrete}
 We start by showing that \cref{eq:euler_scheme} decreases the functional $\F$. In all the proofs, the step-size $\gamma$ is fixed.
 
 \begin{proof}[Proof of \cref{prop:decreasing_functional}]\label{proof:prop:decreasing_functional}
-	Consider a path between $\nu_n$ and $\nu_{n+1}$ of the form $\rho_t	=(I-\gamma t\nabla f_{\mu,\nu_n})_{\#}\nu_n$. We know by \cref{prop:grad_witness_function} that $\nabla f_{\mu,\nu_n}$ is $2L$ Lipschitz, thus by \cref{lem:derivative_mmd_augmented} and using $\phi(x) = -\gamma \nabla f_{\mu,\nu_n}(x)$ and $\psi(x) = x$, it follows that $\F(\rho_t)$ is differentiable and hence absolutely continuous. Therefore one can write:
+	Consider a path between $\nu_n$ and $\nu_{n+1}$ of the form $\rho_t	=(I-\gamma t\nabla f_{\mu,\nu_n})_{\#}\nu_n$. We know by \cref{prop:grad_witness_function} that $\nabla f_{\mu,\nu_n}$ is $2L$ Lipschitz, thus by \cref{lem:derivative_mmd_augmented} and using $\phi(x) = -\gamma \nabla f_{\mu,\nu_n}(x)$, $\psi(x) = x$ and $q = \nu_n$  it follows that $\F(\rho_t)$ is differentiable and hence absolutely continuous. Therefore one can write:
 	\begin{align}\label{eq:taylor_expansion_decreasing}
 	\mathcal{F}(\rho_1)-\mathcal{F}(\rho_0) = \dot{\mathcal{F}}(\rho_0)+  \int_0^1 \dot{\F}(\rho_t)- \dot{\F}(\rho_0)dt.
 	\end{align}
-	Moreover, \cref{lem:derivative_mmd_augmented} with $q=\nu_n$ allows to write:
+	Moreover, \cref{lem:derivative_mmd_augmented} also allows to write:
 	\begin{align*}
 		\dot{\mathcal{F}}(\rho_0) = -\gamma \int \Vert \nabla f_{\mu,\nu_n}(x) \Vert^2 d\nu_n(x); \qquad \vert \dot{\F}(\rho_t)- \dot{\F}(\rho_0)\vert \leq 3L t\gamma^2 \int \Vert \nabla f_{\mu,\nu_n}(X) \Vert^2 d\nu_n(X).
 	\end{align*}
 	where $t\le 1$. Hence, the result follows directly by applying the above expression to \cref{eq:taylor_expansion_decreasing}.
 \end{proof}
 
-We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}. To explicit the dependence of the latter sequence on the (fixed) step-size $\gamma$, we will write it as : $\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma}$ (so $\nu_n^{\gamma}=\nu_n$ for any $n \ge 0$). We start by introducing a sequence $\bar{\nu}_{n}^{\gamma}$ built by iteratively applying: 
+We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}. To make  the dependence on the step-size $\gamma$ explicit, we will write: $\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma}$ (so $\nu_n^{\gamma}=\nu_n$ for any $n \ge 0$). We start by introducing an auxiliary  sequence $\bar{\nu}_{n}^{\gamma}$ built by iteratively applying $\nabla f_{\mu,\nu_{\gamma n}}$ where $\nu_{\gamma n}$  is the solution of \cref{eq:continuity_mmd} at time $t= \gamma n$: 
  \begin{equation}\label{eq:intermed_process_time}
  \bar{\nu}_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_{\gamma n}})_{\#}\bar{\nu}_{n}^{\gamma}
   \end{equation}
@@ -363,17 +360,17 @@ We  prove now that \cref{eq:euler_scheme} approximates \cref{eq:continuity_mmd}.
 %\nu_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_n^{\gamma}})_{\#}\nu_{n}^{\gamma};\qquad
 %\bar{\nu}_{n+1}^{\gamma} =(I-\gamma\nabla f_{\mu,\nu_{^{\gamma n}}})_{\#}\bar{\nu}_{n}^{\gamma}
 %\end{align}
- with $\bar{\nu}_{0}=\nu_{0}$. Notice that the latter sequence involves the continuous process $\nu_t$ of \cref{eq:continuity_mmd} where $t=\gamma n$. Using $\nu_n^{\gamma}$, we also consider the interpolation path $\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}$ for all $t\in[n\gamma,(n+1)\gamma)$ and $n\in \mathbb{N}$, which is the same as in \cref{prop:convergence_euler_scheme}.
+ with $\bar{\nu}_{0}=\nu_{0}$. Note that the latter sequence involves the continuous-time process $\nu_t$ of \cref{eq:continuity_mmd} with $t=\gamma n$. Using $\nu_n^{\gamma}$, we also consider the interpolation path $\rho_{t}^{\gamma}=(I-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}})_{\#}\nu_{n}^{\gamma}$ for all $t\in[n\gamma,(n+1)\gamma)$ and $n\in \mathbb{N}$, which is the same as in \cref{prop:convergence_euler_scheme}.
 \begin{proof}[Proof of \cref{prop:convergence_euler_scheme}]\label{proof:prop:convergence_euler_scheme}
 Let $\pi$ be an optimal coupling between $\nu_{n}^{\gamma}$ and $\nu_{\gamma n}$,
-and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(u)\diff u$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$. We also introduce the approximation error $  E(t,n\gamma):=y_{t}-y+(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ for which we know by  \cref{lem:Taylor-expansion} that $\mathcal{E}(t,n\gamma):=\mathbb{E}[E(t,n\gamma)^2]^{\frac{1}{2}}$ is upper-bounded by $(t-n\gamma)^{2}C$ for some positive constant $C$ that depends only on $T$ and the Lipschitz constant $L$. This allows to write:
+and $(x,y)$ a sample from $\pi$. For $t\in[n\gamma,(n+1)\gamma)$ we write $y_{t} =y_{n\gamma}-\int_{n\gamma}^{t}\nabla f_{\mu,\nu_{s}}(y_u)\diff u$ and $x_{t}  =x-(t-n\gamma)\nabla f_{\mu,\nu_{n}^{\gamma}}(x)$ where $y_{n\gamma}= y$. We also introduce the approximation error $  E(t,n\gamma):=y_{t}-y+(t-n\gamma)\nabla f_{\mu,\nu_{\gamma n}}(y)$ for which we know by  \cref{lem:Taylor-expansion} that $\mathcal{E}(t,n\gamma):=\mathbb{E}[E(t,n\gamma)^2]^{\frac{1}{2}}$ is upper-bounded by $(t-n\gamma)^{2}C$ for some positive constant $C$ that depends only on $T$ and the Lipschitz constant $L$. This allows to write:
 \begin{align*}
 W_{2}(\rho_{t}^{\gamma},\nu_{t}) & \leq\mathbb{E}\left[\Vert y-x+(t-n\gamma)(\nabla f_{\mu,\nu_{n}^{\gamma}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(y))+E(t,n\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
  & \leq W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+4L(t-n\gamma)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+\mathcal{E}(t,n\gamma)\\
  & \leq(1+4\gamma L)W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n})+(t-\gamma n)^2C\\ &\leq(1+4\gamma L)( W_{2}(\nu_{n}^{\gamma},\bar{\nu}_{n}^{\gamma})+W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma}) )+\gamma^{2}C \\
  & \leq\gamma\left[(1+4\gamma L)M(T)+\gamma C\right]
 \end{align*}
-The second line is obtained using that $\nabla f_{\mu,\nu_{\gamma n}}(x)$ is jointly $2L$-Lipschitz in $x$  and $\nu$ (see \cref{prop:grad_witness_function}) and by the fact that $W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n}) = \mathbb{E}_{\pi}[\Vert y-x\Vert^2]^{\frac12}$. The third one is obtained using $t-n \gamma\le \gamma$. For the last inequality, we used \cref{lem:euler_error_1,lem:euler_error_2}  where $M(T)$ a constant that depends only on $T$. Hence for $\gamma\leq\frac{1}{4L}$ we get $W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{4L}+2M(T)).$
+The second line is obtained using that $\nabla f_{\mu,\nu_{\gamma n}}(x)$ is jointly $2L$-Lipschitz in $x$  and $\nu$ (see \cref{prop:grad_witness_function}) and by the fact that $W_{2}(\nu_{n}^{\gamma},\nu_{\gamma n}) = \mathbb{E}_{\pi}[\Vert y-x\Vert^2]^{\frac12}$. The third one is obtained using $t-n \gamma\le \gamma$. For the last inequality, we used \cref{lem:euler_error_1,lem:euler_error_2}  where $M(T)$ is a constant that depends only on $T$. Hence for $\gamma\leq\frac{1}{4L}$ we get $W_{2}(\rho_{t}^{\gamma},\nu_{t})\leq\gamma(\frac{C}{4L}+2M(T)).$
 \end{proof}
 
 \begin{lemma}\label{lem:euler_error_1}
@@ -385,7 +382,7 @@ W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})\le\gamma\frac{C}{2L}(e^{n\gamma 2L}
 \begin{proof}
 Let $\pi$ be an optimal coupling between $\bar{\nu}_{n}^{\gamma}$
 and $\nu_{\gamma n}$ and  $(\bar{x}$, $x)$ a joint sample
-from $\pi$. Consider also the joint sample $(\bar{y},y)$ obtained from  $(\bar{x}$ ,$x)$ by applying the gradient flow of $\F$ in continuous time to get $y=x-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(u)\diff u$ and by taking a discrete step from $\bar{x}$ to write $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$. It is easy to see that $y\sim\nu_{\gamma(n+1)}$ (i.e. a sample from the continous process \cref{eq:continuity_mmd} at time $t=(n+1)\gamma$) and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$ (i.e. a sample from \cref{eq:intermed_process_time}). Moreover, we introduce the approximation error $E((n+1)\gamma,n\gamma):=y-x+\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ for which we know by \cref{lem:Taylor-expansion} that $\mathcal{E}((n+1)\gamma,n\gamma):=\mathbb{E}[E((n+1)\gamma,n\gamma)^2]^{\frac{1}{2}}$ is upper-bounded by $\gamma^{2}C$ for some positive constant $C$ that depends only on $T$ and the Lipschitz constant $L$. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
+from $\pi$. Consider also the joint sample $(\bar{y},y)$ obtained from  $(\bar{x}$ ,$x)$ by applying the gradient flow of $\F$ in continuous time to get $y := x_{(n+1)\gamma}=x_{n \gamma}-\int_{n\gamma}^{(n+1)\gamma}\nabla f_{\mu,\nu_{s}}(x_u)\diff u$ with $x_{n\gamma} = x$ and by taking a discrete step from $\bar{x}$ to write $\bar{y}=\bar{x}-\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})$. It is easy to see that $y\sim\nu_{\gamma(n+1)}$ (i.e. a sample from the continous process \cref{eq:continuity_mmd} at time $t=(n+1)\gamma$) and $\bar{y}\sim\bar{\nu}_{n+1}^{\gamma}$ (i.e. a sample from \cref{eq:intermed_process_time}). Moreover, we introduce the approximation error $E((n+1)\gamma,n\gamma):=y-x+\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)$ for which we know by \cref{lem:Taylor-expansion} that $\mathcal{E}((n+1)\gamma,n\gamma):=\mathbb{E}[E((n+1)\gamma,n\gamma)^2]^{\frac{1}{2}}$ is upper-bounded by $\gamma^{2}C$ for some positive constant $C$ that depends only on $T$ and the Lipschitz constant $L$. Denoting by $a_{n}=W_{2}(\nu_{\gamma n},\bar{\nu}_{n}^{\gamma})$, one can therefore write:
 \begin{align*}
 a_{n+1}\leq & \mathbb{E_{\pi}}\left[\Vert x-\gamma\nabla f_{\mu,\nu_{\gamma n}}(x)-\bar{x}+\gamma\nabla f_{\mu,\nu_{\gamma n}}(\bar{x})+E((n+1)\gamma,n\gamma)\Vert^{2}\right]^{\frac{1}{2}}\\
 \leq & \mathbb{E_{\pi}}\left[\Vert x-\bar{x}\Vert^{2}\right]^{\frac{1}{2}}+\gamma\mathbb{E_{\pi}}\left[\Vert\nabla f_{\mu,\nu_{\gamma n}}(x)-\nabla f_{\mu,\nu_{\gamma n}}(\bar{x}))\Vert^{2}\right]^{\frac{1}{2}}+\gamma^{2}C
@@ -423,8 +420,9 @@ By \cref{lem:euler_error_1}, we know that $W_2(\bar{\nu}_n^{\gamma},\nu_{\gamma 
 \begin{lemma}\label{lem:Taylor-expansion}[Taylor expansion]
 	Consider the process $ \dot{x}_t = - \nabla f_{\mu,\nu_t}(x_t) $, and denote by $\mathcal{E}(t,s) = \mathbb{E}[ \Vert x_t - x_s +(t-s)\nabla f_{\mu,\nu_s}(x_s) \Vert ^2 ]^{\frac{1}{2}} $ for $0\leq s \leq t \leq T$. Then one has:
 	\begin{align}
-		\mathcal{E}(t,s)\leq 4L^2 r_0 e^{LT} \int_{s}^t \int_s^u \diff l \diff u = 2L^2 r_0 e^{LT}(t-s)^2
+		\mathcal{E}(t,s)\leq  2L^2 r_0 e^{LT}(t-s)^2
 	\end{align}
+	with $r_0 = \mathbb{E}_{(x,z)\sim \nu_0 \otimes \mu}[\Vert x-z  \Vert]$
 \end{lemma}
 \begin{proof}
 	By definition of $x_t$ and $\mathcal{E}(t,s)$ one can write:
